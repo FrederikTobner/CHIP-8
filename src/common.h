@@ -1,0 +1,14 @@
+#ifndef CHIP8_COMMON_H
+#define CHIP8_COMMON_H
+
+typedef enum
+{
+    EXIT_CODE_OK = 0,
+    EXIT_CODE_COMMAND_LINE_USAGE_ERROR = 64,
+    EXIT_CODE_COMPILATION_ERROR = 65,
+    EXIT_CODE_RUNTIME_ERROR = 70,
+    EXIT_CODE_SYSTEM_ERROR = 71,
+    EXIT_CODE_INPUT_OUTPUT_ERROR = 74
+}interpreter_exit_code_t;
+
+#endif
