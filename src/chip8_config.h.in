@@ -1,0 +1,9 @@
+#ifndef CHIP8_CONFIGURATION_H_
+#define CHIP8_CONFIGURATION_H_
+
+// the configured options and settings for Cellox
+#define PROJECT_VERSION_MAJOR (@CHIP8_VERSION_MAJOR@)
+#define PROJECT_VERSION_MINOR (@CHIP8_VERSION_MINOR@)
+#define PROJECT_NAME ("@PROJECT_NAME@")
+
+#endif
