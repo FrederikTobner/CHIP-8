@@ -26,8 +26,10 @@ typedef struct
     uint8_t key[16];
 } chip8_t;
 
+void chip8_execute(chip8_t * chip8);
+
 void chip8_init(chip8_t * chip8);
 
-void chip8_execute(chip8_t * chip8);
+void chip8_write_opcode_to_memory(chip8_t * chip8, uint16_t * memoryLocation, uint16_t opcode);
 
 #endif

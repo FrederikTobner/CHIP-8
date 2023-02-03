@@ -38,6 +38,7 @@ int32_t lexer_scan_opcode(lexer_t * lexer)
         return lexer_scan_mnemonic(lexer, c);
     if (c == '0' && (lexer_peek(*lexer) == 'x' || lexer_peek(*lexer) == 'X'))
         return lexer_hexa(lexer, 4);
+    return -1;
 }
 
 // Advances a position further in the sourceCode and returns the prevoius Token

@@ -1,21 +1,28 @@
 #include "chip8.h"
 
+#ifdef OS_WINDOWS
+    // Windows specific libary - conio.h (under linux curses.h could be used) 😟
+    #include <conio.h>
+#endif
+
+#include <limits.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <time.h>
 
-#define DEFINE_8_BIT_VALUE      \
+#define DEFINE_8_BIT_VALUE                      \
 uint8_t value = chip8->currentOpcode & 0x00ff;
 
-#define DEFINE_12_BIT_VALUE \
+#define DEFINE_12_BIT_VALUE                     \
 uint16_t value = chip8->currentOpcode & 0x0fff;
 
-#define DEFINE_X \
+#define DEFINE_X                                \
 uint8_t x = (chip8->currentOpcode & 0x0f00u) >> 8;
 
-#define DEFINE_Y \
+#define DEFINE_Y                                \
 uint8_t y = (chip8->currentOpcode & 0x00f0u) >> 4;
 
-static int8_t chip8_execute_next_opcode(chip8_t * chip8);
+static int8_t chip8_execute_next_opcode(chip8_t *);
 
 /// @brief Executes the program that is stored in memory
 /// @param chip8 The chip8 vm where the program that is currently held in memory is executed
@@ -279,17 +286,20 @@ static int8_t chip8_execute_next_opcode(chip8_t * chip8)
         case 0x9e: // 0xEX9E - Skips the next instruction if the key stored in VX is pressed. (Usually the next instruction is a jump to skip a code block)    
         {   
             DEFINE_X
+            #ifdef OS_WINDOWS
             if (kbhit())
             {
                 char c = getch();
                 if(chip8->V[x] == c)
                     chip8->programCounter++;
             }
+            #endif
             break;
         }
         case 0xa1: // 0xEXA1 - Skips the next instruction if the key stored in VX is not pressed. (Usually the next instruction is a jump to skip a code block)         
         {   
             DEFINE_X
+            #ifdef OS_WINDOWS
             if (kbhit())
             {
                 char c = getch();
@@ -298,6 +308,7 @@ static int8_t chip8_execute_next_opcode(chip8_t * chip8)
             }
             else
                 chip8->programCounter++;
+            #endif    
             break;
         }
         default:
