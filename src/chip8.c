@@ -1,7 +1,7 @@
 /****************************************************************************
  * Copyright (C) 2022 by Frederik Tobner                                    *
  *                                                                          *
- * This file is part of CHIP8.                                             *
+ * This file is part of CHIP-8.                                             *
  *                                                                          *
  * Permission to use, copy, modify, and distribute this software and its    *
  * documentation under the terms of the GNU General Public License is       *
@@ -19,7 +19,7 @@
     // Windows specific libary - conio.h (under linux curses.h could be used) 😟
     #include <conio.h>
 #endif
-// TODO: Use curses.h instead of conio.h for unix based systems
+// TODO: Use curses.h on unix based systems
 
 
 #include <limits.h>

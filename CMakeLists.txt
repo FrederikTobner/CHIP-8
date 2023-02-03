@@ -1,7 +1,24 @@
 cmake_minimum_required(VERSION 3.16)
-project(CHIP8 VERSION 0.1.0)
+include(CheckIncludeFile)
 
-# TODO: link with sdl libary
+project(CHIP-8 VERSION 0.1.0)
+
+# C99 standard is required to build the emulator
+set(CMAKE_C_STANDARD 99)
+set(CMAKE_C_STANDARD_REQUIRED True)
+
+# CPack metadata
+set(PROJECT_PAGE "https://github.com/FrederikTobner/CHIP-8")
+set(PROJECT_HELP_PAGE "https://github.com/FrederikTobner/CHIP-8/wiki")
+set(PROJECT_VENDOR "Frederik Tobner")
+
+# Check dependecies under windows
+if(WIN32)
+    CHECK_INCLUDE_FILE("conio.h" CONIO_AVAILABLE)
+    if(NOT ${CONIO_AVAILABLE})
+        message(FATAL_ERROR "conio.h is required to build the interpreter under windows. Please make sure it is available to the emulator and try again after that")
+    endif() # conio.h not available
+endif() # Windows system
 
 # Adding os-specific compiler definitions
 if(UNIX)
@@ -23,12 +40,12 @@ endif()
 if(CMAKE_C_COMPILER_ID STREQUAL "GNU")
     add_compile_definitions(COMPILER_GCC)
 elseif(CMAKE_C_COMPILER_ID STREQUAL "[Cc][Ll][Aa][Nn][Gg]")
-    add_compile_definitions(COMPILER_GCC)
+    add_compile_definitions(COMPILER_CLANG)
 elseif(CMAKE_C_COMPILER_ID STREQUAL "[Mm][Ss][Vv][Cc]")
     add_compile_definitions(COMPILER_MSVC)
 else()
     add_compile_definitions(COMPILER_UNKNOWN)    
 endif()
 
-# Build CHIP8 project
+# Build CHIP-8 project
 add_subdirectory(src)

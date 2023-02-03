@@ -1,7 +1,7 @@
 /****************************************************************************
- * Copyright (C) 2022 by Frederik Tobner                                    *
+ * Copyright (C) 2023 by Frederik Tobner                                    *
  *                                                                          *
- * This file is part of CHIP8.                                             *
+ * This file is part of CHIP-8.                                             *
  *                                                                          *
  * Permission to use, copy, modify, and distribute this software and its    *
  * documentation under the terms of the GNU General Public License is       *
@@ -40,13 +40,9 @@ int main(int argc, char const ** argv)
     if (argc == 2)
     {
         if(!strncmp(argv[1], "--version", 7) || !strncmp(argv[1], "-v", 2))
-        {
             printf("CHIP8 Version %i.%i\n", PROJECT_VERSION_MAJOR, PROJECT_VERSION_MINOR);
-        }
         else if(!strncmp(argv[1], "--help", 6) || !strncmp(argv[1], "-h", 2))
-        {
             fprintf(stderr, CHIP8_USAGE_MESSAGE);
-        }
         else
         {
             char * source = read_file(argv[1]);

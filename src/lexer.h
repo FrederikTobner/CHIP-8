@@ -1,7 +1,7 @@
 /****************************************************************************
- * Copyright (C) 2022 by Frederik Tobner                                    *
+ * Copyright (C) 2023 by Frederik Tobner                                    *
  *                                                                          *
- * This file is part of CHIP8.                                             *
+ * This file is part of CHIP-8.                                             *
  *                                                                          *
  * Permission to use, copy, modify, and distribute this software and its    *
  * documentation under the terms of the GNU General Public License is       *
@@ -13,8 +13,8 @@
  * License for more details.                                                *
  ****************************************************************************/
 
-#ifndef CHIP8_LEXER_H
-#define CHIP8_LEXER_H
+#ifndef CHIP8_LEXER_H_
+#define CHIP8_LEXER_H_
 
 #include <stdint.h>
 

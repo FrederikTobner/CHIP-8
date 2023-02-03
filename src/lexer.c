@@ -1,7 +1,7 @@
 /****************************************************************************
- * Copyright (C) 2022 by Frederik Tobner                                    *
+ * Copyright (C) 2023 by Frederik Tobner                                    *
  *                                                                          *
- * This file is part of CHIP8.                                             *
+ * This file is part of CHIP-8.                                             *
  *                                                                          *
  * Permission to use, copy, modify, and distribute this software and its    *
  * documentation under the terms of the GNU General Public License is       *
@@ -78,14 +78,14 @@ static uint16_t lexer_hexa(lexer_t * lexer, size_t digitCount)
     for (size_t i = 0; i < digitCount; i++)
     {
         number *= 16;
-    if(!lexer_is_hexa(lexer_peek(*lexer)))
-        lexer_report_error(*lexer);
-    if(lexer_is_decimal(lexer_peek(*lexer)))
-        number += *lexer->current++ - '0';
-    else if(lexer_peek(*lexer) <= 'F')
-        number += *lexer->current++ - 'A' + 10;
-    else
-        number += *lexer->current++ - 'a' + 10;
+        if(!lexer_is_hexa(lexer_peek(*lexer)))
+            lexer_report_error(*lexer);
+        if(lexer_is_decimal(lexer_peek(*lexer)))
+            number += *lexer->current++ - '0';
+        else if(lexer_peek(*lexer) <= 'F')
+            number += *lexer->current++ - 'A' + 10;
+        else
+            number += *lexer->current++ - 'a' + 10;
     }
     return number;    
 }
