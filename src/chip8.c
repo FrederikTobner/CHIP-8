@@ -19,6 +19,8 @@
     // Windows specific libary - conio.h (under linux curses.h could be used) 😟
     #include <conio.h>
 #endif
+// TODO: Use curses.h instead of conio.h for unix based systems
+
 
 #include <limits.h>
 #include <stdio.h>
