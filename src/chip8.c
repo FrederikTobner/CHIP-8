@@ -1,3 +1,18 @@
+/****************************************************************************
+ * Copyright (C) 2022 by Frederik Tobner                                    *
+ *                                                                          *
+ * This file is part of CHIP8.                                             *
+ *                                                                          *
+ * Permission to use, copy, modify, and distribute this software and its    *
+ * documentation under the terms of the GNU General Public License is       *
+ * hereby granted.                                                          *
+ * No representations are made about the suitability of this software for   *
+ * any purpose.                                                             *
+ * It is provided "as is" without express or implied warranty.              *
+ * See the <https://www.gnu.org/licenses/gpl-3.0.html/>GNU General Public   *
+ * License for more details.                                                *
+ ****************************************************************************/
+
 #include "chip8.h"
 
 #ifdef OS_WINDOWS
@@ -10,15 +25,23 @@
 #include <stdlib.h>
 #include <time.h>
 
+#include "debug.h"
+#include "flags.h"
+
+/// Defines a new 8-bit value based on the opcode that is currently executed
 #define DEFINE_8_BIT_VALUE                      \
 uint8_t value = chip8->currentOpcode & 0x00ff;
 
+/// Defines a new 12-bit value based on the opcode that is currently executed
 #define DEFINE_12_BIT_VALUE                     \
 uint16_t value = chip8->currentOpcode & 0x0fff;
 
+
+/// Defines a new 4-bit value based on the opcode that is currently executed
 #define DEFINE_X                                \
 uint8_t x = (chip8->currentOpcode & 0x0f00u) >> 8;
 
+/// Defines a new 4-bit value based on the opcode that is currently executed
 #define DEFINE_Y                                \
 uint8_t y = (chip8->currentOpcode & 0x00f0u) >> 4;
 
@@ -37,7 +60,8 @@ void chip8_execute(chip8_t * chip8)
         chip8->currentOpcode += chip8->memory[chip8->programCounter * 2 + 1] * 256;
         if(!chip8->currentOpcode)
             return;
-        if(chip8_execute_next_opcode(chip8)) return;
+        if(chip8_execute_next_opcode(chip8)) 
+            return;
         current_t = clock() / CLOCKS_PER_SEC;
         long numberOfChip8Clocks = (current_t - last_t) / CLOCKS_PER_SEC * 60;
         if(numberOfChip8Clocks > 1) 
@@ -68,15 +92,16 @@ void chip8_execute(chip8_t * chip8)
 }
 
 /// @brief Initializes the chip8 vm
-/// @param chip8 
+/// @param chip8 The chip8 virtual machine that is initialzed
 void chip8_init(chip8_t * chip8)
 {
      // Initialize stackpointer
     chip8->stackPointer = chip8->stack;
     // Initialize program counter
     chip8->programCounter = 0u;
-    // Initialize memory
+    // Compute upper bound for memory loop
     uint8_t * upperBound = (chip8->memory + 4096);
+    // Initialize memory
     for (uint8_t * memoryPointer = chip8->memory; memoryPointer < upperBound; memoryPointer++)
         *memoryPointer = 0u;
 }
@@ -88,13 +113,19 @@ void chip8_init(chip8_t * chip8)
 /// @param opcode The opcode that is written into memory
 void chip8_write_opcode_to_memory(chip8_t * chip8, uint16_t * memoryLocation, uint16_t opcode)
 {
+    #ifdef PRINT_BYTE_CODE
+        debug_print_bytecode(*memoryLocation, opcode);
+    #endif
     chip8->memory[(*memoryLocation)++] = opcode & 0x00ff;
     chip8->memory[(*memoryLocation)++] = (opcode & 0xff00) >> 8;
 }
 
+/// Executes the next opcode in memory
+/// @param chip8 The chip8 virtual machine where the next opcode is executed
+/// @return 0 if the opcode was executed properly, -1 if not
 static int8_t chip8_execute_next_opcode(chip8_t * chip8)
 {
-     switch (chip8->currentOpcode & 0xf000)
+    switch (chip8->currentOpcode & 0xf000)
     {
     case 0x0000:
     {
@@ -286,6 +317,7 @@ static int8_t chip8_execute_next_opcode(chip8_t * chip8)
         case 0x9e: // 0xEX9E - Skips the next instruction if the key stored in VX is pressed. (Usually the next instruction is a jump to skip a code block)    
         {   
             DEFINE_X
+            // TODO: Add support for the instruction under unix based systems 
             #ifdef OS_WINDOWS
             if (kbhit())
             {
@@ -299,6 +331,7 @@ static int8_t chip8_execute_next_opcode(chip8_t * chip8)
         case 0xa1: // 0xEXA1 - Skips the next instruction if the key stored in VX is not pressed. (Usually the next instruction is a jump to skip a code block)         
         {   
             DEFINE_X
+            // TODO: Add support for the instruction under unix based systems
             #ifdef OS_WINDOWS
             if (kbhit())
             {

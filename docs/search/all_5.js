@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['key',['key',['../structchip8__t.html#a742229490b6759a90ece7ba82ba129d5',1,'chip8_t']]]
+  ['i',['I',['../structchip8__t.html#a16402eaf01018447c9ddcd65ac72e1b3',1,'chip8_t']]],
+  ['io_5ferror',['io_error',['../main_8c.html#aad21e0a3fe5146c13d9339d1a85a4597',1,'main.c']]]
 ];

@@ -27,7 +27,6 @@
 <table cellspacing="0" cellpadding="0">
  <tbody>
  <tr style="height: 56px;">
-  <td id="projectlogo"><img alt="Logo" src="file_type_cellox.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">CHIP8
    &#160;<span id="projectnumber">0.1.0</span>
@@ -82,6 +81,7 @@ $(document).ready(function(){initNavTree('main_8c.html','');});
 
 <div class="header">
   <div class="summary">
+<a href="#define-members">Macros</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
 <div class="title">main.c File Reference</div>  </div>
@@ -92,18 +92,46 @@ $(document).ready(function(){initNavTree('main_8c.html','');});
 <code>#include &lt;stdlib.h&gt;</code><br />
 <code>#include &lt;string.h&gt;</code><br />
 <code>#include &quot;<a class="el" href="chip8_8h_source.html">chip8.h</a>&quot;</code><br />
+<code>#include &quot;chip8_config.h&quot;</code><br />
 <code>#include &quot;<a class="el" href="common_8h_source.html">common.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="flags_8h_source.html">flags.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="lexer_8h_source.html">lexer.h</a>&quot;</code><br />
 </div><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
+Macros</h2></td></tr>
+<tr class="memitem:ad98b845c77ce21b1771e1ddd07264d41"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8c.html#ad98b845c77ce21b1771e1ddd07264d41">CHIP8_USAGE_MESSAGE</a>&#160;&#160;&#160;&quot;Usage: Chip8 [path]\n&quot;</td></tr>
+<tr class="memdesc:ad98b845c77ce21b1771e1ddd07264d41"><td class="mdescLeft">&#160;</td><td class="mdescRight">Short message that explains the usage of the CHIP8 emulator.  <a href="#ad98b845c77ce21b1771e1ddd07264d41">More...</a><br /></td></tr>
+<tr class="separator:ad98b845c77ce21b1771e1ddd07264d41"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:a15352155ab4488ddf2fe605886949d5b"><td class="memItemLeft" align="right" valign="top">static char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8c.html#a15352155ab4488ddf2fe605886949d5b">read_file</a> (char const *path)</td></tr>
+<tr class="memdesc:a15352155ab4488ddf2fe605886949d5b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reads a file from a specified location and returns the content of the file as a character pointer.  <a href="#a15352155ab4488ddf2fe605886949d5b">More...</a><br /></td></tr>
 <tr class="separator:a15352155ab4488ddf2fe605886949d5b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a790aa8b99fa3d90918361b8936af0b14"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8c.html#a790aa8b99fa3d90918361b8936af0b14">main</a> (int argc, char const **argv)</td></tr>
-<tr class="separator:a790aa8b99fa3d90918361b8936af0b14"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aad21e0a3fe5146c13d9339d1a85a4597"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8c.html#aad21e0a3fe5146c13d9339d1a85a4597">io_error</a> (char const *format,...)</td></tr>
+<tr class="memdesc:aad21e0a3fe5146c13d9339d1a85a4597"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reports an error that has occured during a IO operation.  <a href="#aad21e0a3fe5146c13d9339d1a85a4597">More...</a><br /></td></tr>
 <tr class="separator:aad21e0a3fe5146c13d9339d1a85a4597"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a790aa8b99fa3d90918361b8936af0b14"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8c.html#a790aa8b99fa3d90918361b8936af0b14">main</a> (int argc, char const **argv)</td></tr>
+<tr class="memdesc:a790aa8b99fa3d90918361b8936af0b14"><td class="mdescLeft">&#160;</td><td class="mdescRight">Main entry point of the CHIP8 program.  <a href="#a790aa8b99fa3d90918361b8936af0b14">More...</a><br /></td></tr>
+<tr class="separator:a790aa8b99fa3d90918361b8936af0b14"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<h2 class="groupheader">Macro Definition Documentation</h2>
+<a id="ad98b845c77ce21b1771e1ddd07264d41"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad98b845c77ce21b1771e1ddd07264d41">&#9670;&nbsp;</a></span>CHIP8_USAGE_MESSAGE</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define CHIP8_USAGE_MESSAGE&#160;&#160;&#160;&quot;Usage: Chip8 [path]\n&quot;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Short message that explains the usage of the CHIP8 emulator. </p>
+
+</div>
+</div>
 <h2 class="groupheader">Function Documentation</h2>
 <a id="aad21e0a3fe5146c13d9339d1a85a4597"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aad21e0a3fe5146c13d9339d1a85a4597">&#9670;&nbsp;</a></span>io_error()</h2>
@@ -139,6 +167,15 @@ Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>Reports an error that has occured during a IO operation. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">format</td><td>The format of the error message </td></tr>
+    <tr><td class="paramname">args</td><td>var-args Used for the error message </td></tr>
+  </table>
+  </dd>
+</dl>
+
 </div>
 </div>
 <a id="a790aa8b99fa3d90918361b8936af0b14"></a>
@@ -167,6 +204,16 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Main entry point of the CHIP8 program. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">argc</td><td>The amount of arguments that were used when the program was started </td></tr>
+    <tr><td class="paramname">argv</td><td>Pointer to the arguments array that contains all the arguments that were defined by the user when the program was started </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>0 if everything went well </dd></dl>
+
 </div>
 </div>
 <a id="a15352155ab4488ddf2fe605886949d5b"></a>
@@ -192,6 +239,15 @@ Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Reads a file from a specified location and returns the content of the file as a character pointer. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">path</td><td>The path of the file that is read </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The content of the file as a character pointer </dd></dl>
 
 </div>
 </div>

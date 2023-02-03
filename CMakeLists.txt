@@ -3,10 +3,6 @@ project(CHIP8 VERSION 0.1.0)
 
 # TODO: link with sdl libary
 
-# Debug options (only have an effect on debug builds)
-option(DEBUG_PRINT_BYTECODE "Determines whether the chunks are dissassembled and the bytecode is printed" OFF)
-option(DEBUG_TRACE_EXECUTION "Determines whether the execution shall be traced" OFF)
-
 # Adding os-specific compiler definitions
 if(UNIX)
     add_compile_definitions(OS_UNIX_LIKE)    
@@ -34,4 +30,5 @@ else()
     add_compile_definitions(COMPILER_UNKNOWN)    
 endif()
 
+# Build CHIP8 project
 add_subdirectory(src)

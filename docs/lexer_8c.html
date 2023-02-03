@@ -27,7 +27,6 @@
 <table cellspacing="0" cellpadding="0">
  <tbody>
  <tr style="height: 56px;">
-  <td id="projectlogo"><img alt="Logo" src="file_type_cellox.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">CHIP8
    &#160;<span id="projectnumber">0.1.0</span>
@@ -91,13 +90,13 @@ $(document).ready(function(){initNavTree('lexer_8c.html','');});
 <code>#include &lt;stdbool.h&gt;</code><br />
 <code>#include &lt;stdio.h&gt;</code><br />
 <code>#include &lt;stdlib.h&gt;</code><br />
+<code>#include &quot;<a class="el" href="common_8h_source.html">common.h</a>&quot;</code><br />
 </div><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:a19ae33837cc16fbc43418bbeb0c46526"><td class="memItemLeft" align="right" valign="top">static char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="lexer_8c.html#a19ae33837cc16fbc43418bbeb0c46526">lexer_advance</a> (<a class="el" href="structlexer__t.html">lexer_t</a> *lexer)</td></tr>
+<tr class="memdesc:a19ae33837cc16fbc43418bbeb0c46526"><td class="mdescLeft">&#160;</td><td class="mdescRight">Advances a position further in the sourceCode and returns the prevoius Token.  <a href="#a19ae33837cc16fbc43418bbeb0c46526">More...</a><br /></td></tr>
 <tr class="separator:a19ae33837cc16fbc43418bbeb0c46526"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7d9b6c0213687b1bda79f2b982305868"><td class="memItemLeft" align="right" valign="top">static uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="lexer_8c.html#a7d9b6c0213687b1bda79f2b982305868">lexer_decimal</a> (<a class="el" href="structlexer__t.html">lexer_t</a> *lexer, size_t digitCount)</td></tr>
-<tr class="separator:a7d9b6c0213687b1bda79f2b982305868"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a40b3649a75908bc3b068c43c4e20846f"><td class="memItemLeft" align="right" valign="top">static uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="lexer_8c.html#a40b3649a75908bc3b068c43c4e20846f">lexer_hexa</a> (<a class="el" href="structlexer__t.html">lexer_t</a> *lexer, size_t digitCount)</td></tr>
 <tr class="separator:a40b3649a75908bc3b068c43c4e20846f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abc90d34a8a5686291eb784d0d88263fa"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="lexer_8c.html#abc90d34a8a5686291eb784d0d88263fa">lexer_is_alpha</a> (char c)</td></tr>
@@ -125,8 +124,10 @@ Functions</h2></td></tr>
 <tr class="memitem:a28e1caed8516f9aef70102b36eee12e2"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="lexer_8c.html#a28e1caed8516f9aef70102b36eee12e2">lexer_skip_whitespace</a> (<a class="el" href="structlexer__t.html">lexer_t</a> *lexer)</td></tr>
 <tr class="separator:a28e1caed8516f9aef70102b36eee12e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a99d6d88ac98ac0b06ad834f16f1da0aa"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="lexer_8c.html#a99d6d88ac98ac0b06ad834f16f1da0aa">lexer_initialize</a> (<a class="el" href="structlexer__t.html">lexer_t</a> *lexer, char const *source)</td></tr>
+<tr class="memdesc:a99d6d88ac98ac0b06ad834f16f1da0aa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialzes the lexer that is used to group the characters in the sourcefile to Tokens.  <a href="#a99d6d88ac98ac0b06ad834f16f1da0aa">More...</a><br /></td></tr>
 <tr class="separator:a99d6d88ac98ac0b06ad834f16f1da0aa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5a0f010f5a4b27b8861081446defebd3"><td class="memItemLeft" align="right" valign="top">int32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="lexer_8c.html#a5a0f010f5a4b27b8861081446defebd3">lexer_scan_opcode</a> (<a class="el" href="structlexer__t.html">lexer_t</a> *lexer)</td></tr>
+<tr class="memdesc:a5a0f010f5a4b27b8861081446defebd3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Scans the next opcode in the sourcefile.  <a href="#a5a0f010f5a4b27b8861081446defebd3">More...</a><br /></td></tr>
 <tr class="separator:a5a0f010f5a4b27b8861081446defebd3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
@@ -149,46 +150,19 @@ Functions</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-</div>
-</div>
-<a id="a7d9b6c0213687b1bda79f2b982305868"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7d9b6c0213687b1bda79f2b982305868">&#9670;&nbsp;</a></span>lexer_decimal()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">static uint16_t lexer_decimal </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="structlexer__t.html">lexer_t</a> *&#160;</td>
-          <td class="paramname"><em>lexer</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">size_t&#160;</td>
-          <td class="paramname"><em>digitCount</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
+<p>Advances a position further in the sourceCode and returns the prevoius Token. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">lexer</td><td>Advances a position further in the sourcecode </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The current character </dd></dl>
 
 </div>
 </div>
@@ -254,6 +228,15 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Initialzes the lexer that is used to group the characters in the sourcefile to Tokens. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">lexer</td><td>The lexer that is inialized </td></tr>
+    <tr><td class="paramname">source</td><td>The content of the source file that is processed by the lexer </td></tr>
+  </table>
+  </dd>
+</dl>
+
 </div>
 </div>
 <a id="abc90d34a8a5686291eb784d0d88263fa"></a>
@@ -275,7 +258,7 @@ Functions</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -301,7 +284,7 @@ Functions</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -327,7 +310,7 @@ Functions</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -353,7 +336,7 @@ Functions</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -379,7 +362,7 @@ Functions</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -509,7 +492,7 @@ Functions</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -567,6 +550,15 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Scans the next opcode in the sourcefile. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">lexer</td><td>The lexer where the next opcode is scanned </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The opcode or -1 if we have reached the end of the file or the opcode wasn't processed properly </dd></dl>
 
 </div>
 </div>

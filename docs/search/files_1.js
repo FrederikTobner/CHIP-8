@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['lexer_2ec',['lexer.c',['../lexer_8c.html',1,'']]],
-  ['lexer_2eh',['lexer.h',['../lexer_8h.html',1,'']]]
+  ['debug_2ec',['debug.c',['../debug_8c.html',1,'']]],
+  ['debug_2eh',['debug.h',['../debug_8h.html',1,'']]]
 ];

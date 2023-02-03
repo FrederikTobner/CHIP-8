@@ -1,3 +1,18 @@
+/****************************************************************************
+ * Copyright (C) 2022 by Frederik Tobner                                    *
+ *                                                                          *
+ * This file is part of CHIP8.                                             *
+ *                                                                          *
+ * Permission to use, copy, modify, and distribute this software and its    *
+ * documentation under the terms of the GNU General Public License is       *
+ * hereby granted.                                                          *
+ * No representations are made about the suitability of this software for   *
+ * any purpose.                                                             *
+ * It is provided "as is" without express or implied warranty.              *
+ * See the <https://www.gnu.org/licenses/gpl-3.0.html/>GNU General Public   *
+ * License for more details.                                                *
+ ****************************************************************************/
+
 #ifndef CHIP8_COMMON_H
 #define CHIP8_COMMON_H
 
@@ -9,6 +24,6 @@ typedef enum
     EXIT_CODE_RUNTIME_ERROR = 70,
     EXIT_CODE_SYSTEM_ERROR = 71,
     EXIT_CODE_INPUT_OUTPUT_ERROR = 74
-}interpreter_exit_code_t;
+}chip8_exit_code;
 
 #endif

@@ -1,25 +1,44 @@
+/****************************************************************************
+ * Copyright (C) 2022 by Frederik Tobner                                    *
+ *                                                                          *
+ * This file is part of CHIP8.                                             *
+ *                                                                          *
+ * Permission to use, copy, modify, and distribute this software and its    *
+ * documentation under the terms of the GNU General Public License is       *
+ * hereby granted.                                                          *
+ * No representations are made about the suitability of this software for   *
+ * any purpose.                                                             *
+ * It is provided "as is" without express or implied warranty.              *
+ * See the <https://www.gnu.org/licenses/gpl-3.0.html/>GNU General Public   *
+ * License for more details.                                                *
+ ****************************************************************************/
+
 #include "lexer.h"
 
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 
-static char lexer_advance(lexer_t * lexer);
-static uint16_t lexer_decimal(lexer_t * lexer, size_t digitCount);
+#include "common.h"
+
+static inline char lexer_advance(lexer_t * lexer);
 static uint16_t lexer_hexa(lexer_t * lexer, size_t digitCount);
-static bool lexer_is_alpha(char c);
-static bool lexer_is_at_end(lexer_t lexer);
-static bool lexer_is_decimal(char c);
-static bool lexer_is_hexa(char c);
-static char lexer_peek(lexer_t lexer);
+static inline bool lexer_is_alpha(char c);
+static inline bool lexer_is_at_end(lexer_t lexer);
+static inline bool lexer_is_decimal(char c);
+static inline bool lexer_is_hexa(char c);
+static inline char lexer_peek(lexer_t lexer);
 static uint8_t lexer_read_8bit_number(lexer_t * lexer);
 static uint16_t lexer_read_12bit_number(lexer_t * lexer);
 static uint8_t lexer_read_register(lexer_t * lexer);
 static uint8_t lexer_read_registers(lexer_t * lexer);
-static void lexer_report_error(lexer_t lexer);
+static inline void lexer_report_error(lexer_t lexer);
 static uint16_t lexer_scan_mnemonic(lexer_t * lexer, char c);
 static void lexer_skip_whitespace(lexer_t * lexer);
 
+/// @brief Initialzes the lexer that is used to group the characters in the sourcefile to Tokens
+/// @param lexer The lexer that is inialized
+/// @param source The content of the source file that is processed by the lexer
 void lexer_initialize(lexer_t * lexer, char const * source)
 {
     lexer->start = source;
@@ -27,6 +46,9 @@ void lexer_initialize(lexer_t * lexer, char const * source)
     lexer->line = 1u;
 }
 
+/// @brief Scans the next opcode in the sourcefile
+/// @param lexer The lexer where the next opcode is scanned
+/// @return The opcode or -1 if we have reached the end of the file or the opcode wasn't processed properly
 int32_t lexer_scan_opcode(lexer_t * lexer)
 {
     lexer_skip_whitespace(lexer);
@@ -41,8 +63,10 @@ int32_t lexer_scan_opcode(lexer_t * lexer)
     return -1;
 }
 
-// Advances a position further in the sourceCode and returns the prevoius Token
-static char lexer_advance(lexer_t * lexer)
+/// @brief Advances a position further in the sourceCode and returns the prevoius Token
+/// @param lexer Advances a position further in the sourcecode
+/// @return The current character
+static inline char lexer_advance(lexer_t * lexer)
 {
     return *lexer->current++;
 }
@@ -67,30 +91,30 @@ static uint16_t lexer_hexa(lexer_t * lexer, size_t digitCount)
 }
 
 // checks if the char c is a from the alphabet
-static bool lexer_is_alpha(char c)
+static inline bool lexer_is_alpha(char c)
 {
     return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z');
 }
 
+// Determines wheather we reached the end in the sourceCode
+static inline bool lexer_is_at_end(lexer_t lexer)
+{
+    return *lexer.current == '\0';
+}
+
 // checks if the char c is a digit
-static bool lexer_is_decimal(char c)
+static inline bool lexer_is_decimal(char c)
 {
     return c >= '0' && c <= '9';
 }
 
 // checks if the char c is a hexadecimal digit
-static bool lexer_is_hexa(char c)
+static inline bool lexer_is_hexa(char c)
 {
     return (c >= '0' && c <= '9') || (c >= 'a' && c <= 'f') || (c >= 'A' && c <= 'F');
 }
 
-// Determines wheather we reached the end in the sourceCode
-static bool lexer_is_at_end(lexer_t lexer)
-{
-    return *lexer.current == '\0';
-}
-
-static char lexer_peek(lexer_t lexer)
+static inline char lexer_peek(lexer_t lexer)
 {
     return *lexer.current;
 }
@@ -137,10 +161,10 @@ static uint8_t lexer_read_registers(lexer_t * lexer)
     return value += lexer_read_register(lexer);
 }
 
-static void lexer_report_error(lexer_t lexer)
+static inline void lexer_report_error(lexer_t lexer)
 {
     printf("Unexpected character %c in opcode sequence in line %i", *lexer.current, lexer.line);
-    exit(65);
+    exit(EXIT_CODE_COMPILATION_ERROR);
 }
 
 static uint16_t lexer_scan_mnemonic(lexer_t * lexer, char c)

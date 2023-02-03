@@ -1,7 +1,6 @@
 var lexer_8c =
 [
     [ "lexer_advance", "lexer_8c.html#a19ae33837cc16fbc43418bbeb0c46526", null ],
-    [ "lexer_decimal", "lexer_8c.html#a7d9b6c0213687b1bda79f2b982305868", null ],
     [ "lexer_hexa", "lexer_8c.html#a40b3649a75908bc3b068c43c4e20846f", null ],
     [ "lexer_initialize", "lexer_8c.html#a99d6d88ac98ac0b06ad834f16f1da0aa", null ],
     [ "lexer_is_alpha", "lexer_8c.html#abc90d34a8a5686291eb784d0d88263fa", null ],

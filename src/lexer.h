@@ -1,9 +1,24 @@
+/****************************************************************************
+ * Copyright (C) 2022 by Frederik Tobner                                    *
+ *                                                                          *
+ * This file is part of CHIP8.                                             *
+ *                                                                          *
+ * Permission to use, copy, modify, and distribute this software and its    *
+ * documentation under the terms of the GNU General Public License is       *
+ * hereby granted.                                                          *
+ * No representations are made about the suitability of this software for   *
+ * any purpose.                                                             *
+ * It is provided "as is" without express or implied warranty.              *
+ * See the <https://www.gnu.org/licenses/gpl-3.0.html/>GNU General Public   *
+ * License for more details.                                                *
+ ****************************************************************************/
+
 #ifndef CHIP8_LEXER_H
 #define CHIP8_LEXER_H
 
 #include <stdint.h>
 
-// Type definition of a lexer/scanner
+/// Type definition of a lexer/scanner
 typedef struct
 {
     // Pointer to the start of the current line where the lexical analysis is performed
