@@ -1,5 +1,5 @@
 /****************************************************************************
- * Copyright (C) 2022 by Frederik Tobner                                    *
+ * Copyright (C) 2023 by Frederik Tobner                                    *
  *                                                                          *
  * This file is part of CHIP-8.                                             *
  *                                                                          *
@@ -15,11 +15,11 @@
 
 #include "chip8.h"
 
-#ifdef OS_WINDOWS
+#if defined(_WIN32)
     // Windows specific libary - conio.h (under linux curses.h could be used) 😟
     #include <conio.h>
     #include <windows.h>
-#elif OS_UNIX_LIKE
+#elif defined(__unix__)
     #include <curses.h>
     #include <unistd.h>
 #endif
@@ -66,8 +66,8 @@ void chip8_execute(chip8_t * chip8)
         #ifdef TRACE_EXECUTION
             debug_trace_execution(*chip8);
         #endif
-        chip8->currentOpcode = chip8->memory[chip8->programCounter * 2 + PROGRAM_START_LOCATION];
-        chip8->currentOpcode += chip8->memory[chip8->programCounter * 2 + 1 + PROGRAM_START_LOCATION] * 256;
+        chip8->currentOpcode = *(chip8->memory + chip8->programCounter * 2 + PROGRAM_START_LOCATION);
+        chip8->currentOpcode += ((uint16_t)*(chip8->memory + (chip8->programCounter * 2 + 1 + PROGRAM_START_LOCATION))) << 8;
         // Reached end of the program
         if(!chip8->currentOpcode)
             return;
@@ -78,26 +78,23 @@ void chip8_execute(chip8_t * chip8)
         numberofChip8Clocks++; 
         // 60 hz
         if(!numberofChip8Clocks % 10) {
-            if(!chip8->delay_timer)
+            if(!chip8->delayTimer && chip8->delayTimer > 0)
+                chip8->delayTimer--;
+            if(!chip8->soundTimer)
             {
-            if(chip8->delay_timer > 0)
-                chip8->delay_timer--;
-            }
-            if(!chip8->sound_timer)
-            {
-            putc('\a', stdout);
-            if(chip8->sound_timer > 0)
-                chip8->sound_timer--;
+                putc('\a', stdout);
+                if(chip8->soundTimer > 0)
+                    chip8->soundTimer--;
             }
         }
         // Wait for a 1/600 second minus the time elapsed
         current_t = time(NULL);
-        #ifdef OS_WINDOWS
+        #if defined(WIN32)
             // Milliseconds -> multiply with 1000
-            Sleep((1.0 / 600.0 - (current_t - last_t)) * 1000);
-        #elif OS_UNIX_LIKE
+            Sleep((1.0 / 600.0 - ((double)current_t - last_t)) * 1000);
+        #elif defined(__unix__)
             // Seconds
-            sleep((1.0 / 600.0 - (current_t - last_t)));
+            sleep((1.0 / 600.0 - ((double)current_t - last_t)));
         #endif
     }
 }
@@ -106,14 +103,15 @@ void chip8_execute(chip8_t * chip8)
 /// @param chip8 The chip8 virtual machine that is initialzed
 void chip8_init(chip8_t * chip8)
 {
-    for (uint8_t i = 0; i < 16; i++)
-        chip8->V[i] = 0;
+    uint8_t * upperBound = (chip8->V + 16u);
+    for (uint8_t * memoryPointer = chip8->V; memoryPointer < upperBound; memoryPointer++)
+        *memoryPointer = 0u;
     // Initialize stackpointer
     chip8->stackPointer = chip8->stack;
     // Initialize program counter
     chip8->programCounter = 0u;
     // Compute upper bound for memory loop
-    uint8_t * upperBound = (chip8->memory + 4096);
+    upperBound = (chip8->memory + 4096u);
     // Initialize memory
     for (uint8_t * memoryPointer = chip8->memory; memoryPointer < upperBound; memoryPointer++)
         *memoryPointer = 0u;
@@ -375,7 +373,7 @@ static int8_t chip8_execute_next_opcode(chip8_t * chip8)
         case 0x7: // 0xFX07 - Sets VX to the value of the delay timer.
         {   
             DEFINE_X
-            chip8->V[x] = chip8->delay_timer;
+            chip8->V[x] = chip8->delayTimer;
             break;
         }
         case 0xa: // 0xFX0A - A key press is awaited, and then stored in VX. (Blocking Operation. All instruction halted until next key event)
@@ -387,13 +385,13 @@ static int8_t chip8_execute_next_opcode(chip8_t * chip8)
         case 0x15: // 0xFX15 - Sets the delay timer to VX
         {   
             DEFINE_X
-            chip8->delay_timer = chip8->V[x];
+            chip8->delayTimer = chip8->V[x];
             break;
         }
         case 0x18: // 0xFX18 - Sets the sound timer to VX. 
         {   
             DEFINE_X
-            chip8->sound_timer = chip8->V[x];
+            chip8->soundTimer = chip8->V[x];
             break;
         }
         case 0x1e: // 0xFX1E - Adds VX to I. VF is not affected

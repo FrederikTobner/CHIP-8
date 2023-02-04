@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.5"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>CHIP-8: flags.h Source File</title>
+<title>CHIP-8: assembler.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -65,7 +65,7 @@ $(function() {
 </div>
 <script type="text/javascript">
 /* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
-$(document).ready(function(){initNavTree('flags_8h_source.html',''); initResizable(); });
+$(document).ready(function(){initNavTree('assembler_8h_source.html',''); initResizable(); });
 /* @license-end */
 </script>
 <div id="doc-content">
@@ -91,10 +91,10 @@ $(document).ready(function(){initNavTree('flags_8h_source.html',''); initResizab
 </div>
 
 <div class="header">
-  <div class="headertitle"><div class="title">flags.h</div></div>
+  <div class="headertitle"><div class="title">assembler.h</div></div>
 </div><!--header-->
 <div class="contents">
-<a href="flags_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="comment">/****************************************************************************</span></div>
+<a href="assembler_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="comment">/****************************************************************************</span></div>
 <div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="comment"> * Copyright (C) 2023 by Frederik Tobner                                    *</span></div>
 <div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="comment"> *                                                                          *</span></div>
 <div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="comment"> * This file is part of CHIP-8.                                             *</span></div>
@@ -109,23 +109,35 @@ $(document).ready(function(){initNavTree('flags_8h_source.html',''); initResizab
 <div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="comment"> * License for more details.                                                *</span></div>
 <div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="comment"> ****************************************************************************/</span></div>
 <div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span> </div>
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="preprocessor">#ifndef CHIP8_FLAGS_H_</span></div>
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="preprocessor">#define CHIP8_FLAGS_H_</span></div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="preprocessor">#ifndef CHIP8_ASSEMLER_H_</span></div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="preprocessor">#define CHIP8_ASSEMLER_H_</span></div>
 <div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span> </div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="preprocessor">#ifndef NDEBUG</span></div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="preprocessor">#include &lt;stdint.h&gt;</span></div>
 <div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span> </div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno"><a class="line" href="flags_8h.html#a44d3216dcefe3c9a281efc18d4244d9a">   22</a></span><span class="preprocessor">#define PRINT_BYTE_CODE</span></div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span> </div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span><span class="comment">//#define TRACE_EXECUTION</span></div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span> </div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span><span class="preprocessor">#endif</span></div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno"><a class="line" href="structassembler__t.html">   22</a></span><span class="keyword">typedef</span> <span class="keyword">struct</span></div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>{</div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno"><a class="line" href="structassembler__t.html#ac621bcfb466f3b6a6421c5f48b30ade3">   25</a></span>    <span class="keyword">const</span> <span class="keywordtype">char</span> * <a class="code hl_variable" href="structassembler__t.html#ac621bcfb466f3b6a6421c5f48b30ade3">start</a>;</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno"><a class="line" href="structassembler__t.html#a7be338fc30f27aa616497cdc4b690d76">   27</a></span>    <span class="keyword">const</span> <span class="keywordtype">char</span> * <a class="code hl_variable" href="structassembler__t.html#a7be338fc30f27aa616497cdc4b690d76">current</a>;</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno"><a class="line" href="structassembler__t.html#a311196674133e618759342d6be698474">   29</a></span>    uint32_t <a class="code hl_variable" href="structassembler__t.html#a311196674133e618759342d6be698474">line</a>;</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>} <a class="code hl_struct" href="structassembler__t.html">assembler_t</a>;</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span> </div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span><span class="keywordtype">void</span> <a class="code hl_function" href="assembler_8h.html#a48b7c5d017932f5c9198f57cdc804a7c">assembler_initialize</a>(<a class="code hl_struct" href="structassembler__t.html">assembler_t</a> * assembler, <span class="keywordtype">char</span> <span class="keyword">const</span> * source);</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span> </div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>int32_t <a class="code hl_function" href="assembler_8h.html#a591051669087b8d858d2311d4deb1418">assembler_scan_opcode</a>(<a class="code hl_struct" href="structassembler__t.html">assembler_t</a> * assembler);</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span> </div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span><span class="preprocessor">#endif</span></div>
+<div class="ttc" id="aassembler_8h_html_a48b7c5d017932f5c9198f57cdc804a7c"><div class="ttname"><a href="assembler_8h.html#a48b7c5d017932f5c9198f57cdc804a7c">assembler_initialize</a></div><div class="ttdeci">void assembler_initialize(assembler_t *assembler, char const *source)</div><div class="ttdoc">Initialzes the assembler.</div><div class="ttdef"><b>Definition:</b> assembler.c:42</div></div>
+<div class="ttc" id="aassembler_8h_html_a591051669087b8d858d2311d4deb1418"><div class="ttname"><a href="assembler_8h.html#a591051669087b8d858d2311d4deb1418">assembler_scan_opcode</a></div><div class="ttdeci">int32_t assembler_scan_opcode(assembler_t *assembler)</div><div class="ttdoc">Scans the next opcode in the sourcefile.</div><div class="ttdef"><b>Definition:</b> assembler.c:52</div></div>
+<div class="ttc" id="astructassembler__t_html"><div class="ttname"><a href="structassembler__t.html">assembler_t</a></div><div class="ttdoc">Type definition of a assembler.</div><div class="ttdef"><b>Definition:</b> assembler.h:23</div></div>
+<div class="ttc" id="astructassembler__t_html_a311196674133e618759342d6be698474"><div class="ttname"><a href="structassembler__t.html#a311196674133e618759342d6be698474">assembler_t::line</a></div><div class="ttdeci">uint32_t line</div><div class="ttdoc">Line counter - used for error reporting.</div><div class="ttdef"><b>Definition:</b> assembler.h:29</div></div>
+<div class="ttc" id="astructassembler__t_html_a7be338fc30f27aa616497cdc4b690d76"><div class="ttname"><a href="structassembler__t.html#a7be338fc30f27aa616497cdc4b690d76">assembler_t::current</a></div><div class="ttdeci">const char * current</div><div class="ttdoc">Pointer to the current position in the current line.</div><div class="ttdef"><b>Definition:</b> assembler.h:27</div></div>
+<div class="ttc" id="astructassembler__t_html_ac621bcfb466f3b6a6421c5f48b30ade3"><div class="ttname"><a href="structassembler__t.html#ac621bcfb466f3b6a6421c5f48b30ade3">assembler_t::start</a></div><div class="ttdeci">const char * start</div><div class="ttdoc">Pointer to the start of the current line.</div><div class="ttdef"><b>Definition:</b> assembler.h:25</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="flags_8h.html">flags.h</a></li>
+    <li class="navelem"><a class="el" href="assembler_8h.html">assembler.h</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.5 </li>
   </ul>
 </div>

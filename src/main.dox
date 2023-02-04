@@ -5,9 +5,13 @@
 * \section building_sec Building
 * To build the emulator a C-Compiler, that supports the C99 standard, the SDL2 graphics libary and CMake (Version >= 3.16) are required. <br>
 * Additionaly the emulator has the following dependecies <br>
-* Under linux:
-* * curses.h
-*
+* * SDL
+* 
 * Under windows:
 * * conio.h
+* * windows.h
+*
+* Under unix-based systems:
+* * curses.h
+* * unistd.h
 */

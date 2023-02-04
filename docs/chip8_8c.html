@@ -107,6 +107,9 @@ $(document).ready(function(){initNavTree('chip8_8c.html',''); initResizable(); }
 </div><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="define-members" name="define-members"></a>
 Macros</h2></td></tr>
+<tr class="memitem:a59962df77cb1013f9a270da92b03852a"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="chip8_8c.html#a59962df77cb1013f9a270da92b03852a">PROGRAM_START_LOCATION</a>&#160;&#160;&#160;(0x200)</td></tr>
+<tr class="memdesc:a59962df77cb1013f9a270da92b03852a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Most Chip-8 programs start at location 0x200 (512), but some begin at 0x600 (1536). Programs beginning at 0x600 are intended for the ETI 660 computer.  <a href="chip8_8c.html#a59962df77cb1013f9a270da92b03852a">More...</a><br /></td></tr>
+<tr class="separator:a59962df77cb1013f9a270da92b03852a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a15279597a97703b1c5b79aa68c170ecf"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="chip8_8c.html#a15279597a97703b1c5b79aa68c170ecf">DEFINE_8_BIT_VALUE</a>&#160;&#160;&#160;uint8_t value = chip8-&gt;currentOpcode &amp; 0x00ff;</td></tr>
 <tr class="memdesc:a15279597a97703b1c5b79aa68c170ecf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Defines a new 8-bit value based on the opcode that is currently executed.  <a href="chip8_8c.html#a15279597a97703b1c5b79aa68c170ecf">More...</a><br /></td></tr>
 <tr class="separator:a15279597a97703b1c5b79aa68c170ecf"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -196,6 +199,22 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Defines a new 4-bit value based on the opcode that is currently executed. </p>
+
+</div>
+</div>
+<a id="a59962df77cb1013f9a270da92b03852a" name="a59962df77cb1013f9a270da92b03852a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a59962df77cb1013f9a270da92b03852a">&#9670;&#160;</a></span>PROGRAM_START_LOCATION</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define PROGRAM_START_LOCATION&#160;&#160;&#160;(0x200)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Most Chip-8 programs start at location 0x200 (512), but some begin at 0x600 (1536). Programs beginning at 0x600 are intended for the ETI 660 computer. </p>
 
 </div>
 </div>

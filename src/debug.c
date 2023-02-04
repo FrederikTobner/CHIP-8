@@ -38,6 +38,6 @@ void debug_trace_execution(chip8_t chip8)
     for (uint16_t * stackPointer = chip8.stack; stackPointer < upperBound; stackPointer++)
         printf("0x%04X, ", *stackPointer);
     printf("]\n");
-    printf("Delay timer: 0x%02X\n", chip8.delay_timer);
-    printf("Sound timer: 0x%02X\n", chip8.sound_timer);
+    printf("Delay timer: 0x%02X\n", chip8.delayTimer);
+    printf("Sound timer: 0x%02X\n", chip8.soundTimer);
 }

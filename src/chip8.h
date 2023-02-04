@@ -1,5 +1,5 @@
 /****************************************************************************
- * Copyright (C) 2022 by Frederik Tobner                                    *
+ * Copyright (C) 2023 by Frederik Tobner                                    *
  *                                                                          *
  * This file is part of CHIP-8.                                             *
  *                                                                          *
@@ -20,26 +20,27 @@
 
 /// @brief Models a chip8 emulator
 typedef struct
-{
-    // Memory of the virtual machine (4096 bytes)
-    uint8_t memory[4096];
-    // Registers of the virtual macine (16 8-bit registers)
-    uint8_t V[16];
-    // Offset of the opcode that is currently processed
+{    
+    
     uint16_t currentOpcode;
     uint16_t I;
+    /// Programcounter of the virtual machine
     uint16_t programCounter;
-    // Display of the virtual machine
-    uint8_t graphicsSystem[64][32];
-    // Delay timer of the virtual machine
-    uint8_t delay_timer;
-    // Sound timer of the virtual machine
-    uint8_t sound_timer;
-    // Stack of the chip8 (16bit unsigned integer values)
-    uint16_t stack[16];
-    // Stackpointer 
+    /// Delay timer of the virtual machine
+    uint8_t delayTimer;
+    /// Sound timer of the virtual machine
+    uint8_t soundTimer;
+    /// Stackpointer 
     uint16_t * stackPointer;
+    /// Display of the virtual machine
+    uint8_t graphicsSystem[64][32];
+    /// Stack of the chip8 (16bit unsigned integer values)
+    uint16_t stack[16];
     uint8_t key[16];
+    /// Memory of the virtual machine (4096 bytes)
+    uint8_t memory[4096];
+    /// Registers of the virtual macine (16 8-bit registers)
+    uint8_t V[16];
 } chip8_t;
 
 void chip8_execute(chip8_t * chip8);

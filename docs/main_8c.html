@@ -101,16 +101,17 @@ $(document).ready(function(){initNavTree('main_8c.html',''); initResizable(); })
 <code>#include &lt;stdio.h&gt;</code><br />
 <code>#include &lt;stdlib.h&gt;</code><br />
 <code>#include &lt;string.h&gt;</code><br />
+<code>#include &lt;SDL.h&gt;</code><br />
+<code>#include &quot;<a class="el" href="assembler_8h_source.html">assembler.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="chip8_8h_source.html">chip8.h</a>&quot;</code><br />
 <code>#include &quot;chip8_config.h&quot;</code><br />
 <code>#include &quot;<a class="el" href="common_8h_source.html">common.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="flags_8h_source.html">flags.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="lexer_8h_source.html">lexer.h</a>&quot;</code><br />
 </div><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="define-members" name="define-members"></a>
 Macros</h2></td></tr>
 <tr class="memitem:ad98b845c77ce21b1771e1ddd07264d41"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8c.html#ad98b845c77ce21b1771e1ddd07264d41">CHIP8_USAGE_MESSAGE</a>&#160;&#160;&#160;&quot;Usage: Chip8 [path]\n&quot;</td></tr>
-<tr class="memdesc:ad98b845c77ce21b1771e1ddd07264d41"><td class="mdescLeft">&#160;</td><td class="mdescRight">Short message that explains the usage of the CHIP8 emulator.  <a href="main_8c.html#ad98b845c77ce21b1771e1ddd07264d41">More...</a><br /></td></tr>
+<tr class="memdesc:ad98b845c77ce21b1771e1ddd07264d41"><td class="mdescLeft">&#160;</td><td class="mdescRight">Short message that explains the usage of the CHIP-8 emulator.  <a href="main_8c.html#ad98b845c77ce21b1771e1ddd07264d41">More...</a><br /></td></tr>
 <tr class="separator:ad98b845c77ce21b1771e1ddd07264d41"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
@@ -121,9 +122,12 @@ Functions</h2></td></tr>
 <tr class="memitem:aad21e0a3fe5146c13d9339d1a85a4597"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8c.html#aad21e0a3fe5146c13d9339d1a85a4597">io_error</a> (char const *format,...)</td></tr>
 <tr class="memdesc:aad21e0a3fe5146c13d9339d1a85a4597"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reports an error that has occured during a IO operation.  <a href="main_8c.html#aad21e0a3fe5146c13d9339d1a85a4597">More...</a><br /></td></tr>
 <tr class="separator:aad21e0a3fe5146c13d9339d1a85a4597"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a790aa8b99fa3d90918361b8936af0b14"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8c.html#a790aa8b99fa3d90918361b8936af0b14">main</a> (int argc, char const **argv)</td></tr>
-<tr class="memdesc:a790aa8b99fa3d90918361b8936af0b14"><td class="mdescLeft">&#160;</td><td class="mdescRight">Main entry point of the CHIP8 program.  <a href="main_8c.html#a790aa8b99fa3d90918361b8936af0b14">More...</a><br /></td></tr>
-<tr class="separator:a790aa8b99fa3d90918361b8936af0b14"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a81962ff36a3740bd2a6a458b74e57e26"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8c.html#a81962ff36a3740bd2a6a458b74e57e26">show_help</a> ()</td></tr>
+<tr class="memdesc:a81962ff36a3740bd2a6a458b74e57e26"><td class="mdescLeft">&#160;</td><td class="mdescRight">Displays the help of the emulator.  <a href="main_8c.html#a81962ff36a3740bd2a6a458b74e57e26">More...</a><br /></td></tr>
+<tr class="separator:a81962ff36a3740bd2a6a458b74e57e26"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7a29781a20c5dd4153c3c1cecf0ff328"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8c.html#a7a29781a20c5dd4153c3c1cecf0ff328">main</a> (int argc, char **args)</td></tr>
+<tr class="memdesc:a7a29781a20c5dd4153c3c1cecf0ff328"><td class="mdescLeft">&#160;</td><td class="mdescRight">Main entry point of the CHIP-8 program.  <a href="main_8c.html#a7a29781a20c5dd4153c3c1cecf0ff328">More...</a><br /></td></tr>
+<tr class="separator:a7a29781a20c5dd4153c3c1cecf0ff328"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Macro Definition Documentation</h2>
 <a id="ad98b845c77ce21b1771e1ddd07264d41" name="ad98b845c77ce21b1771e1ddd07264d41"></a>
@@ -138,7 +142,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Short message that explains the usage of the CHIP8 emulator. </p>
+<p>Short message that explains the usage of the CHIP-8 emulator. </p>
 
 </div>
 </div>
@@ -188,8 +192,8 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a790aa8b99fa3d90918361b8936af0b14" name="a790aa8b99fa3d90918361b8936af0b14"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a790aa8b99fa3d90918361b8936af0b14">&#9670;&#160;</a></span>main()</h2>
+<a id="a7a29781a20c5dd4153c3c1cecf0ff328" name="a7a29781a20c5dd4153c3c1cecf0ff328"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7a29781a20c5dd4153c3c1cecf0ff328">&#9670;&#160;</a></span>main()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -203,8 +207,8 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">char const **&#160;</td>
-          <td class="paramname"><em>argv</em>&#160;</td>
+          <td class="paramtype">char **&#160;</td>
+          <td class="paramname"><em>args</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -214,7 +218,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Main entry point of the CHIP8 program. </p>
+<p>Main entry point of the CHIP-8 program. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">argc</td><td>The amount of arguments that were used when the program was started </td></tr>
@@ -258,6 +262,33 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The content of the file as a character pointer </dd></dl>
+
+</div>
+</div>
+<a id="a81962ff36a3740bd2a6a458b74e57e26" name="a81962ff36a3740bd2a6a458b74e57e26"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a81962ff36a3740bd2a6a458b74e57e26">&#9670;&#160;</a></span>show_help()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void show_help </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Displays the help of the emulator. </p>
 
 </div>
 </div>

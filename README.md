@@ -3,20 +3,18 @@
 [![Build](https://github.com/FrederikTobner/CHIP-8/actions/workflows/build.yml/badge.svg)](https://github.com/FrederikTobner/CHIP-8/actions/workflows/build.yml)
 [![Analyze](https://github.com/FrederikTobner/CHIP-8/actions/workflows/codeql.yml/badge.svg)](https://github.com/FrederikTobner/CHIP-8/actions/workflows/codeql.yml)
 
+Simple [CHIP-8](https://en.wikipedia.org/wiki/CHIP-8) emulator written in C, with a custom assembly language.
+
 ## Table of Contents
 
-* [Overview](#overview)
+* [Dependencies](#dependencies)
 * [License](#license)
-
-## Overview
-
-Simple [CHIP-8](https://en.wikipedia.org/wiki/CHIP-8) emulator written in C, with a custom assembly language.
 
 ## Dependencies
 
 The emulator has the following dependencies
 
-* [SDL](https://github.com/libsdl-org/SDL) a graphics libary written in C
+* [SDL](https://github.com/libsdl-org/SDL) a cross-platform development library designed to provide low level access to audio, keyboard, mouse, joystick, and graphics hardware.
 
 ## License
 
