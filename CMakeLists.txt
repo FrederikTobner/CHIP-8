@@ -63,5 +63,8 @@ else()
     add_compile_definitions(COMPILER_UNKNOWN)    
 endif()
 
+# Build SDL
+add_subdirectory(external/SDL)
+
 # Build CHIP-8 project
 add_subdirectory(src)

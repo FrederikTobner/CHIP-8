@@ -18,6 +18,8 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include <SDL.h>
+
 #include "assembler.h"
 #include "chip8.h"
 #include "chip8_config.h"
@@ -36,17 +38,17 @@ static void show_help();
 /// @param argc The amount of arguments that were used when the program was started
 /// @param argv Pointer to the arguments array that contains all the arguments that were defined by the user when the program was started
 /// @return 0 if everything went well
-int main(int argc, char const ** argv)
+int main(int argc, char **args)
 {
     if (argc == 2)
     {
-        if(!strncmp(argv[1], "--version", 7) || !strncmp(argv[1], "-v", 2))
+        if(!strncmp(args[1], "--version", 7) || !strncmp(args[1], "-v", 2))
             printf("%s Version %i.%i\n", PROJECT_NAME, PROJECT_VERSION_MAJOR, PROJECT_VERSION_MINOR);
-        else if(!strncmp(argv[1], "--help", 6) || !strncmp(argv[1], "-h", 2))
+        else if(!strncmp(args[1], "--help", 6) || !strncmp(args[1], "-h", 2))
             show_help();
         else
         {
-            char * source = read_file(argv[1]);
+            char * source = read_file(args[1]);
             assembler_t lexer;
             chip8_t chip8;
             assembler_initialize(&lexer, source);

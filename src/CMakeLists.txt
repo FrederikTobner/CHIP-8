@@ -24,6 +24,8 @@ add_executable(${PROJECT_NAME} ${CHIP-8_SOURCE_FILES} ${CHIP-8_HEADER_FILES})
 # for including the chip8_config.h file
 target_include_directories(${PROJECT_NAME} PUBLIC ${PROJECT_BINARY_DIR}/src)
 
+target_link_libraries(${PROJECT_NAME} SDL2main SDL2-static)
+
 if(NOT CMAKE_BUILD_TYPE MATCHES "[Dd][Ee][Bb][Uu][Gg]")
     include(CPack)    
     # Sets properties for the package created using cpack
