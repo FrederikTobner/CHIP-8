@@ -11,7 +11,12 @@
 ## Overview
 
 Simple [CHIP-8](https://en.wikipedia.org/wiki/CHIP-8) emulator written in C, with a custom assembly language.
-Currently features no display and uses the console-based output instead.
+
+## Dependencies
+
+The emulator has the following dependencies
+
+* [SDL](https://github.com/libsdl-org/SDL) a graphics libary written in C
 
 ## License
 
