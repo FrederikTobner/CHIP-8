@@ -126,6 +126,8 @@ static uint8_t assembler_read_8bit_number(assembler_t * assembler)
     if (c == '0' && (assembler_peek(*assembler) == 'x' || assembler_peek(*assembler) == 'X'))
         return assembler_hexa(assembler, 2);
     assembler_report_error(*assembler);
+    // Unreachable
+    return 0;
 }
 
 static uint16_t assembler_read_12bit_number(assembler_t * assembler)
@@ -135,6 +137,8 @@ static uint16_t assembler_read_12bit_number(assembler_t * assembler)
     if (c == '0' && (assembler_peek(*assembler) == 'x' || assembler_peek(*assembler) == 'X'))
         return assembler_hexa(assembler, 3);
     assembler_report_error(*assembler);
+        // Unreachable
+    return 0;
 }
 
 static uint8_t assembler_read_register(assembler_t * assembler)
@@ -151,6 +155,8 @@ static uint8_t assembler_read_register(assembler_t * assembler)
             assembler_report_error(*assembler);
             break;
     }
+    // Unreachable
+    return 0;
 }
 
 static uint8_t assembler_read_registers(assembler_t * assembler)
@@ -455,6 +461,7 @@ static uint16_t assembler_scan_mnemonic(assembler_t * assembler, char c)
     default:
         assembler_report_error(*assembler);
     }
+    return 0;
 }
 
 static void assembler_skip_whitespace(assembler_t * assembler)

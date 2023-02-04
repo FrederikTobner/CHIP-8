@@ -1,8 +1,6 @@
 name: Build CHIP-8
 
 on:
-  push:
-    branches: [ "master" ]
   pull_request:
     branches: [ "master" ]
 

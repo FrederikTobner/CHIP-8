@@ -1,22 +1,34 @@
 # configure cellox config to show version
 configure_file(chip8_config.h.in chip8_config.h)
+if(CMAKE_BUILD_TYPE MATCHES "[Dd][Ee][Bb][Uu][Gg]")
+    set(CHIP-8_SOURCE_FILES
+    "assembler.c"
+    "chip8.c"
+    "debug.c"
+    "main.c"    
+    )
+    
+    set(CHIP-8_HEADER_FILES
+    "assembler.h"
+    "chip8.h"   
+    "common.h"
+    "debug.h"
+    "flags.h"
+    )
+else()
+    set(CHIP-8_SOURCE_FILES
+    "assembler.c"
+    "chip8.c"
+    "main.c"    
+    )
 
-set(CHIP-8_SOURCE_FILES
-"assembler.c"
-"chip8.c"
-"debug.c"
-"main.c"    
-)
-
-set(CHIP-8_HEADER_FILES
-"assembler.c"
-"chip8.h"   
-"common.h"
-"debug.h"
-"flags.h"
-"assembler.h"
-)
-
+    set(CHIP-8_HEADER_FILES
+    "assembler.h"
+    "chip8.h"   
+    "common.h"
+    "flags.h"
+    )
+endif()
 add_executable(${PROJECT_NAME} ${CHIP-8_SOURCE_FILES} ${CHIP-8_HEADER_FILES})
 
 # TODO: link with sdl libary

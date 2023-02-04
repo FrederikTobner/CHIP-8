@@ -2,27 +2,6 @@
     "version": "0.1.0",
     "configurations": [
         {
-            "name": "Debug - MINGW",
-            "type": "cppdbg",
-            "request": "launch",
-            "args": [
-                "${workspaceFolder}/examples/HelloWorld.cp8",
-            ],
-            "stopAtEntry": false,
-            "externalConsole": true,
-            "cwd": "${workspaceFolder}",
-            "program": "${workspaceFolder}/build/src/CHIP-8.exe",
-            "MIMode": "gdb",
-            "miDebuggerPath": "C:/MinGW64/bin/gdb.exe",
-            "setupCommands": [
-                {
-                    "description": "Enable pretty-printing for gdb",
-                    "text": "-enable-pretty-printing",
-                    "ignoreFailures": false
-                }
-            ],
-        },
-        {
             "name": "Debug - MSVC",
             "type": "cppvsdbg",
             "request": "launch",
@@ -32,8 +11,7 @@
             ],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
-            "environment": [],
-            "externalConsole": true,
+           "console": "externalTerminal"
         }
     ]
 }

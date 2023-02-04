@@ -30,11 +30,18 @@
 #include <stdlib.h>
 #include <time.h>
 
-#include "debug.h"
 #include "flags.h"
+#if defined(PRINT_BYTE_CODE) || defined(TRACE_EXECUTION)
+    #include "debug.h"
+#endif
+
 
 /// Most Chip-8 programs start at location 0x200 (512), but some begin at 0x600 (1536). Programs beginning at 0x600 are intended for the ETI 660 computer. 
 #define PROGRAM_START_LOCATION (0x200)
+
+#define GRAPHICS_SYSTEM_HEIGHT (32)
+
+#define GRAPHICS_SYSTEM_WIDTH (64)
 
 /// Defines a new 8-bit value based on the opcode that is currently executed
 #define DEFINE_8_BIT_VALUE                      \
@@ -60,7 +67,7 @@ void chip8_execute(chip8_t * chip8)
 {
     time_t  last_t, current_t;
     long numberofChip8Clocks = 0;
-    while (chip8->programCounter < 2048)
+    for (;chip8->programCounter < 2048; chip8->programCounter++, numberofChip8Clocks++)
     {       
         last_t = time(NULL);
         #ifdef TRACE_EXECUTION
@@ -73,9 +80,7 @@ void chip8_execute(chip8_t * chip8)
             return;
         // Executes next opcode
         if(chip8_execute_next_opcode(chip8)) 
-            return;
-        chip8->programCounter++;
-        numberofChip8Clocks++; 
+            return;         
         // 60 hz
         if(!numberofChip8Clocks % 10) {
             if(!chip8->delayTimer && chip8->delayTimer > 0)
@@ -86,6 +91,7 @@ void chip8_execute(chip8_t * chip8)
                 if(chip8->soundTimer > 0)
                     chip8->soundTimer--;
             }
+            // TODO: Display graphics system
         }
         // Wait for a 1/600 second minus the time elapsed
         current_t = time(NULL);
@@ -144,9 +150,9 @@ static int8_t chip8_execute_next_opcode(chip8_t * chip8)
         {
             case 0x0E0 : // 0x00E0 - Clear the screen
             {    
-                for (uint8_t i = 0; i < 64; i++)
-                    for (uint8_t j = 0; i < 32; j++)
-                        chip8->graphicsSystem[i][j] = 0;
+                for (uint8_t x = 0; x < GRAPHICS_SYSTEM_WIDTH; x++)
+                    for (uint8_t y = 0; x < GRAPHICS_SYSTEM_HEIGHT; y++)
+                        chip8->graphicsSystem[x][y] = 0;
                 break;
             }
             case 0x0EE: // 0x00EE - return from subroutine        
@@ -320,6 +326,7 @@ static int8_t chip8_execute_next_opcode(chip8_t * chip8)
     * As described above, VF is set to 1 if any screen pixels are flipped from set to unset when the sprite is drawn, 
     * and to 0 if that does not happen 
     */
+        // TODO: Handle OPCODE
         break;
     case 0xe000:
     {
@@ -328,28 +335,28 @@ static int8_t chip8_execute_next_opcode(chip8_t * chip8)
         case 0x9e: // 0xEX9E - Skips the next instruction if the key stored in VX is pressed. (Usually the next instruction is a jump to skip a code block)    
         {   
             // TODO: Add support for the instruction under unix based systems 
-            #ifdef OS_WINDOWS
-            DEFINE_X            
-            if (kbhit())
-            {
-                char c = getch();
-                if(chip8->V[x] == c)
-                    chip8->programCounter++;
-            }
+            DEFINE_X
+            #ifdef _WIN32                      
+                if (kbhit())
+                {
+                    char c = getch();
+                    if(chip8->V[x] == c)
+                        chip8->programCounter++;
+                }
             #endif
             break;
         }
         case 0xa1: // 0xEXA1 - Skips the next instruction if the key stored in VX is not pressed. (Usually the next instruction is a jump to skip a code block)         
         {    
             // TODO: Add support for the instruction under unix based systems
-            #ifdef OS_WINDOWS
             DEFINE_X
-            if (kbhit())
-            {
-                char c = getch();
-                if(chip8->V[x] != c)
-                    chip8->programCounter++;
-            }
+            #ifdef _WIN32            
+                if (kbhit())
+                {
+                    char c = getch();
+                    if(chip8->V[x] != c)
+                        chip8->programCounter++;
+                }
             else
                 chip8->programCounter++;
             #endif    
