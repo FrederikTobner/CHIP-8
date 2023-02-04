@@ -18,20 +18,21 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "assembler.h"
 #include "chip8.h"
 #include "chip8_config.h"
 #include "common.h"
 #include "flags.h"
-#include "lexer.h"
 
-/// Short message that explains the usage of the CHIP8 emulator
+/// Short message that explains the usage of the CHIP-8 emulator
 #define CHIP8_USAGE_MESSAGE     \
 "Usage: Chip8 [path]\n"
 
 static char * read_file(char const * path);
 static void io_error(char const * format, ...);
+static void show_help();
 
-/// @brief Main entry point of the CHIP8 program
+/// @brief Main entry point of the CHIP-8 program
 /// @param argc The amount of arguments that were used when the program was started
 /// @param argv Pointer to the arguments array that contains all the arguments that were defined by the user when the program was started
 /// @return 0 if everything went well
@@ -40,23 +41,23 @@ int main(int argc, char const ** argv)
     if (argc == 2)
     {
         if(!strncmp(argv[1], "--version", 7) || !strncmp(argv[1], "-v", 2))
-            printf("CHIP8 Version %i.%i\n", PROJECT_VERSION_MAJOR, PROJECT_VERSION_MINOR);
+            printf("%s Version %i.%i\n", PROJECT_NAME, PROJECT_VERSION_MAJOR, PROJECT_VERSION_MINOR);
         else if(!strncmp(argv[1], "--help", 6) || !strncmp(argv[1], "-h", 2))
-            fprintf(stderr, CHIP8_USAGE_MESSAGE);
+            show_help();
         else
         {
             char * source = read_file(argv[1]);
-            lexer_t lexer;
+            assembler_t lexer;
             chip8_t chip8;
-            lexer_initialize(&lexer, source);
+            assembler_initialize(&lexer, source);
             chip8_init(&chip8);
             int32_t opcode;
-            uint16_t memoryLocation = 0;
+            uint16_t memoryLocation = 512;
             #ifdef PRINT_BYTE_CODE
                 printf("=== Code ===\n");
             #endif
             // Writes all the parsed opcodes into memory
-            while((opcode = lexer_scan_opcode(&lexer)) >= 0 && memoryLocation <= 4096)
+            while((opcode = assembler_scan_opcode(&lexer)) >= 0 && memoryLocation <= 4096)
                 chip8_write_opcode_to_memory(&chip8, &memoryLocation, opcode);
             chip8_execute(&chip8);
             free(source);
@@ -105,4 +106,13 @@ static char * read_file(char const * path)
     buffer[bytesRead] = '\0';
     fclose(file);
     return buffer;
+}
+
+/// @brief Displays the help of the emulator
+static void show_help()
+{
+    printf("%s Help\n%s\n\n", PROJECT_NAME, CHIP8_USAGE_MESSAGE);
+    printf("Options\n");
+    printf("  -h, --help\t\tDisplay this help and exit\n");
+    printf("  -v, --version\t\tShows the version of the installed emulator and exit\n\n");
 }

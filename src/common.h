@@ -23,6 +23,6 @@ typedef enum
     EXIT_CODE_RUNTIME_ERROR = 70,
     EXIT_CODE_SYSTEM_ERROR = 71,
     EXIT_CODE_INPUT_OUTPUT_ERROR = 74
-}chip8_exit_code;
+} chip8_exit_code;
 
 #endif

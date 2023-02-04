@@ -1,5 +1,5 @@
 MOV V0 0x48     # We store 0x48 (H) in the register V0
-PRT V0          # Prints the content of the register V0 
+PRT V0          # Prints the content of the register V0
 MOV V0 0x65     # We store 0x65 (e) in the register V0
 PRT V0          # Prints the content of the register V0
 MOV V0 0x6C     # We store 0x6c (l) in the register V0

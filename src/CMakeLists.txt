@@ -2,18 +2,19 @@
 configure_file(chip8_config.h.in chip8_config.h)
 
 set(CHIP-8_SOURCE_FILES
+"assembler.c"
 "chip8.c"
 "debug.c"
-"lexer.c"
 "main.c"    
 )
 
 set(CHIP-8_HEADER_FILES
+"assembler.c"
 "chip8.h"   
 "common.h"
 "debug.h"
 "flags.h"
-"lexer.h"
+"assembler.h"
 )
 
 add_executable(${PROJECT_NAME} ${CHIP-8_SOURCE_FILES} ${CHIP-8_HEADER_FILES})

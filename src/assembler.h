@@ -13,31 +13,24 @@
  * License for more details.                                                *
  ****************************************************************************/
 
-#include "debug.h"
+#ifndef CHIP8_ASSEMLER_H_
+#define CHIP8_ASSEMLER_H_
 
-#include <stdio.h>
+#include <stdint.h>
 
-void debug_print_bytecode(uint16_t memoryLocation, uint16_t opcode)
+/// @brief Type definition of a assembler
+typedef struct
 {
-    printf("0x%04X: [0x%04X]\n", memoryLocation, opcode);
-}
+    /// Pointer to the start of the current line
+    const char * start;
+    /// Pointer to the current position in the current line
+    const char * current;
+    /// Line counter - used for error reporting
+    uint32_t line;
+} assembler_t;
 
-void debug_trace_execution(chip8_t chip8)
-{
-    printf("Data registers: [");
-    for (uint8_t i = 0; i < 16; i++)
-        printf("0x%02X, ", chip8.V[i]);
-    printf("]\n");
+void assembler_initialize(assembler_t * assembler, char const * source);
 
-    printf("Program counter: 0x%04X\n", chip8.programCounter);
-    printf("Current opcode: 0x%04X\n", chip8.currentOpcode);
-    printf("Address register: 0x%04X\n", chip8.I);
-    
-    printf("Stack: [");
-    uint16_t * upperBound = chip8.stack + 16;
-    for (uint16_t * stackPointer = chip8.stack; stackPointer < upperBound; stackPointer++)
-        printf("0x%04X, ", *stackPointer);
-    printf("]\n");
-    printf("Delay timer: 0x%02X\n", chip8.delay_timer);
-    printf("Sound timer: 0x%02X\n", chip8.sound_timer);
-}
+int32_t assembler_scan_opcode(assembler_t * assembler);
+
+#endif

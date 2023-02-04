@@ -18,8 +18,11 @@
 #ifdef OS_WINDOWS
     // Windows specific libary - conio.h (under linux curses.h could be used) 😟
     #include <conio.h>
+    #include <windows.h>
+#elif OS_UNIX_LIKE
+    #include <curses.h>
+    #include <unistd.h>
 #endif
-// TODO: Use curses.h on unix based systems
 
 
 #include <limits.h>
@@ -30,6 +33,9 @@
 #include "debug.h"
 #include "flags.h"
 
+/// Most Chip-8 programs start at location 0x200 (512), but some begin at 0x600 (1536). Programs beginning at 0x600 are intended for the ETI 660 computer. 
+#define PROGRAM_START_LOCATION (0x200)
+
 /// Defines a new 8-bit value based on the opcode that is currently executed
 #define DEFINE_8_BIT_VALUE                      \
 uint8_t value = chip8->currentOpcode & 0x00ff;
@@ -37,7 +43,6 @@ uint8_t value = chip8->currentOpcode & 0x00ff;
 /// Defines a new 12-bit value based on the opcode that is currently executed
 #define DEFINE_12_BIT_VALUE                     \
 uint16_t value = chip8->currentOpcode & 0x0fff;
-
 
 /// Defines a new 4-bit value based on the opcode that is currently executed
 #define DEFINE_X                                \
@@ -53,43 +58,47 @@ static int8_t chip8_execute_next_opcode(chip8_t *);
 /// @param chip8 The chip8 vm where the program that is currently held in memory is executed
 void chip8_execute(chip8_t * chip8) 
 {
-    clock_t last_t, current_t;
-    last_t = clock() / CLOCKS_PER_SEC;
+    time_t  last_t, current_t;
+    long numberofChip8Clocks = 0;
     while (chip8->programCounter < 2048)
-    {
-        chip8->currentOpcode = 0;
-        chip8->currentOpcode = chip8->memory[chip8->programCounter * 2];
-        chip8->currentOpcode += chip8->memory[chip8->programCounter * 2 + 1] * 256;
+    {       
+        last_t = time(NULL);
+        #ifdef TRACE_EXECUTION
+            debug_trace_execution(*chip8);
+        #endif
+        chip8->currentOpcode = chip8->memory[chip8->programCounter * 2 + PROGRAM_START_LOCATION];
+        chip8->currentOpcode += chip8->memory[chip8->programCounter * 2 + 1 + PROGRAM_START_LOCATION] * 256;
+        // Reached end of the program
         if(!chip8->currentOpcode)
             return;
+        // Executes next opcode
         if(chip8_execute_next_opcode(chip8)) 
             return;
-        current_t = clock() / CLOCKS_PER_SEC;
-        long numberOfChip8Clocks = (current_t - last_t) / CLOCKS_PER_SEC * 60;
-        if(numberOfChip8Clocks > 1) 
-        {
-            // Compute offset based on delay of the current time
-            long offset = (current_t - last_t) % (CLOCKS_PER_SEC * 60);
+        chip8->programCounter++;
+        numberofChip8Clocks++; 
+        // 60 hz
+        if(!numberofChip8Clocks % 10) {
             if(!chip8->delay_timer)
             {
-                if(chip8->delay_timer < numberOfChip8Clocks)
-                    chip8->delay_timer = 0;
-                else
-                chip8->delay_timer -= numberOfChip8Clocks;
+            if(chip8->delay_timer > 0)
+                chip8->delay_timer--;
             }
             if(!chip8->sound_timer)
             {
-                putc('\a', stdout);
-                if(chip8->sound_timer < numberOfChip8Clocks)
-                    chip8->sound_timer = 0;
-                else
-                    chip8->sound_timer -= numberOfChip8Clocks;
+            putc('\a', stdout);
+            if(chip8->sound_timer > 0)
+                chip8->sound_timer--;
             }
-            last_t = current_t;
-            // Adjust last measured time with the offset
-            last_t -= offset;
         }
-        chip8->programCounter++;        
+        // Wait for a 1/600 second minus the time elapsed
+        current_t = time(NULL);
+        #ifdef OS_WINDOWS
+            // Milliseconds -> multiply with 1000
+            Sleep((1.0 / 600.0 - (current_t - last_t)) * 1000);
+        #elif OS_UNIX_LIKE
+            // Seconds
+            sleep((1.0 / 600.0 - (current_t - last_t)));
+        #endif
     }
 }
 
@@ -97,7 +106,9 @@ void chip8_execute(chip8_t * chip8)
 /// @param chip8 The chip8 virtual machine that is initialzed
 void chip8_init(chip8_t * chip8)
 {
-     // Initialize stackpointer
+    for (uint8_t i = 0; i < 16; i++)
+        chip8->V[i] = 0;
+    // Initialize stackpointer
     chip8->stackPointer = chip8->stack;
     // Initialize program counter
     chip8->programCounter = 0u;
@@ -318,9 +329,9 @@ static int8_t chip8_execute_next_opcode(chip8_t * chip8)
         {
         case 0x9e: // 0xEX9E - Skips the next instruction if the key stored in VX is pressed. (Usually the next instruction is a jump to skip a code block)    
         {   
-            DEFINE_X
             // TODO: Add support for the instruction under unix based systems 
             #ifdef OS_WINDOWS
+            DEFINE_X            
             if (kbhit())
             {
                 char c = getch();
@@ -331,10 +342,10 @@ static int8_t chip8_execute_next_opcode(chip8_t * chip8)
             break;
         }
         case 0xa1: // 0xEXA1 - Skips the next instruction if the key stored in VX is not pressed. (Usually the next instruction is a jump to skip a code block)         
-        {   
-            DEFINE_X
+        {    
             // TODO: Add support for the instruction under unix based systems
             #ifdef OS_WINDOWS
+            DEFINE_X
             if (kbhit())
             {
                 char c = getch();
