@@ -1,9 +1,6 @@
 # Creates zipped executable of the Emulator for x64
 # Configuring CMake
-echo "Configuring CMake for x64 ..."
-cmake -B ../build/linux_x64 -DCMAKE_BUILD_TYPE=Release -G Ninja  -DCMAKE_C_COMPILER=/usr/local/bin/clang ..
-echo "Building Emulator for x64 ..."
-cmake --build ../build/linux_x64 --config Release --target CHIP-8
+/bin/bash build_release.sh
 # Zipping binaries
 echo "Zipping cellox x64 ..."
 if [ -d "../build/linux_x64/src" ] 

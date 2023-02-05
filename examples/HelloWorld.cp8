@@ -21,3 +21,5 @@ MOV V0 0x64     # We store 0x64 (d) in the register V0
 PRT V0          # Prints the content of the register V0
 MOV V0 0x21     # We store 0x21 (!) in the register V0
 PRT V0          # Prints the content of the register V0
+MOV V0 0x0A     # We store 0x0A (\n) in the register V0
+PRT V0          # Prints the content of the register V0

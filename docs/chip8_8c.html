@@ -102,14 +102,18 @@ $(document).ready(function(){initNavTree('chip8_8c.html',''); initResizable(); }
 <code>#include &lt;stdio.h&gt;</code><br />
 <code>#include &lt;stdlib.h&gt;</code><br />
 <code>#include &lt;time.h&gt;</code><br />
-<code>#include &quot;<a class="el" href="debug_8h_source.html">debug.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="flags_8h_source.html">flags.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="debug_8h_source.html">debug.h</a>&quot;</code><br />
 </div><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="define-members" name="define-members"></a>
 Macros</h2></td></tr>
 <tr class="memitem:a59962df77cb1013f9a270da92b03852a"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="chip8_8c.html#a59962df77cb1013f9a270da92b03852a">PROGRAM_START_LOCATION</a>&#160;&#160;&#160;(0x200)</td></tr>
 <tr class="memdesc:a59962df77cb1013f9a270da92b03852a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Most Chip-8 programs start at location 0x200 (512), but some begin at 0x600 (1536). Programs beginning at 0x600 are intended for the ETI 660 computer.  <a href="chip8_8c.html#a59962df77cb1013f9a270da92b03852a">More...</a><br /></td></tr>
 <tr class="separator:a59962df77cb1013f9a270da92b03852a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a846edf15a40fb5b159f0b8bd4e993c80"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="chip8_8c.html#a846edf15a40fb5b159f0b8bd4e993c80">GRAPHICS_SYSTEM_HEIGHT</a>&#160;&#160;&#160;(32)</td></tr>
+<tr class="separator:a846edf15a40fb5b159f0b8bd4e993c80"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa92341dbbef8194f52ad4ded98c8ce3d"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="chip8_8c.html#aa92341dbbef8194f52ad4ded98c8ce3d">GRAPHICS_SYSTEM_WIDTH</a>&#160;&#160;&#160;(64)</td></tr>
+<tr class="separator:aa92341dbbef8194f52ad4ded98c8ce3d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a15279597a97703b1c5b79aa68c170ecf"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="chip8_8c.html#a15279597a97703b1c5b79aa68c170ecf">DEFINE_8_BIT_VALUE</a>&#160;&#160;&#160;uint8_t value = chip8-&gt;currentOpcode &amp; 0x00ff;</td></tr>
 <tr class="memdesc:a15279597a97703b1c5b79aa68c170ecf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Defines a new 8-bit value based on the opcode that is currently executed.  <a href="chip8_8c.html#a15279597a97703b1c5b79aa68c170ecf">More...</a><br /></td></tr>
 <tr class="separator:a15279597a97703b1c5b79aa68c170ecf"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -199,6 +203,34 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Defines a new 4-bit value based on the opcode that is currently executed. </p>
+
+</div>
+</div>
+<a id="a846edf15a40fb5b159f0b8bd4e993c80" name="a846edf15a40fb5b159f0b8bd4e993c80"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a846edf15a40fb5b159f0b8bd4e993c80">&#9670;&#160;</a></span>GRAPHICS_SYSTEM_HEIGHT</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define GRAPHICS_SYSTEM_HEIGHT&#160;&#160;&#160;(32)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aa92341dbbef8194f52ad4ded98c8ce3d" name="aa92341dbbef8194f52ad4ded98c8ce3d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa92341dbbef8194f52ad4ded98c8ce3d">&#9670;&#160;</a></span>GRAPHICS_SYSTEM_WIDTH</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define GRAPHICS_SYSTEM_WIDTH&#160;&#160;&#160;(64)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
 
 </div>
 </div>
