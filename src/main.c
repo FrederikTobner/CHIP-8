@@ -24,7 +24,6 @@
 #include "chip8.h"
 #include "chip8_config.h"
 #include "common.h"
-#include "flags.h"
 
 /// Short message that explains the usage of the CHIP-8 emulator
 #define CHIP8_USAGE_MESSAGE     \

@@ -15,11 +15,11 @@
 
 #include "chip8.h"
 
-#if defined(_WIN32)
+#if defined(OS_WINDOWS)
     // Windows specific libary - conio.h (under linux curses.h could be used) 😟
     #include <conio.h>
     #include <windows.h>
-#elif defined(__unix__)
+#elif defined(OS_UNIX_LIKE)
     #include <curses.h>
     #include <unistd.h>
 #endif
@@ -30,7 +30,6 @@
 #include <stdlib.h>
 #include <time.h>
 
-#include "flags.h"
 #if defined(PRINT_BYTE_CODE) || defined(TRACE_EXECUTION)
     #include "debug.h"
 #endif
@@ -39,8 +38,10 @@
 /// Most Chip-8 programs start at location 0x200 (512), but some begin at 0x600 (1536). Programs beginning at 0x600 are intended for the ETI 660 computer. 
 #define PROGRAM_START_LOCATION (0x200)
 
+/// The graphics system of the chip-8 has a height of 32 pixels
 #define GRAPHICS_SYSTEM_HEIGHT (32)
 
+/// The graphics system of the chip-8 has a width of 64 pixels
 #define GRAPHICS_SYSTEM_WIDTH (64)
 
 /// Defines a new 8-bit value based on the opcode that is currently executed
@@ -95,10 +96,10 @@ void chip8_execute(chip8_t * chip8)
         }
         // Wait for a 1/600 second minus the time elapsed
         current_t = time(NULL);
-        #if defined(WIN32)
+        #if defined(OS_WINDOWS)
             // Milliseconds -> multiply with 1000
             Sleep((1.0 / 600.0 - ((double)current_t - last_t)) * 1000);
-        #elif defined(__unix__)
+        #elif defined(OS_UNIX_LIKE)
             // Seconds
             sleep((1.0 / 600.0 - ((double)current_t - last_t)));
         #endif
@@ -336,7 +337,7 @@ static int8_t chip8_execute_next_opcode(chip8_t * chip8)
         {   
             // TODO: Add support for the instruction under unix based systems 
             DEFINE_X
-            #ifdef _WIN32                      
+            #ifdef OS_WINDOWS                      
                 if (kbhit())
                 {
                     char c = getch();
@@ -350,7 +351,7 @@ static int8_t chip8_execute_next_opcode(chip8_t * chip8)
         {    
             // TODO: Add support for the instruction under unix based systems
             DEFINE_X
-            #ifdef _WIN32            
+            #ifdef OS_WINDOWS            
                 if (kbhit())
                 {
                     char c = getch();
@@ -455,7 +456,14 @@ static int8_t chip8_execute_next_opcode(chip8_t * chip8)
     default:
         goto chip8_error;
     }
-    return 0;
+    // We assume this code to be unreachable.
+    #if defined(COMPILER_MSVC)                
+        __assume(0);
+    #elif defined(COMPILER_GCC) || defined(COMPILER_CLANG)
+        __builtin_unreachable();   
+    #else
+        return 0;
+    #endif
 
 chip8_error:
     printf("Unknown opcode: 0x%4X", chip8->currentOpcode);
