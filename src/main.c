@@ -13,17 +13,13 @@
  * License for more details.                                                *
  ****************************************************************************/
 
-#include <stdarg.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 
 #include <SDL.h>
 
 #include "assembler.h"
 #include "chip8.h"
 #include "chip8_config.h"
-#include "common.h"
+#include "pre_compiled_header.h"
 
 /// Short message that explains the usage of the CHIP-8 emulator
 #define CHIP8_USAGE_MESSAGE     \

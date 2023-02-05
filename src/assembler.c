@@ -15,12 +15,6 @@
 
 #include "assembler.h"
 
-#include <stdbool.h>
-#include <stdio.h>
-#include <stdlib.h>
-
-#include "common.h"
-
 static inline char assembler_advance(assembler_t * assembler);
 static uint16_t assembler_hexa(assembler_t * assembler, size_t digitCount);
 static inline bool assembler_is_alpha(char c);
@@ -131,7 +125,7 @@ static uint8_t assembler_read_8bit_number(assembler_t * assembler)
         __assume(0);
     #elif defined(COMPILER_GCC) || defined(COMPILER_CLANG)
         __builtin_unreachable();   
-    #else
+    #else // Compiler is Intel or unknown
         return 0;
     #endif
 }
@@ -148,7 +142,7 @@ static uint16_t assembler_read_12bit_number(assembler_t * assembler)
         __assume(0);
     #elif defined(COMPILER_GCC) || defined(COMPILER_CLANG)
         __builtin_unreachable();   
-    #else
+    #else // Compiler is Intel or unknown
         return 0;
     #endif
 }
@@ -172,7 +166,7 @@ static uint8_t assembler_read_register(assembler_t * assembler)
         __assume(0);
     #elif defined(COMPILER_GCC) || defined(COMPILER_CLANG)
         __builtin_unreachable();   
-    #else
+    #else // Compiler is Intel or unknown
         return 0;
     #endif
 }
