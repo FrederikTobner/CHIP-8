@@ -1,7 +1,7 @@
 /****************************************************************************
- * Copyright (C) 2023 by Frederik Tobner                                    *
+ * Copyright (C) 2022 by Frederik Tobner                                    *
  *                                                                          *
- * This file is part of CHIP-8.                                             *
+ * This file is part of Cellox.                                             *
  *                                                                          *
  * Permission to use, copy, modify, and distribute this software and its    *
  * documentation under the terms of the GNU General Public License is       *
@@ -13,15 +13,11 @@
  * License for more details.                                                *
  ****************************************************************************/
 
-#ifndef CHIP8_DEBUG_H_
-#define CHIP8_DEBUG_H_
+/**
+ * @file pre_compiled_header.c
+ * @brief File is needed for MSCV compatability
+ */
 
 #include "pre_compiled_header.h"
 
-#include "chip8.h"
-
-void debug_print_bytecode(uint16_t memoryLocation, uint16_t opcode);
-
-void debug_trace_execution(chip8_t chip8);
-
-#endif
+// File is needed for MSCV compatability

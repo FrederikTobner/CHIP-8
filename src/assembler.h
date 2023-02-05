@@ -16,7 +16,7 @@
 #ifndef CHIP8_ASSEMLER_H_
 #define CHIP8_ASSEMLER_H_
 
-#include <stdint.h>
+#include "pre_compiled_header.h"
 
 /// @brief Type definition of a assembler
 typedef struct

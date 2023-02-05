@@ -16,7 +16,7 @@
 #ifndef CHIP8_CHIP8_H_
 #define CHIP8_CHIP8_H_
 
-#include <stdint.h>
+#include "pre_compiled_header.h"
 
 /// @brief Models a chip8 emulator
 typedef struct

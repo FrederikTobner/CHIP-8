@@ -24,12 +24,6 @@
     #include <unistd.h>
 #endif
 
-
-#include <limits.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <time.h>
-
 #if defined(PRINT_BYTE_CODE) || defined(TRACE_EXECUTION)
     #include "debug.h"
 #endif
@@ -456,14 +450,7 @@ static int8_t chip8_execute_next_opcode(chip8_t * chip8)
     default:
         goto chip8_error;
     }
-    // We assume this code to be unreachable.
-    #if defined(COMPILER_MSVC)                
-        __assume(0);
-    #elif defined(COMPILER_GCC) || defined(COMPILER_CLANG)
-        __builtin_unreachable();   
-    #else
-        return 0;
-    #endif
+    return 0;
 
 chip8_error:
     printf("Unknown opcode: 0x%4X", chip8->currentOpcode);

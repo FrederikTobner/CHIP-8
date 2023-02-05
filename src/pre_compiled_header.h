@@ -13,15 +13,34 @@
  * License for more details.                                                *
  ****************************************************************************/
 
-#ifndef CHIP8_DEBUG_H_
-#define CHIP8_DEBUG_H_
+/**
+ * @file pre_compiled_header.h
+ * @brief Precompiled header file of the emulator
+ * @details Contains commonly used header files from the standard libary and exit codes
+ */
 
-#include "pre_compiled_header.h"
+#ifndef CHIP8_PRE_COMPILED_HEADER_H_
+#define CHIP8_PRE_COMPILED_HEADER_H_
+typedef enum
+{
+    EXIT_CODE_OK = 0,
+    EXIT_CODE_COMMAND_LINE_USAGE_ERROR = 64,
+    EXIT_CODE_COMPILATION_ERROR = 65,
+    EXIT_CODE_RUNTIME_ERROR = 70,
+    EXIT_CODE_SYSTEM_ERROR = 71,
+    EXIT_CODE_INPUT_OUTPUT_ERROR = 74
+} chip8_exit_code;
 
-#include "chip8.h"
 
-void debug_print_bytecode(uint16_t memoryLocation, uint16_t opcode);
-
-void debug_trace_execution(chip8_t chip8);
+// Standard libary dependencies
+#include <limits.h>
+#include <stdarg.h>
+#include <stdbool.h>
+#include <stddef.h>
+#include <stdint.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <time.h>
 
 #endif
