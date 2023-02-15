@@ -2,37 +2,23 @@
 cmake_minimum_required(VERSION 3.16)
 
 # Defining project name, version and used languages
-project(CHIP-8 VERSION 0.1.0 LANGUAGES C)
+project(CHIP-8 
+VERSION 0.1.0 
+LANGUAGES C
+)
 
 # C99 standard is required to build the emulator
 set(CMAKE_C_STANDARD 99)
 set(CMAKE_C_STANDARD_REQUIRED True)
 
-# Setting project properties
-set(PROJECT_PAGE "https://github.com/FrederikTobner/CHIP-8")
-set(PROJECT_HELP_PAGE "https://github.com/FrederikTobner/CHIP-8/wiki")
-set(PROJECT_VENDOR "Frederik Tobner")
-
 # CMake Build options
-
 # These options only affect the build if the built-type is Debug - otherwise they will be ignored
-option(CP8_DEBUG_PRINT_BYTECODE "Determines whether the chunks are dissassembled and the bytecode is printed" OFF)
+option(CP8_DEBUG_PRINT_BYTECODE "Determines whether the instructions are printed" OFF)
 option(CP8_DEBUG_TRACE_EXECUTION "Determines whether the execution shall be traced" OFF)
 
-# Adding CheckIncludeFile CMake module
-include(CheckIncludeFile)
-
-
 if(UNIX)
-    # Adding os-specific compiler definitions
-    add_compile_definitions(OS_UNIX_LIKE)    
-    if(LINUX) 
-        add_compile_definitions(OS_LINUX)
-    elseif(APPLE) 
-        add_compile_definitions(OS_MACOS)
-    else()
-        add_compile_definitions(OS_UNKNOWN_UNIX)
-    endif() 
+    # Adding CheckIncludeFile CMake module
+    include(CheckIncludeFile) 
     # Check dependecies under unix-like systems   
     CHECK_INCLUDE_FILE("curses.h" CURSES_AVAILABLE)
     CHECK_INCLUDE_FILE("unistd.h" UNISTD_AVAILABLE)
@@ -45,8 +31,8 @@ if(UNIX)
 \   \   Please make sure it is available to the compiler and try again after that")
     endif() # unistd.h
 elseif(WIN32)
-    # Adding os-specific compiler definitions
-    add_compile_definitions(OS_WINDOWS)
+    # Adding CheckIncludeFile CMake module
+    include(CheckIncludeFile)
     # Check dependecies under windows
     CHECK_INCLUDE_FILE("conio.h" CONIO_AVAILABLE)
     CHECK_INCLUDE_FILE("windows.h" WINDOWS_AVAILABLE)
@@ -59,9 +45,6 @@ elseif(WIN32)
 \   \   Please make sure it is available to the compiler and try again after that"
         )
     endif() # windows.h
-else()
-    # Adding os-specific compiler definitions
-    add_compile_definitions(OS_UNKNOWN)
 endif()
 
 # Build SDL
@@ -78,6 +61,60 @@ elseif (CMAKE_CXX_COMPILER_ID STREQUAL "Intel")
     add_compile_definitions(COMPILER_INTEL)
 else()
     add_compile_definitions(COMPILER_UNKNOWN)    
+endif()
+
+# Adding os-specific compiler definitions
+if(UNIX)
+    add_compile_definitions(OS_UNIX_LIKE)    
+    if(NOT APPLE) 
+        if(CMAKE_SYSTEM_NAME MATCHES ".*Linux")
+            add_compile_definitions(OS_LINUX)
+        elseif(CMAKE_SYSTEM_NAME MATCHES "kFreeBSD.*")
+            add_compile_definitions(OS_FREEBSD)
+        elseif(CMAKE_SYSTEM_NAME MATCHES "kNetBSD.*|NetBSD.*")
+            add_compile_definitions(OS_NETBSD)
+        elseif(CMAKE_SYSTEM_NAME MATCHES "kOpenBSD.*|OpenBSD.*")
+            add_compile_definitions(OS_OPENBSD)
+        elseif(CMAKE_SYSTEM_NAME MATCHES ".*GNU.*")
+            add_compile_definitions(OS_GNU)
+        elseif(CMAKE_SYSTEM_NAME MATCHES ".*BSDI.*")
+            add_compile_definitions(OS_BSDI)
+        elseif(CMAKE_SYSTEM_NAME MATCHES "DragonFly.*|FreeBSD")
+            add_compile_definitions(OS_FREEBSD)
+        elseif(CMAKE_SYSTEM_NAME MATCHES "SYSV5.*")
+            add_compile_definitions(OS_SYSV5)
+        elseif(CMAKE_SYSTEM_NAME MATCHES "Solaris.*|SunOS.*")
+            add_compile_definitions(OS_SOLARIS)
+        elseif(CMAKE_SYSTEM_NAME MATCHES "HP-UX.*")
+            add_compile_definitions(OS_HPUX)
+        elseif(CMAKE_SYSTEM_NAME MATCHES "AIX.*")
+            add_compile_definitions(OS_AIX)
+        elseif(CMAKE_SYSTEM_NAME MATCHES "Minix.*")
+            add_compile_definitions(OS_MINIX)
+        else()
+            add_compile_definitions(OS_UNKNOWN_UNIX)
+        endif()
+    else() 
+        if(CMAKE_SYSTEM_NAME MATCHES ".*Darwin.*")
+            add_compile_definitions(OS_DARWIN)
+        elseif(CMAKE_SYSTEM_NAME MATCHES ".*MacOS.*")
+            add_compile_definitions(OS_MACOS)
+        elseif(CMAKE_SYSTEM_NAME MATCHES ".*tvOS.*")
+            add_compile_definitions(OS_TVOS)
+        elseif(CMAKE_SYSTEM_NAME MATCHES ".*iOS.*")
+            add_compile_definitions(OS_IOS)
+        else()
+            add_compile_definitions(OS_UNKNOWN_APPLE)
+        endif()
+    endif()
+elseif(WIN32)
+    add_compile_definitions(OS_WINDOWS)
+elseif(CMAKE_SYSTEM_NAME MATCHES "Haiku.*")
+    add_compile_definitions(OS_HAIKU)
+elseif(NINTENDO_3DS)
+    add_compile_definitions(OS_N3DS)
+else()
+    add_compile_definitions(OS_UNKNOWN)
 endif()
 
 # Build CHIP-8 project

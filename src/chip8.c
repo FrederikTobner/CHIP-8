@@ -62,7 +62,7 @@ void chip8_execute(chip8_t * chip8)
 {
     time_t  last_t, current_t;
     long numberofChip8Clocks = 0;
-    for (;chip8->programCounter < 2048; chip8->programCounter++, numberofChip8Clocks++)
+    for (;chip8->programCounter < 1536; chip8->programCounter++, numberofChip8Clocks++)
     {       
         last_t = time(NULL);
         #ifdef TRACE_EXECUTION
@@ -92,7 +92,7 @@ void chip8_execute(chip8_t * chip8)
         current_t = time(NULL);
         #if defined(OS_WINDOWS)
             // Milliseconds -> multiply with 1000
-            Sleep((1.0 / 600.0 - ((double)current_t - last_t)) * 1000);
+            Sleep((1.0 / 600.0 - ((double)current_t - last_t)) * 1000.0);
         #elif defined(OS_UNIX_LIKE)
             // Seconds
             sleep((1.0 / 600.0 - ((double)current_t - last_t)));

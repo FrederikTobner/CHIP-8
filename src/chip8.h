@@ -20,9 +20,10 @@
 
 /// @brief Models a chip8 emulator
 typedef struct
-{    
-    
+{        
+    /// The opcode that is currently executed
     uint16_t currentOpcode;
+    /// 16-bit register used for storing an adress in memory
     uint16_t I;
     /// Programcounter of the virtual machine
     uint16_t programCounter;
