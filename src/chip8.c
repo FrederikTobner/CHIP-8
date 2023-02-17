@@ -27,16 +27,11 @@
 #if defined(PRINT_BYTE_CODE) || defined(TRACE_EXECUTION)
     #include "debug.h"
 #endif
+#include "display.h"
 
 
 /// Most Chip-8 programs start at location 0x200 (512), but some begin at 0x600 (1536). Programs beginning at 0x600 are intended for the ETI 660 computer. 
 #define PROGRAM_START_LOCATION (0x200)
-
-/// The graphics system of the chip-8 has a height of 32 pixels
-#define GRAPHICS_SYSTEM_HEIGHT (32)
-
-/// The graphics system of the chip-8 has a width of 64 pixels
-#define GRAPHICS_SYSTEM_WIDTH (64)
 
 /// Defines a new 8-bit value based on the opcode that is currently executed
 #define DEFINE_8_BIT_VALUE                      \
@@ -54,11 +49,14 @@ uint8_t x = (chip8->currentOpcode & 0x0f00u) >> 8;
 #define DEFINE_Y                                \
 uint8_t y = (chip8->currentOpcode & 0x00f0u) >> 4;
 
+/// The clock speed of the CHIP-8 CPU (600 Hz)
+#define CHIP8_CLOCK_SPEED (600.0)
+
 static int8_t chip8_execute_next_opcode(chip8_t *);
 
 /// @brief Executes the program that is stored in memory
 /// @param chip8 The chip8 vm where the program that is currently held in memory is executed
-void chip8_execute(chip8_t * chip8) 
+void chip8_execute(chip8_t * chip8,  SDL_Renderer * gRenderer) 
 {
     time_t  last_t, current_t;
     long numberofChip8Clocks = 0;
@@ -86,16 +84,16 @@ void chip8_execute(chip8_t * chip8)
                 if(chip8->soundTimer > 0)
                     chip8->soundTimer--;
             }
-            // TODO: Display graphics system
+            display_render(*chip8, gRenderer);
         }
         // Wait for a 1/600 second minus the time elapsed
         current_t = time(NULL);
         #if defined(OS_WINDOWS)
             // Milliseconds -> multiply with 1000
-            Sleep((1.0 / 600.0 - ((double)current_t - last_t)) * 1000.0);
+            Sleep((1.0 / CHIP8_CLOCK_SPEED - ((double)current_t - last_t)) * 1000.0);
         #elif defined(OS_UNIX_LIKE)
             // Seconds
-            sleep((1.0 / 600.0 - ((double)current_t - last_t)));
+            sleep((1.0 / CHIP8_CLOCK_SPEED - ((double)current_t - last_t)));
         #endif
     }
 }
@@ -116,6 +114,10 @@ void chip8_init(chip8_t * chip8)
     // Initialize memory
     for (uint8_t * memoryPointer = chip8->memory; memoryPointer < upperBound; memoryPointer++)
         *memoryPointer = 0u;
+    // Reseting the graphics system
+    for (size_t i = 0; i < GRAPHICS_SYSTEM_WIDTH; i++)
+        for (size_t j = 0; j < GRAPHICS_SYSTEM_HEIGHT; j++)
+           chip8->graphicsSystem[i][j] = 0u;
 }
 
 
@@ -311,7 +313,7 @@ static int8_t chip8_execute_next_opcode(chip8_t * chip8)
     {
         DEFINE_8_BIT_VALUE
         DEFINE_X
-        chip8->V[x] = rand() % 256 & value;
+        chip8->V[x] = (rand() & 255) & value;
         break;        
     }
     case 0xd000: /* 0xDXYN - Draws a sprite at coordinate (VX, VY) 
@@ -402,7 +404,9 @@ static int8_t chip8_execute_next_opcode(chip8_t * chip8)
             chip8->I += chip8->V[x];
             break;
         }
-        case 0x29: // 0xFX29 - Sets I to the location of the sprite for the character in VX. Characters 0-F (in hexadecimal) are represented by a 4x5 font
+        case 0x29: 
+// 0xFX29 - Sets I to the location of the sprite for the character in VX. Characters 0-F (in hexadecimal) are represented by a 4x5 font
+// The characters are stored at the address 0x0050 and are 20 bit large (4 by 5 bits) -> Therefore the memory from 0x0050 until 0x0100
             break;
         case 0x33: /* 0xFX33 - Stores the binary-coded decimal representation of VX, 
         * with the most significant of three digits at the address in I, 
@@ -416,7 +420,7 @@ static int8_t chip8_execute_next_opcode(chip8_t * chip8)
             uint8_t base = 100;
             for(uint32_t i = 0;;i++)
             {
-                chip8->memory[chip8->I + i % 4096] = value / base;
+                chip8->memory[(chip8->I + i) & 4095] = value / base;
                 if(base == 1 )
                     break;
                 value %= base;
@@ -430,7 +434,7 @@ static int8_t chip8_execute_next_opcode(chip8_t * chip8)
         {
             DEFINE_X
             for (uint8_t i = 0; i <= x; i++)
-                chip8->memory[chip8->I + i % 4096] = chip8->V[i];     
+                chip8->memory[(chip8->I + i) & 4095] = chip8->V[i];     
             break;        
         }
         case 0x65: /* 0xFX65 - Fills from V0 to VX (including VX) with values from memory, starting at address I. 
@@ -439,7 +443,7 @@ static int8_t chip8_execute_next_opcode(chip8_t * chip8)
        {
             DEFINE_X
             for (uint8_t i = 0; i <= x; i++)
-                chip8->V[i] = chip8->memory[chip8->I + i % 4096];          
+                chip8->V[i] = chip8->memory[(chip8->I + i) & 4095];          
             break;        
        }
         default:

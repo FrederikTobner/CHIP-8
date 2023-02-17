@@ -162,7 +162,7 @@ static uint8_t assembler_read_register(assembler_t * assembler)
             break;
     }
     // Unreachable
-    #if defined(COMPILER_MSVC)                
+    #if defined(COMPILER_MSVC)              
         __assume(0);
     #elif defined(COMPILER_GCC) || defined(COMPILER_CLANG)
         __builtin_unreachable();   
@@ -202,7 +202,7 @@ static uint16_t assembler_scan_mnemonic(assembler_t * assembler, char c)
                         assembler_advance(assembler);
                         return 0xF01E | assembler_read_register(assembler) << 8;
                     case 'V':
-                        return 0x8004 |assembler_read_registers(assembler) << 4;                    
+                        return 0x8004 | assembler_read_registers(assembler) << 4;                    
                     default:
                         assembler_report_error(*assembler);
                     }
@@ -482,6 +482,8 @@ static uint16_t assembler_scan_mnemonic(assembler_t * assembler, char c)
     #endif
 }
 
+/// Skips all the whitespace characters in the source file
+/// @param assembler The assembler where the whitespace's are skipped at the position in the source file that is currently processed
 static void assembler_skip_whitespace(assembler_t * assembler)
 {
     for (;;)

@@ -14,20 +14,28 @@
  ****************************************************************************/
 
 
-#include <SDL.h>
+#include "../external/SDL/include/SDL.h"
 
 #include "assembler.h"
 #include "chip8.h"
-#include "chip8_config.h"
+#include "../build/src/chip8_config.h"
 #include "pre_compiled_header.h"
 
 /// Short message that explains the usage of the CHIP-8 emulator
 #define CHIP8_USAGE_MESSAGE     \
 "Usage: Chip8 [path]\n"
 
+// The window we'll be rendering to
+static SDL_Window * gWindow = NULL;
+
+// The window renderer
+static SDL_Renderer * gRenderer = NULL;
+
 static char * read_file(char const * path);
 static void io_error(char const * format, ...);
 static void show_help();
+static void sdl_initialize();
+static void close();
 
 /// @brief Main entry point of the CHIP-8 program
 /// @param argc The amount of arguments that were used when the program was started
@@ -56,8 +64,11 @@ int main(int argc, char **args)
             // Writes all the parsed opcodes into memory
             while((opcode = assembler_scan_opcode(&lexer)) >= 0 && memoryLocation <= 4096)
                 chip8_write_opcode_to_memory(&chip8, &memoryLocation, opcode);
-            chip8_execute(&chip8);
+            // Initialzes the SDL subsystem
+            sdl_initialize();
+            chip8_execute(&chip8, gRenderer);
             free(source);
+            close();
         }
     }
     else
@@ -112,4 +123,55 @@ static void show_help()
     printf("Options\n");
     printf("  -h, --help\t\tDisplay this help and exit\n");
     printf("  -v, --version\t\tShows the version of the installed emulator and exit\n\n");
+}
+
+static void sdl_initialize()
+{
+    // Initialization flag
+    bool success = true;
+
+    // Initialize SDL
+    if (SDL_Init(SDL_INIT_VIDEO) < 0)
+    {
+        printf("SDL could not initialize! SDL Error: %s\n", SDL_GetError());
+        success = false;
+    }
+    else
+    {
+        // Set texture filtering to linear
+        if (!SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "1"))
+            printf("Warning: Linear texture filtering not enabled!");
+
+        // Create window
+        gWindow = SDL_CreateWindow("CHIP-8", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 640, 320, SDL_WINDOW_SHOWN);
+        if (gWindow == NULL)
+        {
+            printf("Window could not be created! SDL Error: %s\n", SDL_GetError());
+            success = false;
+        }
+        else
+        {
+            // Create renderer for window
+            gRenderer = SDL_CreateRenderer(gWindow, -1, SDL_RENDERER_ACCELERATED);
+            if (gRenderer == NULL)
+            {
+                printf("Renderer could not be created! SDL Error: %s\n", SDL_GetError());
+                success = false;
+            }
+            else                
+                SDL_SetRenderDrawColor(gRenderer, 0xFF, 0xFF, 0xFF, 0xFF); // Initialize renderer color to white
+        }
+    }
+
+}
+
+static void close()
+{
+    // Destroy window
+    SDL_DestroyRenderer(gRenderer);
+    SDL_DestroyWindow(gWindow);
+    gWindow = NULL;
+    gRenderer = NULL;
+
+    SDL_Quit();
 }
