@@ -28,8 +28,8 @@
 static char * read_file(char const *);
 static void io_error(char const *, ...);
 static void show_help();
-static void sdl_initialize(SDL_Window **, SDL_Renderer **);
-static void close(SDL_Window **, SDL_Renderer **);
+static void sdl_init(SDL_Window **, SDL_Renderer **);
+static void sdl_quit(SDL_Window **, SDL_Renderer **);
 
 /// @brief Main entry point of the CHIP-8 program
 /// @param argc The amount of arguments that were used when the program was started
@@ -61,10 +61,10 @@ int main(int argc, char **args)
             while((opcode = assembler_scan_opcode(&lexer)) >= 0 && memoryLocation <= 4096)
                 chip8_write_opcode_to_memory(&chip8, &memoryLocation, opcode);
             // Initialzes the SDL subsystem
-            sdl_initialize(&window, &renderer);
+            sdl_init(&window, &renderer);
             chip8_execute(&chip8, renderer);
             free(source);
-            close(&window, &renderer);
+            sdl_quit(&window, &renderer);
         }
     }
     else
@@ -121,7 +121,7 @@ static void show_help()
     printf("  -v, --version\t\tShows the version of the installed emulator and exit\n\n");
 }
 
-static void sdl_initialize(SDL_Window ** window, SDL_Renderer ** renderer)
+static void sdl_init(SDL_Window ** window, SDL_Renderer ** renderer)
 {
     // Initialization flag
     bool success = true;
@@ -159,7 +159,7 @@ static void sdl_initialize(SDL_Window ** window, SDL_Renderer ** renderer)
     }
 }
 
-static void close(SDL_Window ** window, SDL_Renderer ** renderer)
+static void sdl_quit(SDL_Window ** window, SDL_Renderer ** renderer)
 {
     // Destroy window
     SDL_DestroyRenderer(*renderer);
