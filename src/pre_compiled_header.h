@@ -21,8 +21,7 @@
 
 #ifndef CHIP8_PRE_COMPILED_HEADER_H_
 #define CHIP8_PRE_COMPILED_HEADER_H_
-typedef enum
-{
+typedef enum {
     EXIT_CODE_OK = 0,
     EXIT_CODE_COMMAND_LINE_USAGE_ERROR = 64,
     EXIT_CODE_COMPILATION_ERROR = 65,
@@ -30,7 +29,6 @@ typedef enum
     EXIT_CODE_SYSTEM_ERROR = 71,
     EXIT_CODE_INPUT_OUTPUT_ERROR = 74
 } chip8_exit_code;
-
 
 // Standard libary dependencies
 #include <limits.h>

@@ -1,0 +1,9 @@
+---
+AllowShortCaseLabelsOnASingleLine: false
+AllowShortLoopsOnASingleLine: false
+AllowShortEnumsOnASingleLine: false
+AllowShortBlocksOnASingleLine: Never
+ColumnLimit: 160
+IndentWidth: 4
+PointerAlignment: Middle
+SpaceBeforeAssignmentOperators: true
