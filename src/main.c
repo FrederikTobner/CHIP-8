@@ -25,29 +25,25 @@
 #define CHIP8_USAGE_MESSAGE     \
 "Usage: Chip8 [path]\n"
 
-// The window we'll be rendering to
-static SDL_Window * gWindow = NULL;
-
-// The window renderer
-static SDL_Renderer * gRenderer = NULL;
-
-static char * read_file(char const * path);
-static void io_error(char const * format, ...);
+static char * read_file(char const *);
+static void io_error(char const *, ...);
 static void show_help();
-static void sdl_initialize();
-static void close();
+static void sdl_initialize(SDL_Window **, SDL_Renderer **);
+static void close(SDL_Window **, SDL_Renderer **);
 
 /// @brief Main entry point of the CHIP-8 program
 /// @param argc The amount of arguments that were used when the program was started
 /// @param argv Pointer to the arguments array that contains all the arguments that were defined by the user when the program was started
 /// @return 0 if everything went well
 int main(int argc, char **args)
-{
+{    
+    SDL_Window * window = NULL;
+    SDL_Renderer * renderer = NULL;
     if (argc == 2)
     {
-        if(!strncmp(args[1], "--version", 7) || !strncmp(args[1], "-v", 2))
+        if((strlen(args[1]) == 7 && !strncmp(args[1], "--version", 7)) || (strlen(args[1]) == 2 && !strncmp(args[1], "-v", 2)))
             printf("%s Version %i.%i\n", PROJECT_NAME, PROJECT_VERSION_MAJOR, PROJECT_VERSION_MINOR);
-        else if(!strncmp(args[1], "--help", 6) || !strncmp(args[1], "-h", 2))
+        else if((strlen(args[1]) == 6 && !strncmp(args[1], "--help", 6)) || (strlen(args[1]) == 2 && !strncmp(args[1], "-h", 2)))
             show_help();
         else
         {
@@ -65,10 +61,10 @@ int main(int argc, char **args)
             while((opcode = assembler_scan_opcode(&lexer)) >= 0 && memoryLocation <= 4096)
                 chip8_write_opcode_to_memory(&chip8, &memoryLocation, opcode);
             // Initialzes the SDL subsystem
-            sdl_initialize();
-            chip8_execute(&chip8, gRenderer);
+            sdl_initialize(&window, &renderer);
+            chip8_execute(&chip8, renderer);
             free(source);
-            close();
+            close(&window, &renderer);
         }
     }
     else
@@ -125,11 +121,10 @@ static void show_help()
     printf("  -v, --version\t\tShows the version of the installed emulator and exit\n\n");
 }
 
-static void sdl_initialize()
+static void sdl_initialize(SDL_Window ** window, SDL_Renderer ** renderer)
 {
     // Initialization flag
     bool success = true;
-
     // Initialize SDL
     if (SDL_Init(SDL_INIT_VIDEO) < 0)
     {
@@ -143,8 +138,8 @@ static void sdl_initialize()
             printf("Warning: Linear texture filtering not enabled!");
 
         // Create window
-        gWindow = SDL_CreateWindow("CHIP-8", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 640, 320, SDL_WINDOW_SHOWN);
-        if (gWindow == NULL)
+        *window = SDL_CreateWindow("CHIP-8", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 640, 320, SDL_WINDOW_SHOWN);
+        if (*window == NULL)
         {
             printf("Window could not be created! SDL Error: %s\n", SDL_GetError());
             success = false;
@@ -152,26 +147,24 @@ static void sdl_initialize()
         else
         {
             // Create renderer for window
-            gRenderer = SDL_CreateRenderer(gWindow, -1, SDL_RENDERER_ACCELERATED);
-            if (gRenderer == NULL)
+            *renderer = SDL_CreateRenderer(*window, -1, SDL_RENDERER_ACCELERATED);
+            if (*renderer == NULL)
             {
                 printf("Renderer could not be created! SDL Error: %s\n", SDL_GetError());
                 success = false;
             }
             else                
-                SDL_SetRenderDrawColor(gRenderer, 0xFF, 0xFF, 0xFF, 0xFF); // Initialize renderer color to white
+                SDL_SetRenderDrawColor(*renderer, 0xFF, 0xFF, 0xFF, 0xFF); // Initialize renderer color to white
         }
     }
-
 }
 
-static void close()
+static void close(SDL_Window ** window, SDL_Renderer ** renderer)
 {
     // Destroy window
-    SDL_DestroyRenderer(gRenderer);
-    SDL_DestroyWindow(gWindow);
-    gWindow = NULL;
-    gRenderer = NULL;
-
+    SDL_DestroyRenderer(*renderer);
+    SDL_DestroyWindow(*window);
+    *window = NULL;
+    *renderer = NULL;
     SDL_Quit();
 }

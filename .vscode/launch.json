@@ -12,6 +12,31 @@
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
             "console": "externalTerminal"
-        }
+        },
+        {
+        "name": "Debug - GCC",
+        "type": "cppdbg",
+        "request": "launch",
+        "program": "${workspaceFolder}/build/src/CHIP-8",
+        "args": [
+            "${workspaceFolder}/examples/HelloWorld.cp8",
+        ],
+        "stopAtEntry": false,
+        "cwd": "${workspaceFolder}"
+        },
+        {
+            "name": "Debug - Clang",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/build/src/CHIP-8",
+            "args": [
+                "${workspaceFolder}/examples/HelloWorld.cp8",
+            ],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "lldb",
+            }
     ]
 }

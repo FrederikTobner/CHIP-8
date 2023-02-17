@@ -56,7 +56,7 @@ static int8_t chip8_execute_next_opcode(chip8_t *);
 
 /// @brief Executes the program that is stored in memory
 /// @param chip8 The chip8 vm where the program that is currently held in memory is executed
-void chip8_execute(chip8_t * chip8,  SDL_Renderer * gRenderer) 
+void chip8_execute(chip8_t * chip8,  SDL_Renderer * renderer) 
 {
     time_t  last_t, current_t;
     long numberofChip8Clocks = 0;
@@ -84,7 +84,7 @@ void chip8_execute(chip8_t * chip8,  SDL_Renderer * gRenderer)
                 if(chip8->soundTimer > 0)
                     chip8->soundTimer--;
             }
-            display_render(*chip8, gRenderer);
+            display_render(*chip8, renderer);
         }
         // Wait for a 1/600 second minus the time elapsed
         current_t = time(NULL);
@@ -92,8 +92,8 @@ void chip8_execute(chip8_t * chip8,  SDL_Renderer * gRenderer)
             // Milliseconds -> multiply with 1000
             Sleep((1.0 / CHIP8_CLOCK_SPEED - ((double)current_t - last_t)) * 1000.0);
         #elif defined(OS_UNIX_LIKE)
-            // Seconds
-            sleep((1.0 / CHIP8_CLOCK_SPEED - ((double)current_t - last_t)));
+            // Mircoseconds -> multiply with 1000000
+            usleep((1.0 / CHIP8_CLOCK_SPEED - (current_t - last_t)) * 10000000u);
         #endif
     }
 }

@@ -21,6 +21,6 @@
 #include "../external/SDL/include/SDL.h"
 
 /// Renders the display of the passed chip8 struct
-void display_render(chip8_t chip8, SDL_Renderer * gRenderer);
+void display_render(chip8_t chip8, SDL_Renderer * renderer);
 
 #endif
