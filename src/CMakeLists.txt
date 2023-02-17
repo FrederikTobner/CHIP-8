@@ -7,12 +7,14 @@ if(CMAKE_BUILD_TYPE MATCHES "[Dd][Ee][Bb][Uu][Gg]")
     "assembler.c"
     "chip8.c"
     "debug.c"
+    "display.c"
     "main.c"    
     )    
     set(CHIP-8_HEADER_FILES
     "assembler.h"
     "chip8.h"
     "debug.h"
+    "display.h"
     )
     if(CP8_DEBUG_PRINT_BYTECODE)
         add_compile_definitions(PRINT_BYTE_CODE)
@@ -25,11 +27,13 @@ else()
     set(CHIP-8_SOURCE_FILES
     "assembler.c"
     "chip8.c"
+    "display.c"
     "main.c"    
     )
     set(CHIP-8_HEADER_FILES
     "assembler.h"
     "chip8.h"
+    "display.h"
     )
     # Setting project properties used by CPack
     set(PROJECT_PAGE "https://github.com/FrederikTobner/CHIP-8")
