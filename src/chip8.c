@@ -13,6 +13,11 @@
  * License for more details.                                                *
  ****************************************************************************/
 
+/**
+ * @file chip8.c
+ * @brief Definitions regarding the virtual machine of the emulator
+ */
+
 #include "chip8.h"
 
 #if defined(OS_WINDOWS)
@@ -405,8 +410,8 @@ static int8_t chip8_execute_next_opcode(chip8_t * chip8) {
         {
             DEFINE_X
             uint8_t value = chip8->V[x];
-            uint8_t base = 100;
-            for (uint8_t i = 0; i < 3; i++, value %= base, base /= 10)
+            uint8_t base = 100u;
+            for (uint8_t i = 0u;base; i++, value %= base, base /= 10)
                 chip8->memory[(chip8->I + i) & 4095] = value / base;
             break;
         }
@@ -415,7 +420,7 @@ static int8_t chip8_execute_next_opcode(chip8_t * chip8) {
                     */
         {
             DEFINE_X
-            for (uint8_t i = 0; i <= x; i++)
+            for (uint8_t i = 0u; i <= x; i++)
                 chip8->memory[(chip8->I + i) & 4095] = chip8->V[i];
             break;
         }
@@ -424,7 +429,7 @@ static int8_t chip8_execute_next_opcode(chip8_t * chip8) {
                     */
         {
             DEFINE_X
-            for (uint8_t i = 0; i <= x; i++)
+            for (uint8_t i = 0u; i <= x; i++)
                 chip8->V[i] = chip8->memory[(chip8->I + i) & 4095];
             break;
         }

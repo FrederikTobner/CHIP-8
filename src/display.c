@@ -87,7 +87,10 @@ void display_quit(display_t * display) {
     SDL_Quit();
 }
 
-
+/// @brief Sets the icon a window
+/// @param window The window where the icon is set
+/// @param iconPath Path to the icon
+/// @return 0 if the icon was successfully appled to the window, -1 if an error occured
 static int display_set_window_icon(SDL_Window * window, char const * iconPath) {
     SDL_Surface * window_icon_scurface = SDL_LoadBMP(iconPath);
     if (!window_icon_scurface) {

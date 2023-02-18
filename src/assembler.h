@@ -13,6 +13,11 @@
  * License for more details.                                                *
  ****************************************************************************/
 
+/**
+ * @file assembler.h
+ * @brief Declarations regarding the assembler of the emulator
+ */
+
 #ifndef CHIP8_ASSEMLER_H_
 #define CHIP8_ASSEMLER_H_
 
@@ -29,8 +34,15 @@ typedef struct {
     uint32_t line;
 } assembler_t;
 
+/// @brief Initializes the assembler
+/// @param assembler The assembler that parses the file
+/// @param source The sourcecode that is parsed by the assembler
 void assembler_initialize(assembler_t * assembler, char const * source);
 
-int assembler_parse_file(assembler_t * assembler, chip8_t * chip8);
+/// @brief Processes a chip8 assembly file (.cp8)
+/// @param assembler The assembler that processes the file
+/// @param chip8 The virtual machine where the program is written into memory
+/// @return 0 if everything went well, -1 if an error occured
+int assembler_process_file(assembler_t * assembler, chip8_t * chip8);
 
 #endif

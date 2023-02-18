@@ -32,10 +32,8 @@ static void io_error(char const *, ...);
 static void show_help();
 
 /// @brief Main entry point of the CHIP-8 program
-/// @param argc The amount of arguments that were used when the program was
-/// started
-/// @param argv Pointer to the arguments array that contains all the arguments
-/// that were defined by the user when the program was started
+/// @param argc The amount of arguments that were used when the program was started
+/// @param argv Pointer to the arguments array that contains all the arguments that were defined by the user when the program was started
 /// @return 0 if everything went well
 int main(int argc, char ** args) {
 
@@ -51,8 +49,8 @@ int main(int argc, char ** args) {
             source = read_file(args[1]);
             assembler_initialize(&assembler, source);
             chip8_init(&chip8);           
-            if (assembler_parse_file(&assembler, &chip8))
-                exit(EXIT_CODE_ASSEMBLANCE_ERROR);
+            if (assembler_process_file(&assembler, &chip8))
+                exit(EXIT_CODE_ASSEMBLER_ERROR);
             // Initialzes the SDL subsystem           
             chip8_execute(&chip8);
             free(source);

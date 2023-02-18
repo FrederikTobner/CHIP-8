@@ -13,6 +13,12 @@
  * License for more details.                                                *
  ****************************************************************************/
 
+/**
+ * @file chip8.h
+ * @brief Declarations regarding the virtual machine of the emulator
+ */
+
+
 #ifndef CHIP8_CHIP8_H_
 #define CHIP8_CHIP8_H_
 

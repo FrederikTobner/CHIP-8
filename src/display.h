@@ -15,7 +15,7 @@
 
 /**
  * @file display.h
- * @brief Deklarations regarding the display of the emulator
+ * @brief Declarations regarding the display of the emulator
  */
 
 #ifndef CHIP8_DISPLAY_H_

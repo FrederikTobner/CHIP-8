@@ -3,9 +3,9 @@
 * \section intro_sec Introduction
 * Welcome to the technical documentation of the CHIP-8 emulator. <br>
 * \section building_sec Building
-* To build the emulator a C-Compiler, that supports the C99 standard, the SDL2 graphics libary and CMake (Version >= 3.16) are required. <br>
+* To build the emulator a C-Compiler, that supports the C99 standard, and CMake (Version >= 3.16) are required. <br>
 * Additionaly the emulator has the following dependecies <br>
-* * SDL 2.0
+* * [SDL 2.0](https://github.com/libsdl-org/SDL/tree/SDL2)
 * 
 * Under windows:
 * * conio.h

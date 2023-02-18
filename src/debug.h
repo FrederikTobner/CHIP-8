@@ -13,6 +13,11 @@
  * License for more details.                                                *
  ****************************************************************************/
 
+/**
+ * @file debug.h
+ * @brief Declarations regarding the debug functionality of the emulator
+ */
+
 #ifndef CHIP8_DEBUG_H_
 #define CHIP8_DEBUG_H_
 
@@ -20,8 +25,13 @@
 
 #include "chip8.h"
 
+/// @brief Prints the opcode stored at the specified memorylocation
+/// @param memoryLocation The memory location of the opcode
+/// @param opcode The opcode that is printed
 void debug_print_bytecode(uint16_t memoryLocation, uint16_t opcode);
 
+/// @brief Traces the exection of a chip8 program
+/// @param chip8 The virtual machine where the execution is traced
 void debug_trace_execution(chip8_t chip8);
 
 #endif
