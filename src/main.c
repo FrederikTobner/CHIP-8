@@ -13,11 +13,10 @@
  * License for more details.                                                *
  ****************************************************************************/
 
-#include "../external/SDL/include/SDL.h"
-
 #include "../build/src/chip8_config.h"
 #include "assembler.h"
 #include "chip8.h"
+#include "display.h"
 #include "pre_compiled_header.h"
 
 /// Short message that explains the usage of the CHIP-8 emulator
@@ -26,8 +25,6 @@
 static char * read_file(char const *);
 static void io_error(char const *, ...);
 static void show_help();
-static int sdl_init(SDL_Window **, SDL_Renderer **);
-static void sdl_quit(SDL_Window **, SDL_Renderer **);
 
 /// @brief Main entry point of the CHIP-8 program
 /// @param argc The amount of arguments that were used when the program was
@@ -46,13 +43,9 @@ int main(int argc, char ** args) {
             char * source;
             assembler_t assembler;
             chip8_t chip8;
-            SDL_Window * window;
-            SDL_Renderer * renderer;
             int32_t opcode;
             uint16_t memoryLocation;
-            window = NULL;
-            renderer = NULL;
-            source = read_file(*(args + 1));
+            source = read_file(args[1]);
             assembler_initialize(&assembler, source);
             chip8_init(&chip8);
             memoryLocation = 512;
@@ -62,12 +55,9 @@ int main(int argc, char ** args) {
             // Writes all the parsed opcodes into memory
             while ((opcode = assembler_scan_opcode(&assembler)) >= 0 && memoryLocation <= 4096)
                 chip8_write_opcode_to_memory(&chip8, &memoryLocation, opcode);
-            // Initialzes the SDL subsystem
-            if (sdl_init(&window, &renderer))
-                return EXIT_CODE_SYSTEM_ERROR;
-            chip8_execute(&chip8, renderer);
+            // Initialzes the SDL subsystem           
+            chip8_execute(&chip8);
             free(source);
-            sdl_quit(&window, &renderer);
         }
     } else {
         fprintf(stderr, CHIP8_USAGE_MESSAGE);
@@ -118,47 +108,4 @@ static void show_help() {
     printf("  -h, --help\t\tDisplay this help and exit\n");
     printf("  -v, --version\t\tShows the version of the installed emulator and "
            "exit\n\n");
-}
-
-/// @brief Initialize SDL
-/// @param window The window where the display of the emulator is emulated
-/// @param renderer The renderer that is used to create image from
-/// @return 0 if everything went well, -1 if an error occured
-static int sdl_init(SDL_Window ** window, SDL_Renderer ** renderer) {
-    if (SDL_Init(SDL_INIT_VIDEO) < 0) {
-        printf("SDL could not initialize! SDL Error: %s\n", SDL_GetError());
-        return -1;
-    } else {
-        // Set texture filtering to linear
-        if (!SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "1"))
-            printf("Warning: Linear texture filtering not enabled!");
-
-        // Create window
-        *window = SDL_CreateWindow("CHIP-8", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, GRAPHICS_SYSTEM_WIDTH, GRAPHICS_SYSTEM_HEIGHT, SDL_WINDOW_SHOWN);
-        if (*window == NULL) {
-            printf("Window could not be created! SDL Error: %s\n", SDL_GetError());
-            return -1;
-        } else {
-            // Create renderer for window
-            *renderer = SDL_CreateRenderer(*window, -1, SDL_RENDERER_ACCELERATED);
-            if (*renderer == NULL) {
-                printf("Renderer could not be created! SDL Error: %s\n", SDL_GetError());
-                return -1;
-            } else
-                SDL_SetRenderDrawColor(*renderer, 0xFF, 0xFF, 0xFF, 0xFF); // white
-        }
-    }
-    return 0;
-}
-
-/// @brief Quits SDL
-/// @param window The window that is closed
-/// @param renderer The renderer used to render the display of the emulator
-static void sdl_quit(SDL_Window ** window, SDL_Renderer ** renderer) {
-    // Destroy window
-    SDL_DestroyRenderer(*renderer);
-    SDL_DestroyWindow(*window);
-    *window = NULL;
-    *renderer = NULL;
-    SDL_Quit();
 }

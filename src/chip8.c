@@ -52,7 +52,7 @@ static int8_t chip8_execute_next_opcode(chip8_t *);
 
 /// @brief Executes the program that is stored in memory
 /// @param chip8 The chip8 vm where the program that is currently held in memory is executed
-void chip8_execute(chip8_t * chip8, SDL_Renderer * renderer) {
+void chip8_execute(chip8_t * chip8) {
     time_t last_t, current_t;
     long numberofChip8Clocks = 0;
     for (; chip8->programCounter < 1536; chip8->programCounter++, numberofChip8Clocks++) {
@@ -77,18 +77,20 @@ void chip8_execute(chip8_t * chip8, SDL_Renderer * renderer) {
                 if (chip8->soundTimer > 0)
                     chip8->soundTimer--;
             }
-            display_render(*chip8, renderer);
+            display_render(chip8->display);
         }
         // Wait for a 1/600 second minus the time elapsed
         current_t = time(NULL);
+// TODO: Adapt sleep to handle environments that can not run at 600 HZ (negative values for 1 / 600 s - (current - last))
 #if defined(OS_WINDOWS)
         // Milliseconds -> multiply with 1000
-        Sleep((1.0 / CHIP8_CLOCK_SPEED - ((double)current_t - last_t)) * 1000.0);
+        Sleep((1.0 / CHIP8_CLOCK_SPEED - ((double)current_t - last_t)) * 1000u);
 #elif defined(OS_UNIX_LIKE)
         // Mircoseconds -> multiply with 1000000
         usleep((1.0 / CHIP8_CLOCK_SPEED - (current_t - last_t)) * 10000000u);
 #endif
     }
+    display_quit(&chip8->display);
 }
 
 /// @brief Initializes the chip8 vm
@@ -107,9 +109,8 @@ void chip8_init(chip8_t * chip8) {
     for (uint8_t * memoryPointer = chip8->memory; memoryPointer < upperBound; memoryPointer++)
         *memoryPointer = 0u;
     // Reseting the graphics system
-    for (size_t i = 0; i < GRAPHICS_SYSTEM_WIDTH; i++)
-        for (size_t j = 0; j < GRAPHICS_SYSTEM_HEIGHT; j++)
-            chip8->graphicsSystem[i][j] = 0u;
+    if (display_init(&chip8->display))
+        exit(EXIT_CODE_SYSTEM_ERROR);   
 }
 
 /// @brief Writtes the specified opcode at the specified location into memory
@@ -135,7 +136,7 @@ static int8_t chip8_execute_next_opcode(chip8_t * chip8) {
         {
             for (uint8_t x = 0; x < GRAPHICS_SYSTEM_WIDTH; x++)
                 for (uint8_t y = 0; x < GRAPHICS_SYSTEM_HEIGHT; y++)
-                    chip8->graphicsSystem[x][y] = 0;
+                    chip8->display.graphicsSystem[x][y] = 0;
             break;
         }
         case 0x0EE: // 0x00EE - return from subroutine
