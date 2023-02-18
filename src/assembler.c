@@ -110,10 +110,10 @@ static int32_t assembler_scan_opcode(assembler_t * assembler) {
 /// @return The current character
 static inline char assembler_advance(assembler_t * assembler) { return *assembler->current++; }
 
-/// @brief 
-/// @param assembler 
-/// @param digitCount 
-/// @return 
+/// @brief Converts the mnemonic representation of a number in the hexadecimal formtat from the the sourcefile to it's representation in binary
+/// @param assembler The assembler struct that is used to store the state of the process
+/// @param digitCount The amount of digits the number has
+/// @return The binary representation of the number
 static uint16_t assembler_hexa(assembler_t * assembler, size_t digitCount) {
     assembler->current++;
     uint16_t number = 0;
