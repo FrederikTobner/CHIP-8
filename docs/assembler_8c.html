@@ -107,7 +107,20 @@ Functions</h2></td></tr>
 <tr class="memitem:acc76437694fec8e423c5603216235fc4"><td class="memItemLeft" align="right" valign="top">static char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="assembler_8c.html#acc76437694fec8e423c5603216235fc4">assembler_advance</a> (<a class="el" href="structassembler__t.html">assembler_t</a> *assembler)</td></tr>
 <tr class="memdesc:acc76437694fec8e423c5603216235fc4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Advances a position further in the sourceCode and returns the prevoius Token.  <a href="assembler_8c.html#acc76437694fec8e423c5603216235fc4">More...</a><br /></td></tr>
 <tr class="separator:acc76437694fec8e423c5603216235fc4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab06bcc2ee5b4c46199d0337b581fd2d1"><td class="memItemLeft" align="right" valign="top">static uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="assembler_8c.html#ab06bcc2ee5b4c46199d0337b581fd2d1">assembler_convert_address_to_binary</a> (<a class="el" href="structassembler__t.html">assembler_t</a> *assembler)</td></tr>
+<tr class="memdesc:ab06bcc2ee5b4c46199d0337b581fd2d1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts the mnemnic representation of a address to binary.  <a href="assembler_8c.html#ab06bcc2ee5b4c46199d0337b581fd2d1">More...</a><br /></td></tr>
+<tr class="separator:ab06bcc2ee5b4c46199d0337b581fd2d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a105e3e3610d5fd59a3d07aa2b8108417"><td class="memItemLeft" align="right" valign="top">static uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="assembler_8c.html#a105e3e3610d5fd59a3d07aa2b8108417">assembler_convert_mnemonic_to_binary</a> (<a class="el" href="structassembler__t.html">assembler_t</a> *assembler, char c)</td></tr>
+<tr class="memdesc:a105e3e3610d5fd59a3d07aa2b8108417"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts the next mnemonic representation of an opcode in the source file to it's binary representation.  <a href="assembler_8c.html#a105e3e3610d5fd59a3d07aa2b8108417">More...</a><br /></td></tr>
+<tr class="separator:a105e3e3610d5fd59a3d07aa2b8108417"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7ec599c0532c50a23839f30c99b02611"><td class="memItemLeft" align="right" valign="top">static uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="assembler_8c.html#a7ec599c0532c50a23839f30c99b02611">assembler_convert_register_to_binary</a> (<a class="el" href="structassembler__t.html">assembler_t</a> *assembler)</td></tr>
+<tr class="memdesc:a7ec599c0532c50a23839f30c99b02611"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts the mnemnic representation of a register to binary.  <a href="assembler_8c.html#a7ec599c0532c50a23839f30c99b02611">More...</a><br /></td></tr>
+<tr class="separator:a7ec599c0532c50a23839f30c99b02611"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a09681d50efe38ff95c8f9d20ee85b1fa"><td class="memItemLeft" align="right" valign="top">static uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="assembler_8c.html#a09681d50efe38ff95c8f9d20ee85b1fa">assembler_convert_registers_to_binary</a> (<a class="el" href="structassembler__t.html">assembler_t</a> *assembler)</td></tr>
+<tr class="memdesc:a09681d50efe38ff95c8f9d20ee85b1fa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts the mnemnic representation of a registers to binary.  <a href="assembler_8c.html#a09681d50efe38ff95c8f9d20ee85b1fa">More...</a><br /></td></tr>
+<tr class="separator:a09681d50efe38ff95c8f9d20ee85b1fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acb77f022e5ea59663adb97a1dc8d1424"><td class="memItemLeft" align="right" valign="top">static uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="assembler_8c.html#acb77f022e5ea59663adb97a1dc8d1424">assembler_hexa</a> (<a class="el" href="structassembler__t.html">assembler_t</a> *assembler, size_t digitCount)</td></tr>
+<tr class="memdesc:acb77f022e5ea59663adb97a1dc8d1424"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts the mnemonic representation of a number in the hexadecimal formtat from the the sourcefile to it's representation in binary.  <a href="assembler_8c.html#acb77f022e5ea59663adb97a1dc8d1424">More...</a><br /></td></tr>
 <tr class="separator:acb77f022e5ea59663adb97a1dc8d1424"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5de9e54b4ab2dd7be90a01b91860938d"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="assembler_8c.html#a5de9e54b4ab2dd7be90a01b91860938d">assembler_is_alpha</a> (char c)</td></tr>
 <tr class="memdesc:a5de9e54b4ab2dd7be90a01b91860938d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if the char c is a from the alphabet.  <a href="assembler_8c.html#a5de9e54b4ab2dd7be90a01b91860938d">More...</a><br /></td></tr>
@@ -127,32 +140,22 @@ Functions</h2></td></tr>
 <tr class="memitem:a89bbc3a8b582cee58d9efbf0b98c6174"><td class="memItemLeft" align="right" valign="top">static uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="assembler_8c.html#a89bbc3a8b582cee58d9efbf0b98c6174">assembler_read_8bit_number</a> (<a class="el" href="structassembler__t.html">assembler_t</a> *assembler)</td></tr>
 <tr class="memdesc:a89bbc3a8b582cee58d9efbf0b98c6174"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts the mnemnic representation of a byte to binary.  <a href="assembler_8c.html#a89bbc3a8b582cee58d9efbf0b98c6174">More...</a><br /></td></tr>
 <tr class="separator:a89bbc3a8b582cee58d9efbf0b98c6174"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab06bcc2ee5b4c46199d0337b581fd2d1"><td class="memItemLeft" align="right" valign="top">static uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="assembler_8c.html#ab06bcc2ee5b4c46199d0337b581fd2d1">assembler_convert_address_to_binary</a> (<a class="el" href="structassembler__t.html">assembler_t</a> *assembler)</td></tr>
-<tr class="memdesc:ab06bcc2ee5b4c46199d0337b581fd2d1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts the mnemnic representation of a address to binary.  <a href="assembler_8c.html#ab06bcc2ee5b4c46199d0337b581fd2d1">More...</a><br /></td></tr>
-<tr class="separator:ab06bcc2ee5b4c46199d0337b581fd2d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7ec599c0532c50a23839f30c99b02611"><td class="memItemLeft" align="right" valign="top">static uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="assembler_8c.html#a7ec599c0532c50a23839f30c99b02611">assembler_convert_register_to_binary</a> (<a class="el" href="structassembler__t.html">assembler_t</a> *assembler)</td></tr>
-<tr class="memdesc:a7ec599c0532c50a23839f30c99b02611"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts the mnemnic representation of a register to binary.  <a href="assembler_8c.html#a7ec599c0532c50a23839f30c99b02611">More...</a><br /></td></tr>
-<tr class="separator:a7ec599c0532c50a23839f30c99b02611"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a09681d50efe38ff95c8f9d20ee85b1fa"><td class="memItemLeft" align="right" valign="top">static uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="assembler_8c.html#a09681d50efe38ff95c8f9d20ee85b1fa">assembler_convert_registers_to_binary</a> (<a class="el" href="structassembler__t.html">assembler_t</a> *assembler)</td></tr>
-<tr class="memdesc:a09681d50efe38ff95c8f9d20ee85b1fa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts the mnemnic representation of a registers to binary.  <a href="assembler_8c.html#a09681d50efe38ff95c8f9d20ee85b1fa">More...</a><br /></td></tr>
-<tr class="separator:a09681d50efe38ff95c8f9d20ee85b1fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9c33492ee7780d29944134d214a84895"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="assembler_8c.html#a9c33492ee7780d29944134d214a84895">assembler_report_error</a> (<a class="el" href="structassembler__t.html">assembler_t</a> assembler)</td></tr>
 <tr class="memdesc:a9c33492ee7780d29944134d214a84895"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reports an error when the assembly waas processed.  <a href="assembler_8c.html#a9c33492ee7780d29944134d214a84895">More...</a><br /></td></tr>
 <tr class="separator:a9c33492ee7780d29944134d214a84895"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a105e3e3610d5fd59a3d07aa2b8108417"><td class="memItemLeft" align="right" valign="top">static uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="assembler_8c.html#a105e3e3610d5fd59a3d07aa2b8108417">assembler_convert_mnemonic_to_binary</a> (<a class="el" href="structassembler__t.html">assembler_t</a> *assembler, char c)</td></tr>
-<tr class="memdesc:a105e3e3610d5fd59a3d07aa2b8108417"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts the next mnemonic representation of an opcode in the source file to it's binary representation.  <a href="assembler_8c.html#a105e3e3610d5fd59a3d07aa2b8108417">More...</a><br /></td></tr>
-<tr class="separator:a105e3e3610d5fd59a3d07aa2b8108417"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a17dc0c350b40d18062784b4b63826fa1"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="assembler_8c.html#a17dc0c350b40d18062784b4b63826fa1">assembler_skip_whitespace</a> (<a class="el" href="structassembler__t.html">assembler_t</a> *)</td></tr>
 <tr class="separator:a17dc0c350b40d18062784b4b63826fa1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6a01ce21b6e872b3ccf3ed0adc24234f"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="assembler_8c.html#a6a01ce21b6e872b3ccf3ed0adc24234f">assembler_process_section</a> (<a class="el" href="structassembler__t.html">assembler_t</a> *assembler, <a class="el" href="structchip8__t.html">chip8_t</a> *chip8)</td></tr>
 <tr class="memdesc:a6a01ce21b6e872b3ccf3ed0adc24234f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Processes a section in a chip8 assembly file.  <a href="assembler_8c.html#a6a01ce21b6e872b3ccf3ed0adc24234f">More...</a><br /></td></tr>
 <tr class="separator:a6a01ce21b6e872b3ccf3ed0adc24234f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a17abccff086051fe413ee89219c1ad78"><td class="memItemLeft" align="right" valign="top">static int32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="assembler_8c.html#a17abccff086051fe413ee89219c1ad78">assembler_scan_opcode</a> (<a class="el" href="structassembler__t.html">assembler_t</a> *assembler)</td></tr>
-<tr class="memdesc:a17abccff086051fe413ee89219c1ad78"><td class="mdescLeft">&#160;</td><td class="mdescRight">Scans the next opcode in the sourcefile.  <a href="assembler_8c.html#a17abccff086051fe413ee89219c1ad78">More...</a><br /></td></tr>
-<tr class="separator:a17abccff086051fe413ee89219c1ad78"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a96093a5508ab6a6aed4946cc811e40b0"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="assembler_8c.html#a96093a5508ab6a6aed4946cc811e40b0">assembler_process_data_section</a> (<a class="el" href="structassembler__t.html">assembler_t</a> *, <a class="el" href="structchip8__t.html">chip8_t</a> *)</td></tr>
+<tr class="separator:a96093a5508ab6a6aed4946cc811e40b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad23454ed022ce73eb0c607b98ae30604"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="assembler_8c.html#ad23454ed022ce73eb0c607b98ae30604">assembler_process_text_section</a> (<a class="el" href="structassembler__t.html">assembler_t</a> *assembler, <a class="el" href="structchip8__t.html">chip8_t</a> *chip8)</td></tr>
 <tr class="memdesc:ad23454ed022ce73eb0c607b98ae30604"><td class="mdescLeft">&#160;</td><td class="mdescRight">Processes the text section of a chip8 program.  <a href="assembler_8c.html#ad23454ed022ce73eb0c607b98ae30604">More...</a><br /></td></tr>
 <tr class="separator:ad23454ed022ce73eb0c607b98ae30604"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a17abccff086051fe413ee89219c1ad78"><td class="memItemLeft" align="right" valign="top">static int32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="assembler_8c.html#a17abccff086051fe413ee89219c1ad78">assembler_scan_opcode</a> (<a class="el" href="structassembler__t.html">assembler_t</a> *assembler)</td></tr>
+<tr class="memdesc:a17abccff086051fe413ee89219c1ad78"><td class="mdescLeft">&#160;</td><td class="mdescRight">Scans the next opcode in the sourcefile.  <a href="assembler_8c.html#a17abccff086051fe413ee89219c1ad78">More...</a><br /></td></tr>
+<tr class="separator:a17abccff086051fe413ee89219c1ad78"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a48b7c5d017932f5c9198f57cdc804a7c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="assembler_8c.html#a48b7c5d017932f5c9198f57cdc804a7c">assembler_initialize</a> (<a class="el" href="structassembler__t.html">assembler_t</a> *assembler, char const *source)</td></tr>
 <tr class="memdesc:a48b7c5d017932f5c9198f57cdc804a7c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes the assembler.  <a href="assembler_8c.html#a48b7c5d017932f5c9198f57cdc804a7c">More...</a><br /></td></tr>
 <tr class="separator:a48b7c5d017932f5c9198f57cdc804a7c"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -382,15 +385,16 @@ Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Converts the mnemonic representation of a number in the hexadecimal formtat from the the sourcefile to it's representation in binary. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">assembler</td><td></td></tr>
-    <tr><td class="paramname">digitCount</td><td></td></tr>
+    <tr><td class="paramname">assembler</td><td>The assembler struct that is used to store the state of the process </td></tr>
+    <tr><td class="paramname">digitCount</td><td>The amount of digits the number has </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd><br  />
- </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>The binary representation of the number </dd></dl>
 
 </div>
 </div>
@@ -603,6 +607,42 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The next character in the sourcefile </dd></dl>
+
+</div>
+</div>
+<a id="a96093a5508ab6a6aed4946cc811e40b0" name="a96093a5508ab6a6aed4946cc811e40b0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a96093a5508ab6a6aed4946cc811e40b0">&#9670;&#160;</a></span>assembler_process_data_section()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void assembler_process_data_section </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structassembler__t.html">assembler_t</a> *&#160;</td>
+          <td class="paramname"><em>assembler</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structchip8__t.html">chip8_t</a> *&#160;</td>
+          <td class="paramname"><em>chip8</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
 
 </div>
 </div>

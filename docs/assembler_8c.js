@@ -12,6 +12,7 @@ var assembler_8c =
     [ "assembler_is_decimal", "assembler_8c.html#afaac85b38d611257453f72f6689a98d4", null ],
     [ "assembler_is_hexa", "assembler_8c.html#adbeb0be4b19b0c022891bba367d8f3e6", null ],
     [ "assembler_peek", "assembler_8c.html#a30ffc111e94c2feea7c67449d2c9f180", null ],
+    [ "assembler_process_data_section", "assembler_8c.html#a96093a5508ab6a6aed4946cc811e40b0", null ],
     [ "assembler_process_file", "assembler_8c.html#afbe10e607acfbdebabb0fb13726056d0", null ],
     [ "assembler_process_section", "assembler_8c.html#a6a01ce21b6e872b3ccf3ed0adc24234f", null ],
     [ "assembler_process_text_section", "assembler_8c.html#ad23454ed022ce73eb0c607b98ae30604", null ],
