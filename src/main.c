@@ -36,26 +36,31 @@ static void sdl_quit(SDL_Window **, SDL_Renderer **);
 /// that were defined by the user when the program was started
 /// @return 0 if everything went well
 int main(int argc, char ** args) {
-    SDL_Window * window = NULL;
-    SDL_Renderer * renderer = NULL;
+
     if (argc == 2) {
-        if ((strlen(*(args + 1)) == 7 && !strncmp(*(args + 1), "--version", 7)) || (strlen(args[1]) == 2 && !strncmp(args[1], "-v", 2)))
+        if ((strlen(args[1]) == 7 && !strncmp(args[1], "--version", 7)) || (strlen(args[1]) == 2 && !strncmp(args[1], "-v", 2)))
             printf("%s Version %i.%i\n", PROJECT_NAME, PROJECT_VERSION_MAJOR, PROJECT_VERSION_MINOR);
-        else if ((strlen(*(args + 1)) == 6 && !strncmp(*(args + 1), "--help", 6)) || (strlen(*(args + 1)) == 2 && !strncmp(*(args + 1), "-h", 2)))
+        else if ((strlen(args[1]) == 6 && !strncmp(args[1], "--help", 6)) || (strlen(args[1]) == 2 && !strncmp(args[1], "-h", 2)))
             show_help();
         else {
-            char * source = read_file(*(args + 1));
-            assembler_t lexer;
+            char * source;
+            assembler_t assembler;
             chip8_t chip8;
-            assembler_initialize(&lexer, source);
-            chip8_init(&chip8);
+            SDL_Window * window;
+            SDL_Renderer * renderer;
             int32_t opcode;
-            uint16_t memoryLocation = 512;
+            uint16_t memoryLocation;
+            window = NULL;
+            renderer = NULL;
+            source = read_file(*(args + 1));
+            assembler_initialize(&assembler, source);
+            chip8_init(&chip8);
+            memoryLocation = 512;
 #ifdef PRINT_BYTE_CODE
             printf("=== Code ===\n");
 #endif
             // Writes all the parsed opcodes into memory
-            while ((opcode = assembler_scan_opcode(&lexer)) >= 0 && memoryLocation <= 4096)
+            while ((opcode = assembler_scan_opcode(&assembler)) >= 0 && memoryLocation <= 4096)
                 chip8_write_opcode_to_memory(&chip8, &memoryLocation, opcode);
             // Initialzes the SDL subsystem
             if (sdl_init(&window, &renderer))
