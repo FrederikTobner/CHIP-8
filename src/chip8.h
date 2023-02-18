@@ -16,8 +16,8 @@
 #ifndef CHIP8_CHIP8_H_
 #define CHIP8_CHIP8_H_
 
-#include "pre_compiled_header.h"
 #include "../external/SDL/include/SDL.h"
+#include "pre_compiled_header.h"
 
 /// The graphics system of the chip-8 has a height of 32 pixels
 #define GRAPHICS_SYSTEM_HEIGHT (32)
@@ -26,8 +26,7 @@
 #define GRAPHICS_SYSTEM_WIDTH (64)
 
 /// @brief Models a chip8 emulator
-typedef struct
-{        
+typedef struct {
     /// The opcode that is currently executed
     uint16_t currentOpcode;
     /// 16-bit register used for storing an adress in memory
@@ -38,7 +37,7 @@ typedef struct
     uint8_t delayTimer;
     /// Sound timer of the virtual machine
     uint8_t soundTimer;
-    /// Stackpointer 
+    /// Stackpointer
     uint16_t * stackPointer;
     /// Display of the virtual machine
     uint8_t graphicsSystem[64][32];

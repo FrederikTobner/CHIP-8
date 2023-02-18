@@ -14,7 +14,7 @@ Simple [CHIP-8](https://en.wikipedia.org/wiki/CHIP-8) emulator written in C, wit
 
 The emulator has the following dependencies
 
-* [SDL](https://github.com/libsdl-org/SDL) a cross-platform development library designed to provide low level access to audio, keyboard, mouse, joystick, and graphics hardware.
+* [SDL 2.0](https://github.com/libsdl-org/SDL) a cross-platform development library designed to provide low level access to audio, keyboard, mouse, joystick, and graphics hardware.
 
 ## License
 

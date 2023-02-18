@@ -19,8 +19,7 @@
 #include "pre_compiled_header.h"
 
 /// @brief Type definition of a assembler
-typedef struct
-{
+typedef struct {
     /// Pointer to the start of the current line
     const char * start;
     /// Pointer to the current position in the current line

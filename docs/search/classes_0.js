@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['chip8_5ft',['chip8_t',['../structchip8__t.html',1,'']]]
+  ['assembler_5ft_75',['assembler_t',['../structassembler__t.html',1,'']]]
 ];

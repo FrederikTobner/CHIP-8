@@ -12,6 +12,18 @@
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
             "console": "externalTerminal"
+        },
+        {
+            "name": "Debug - GDB",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/build/src/CHIP-8",
+            "args": [
+                "${workspaceFolder}/examples/HelloWorld.cp8",
+            ],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "externalConsole": true,
         }
     ]
 }

@@ -13,66 +13,58 @@
  * License for more details.                                                *
  ****************************************************************************/
 
-
 #include "../external/SDL/include/SDL.h"
 
+#include "../build/src/chip8_config.h"
 #include "assembler.h"
 #include "chip8.h"
-#include "../build/src/chip8_config.h"
 #include "pre_compiled_header.h"
 
 /// Short message that explains the usage of the CHIP-8 emulator
-#define CHIP8_USAGE_MESSAGE     \
-"Usage: Chip8 [path]\n"
+#define CHIP8_USAGE_MESSAGE "Usage: Chip8 [path]\n"
 
-// The window we'll be rendering to
-static SDL_Window * gWindow = NULL;
-
-// The window renderer
-static SDL_Renderer * gRenderer = NULL;
-
-static char * read_file(char const * path);
-static void io_error(char const * format, ...);
+static char * read_file(char const *);
+static void io_error(char const *, ...);
 static void show_help();
-static void sdl_initialize();
-static void close();
+static int sdl_init(SDL_Window **, SDL_Renderer **);
+static void sdl_quit(SDL_Window **, SDL_Renderer **);
 
 /// @brief Main entry point of the CHIP-8 program
-/// @param argc The amount of arguments that were used when the program was started
-/// @param argv Pointer to the arguments array that contains all the arguments that were defined by the user when the program was started
+/// @param argc The amount of arguments that were used when the program was
+/// started
+/// @param argv Pointer to the arguments array that contains all the arguments
+/// that were defined by the user when the program was started
 /// @return 0 if everything went well
-int main(int argc, char **args)
-{
-    if (argc == 2)
-    {
-        if(!strncmp(args[1], "--version", 7) || !strncmp(args[1], "-v", 2))
+int main(int argc, char ** args) {
+    SDL_Window * window = NULL;
+    SDL_Renderer * renderer = NULL;
+    if (argc == 2) {
+        if ((strlen(*(args + 1)) == 7 && !strncmp(*(args + 1), "--version", 7)) || (strlen(args[1]) == 2 && !strncmp(args[1], "-v", 2)))
             printf("%s Version %i.%i\n", PROJECT_NAME, PROJECT_VERSION_MAJOR, PROJECT_VERSION_MINOR);
-        else if(!strncmp(args[1], "--help", 6) || !strncmp(args[1], "-h", 2))
+        else if ((strlen(*(args + 1)) == 6 && !strncmp(*(args + 1), "--help", 6)) || (strlen(*(args + 1)) == 2 && !strncmp(*(args + 1), "-h", 2)))
             show_help();
-        else
-        {
-            char * source = read_file(args[1]);
+        else {
+            char * source = read_file(*(args + 1));
             assembler_t lexer;
             chip8_t chip8;
             assembler_initialize(&lexer, source);
             chip8_init(&chip8);
             int32_t opcode;
             uint16_t memoryLocation = 512;
-            #ifdef PRINT_BYTE_CODE
-                printf("=== Code ===\n");
-            #endif
+#ifdef PRINT_BYTE_CODE
+            printf("=== Code ===\n");
+#endif
             // Writes all the parsed opcodes into memory
-            while((opcode = assembler_scan_opcode(&lexer)) >= 0 && memoryLocation <= 4096)
+            while ((opcode = assembler_scan_opcode(&lexer)) >= 0 && memoryLocation <= 4096)
                 chip8_write_opcode_to_memory(&chip8, &memoryLocation, opcode);
             // Initialzes the SDL subsystem
-            sdl_initialize();
-            chip8_execute(&chip8, gRenderer);
+            if (sdl_init(&window, &renderer))
+                return EXIT_CODE_SYSTEM_ERROR;
+            chip8_execute(&chip8, renderer);
             free(source);
-            close();
+            sdl_quit(&window, &renderer);
         }
-    }
-    else
-    {
+    } else {
         fprintf(stderr, CHIP8_USAGE_MESSAGE);
         exit(EXIT_CODE_COMMAND_LINE_USAGE_ERROR);
     }
@@ -82,8 +74,7 @@ int main(int argc, char **args)
 /// @brief Reports an error that has occured during a IO operation
 /// @param format The format of the error message
 /// @param args var-args Used for the error message
-static void io_error(char const * format, ...)
-{
+static void io_error(char const * format, ...) {
     va_list args;
     va_start(args, format);
     vfprintf(stderr, format, args);
@@ -95,8 +86,7 @@ static void io_error(char const * format, ...)
 /// @brief Reads a file from a specified location and returns the content of the file as a character pointer
 /// @param path The path of the file that is read
 /// @return The content of the file as a character pointer
-static char * read_file(char const * path)
-{
+static char * read_file(char const * path) {
     // Opens a file of a nonspecified format (b) in read mode (r)
     FILE * file = fopen(path, "rb");
     if (!file)
@@ -117,61 +107,53 @@ static char * read_file(char const * path)
 }
 
 /// @brief Displays the help of the emulator
-static void show_help()
-{
+static void show_help() {
     printf("%s Help\n%s\n\n", PROJECT_NAME, CHIP8_USAGE_MESSAGE);
     printf("Options\n");
     printf("  -h, --help\t\tDisplay this help and exit\n");
-    printf("  -v, --version\t\tShows the version of the installed emulator and exit\n\n");
+    printf("  -v, --version\t\tShows the version of the installed emulator and "
+           "exit\n\n");
 }
 
-static void sdl_initialize()
-{
-    // Initialization flag
-    bool success = true;
-
-    // Initialize SDL
-    if (SDL_Init(SDL_INIT_VIDEO) < 0)
-    {
+/// @brief Initialize SDL
+/// @param window The window where the display of the emulator is emulated
+/// @param renderer The renderer that is used to create image from
+/// @return 0 if everything went well, -1 if an error occured
+static int sdl_init(SDL_Window ** window, SDL_Renderer ** renderer) {
+    if (SDL_Init(SDL_INIT_VIDEO) < 0) {
         printf("SDL could not initialize! SDL Error: %s\n", SDL_GetError());
-        success = false;
-    }
-    else
-    {
+        return -1;
+    } else {
         // Set texture filtering to linear
         if (!SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "1"))
             printf("Warning: Linear texture filtering not enabled!");
 
         // Create window
-        gWindow = SDL_CreateWindow("CHIP-8", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 640, 320, SDL_WINDOW_SHOWN);
-        if (gWindow == NULL)
-        {
+        *window = SDL_CreateWindow("CHIP-8", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, GRAPHICS_SYSTEM_WIDTH, GRAPHICS_SYSTEM_HEIGHT, SDL_WINDOW_SHOWN);
+        if (*window == NULL) {
             printf("Window could not be created! SDL Error: %s\n", SDL_GetError());
-            success = false;
-        }
-        else
-        {
+            return -1;
+        } else {
             // Create renderer for window
-            gRenderer = SDL_CreateRenderer(gWindow, -1, SDL_RENDERER_ACCELERATED);
-            if (gRenderer == NULL)
-            {
+            *renderer = SDL_CreateRenderer(*window, -1, SDL_RENDERER_ACCELERATED);
+            if (*renderer == NULL) {
                 printf("Renderer could not be created! SDL Error: %s\n", SDL_GetError());
-                success = false;
-            }
-            else                
-                SDL_SetRenderDrawColor(gRenderer, 0xFF, 0xFF, 0xFF, 0xFF); // Initialize renderer color to white
+                return -1;
+            } else
+                SDL_SetRenderDrawColor(*renderer, 0xFF, 0xFF, 0xFF, 0xFF); // white
         }
     }
-
+    return 0;
 }
 
-static void close()
-{
+/// @brief Quits SDL
+/// @param window The window that is closed
+/// @param renderer The renderer used to render the display of the emulator
+static void sdl_quit(SDL_Window ** window, SDL_Renderer ** renderer) {
     // Destroy window
-    SDL_DestroyRenderer(gRenderer);
-    SDL_DestroyWindow(gWindow);
-    gWindow = NULL;
-    gRenderer = NULL;
-
+    SDL_DestroyRenderer(*renderer);
+    SDL_DestroyWindow(*window);
+    *window = NULL;
+    *renderer = NULL;
     SDL_Quit();
 }
