@@ -14,6 +14,7 @@
  ****************************************************************************/
 
 #include "assembler.h"
+#include "chip8.h"
 
 static inline char assembler_advance(assembler_t * assembler);
 static uint16_t assembler_hexa(assembler_t * assembler, size_t digitCount);
@@ -29,6 +30,9 @@ static uint8_t assembler_read_registers(assembler_t * assembler);
 static inline void assembler_report_error(assembler_t assembler);
 static uint16_t assembler_scan_mnemonic(assembler_t * assembler, char c);
 static void assembler_skip_whitespace(assembler_t * assembler);
+static int assembler_process_section(assembler_t * assembler, chip8_t * chip8);
+static int32_t assembler_scan_opcode(assembler_t * assembler);
+static void assembler_process_text_section(assembler_t * assembler, chip8_t * chip8);
 
 /// @brief Initialzes the assembler
 /// @param assembler The assembler that is inialized
@@ -39,10 +43,47 @@ void assembler_initialize(assembler_t * assembler, char const * source) {
     assembler->line = 1u;
 }
 
+int assembler_parse_file(assembler_t * assembler, chip8_t * chip8) {
+    assembler_skip_whitespace(assembler);
+    while(!assembler_is_at_end(*assembler))
+        if(assembler_process_section(assembler, chip8))
+            return -1;
+
+    return 0;
+}
+
+static int assembler_process_section(assembler_t * assembler, chip8_t * chip8) {
+    if (assembler_is_at_end(*assembler))
+        return -1;
+    if (strcmp(assembler->current, "section"))
+        assembler->current += 7;
+    else {
+        printf("No section in source file");
+        return -1;
+    }
+    assembler_skip_whitespace(assembler);
+    if(strcmp(assembler->current, ".text")) {
+        assembler_process_text_section(assembler, chip8);    
+    }
+    return 0;
+}
+
+static void assembler_process_text_section(assembler_t * assembler, chip8_t * chip8) {
+    assembler->current += 5;
+    int32_t opcode;
+    uint16_t memoryLocation = 512;
+#ifdef PRINT_BYTE_CODE
+    printf("=== Code ===\n");
+#endif
+    // Writes all the parsed opcodes into memory
+    while ((opcode = assembler_scan_opcode(assembler)) >= 0 && memoryLocation <= 4096)
+       chip8_write_opcode_to_memory(chip8, &memoryLocation, opcode);
+}
+
 /// @brief Scans the next opcode in the sourcefile
 /// @param assembler The assembler where the next opcode is scanned
 /// @return The opcode or -1 if we have reached the end of the file or the opcode wasn't processed properly
-int32_t assembler_scan_opcode(assembler_t * assembler) {
+static int32_t assembler_scan_opcode(assembler_t * assembler) {
     assembler_skip_whitespace(assembler);
     if (assembler_is_at_end(*assembler))
         return -1;
@@ -153,7 +194,7 @@ static uint8_t assembler_read_registers(assembler_t * assembler) {
 
 static inline void assembler_report_error(assembler_t assembler) {
     printf("Unexpected character %c in opcode sequence in line %i", *assembler.current, assembler.line);
-    exit(EXIT_CODE_COMPILATION_ERROR);
+    exit(EXIT_CODE_ASSEMBLANCE_ERROR);
 }
 
 static uint16_t assembler_scan_mnemonic(assembler_t * assembler, char c) {

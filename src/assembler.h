@@ -17,6 +17,7 @@
 #define CHIP8_ASSEMLER_H_
 
 #include "pre_compiled_header.h"
+#include "chip8.h"
 
 /// @brief Type definition of a assembler
 typedef struct {
@@ -30,6 +31,6 @@ typedef struct {
 
 void assembler_initialize(assembler_t * assembler, char const * source);
 
-int32_t assembler_scan_opcode(assembler_t * assembler);
+int assembler_parse_file(assembler_t * assembler, chip8_t * chip8);
 
 #endif

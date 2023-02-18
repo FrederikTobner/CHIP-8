@@ -47,19 +47,12 @@ int main(int argc, char ** args) {
         else {
             char * source;
             assembler_t assembler;
-            chip8_t chip8;
-            int32_t opcode;
-            uint16_t memoryLocation;
+            chip8_t chip8;            
             source = read_file(args[1]);
             assembler_initialize(&assembler, source);
-            chip8_init(&chip8);
-            memoryLocation = 512;
-#ifdef PRINT_BYTE_CODE
-            printf("=== Code ===\n");
-#endif
-            // Writes all the parsed opcodes into memory
-            while ((opcode = assembler_scan_opcode(&assembler)) >= 0 && memoryLocation <= 4096)
-                chip8_write_opcode_to_memory(&chip8, &memoryLocation, opcode);
+            chip8_init(&chip8);           
+            if (assembler_parse_file(&assembler, &chip8))
+                exit(EXIT_CODE_ASSEMBLANCE_ERROR);
             // Initialzes the SDL subsystem           
             chip8_execute(&chip8);
             free(source);
