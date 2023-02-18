@@ -22,6 +22,10 @@
 #include "chip8.h"
 
 static inline char assembler_advance(assembler_t *);
+static uint16_t assembler_convert_address_to_binary(assembler_t *);
+static uint16_t assembler_convert_mnemonic_to_binary(assembler_t *, char);
+static uint8_t assembler_convert_register_to_binary(assembler_t *);
+static uint8_t assembler_convert_registers_to_binary(assembler_t *);
 static uint16_t assembler_hexa(assembler_t *, size_t);
 static inline bool assembler_is_alpha(char);
 static inline bool assembler_is_at_end(assembler_t);
@@ -29,16 +33,13 @@ static inline bool assembler_is_decimal(char);
 static inline bool assembler_is_hexa(char);
 static inline char assembler_peek(assembler_t);
 static uint8_t assembler_read_8bit_number(assembler_t *);
-static uint16_t assembler_convert_address_to_binary(assembler_t *);
-static uint8_t assembler_convert_register_to_binary(assembler_t *);
-static uint8_t assembler_convert_registers_to_binary(assembler_t *);
 static inline void assembler_report_error(assembler_t);
-static uint16_t assembler_convert_mnemonic_to_binary(assembler_t *, char);
 static void assembler_skip_whitespace(assembler_t *);
 static int assembler_process_section(assembler_t *, chip8_t *);
-static int32_t assembler_scan_opcode(assembler_t *);
+static void assembler_process_data_section(assembler_t *, chip8_t *);
 static void assembler_process_text_section(assembler_t *, chip8_t *);
-static void assembler_process_data_section(assembler_t * assembler, chip8_t * chip8);
+static int32_t assembler_scan_opcode(assembler_t *);
+
 
 void assembler_initialize(assembler_t * assembler, char const * source) {
     assembler->start = source;
@@ -78,19 +79,15 @@ static int assembler_process_section(assembler_t * assembler, chip8_t * chip8) {
     else {
         return -1;
     }
-    assembler_skip_whitespace(assembler);
     return 0;
     
 }
 
 static void assembler_process_data_section(assembler_t * assembler, chip8_t * chip8) {
-    assembler->current += 6;
-    uint16_t memoryLocation = 0;
+    assembler->current += 6;    
     assembler_skip_whitespace(assembler);
-    while(!memcmp(assembler->current, "0x", 2)) {
+    for (uint16_t memoryLocation = 0x0050; !memcmp(assembler->current, "0x", 2) && memoryLocation < 0x0200; assembler_skip_whitespace(assembler))
         chip8_write_byte_to_memory(chip8, &memoryLocation, assembler_read_8bit_number(assembler));
-        assembler_skip_whitespace(assembler);
-    }
 }
 
 /// @brief Processes the text section of a chip8 program

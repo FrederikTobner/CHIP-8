@@ -406,9 +406,8 @@ static int8_t chip8_execute_next_opcode(chip8_t * chip8) {
             break;
         }
         case 0x29:
-            // 0xFX29 - Sets I to the location of the sprite for the character in VX. Characters 0-F (in hexadecimal)
-            // are represented by a 4x5 font The characters are stored at the address 0x0050 and are 20 bit large (4 by
-            // 5 bits) -> Therefore the memory from 0x0050 until 0x0100
+            // 0xFX29 - Sets I to the location of the sprite for the character in VX. Characters
+            // are represented by a 4x5 font The characters are stored at the address 0x0050 and are 20 bit large (4 by 5 bits)
             break;
         case 0x33: /* 0xFX33 - Stores the binary-coded decimal representation of VX,
                     * with the most significant of three digits at the address in I,

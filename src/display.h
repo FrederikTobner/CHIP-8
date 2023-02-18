@@ -29,7 +29,7 @@
 /// The graphics system of the chip-8 has a width of 64 pixels
 #define GRAPHICS_SYSTEM_WIDTH (64)
 
-#define SCALE_FACTOR (10)
+#define SCALE_FACTOR (20)
 
 typedef struct {
     SDL_Window * window;
