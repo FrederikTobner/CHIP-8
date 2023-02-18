@@ -20,7 +20,9 @@
 
 #include "../external/SDL/include/SDL.h"
 
-/// Renders the display of the passed chip8 struct
+/// @brief Renders the display of the passed chip8 struct
+/// @param chip8
+/// @param renderer
 void display_render(chip8_t chip8, SDL_Renderer * renderer);
 
 #endif

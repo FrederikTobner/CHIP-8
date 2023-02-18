@@ -405,13 +405,8 @@ static int8_t chip8_execute_next_opcode(chip8_t * chip8) {
             DEFINE_X
             uint8_t value = chip8->V[x];
             uint8_t base = 100;
-            for (uint32_t i = 0;; i++) {
+            for (uint8_t i = 0; i < 3; i++, value %= base, base /= 10)
                 chip8->memory[(chip8->I + i) & 4095] = value / base;
-                if (base == 1)
-                    break;
-                value %= base;
-                base /= 10;
-            }
             break;
         }
         case 0x55: /* 0xFX55 - Stores from V0 to VX (including VX) in memory, starting at address I.

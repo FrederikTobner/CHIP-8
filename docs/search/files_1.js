@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['debug_2ec',['debug.c',['../debug_8c.html',1,'']]],
-  ['debug_2eh',['debug.h',['../debug_8h.html',1,'']]]
+  ['chip8_2ec_79',['chip8.c',['../chip8_8c.html',1,'']]],
+  ['chip8_2eh_80',['chip8.h',['../chip8_8h.html',1,'']]]
 ];

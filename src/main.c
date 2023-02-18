@@ -83,8 +83,7 @@ static void io_error(char const * format, ...) {
     exit(EXIT_CODE_INPUT_OUTPUT_ERROR);
 }
 
-/// @brief Reads a file from a specified location and returns the content of the
-/// file as a character pointer
+/// @brief Reads a file from a specified location and returns the content of the file as a character pointer
 /// @param path The path of the file that is read
 /// @return The content of the file as a character pointer
 static char * read_file(char const * path) {
@@ -116,7 +115,10 @@ static void show_help() {
            "exit\n\n");
 }
 
-/// Initialize SDL
+/// @brief Initialize SDL
+/// @param window The window where the display of the emulator is emulated
+/// @param renderer The renderer that is used to create image from
+/// @return 0 if everything went well, -1 if an error occured
 static int sdl_init(SDL_Window ** window, SDL_Renderer ** renderer) {
     if (SDL_Init(SDL_INIT_VIDEO) < 0) {
         printf("SDL could not initialize! SDL Error: %s\n", SDL_GetError());
@@ -138,13 +140,15 @@ static int sdl_init(SDL_Window ** window, SDL_Renderer ** renderer) {
                 printf("Renderer could not be created! SDL Error: %s\n", SDL_GetError());
                 return -1;
             } else
-                SDL_SetRenderDrawColor(*renderer, 0xFF, 0xFF, 0xFF,
-                                       0xFF); // Initialize renderer color to white
+                SDL_SetRenderDrawColor(*renderer, 0xFF, 0xFF, 0xFF, 0xFF); // white
         }
     }
     return 0;
 }
 
+/// @brief Quits SDL
+/// @param window The window that is closed
+/// @param renderer The renderer used to render the display of the emulator
 static void sdl_quit(SDL_Window ** window, SDL_Renderer ** renderer) {
     // Destroy window
     SDL_DestroyRenderer(*renderer);

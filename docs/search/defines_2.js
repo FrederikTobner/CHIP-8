@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['print_5fbyte_5fcode',['PRINT_BYTE_CODE',['../flags_8h.html#a44d3216dcefe3c9a281efc18d4244d9a',1,'flags.h']]]
+  ['graphics_5fsystem_5fheight_145',['GRAPHICS_SYSTEM_HEIGHT',['../chip8_8h.html#a846edf15a40fb5b159f0b8bd4e993c80',1,'chip8.h']]],
+  ['graphics_5fsystem_5fwidth_146',['GRAPHICS_SYSTEM_WIDTH',['../chip8_8h.html#aa92341dbbef8194f52ad4ded98c8ce3d',1,'chip8.h']]]
 ];

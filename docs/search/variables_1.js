@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['delay_5ftimer',['delay_timer',['../structchip8__t.html#a40d51e7d7d0a66f754598200944d8bba',1,'chip8_t']]]
+  ['delaytimer_120',['delayTimer',['../structchip8__t.html#a214cd34f2a95690588c543de0c6bf951',1,'chip8_t']]]
 ];

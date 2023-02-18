@@ -1,4 +1,5 @@
 ---
+AllowAllArgumentsOnNextLine: true
 AllowShortCaseLabelsOnASingleLine: false
 AllowShortLoopsOnASingleLine: false
 AllowShortEnumsOnASingleLine: false
