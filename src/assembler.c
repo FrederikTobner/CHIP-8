@@ -13,43 +13,93 @@
  * License for more details.                                                *
  ****************************************************************************/
 
+/**
+ * @file assembler.c
+ * @brief Definitions regarding the assembler of the emulator
+ */
+
 #include "assembler.h"
+#include "chip8.h"
 
-static inline char assembler_advance(assembler_t * assembler);
-static uint16_t assembler_hexa(assembler_t * assembler, size_t digitCount);
-static inline bool assembler_is_alpha(char c);
-static inline bool assembler_is_at_end(assembler_t assembler);
-static inline bool assembler_is_decimal(char c);
-static inline bool assembler_is_hexa(char c);
-static inline char assembler_peek(assembler_t assembler);
-static uint8_t assembler_read_8bit_number(assembler_t * assembler);
-static uint16_t assembler_read_12bit_number(assembler_t * assembler);
-static uint8_t assembler_read_register(assembler_t * assembler);
-static uint8_t assembler_read_registers(assembler_t * assembler);
-static inline void assembler_report_error(assembler_t assembler);
-static uint16_t assembler_scan_mnemonic(assembler_t * assembler, char c);
-static void assembler_skip_whitespace(assembler_t * assembler);
+static inline char assembler_advance(assembler_t *);
+static uint16_t assembler_hexa(assembler_t *, size_t);
+static inline bool assembler_is_alpha(char);
+static inline bool assembler_is_at_end(assembler_t);
+static inline bool assembler_is_decimal(char);
+static inline bool assembler_is_hexa(char);
+static inline char assembler_peek(assembler_t);
+static uint8_t assembler_read_8bit_number(assembler_t *);
+static uint16_t assembler_convert_address_to_binary(assembler_t *);
+static uint8_t assembler_convert_register_to_binary(assembler_t *);
+static uint8_t assembler_convert_registers_to_binary(assembler_t *);
+static inline void assembler_report_error(assembler_t);
+static uint16_t assembler_convert_mnemonic_to_binary(assembler_t *, char);
+static void assembler_skip_whitespace(assembler_t *);
+static int assembler_process_section(assembler_t *, chip8_t *);
+static int32_t assembler_scan_opcode(assembler_t *);
+static void assembler_process_text_section(assembler_t *, chip8_t *);
 
-/// @brief Initialzes the assembler
-/// @param assembler The assembler that is inialized
-/// @param source The content of the source file that is processed by the assembler
 void assembler_initialize(assembler_t * assembler, char const * source) {
     assembler->start = source;
     assembler->current = source;
     assembler->line = 1u;
 }
 
+int assembler_process_file(assembler_t * assembler, chip8_t * chip8) {
+    assembler_skip_whitespace(assembler);
+    while(!assembler_is_at_end(*assembler))
+        if(assembler_process_section(assembler, chip8))
+            return -1;
+
+    return 0;
+}
+
+/// @brief Processes a section in a chip8 assembly file
+/// @param assembler  The assembler that processes the program
+/// @param chip8 The emulator where the program will be executed
+/// @return 0 if everything went well, -1 if an error occured
+static int assembler_process_section(assembler_t * assembler, chip8_t * chip8) {
+    if (assembler_is_at_end(*assembler))
+        return -1;
+    if (strcmp(assembler->current, "section"))
+        assembler->current += 7;
+    else {
+        printf("No section in source file");
+        return -1;
+    }
+    assembler_skip_whitespace(assembler);
+    if(strcmp(assembler->current, ".text")) {
+        assembler_process_text_section(assembler, chip8);    
+    }
+    return 0;
+}
+
+/// @brief Processes the text section of a chip8 program
+/// @param assembler The assembler that processes the section
+/// @param chip8 The emulator where the program will be executed
+static void assembler_process_text_section(assembler_t * assembler, chip8_t * chip8) {
+    assembler->current += 5;
+    int32_t opcode;
+    uint16_t memoryLocation = 512;
+#ifdef PRINT_BYTE_CODE
+    printf("=== Code ===\n");
+#endif
+    // Writes all the parsed opcodes into memory
+    while ((opcode = assembler_scan_opcode(assembler)) >= 0 && memoryLocation <= 4096)
+       chip8_write_opcode_to_memory(chip8, &memoryLocation, opcode);
+}
+
 /// @brief Scans the next opcode in the sourcefile
 /// @param assembler The assembler where the next opcode is scanned
 /// @return The opcode or -1 if we have reached the end of the file or the opcode wasn't processed properly
-int32_t assembler_scan_opcode(assembler_t * assembler) {
+static int32_t assembler_scan_opcode(assembler_t * assembler) {
     assembler_skip_whitespace(assembler);
     if (assembler_is_at_end(*assembler))
         return -1;
     assembler->start = assembler->current;
     char c = assembler_advance(assembler);
     if (assembler_is_alpha(c))
-        return assembler_scan_mnemonic(assembler, c);
+        return assembler_convert_mnemonic_to_binary(assembler, c);
     if (c == '0' && (assembler_peek(*assembler) == 'x' || assembler_peek(*assembler) == 'X'))
         return assembler_hexa(assembler, 4);
     return -1;
@@ -60,6 +110,10 @@ int32_t assembler_scan_opcode(assembler_t * assembler) {
 /// @return The current character
 static inline char assembler_advance(assembler_t * assembler) { return *assembler->current++; }
 
+/// @brief 
+/// @param assembler 
+/// @param digitCount 
+/// @return 
 static uint16_t assembler_hexa(assembler_t * assembler, size_t digitCount) {
     assembler->current++;
     uint16_t number = 0;
@@ -77,20 +131,34 @@ static uint16_t assembler_hexa(assembler_t * assembler, size_t digitCount) {
     return number;
 }
 
-// checks if the char c is a from the alphabet
+/// @brief Checks if the char c is a from the alphabet
+/// @param c The character that is checked
+/// @return true if the char is from the aphabet, false if not
 static inline bool assembler_is_alpha(char c) { return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z'); }
 
-// Determines wheather we reached the end in the sourceCode
+/// @brief Determines wheather we reached the end in the sourceCode
+/// @param assembler The assembler where the current position is checked
+/// @return true if the end of the sourcefile has been reached, false if not
 static inline bool assembler_is_at_end(assembler_t assembler) { return *assembler.current == '\0'; }
 
-// checks if the char c is a digit
+/// @brief Checks if the char c is a decimal digit
+/// @param c The character that is checked
+/// @return true if the char is a decimal digit, false if not
 static inline bool assembler_is_decimal(char c) { return c >= '0' && c <= '9'; }
 
-// checks if the char c is a hexadecimal digit
+/// @brief Checks if the char c is a hexadecimal digit
+/// @param c The character that is checked
+/// @return true if the char is a hexadecimal digit, false if not
 static inline bool assembler_is_hexa(char c) { return (c >= '0' && c <= '9') || (c >= 'a' && c <= 'f') || (c >= 'A' && c <= 'F'); }
 
+/// @brief Used to get the next character in the sourcefile without advancing
+/// @param assembler The assembler struct that is used to track the process
+/// @return The next character in the sourcefile
 static inline char assembler_peek(assembler_t assembler) { return *assembler.current; }
 
+/// @brief Converts the mnemnic representation of a byte to binary
+/// @param assembler The assembler that proceeses the assembly file
+/// @return The binary representation of the byte
 static uint8_t assembler_read_8bit_number(assembler_t * assembler) {
     assembler_skip_whitespace(assembler);
     char c = assembler_advance(assembler);
@@ -107,7 +175,10 @@ static uint8_t assembler_read_8bit_number(assembler_t * assembler) {
 #endif
 }
 
-static uint16_t assembler_read_12bit_number(assembler_t * assembler) {
+/// @brief Converts the mnemnic representation of a address to binary
+/// @param assembler The assembler that proceeses the assembly file
+/// @return The binary representation of the address
+static uint16_t assembler_convert_address_to_binary(assembler_t * assembler) {
     assembler_skip_whitespace(assembler);
     char c = assembler_advance(assembler);
     if (c == '0' && (assembler_peek(*assembler) == 'x' || assembler_peek(*assembler) == 'X'))
@@ -123,7 +194,10 @@ static uint16_t assembler_read_12bit_number(assembler_t * assembler) {
 #endif
 }
 
-static uint8_t assembler_read_register(assembler_t * assembler) {
+/// @brief Converts the mnemnic representation of a register to binary
+/// @param assembler The assembler that proceeses the assembly file
+/// @return The binary representation of the register
+static uint8_t assembler_convert_register_to_binary(assembler_t * assembler) {
     assembler_skip_whitespace(assembler);
     switch (assembler_advance(assembler)) {
     case 'V':
@@ -145,18 +219,27 @@ static uint8_t assembler_read_register(assembler_t * assembler) {
 #endif
 }
 
-static uint8_t assembler_read_registers(assembler_t * assembler) {
-    uint8_t value = assembler_read_register(assembler);
+/// @brief Converts the mnemnic representation of a registers to binary
+/// @param assembler The assembler that proceeses the assembly file
+/// @return The binary representation of the registers
+static uint8_t assembler_convert_registers_to_binary(assembler_t * assembler) {
+    uint8_t value = assembler_convert_register_to_binary(assembler);
     value <<= 4;
-    return value += assembler_read_register(assembler);
+    return value += assembler_convert_register_to_binary(assembler);
 }
 
+/// @brief Reports an error when the assembly waas processed
+/// @param assembler The assembler where the error occured
 static inline void assembler_report_error(assembler_t assembler) {
     printf("Unexpected character %c in opcode sequence in line %i", *assembler.current, assembler.line);
-    exit(EXIT_CODE_COMPILATION_ERROR);
+    exit(EXIT_CODE_ASSEMBLER_ERROR);
 }
 
-static uint16_t assembler_scan_mnemonic(assembler_t * assembler, char c) {
+/// @brief Converts the next mnemonic representation of an opcode in the source file to it's binary representation
+/// @param assembler The assembler that proceeses the assembly file
+/// @param c The next character in the source code
+/// @return The mnemonic representation converted to the representation in binary
+static uint16_t assembler_convert_mnemonic_to_binary(assembler_t * assembler, char c) {
     switch (c) {
     case 'A':
         switch (assembler_advance(assembler)) {
@@ -167,9 +250,9 @@ static uint16_t assembler_scan_mnemonic(assembler_t * assembler, char c) {
                 switch (assembler_peek(*assembler)) {
                 case 'I':
                     assembler_advance(assembler);
-                    return 0xF01E | assembler_read_register(assembler) << 8;
+                    return 0xF01E | assembler_convert_register_to_binary(assembler) << 8;
                 case 'V':
-                    return 0x8004 | assembler_read_registers(assembler) << 4;
+                    return 0x8004 | assembler_convert_registers_to_binary(assembler) << 4;
                 default:
                     assembler_report_error(*assembler);
                 }
@@ -184,7 +267,7 @@ static uint16_t assembler_scan_mnemonic(assembler_t * assembler, char c) {
         case 'A':
             switch (assembler_advance(assembler)) {
             case 'L':
-                return 0x2000 | assembler_read_12bit_number(assembler);
+                return 0x2000 | assembler_convert_address_to_binary(assembler);
             default:
                 assembler_report_error(*assembler);
             }
@@ -203,7 +286,7 @@ static uint16_t assembler_scan_mnemonic(assembler_t * assembler, char c) {
         case 'M':
             switch (assembler_advance(assembler)) {
             case 'R':
-                return 0xF065 | assembler_read_register(assembler) << 8;
+                return 0xF065 | assembler_convert_register_to_binary(assembler) << 8;
             default:
                 assembler_report_error(*assembler);
             }
@@ -216,7 +299,7 @@ static uint16_t assembler_scan_mnemonic(assembler_t * assembler, char c) {
         case 'M':
             switch (assembler_advance(assembler)) {
             case 'P':
-                return 0x1000 | assembler_read_12bit_number(assembler);
+                return 0x1000 | assembler_convert_address_to_binary(assembler);
             default:
                 assembler_report_error(*assembler);
             }
@@ -224,7 +307,7 @@ static uint16_t assembler_scan_mnemonic(assembler_t * assembler, char c) {
         case 'R':
             switch (assembler_advance(assembler)) {
             case 'B':
-                return 0xB000 | assembler_read_12bit_number(assembler);
+                return 0xB000 | assembler_convert_address_to_binary(assembler);
             default:
                 assembler_report_error(*assembler);
             }
@@ -241,19 +324,19 @@ static uint16_t assembler_scan_mnemonic(assembler_t * assembler, char c) {
                 case 'A':
                     // MOVA
                     assembler_advance(assembler);
-                    return 0x8002 | assembler_read_registers(assembler) << 4;
+                    return 0x8002 | assembler_convert_registers_to_binary(assembler) << 4;
                 case 'O':
                     // MOVO
                     assembler_advance(assembler);
-                    return 0x8001 | assembler_read_registers(assembler) << 4;
+                    return 0x8001 | assembler_convert_registers_to_binary(assembler) << 4;
                 case 'S':
                     // MOVS
                     assembler_advance(assembler);
-                    return 0x8007 | assembler_read_registers(assembler) << 4;
+                    return 0x8007 | assembler_convert_registers_to_binary(assembler) << 4;
                 case 'X':
                     // MOVX
                     assembler_advance(assembler);
-                    return 0x8003 | assembler_read_registers(assembler) << 4;
+                    return 0x8003 | assembler_convert_registers_to_binary(assembler) << 4;
                 default:
                     // MOV
                     assembler_skip_whitespace(assembler);
@@ -261,24 +344,24 @@ static uint16_t assembler_scan_mnemonic(assembler_t * assembler, char c) {
                     case 'D':
                         switch (assembler_advance(assembler)) {
                         case 'T': // DT VX
-                            return 0xF015 | assembler_read_register(assembler) << 8;
+                            return 0xF015 | assembler_convert_register_to_binary(assembler) << 8;
                         default:
                             assembler_report_error(*assembler);
                         }
                         break;
                     case 'I': // I 0xNNN
                         assembler_advance(assembler);
-                        return 0xA000 | assembler_read_12bit_number(assembler);
+                        return 0xA000 | assembler_convert_address_to_binary(assembler);
                     case 'S':
                         switch (assembler_advance(assembler)) {
                         case 'T': // ST VX
-                            return 0xF018 | assembler_read_register(assembler) << 8;
+                            return 0xF018 | assembler_convert_register_to_binary(assembler) << 8;
                         default:
                             assembler_report_error(*assembler);
                         }
                         break;
                     case 'V': {
-                        uint8_t registernumber = assembler_read_register(assembler);
+                        uint8_t registernumber = assembler_convert_register_to_binary(assembler);
                         assembler_skip_whitespace(assembler);
                         switch (assembler_advance(assembler)) {
                         case 'D':
@@ -289,7 +372,7 @@ static uint16_t assembler_scan_mnemonic(assembler_t * assembler, char c) {
                                 assembler_report_error(*assembler);
                             }
                         case 'V': // VX VY
-                            return 0x8000 | registernumber << 8 || assembler_read_register(assembler) << 4;
+                            return 0x8000 | registernumber << 8 || assembler_convert_register_to_binary(assembler) << 4;
                         case '0':
                             switch (assembler_peek(*assembler)) {
                             case 'x':
@@ -330,7 +413,7 @@ static uint16_t assembler_scan_mnemonic(assembler_t * assembler, char c) {
         case 'R':
             switch (assembler_advance(assembler)) {
             case 'T': // PRT
-                return 0xF000 | assembler_read_register(assembler) << 8;
+                return 0xF000 | assembler_convert_register_to_binary(assembler) << 8;
             default:
                 assembler_report_error(*assembler);
             }
@@ -344,24 +427,24 @@ static uint16_t assembler_scan_mnemonic(assembler_t * assembler, char c) {
             switch (assembler_advance(assembler)) {
             case 'E': // SKE
             {
-                uint8_t registerNumber = assembler_read_register(assembler);
+                uint8_t registerNumber = assembler_convert_register_to_binary(assembler);
                 assembler_skip_whitespace(assembler);
                 if (assembler_peek(*assembler) == '0')
                     return 0x3000 | registerNumber << 8 | assembler_read_8bit_number(assembler);
                 if (assembler_peek(*assembler) == 'V')
-                    return 0x5000 | registerNumber << 8 | assembler_read_register(assembler) << 4;
+                    return 0x5000 | registerNumber << 8 | assembler_convert_register_to_binary(assembler) << 4;
             }
             case 'N':
                 switch (assembler_advance(assembler)) {
                 case 'E': // SKNE - skip not equal
-                    return 0x9000 | assembler_read_registers(assembler) << 4;
+                    return 0x9000 | assembler_convert_registers_to_binary(assembler) << 4;
                 case 'P': // SKNP - skip not pressed
-                    return 0xE0A1 | assembler_read_register(assembler) << 8;
+                    return 0xE0A1 | assembler_convert_register_to_binary(assembler) << 8;
                 default:
                     assembler_report_error(*assembler);
                 }
             case 'P':
-                return 0xE09E | assembler_read_register(assembler) << 8;
+                return 0xE09E | assembler_convert_register_to_binary(assembler) << 8;
             default:
                 assembler_report_error(*assembler);
             }
@@ -371,25 +454,25 @@ static uint16_t assembler_scan_mnemonic(assembler_t * assembler, char c) {
             case 'B':
                 switch (assembler_advance(assembler)) {
                 case 'C': // STBC
-                    return 0xF033 | assembler_read_register(assembler) << 8;
+                    return 0xF033 | assembler_convert_register_to_binary(assembler) << 8;
                 default:
                     assembler_report_error(*assembler);
                 }
             case 'K': // STK
-                return 0xF00A | assembler_read_register(assembler) << 8;
+                return 0xF00A | assembler_convert_register_to_binary(assembler) << 8;
             case 'L':
                 switch (assembler_advance(assembler)) {
                 case 'S': // STLS
-                    return 0x8006 | assembler_read_registers(assembler) << 4;
+                    return 0x8006 | assembler_convert_registers_to_binary(assembler) << 4;
                 default:
                     assembler_report_error(*assembler);
                 }
             case 'M':
                 switch (assembler_advance(assembler)) {
                 case 'R': // STMR
-                    return 0xF055 | assembler_read_registers(assembler) << 4;
+                    return 0xF055 | assembler_convert_registers_to_binary(assembler) << 4;
                 case 'S': // STMS
-                    return 0x800E | assembler_read_registers(assembler) << 4;
+                    return 0x800E | assembler_convert_registers_to_binary(assembler) << 4;
                 default:
                     assembler_report_error(*assembler);
                 }
@@ -399,7 +482,7 @@ static uint16_t assembler_scan_mnemonic(assembler_t * assembler, char c) {
         case 'U':
             switch (assembler_advance(assembler)) {
             case 'B': // SUB
-                return 0x8005 | assembler_read_registers(assembler) << 4;
+                return 0x8005 | assembler_convert_registers_to_binary(assembler) << 4;
             default:
                 assembler_report_error(*assembler);
             }
@@ -420,8 +503,7 @@ static uint16_t assembler_scan_mnemonic(assembler_t * assembler, char c) {
 }
 
 /// Skips all the whitespace characters in the source file
-/// @param assembler The assembler where the whitespace's are skipped at the position in the source file that is
-/// currently processed
+/// @param assembler The assembler where the whitespace's are skipped at the position in the source file that is currently processed
 static void assembler_skip_whitespace(assembler_t * assembler) {
     for (;;) {
         char c = assembler_peek(*assembler);

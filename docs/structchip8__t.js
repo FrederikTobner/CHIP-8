@@ -2,7 +2,7 @@ var structchip8__t =
 [
     [ "currentOpcode", "structchip8__t.html#a2e997fd6947efc8fe1c66ca97c7f3c24", null ],
     [ "delayTimer", "structchip8__t.html#a214cd34f2a95690588c543de0c6bf951", null ],
-    [ "graphicsSystem", "structchip8__t.html#ada26d3fde51f0ecb3d3f564da583cdf4", null ],
+    [ "display", "structchip8__t.html#a28f6e00c32f4a0752920fd295ea27c2d", null ],
     [ "I", "structchip8__t.html#a16402eaf01018447c9ddcd65ac72e1b3", null ],
     [ "key", "structchip8__t.html#a742229490b6759a90ece7ba82ba129d5", null ],
     [ "memory", "structchip8__t.html#a5987db636a9b13af8d42f867f621fadb", null ],

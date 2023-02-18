@@ -13,17 +13,19 @@
  * License for more details.                                                *
  ****************************************************************************/
 
+/**
+ * @file chip8.h
+ * @brief Declarations regarding the virtual machine of the emulator
+ */
+
+
 #ifndef CHIP8_CHIP8_H_
 #define CHIP8_CHIP8_H_
 
 #include "../external/SDL/include/SDL.h"
 #include "pre_compiled_header.h"
 
-/// The graphics system of the chip-8 has a height of 32 pixels
-#define GRAPHICS_SYSTEM_HEIGHT (32)
-
-/// The graphics system of the chip-8 has a width of 64 pixels
-#define GRAPHICS_SYSTEM_WIDTH (64)
+#include "display.h"
 
 /// @brief Models a chip8 emulator
 typedef struct {
@@ -39,8 +41,8 @@ typedef struct {
     uint8_t soundTimer;
     /// Stackpointer
     uint16_t * stackPointer;
-    /// Display of the virtual machine
-    uint8_t graphicsSystem[64][32];
+    /// Display of the emulator
+    display_t display;
     /// Stack of the chip8 (16bit unsigned integer values)
     uint16_t stack[16];
     uint8_t key[16];
@@ -50,7 +52,7 @@ typedef struct {
     uint8_t V[16];
 } chip8_t;
 
-void chip8_execute(chip8_t * chip8, SDL_Renderer * gRenderer);
+void chip8_execute(chip8_t * chip8);
 
 void chip8_init(chip8_t * chip8);
 

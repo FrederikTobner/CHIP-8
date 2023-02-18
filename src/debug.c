@@ -13,6 +13,11 @@
  * License for more details.                                                *
  ****************************************************************************/
 
+/**
+ * @file debug.c
+ * @brief Definitions regarding the debug functionality of the emulator
+ */
+
 #include "debug.h"
 
 void debug_print_bytecode(uint16_t memoryLocation, uint16_t opcode) { printf("0x%04X: [0x%04X]\n", memoryLocation, opcode); }
