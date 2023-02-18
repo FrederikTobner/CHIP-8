@@ -40,7 +40,6 @@ static void assembler_process_data_section(assembler_t *, chip8_t *);
 static void assembler_process_text_section(assembler_t *, chip8_t *);
 static int32_t assembler_scan_opcode(assembler_t *);
 
-
 void assembler_initialize(assembler_t * assembler, char const * source) {
     assembler->start = source;
     assembler->current = source;
@@ -49,9 +48,11 @@ void assembler_initialize(assembler_t * assembler, char const * source) {
 
 int assembler_process_file(assembler_t * assembler, chip8_t * chip8) {
     assembler_skip_whitespace(assembler);
-    while(!assembler_is_at_end(*assembler))
-        if(assembler_process_section(assembler, chip8))
+    while (!assembler_is_at_end(*assembler)) {
+        if (assembler_process_section(assembler, chip8)) {
             return -1;
+        }
+    }
 
     return 0;
 }
@@ -61,33 +62,32 @@ int assembler_process_file(assembler_t * assembler, chip8_t * chip8) {
 /// @param chip8 The emulator where the program will be executed
 /// @return 0 if everything went well, -1 if an error occured
 static int assembler_process_section(assembler_t * assembler, chip8_t * chip8) {
-    if (assembler_is_at_end(*assembler))
+    if (assembler_is_at_end(*assembler)) {
         return -1;
-    if (strcmp(assembler->current, "section"))
+    }
+    if (strcmp(assembler->current, "section")) {
         assembler->current += 7;
-    else {
+    } else {
         printf("No section in source file");
         return -1;
     }
     assembler_skip_whitespace(assembler);
-    if(!strncmp(assembler->current, ".text:", 6)) {
-        assembler_process_text_section(assembler, chip8);  
-    }
-    else if(!strncmp(assembler->current, ".data:", 6)) {
+    if (!strncmp(assembler->current, ".text:", 6)) {
+        assembler_process_text_section(assembler, chip8);
+    } else if (!strncmp(assembler->current, ".data:", 6)) {
         assembler_process_data_section(assembler, chip8);
-    }
-    else {
+    } else {
         return -1;
     }
     return 0;
-    
 }
 
 static void assembler_process_data_section(assembler_t * assembler, chip8_t * chip8) {
-    assembler->current += 6;    
+    assembler->current += 6;
     assembler_skip_whitespace(assembler);
-    for (uint16_t memoryLocation = 0x0050; !memcmp(assembler->current, "0x", 2) && memoryLocation < 0x0200; assembler_skip_whitespace(assembler))
+    for (uint16_t memoryLocation = 0x0050; !memcmp(assembler->current, "0x", 2) && memoryLocation < 0x0200; assembler_skip_whitespace(assembler)) {
         chip8_write_byte_to_memory(chip8, &memoryLocation, assembler_read_8bit_number(assembler));
+    }
 }
 
 /// @brief Processes the text section of a chip8 program
@@ -101,8 +101,9 @@ static void assembler_process_text_section(assembler_t * assembler, chip8_t * ch
     printf("=== Code ===\n");
 #endif
     // Writes all the parsed opcodes into memory
-    while ((opcode = assembler_scan_opcode(assembler)) >= 0 && memoryLocation <= 4096)
-       chip8_write_opcode_to_memory(chip8, &memoryLocation, opcode);
+    while ((opcode = assembler_scan_opcode(assembler)) >= 0 && memoryLocation <= 4096) {
+        chip8_write_opcode_to_memory(chip8, &memoryLocation, opcode);
+    }
 }
 
 /// @brief Scans the next opcode in the sourcefile
@@ -110,21 +111,26 @@ static void assembler_process_text_section(assembler_t * assembler, chip8_t * ch
 /// @return The opcode or -1 if we have reached the end of the file or the opcode wasn't processed properly
 static int32_t assembler_scan_opcode(assembler_t * assembler) {
     assembler_skip_whitespace(assembler);
-    if (assembler_is_at_end(*assembler))
+    if (assembler_is_at_end(*assembler)) {
         return -1;
+    }
     assembler->start = assembler->current;
     char c = assembler_advance(assembler);
-    if (assembler_is_alpha(c))
+    if (assembler_is_alpha(c)) {
         return assembler_convert_mnemonic_to_binary(assembler, c);
-    if (c == '0' && (assembler_peek(*assembler) == 'x' || assembler_peek(*assembler) == 'X'))
+    }
+    if (c == '0' && (assembler_peek(*assembler) == 'x' || assembler_peek(*assembler) == 'X')) {
         return assembler_hexa(assembler, 4);
+    }
     return -1;
 }
 
 /// @brief Advances a position further in the sourceCode and returns the prevoius Token
 /// @param assembler Advances a position further in the sourcecode
 /// @return The current character
-static inline char assembler_advance(assembler_t * assembler) { return *assembler->current++; }
+static inline char assembler_advance(assembler_t * assembler) {
+    return *assembler->current++;
+}
 
 /// @brief Converts the mnemonic representation of a number in the hexadecimal formtat from the the sourcefile to it's representation in binary
 /// @param assembler The assembler struct that is used to store the state of the process
@@ -135,14 +141,16 @@ static uint16_t assembler_hexa(assembler_t * assembler, size_t digitCount) {
     uint16_t number = 0;
     for (size_t i = 0; i < digitCount; i++) {
         number *= 16;
-        if (!assembler_is_hexa(assembler_peek(*assembler)))
+        if (!assembler_is_hexa(assembler_peek(*assembler))) {
             assembler_report_error(*assembler);
-        if (assembler_is_decimal(assembler_peek(*assembler)))
+        }
+        if (assembler_is_decimal(assembler_peek(*assembler))) {
             number += *assembler->current++ - '0';
-        else if (assembler_peek(*assembler) <= 'F')
+        } else if (assembler_peek(*assembler) <= 'F') {
             number += *assembler->current++ - 'A' + 10;
-        else
+        } else {
             number += *assembler->current++ - 'a' + 10;
+        }
     }
     return number;
 }
@@ -150,27 +158,37 @@ static uint16_t assembler_hexa(assembler_t * assembler, size_t digitCount) {
 /// @brief Checks if the char c is a from the alphabet
 /// @param c The character that is checked
 /// @return true if the char is from the aphabet, false if not
-static inline bool assembler_is_alpha(char c) { return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z'); }
+static inline bool assembler_is_alpha(char c) {
+    return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z');
+}
 
 /// @brief Determines wheather we reached the end in the sourceCode
 /// @param assembler The assembler where the current position is checked
 /// @return true if the end of the sourcefile has been reached, false if not
-static inline bool assembler_is_at_end(assembler_t assembler) { return *assembler.current == '\0'; }
+static inline bool assembler_is_at_end(assembler_t assembler) {
+    return *assembler.current == '\0';
+}
 
 /// @brief Checks if the char c is a decimal digit
 /// @param c The character that is checked
 /// @return true if the char is a decimal digit, false if not
-static inline bool assembler_is_decimal(char c) { return c >= '0' && c <= '9'; }
+static inline bool assembler_is_decimal(char c) {
+    return c >= '0' && c <= '9';
+}
 
 /// @brief Checks if the char c is a hexadecimal digit
 /// @param c The character that is checked
 /// @return true if the char is a hexadecimal digit, false if not
-static inline bool assembler_is_hexa(char c) { return (c >= '0' && c <= '9') || (c >= 'a' && c <= 'f') || (c >= 'A' && c <= 'F'); }
+static inline bool assembler_is_hexa(char c) {
+    return (c >= '0' && c <= '9') || (c >= 'a' && c <= 'f') || (c >= 'A' && c <= 'F');
+}
 
 /// @brief Used to get the next character in the sourcefile without advancing
 /// @param assembler The assembler struct that is used to track the process
 /// @return The next character in the sourcefile
-static inline char assembler_peek(assembler_t assembler) { return *assembler.current; }
+static inline char assembler_peek(assembler_t assembler) {
+    return *assembler.current;
+}
 
 /// @brief Converts the mnemnic representation of a byte to binary
 /// @param assembler The assembler that proceeses the assembly file
@@ -178,8 +196,9 @@ static inline char assembler_peek(assembler_t assembler) { return *assembler.cur
 static uint8_t assembler_read_8bit_number(assembler_t * assembler) {
     assembler_skip_whitespace(assembler);
     char c = assembler_advance(assembler);
-    if (c == '0' && (assembler_peek(*assembler) == 'x' || assembler_peek(*assembler) == 'X'))
+    if (c == '0' && (assembler_peek(*assembler) == 'x' || assembler_peek(*assembler) == 'X')) {
         return assembler_hexa(assembler, 2);
+    }
     assembler_report_error(*assembler);
 // Unreachable
 #if defined(COMPILER_MSVC)
@@ -197,8 +216,9 @@ static uint8_t assembler_read_8bit_number(assembler_t * assembler) {
 static uint16_t assembler_convert_address_to_binary(assembler_t * assembler) {
     assembler_skip_whitespace(assembler);
     char c = assembler_advance(assembler);
-    if (c == '0' && (assembler_peek(*assembler) == 'x' || assembler_peek(*assembler) == 'X'))
+    if (c == '0' && (assembler_peek(*assembler) == 'x' || assembler_peek(*assembler) == 'X')) {
         return assembler_hexa(assembler, 3);
+    }
     assembler_report_error(*assembler);
 // Unreachable
 #if defined(COMPILER_MSVC)
@@ -217,8 +237,9 @@ static uint8_t assembler_convert_register_to_binary(assembler_t * assembler) {
     assembler_skip_whitespace(assembler);
     switch (assembler_advance(assembler)) {
     case 'V':
-        if (!assembler_is_hexa(assembler_peek(*assembler)))
+        if (!assembler_is_hexa(assembler_peek(*assembler))) {
             assembler_report_error(*assembler);
+        }
         assembler->current--;
         return assembler_hexa(assembler, 1);
     default:
@@ -376,31 +397,32 @@ static uint16_t assembler_convert_mnemonic_to_binary(assembler_t * assembler, ch
                             assembler_report_error(*assembler);
                         }
                         break;
-                    case 'V': {
-                        uint8_t registernumber = assembler_convert_register_to_binary(assembler);
-                        assembler_skip_whitespace(assembler);
-                        switch (assembler_advance(assembler)) {
-                        case 'D':
+                    case 'V':
+                        {
+                            uint8_t registernumber = assembler_convert_register_to_binary(assembler);
+                            assembler_skip_whitespace(assembler);
                             switch (assembler_advance(assembler)) {
-                            case 'T': // VX DT
-                                return 0xf007 | registernumber << 8;
+                            case 'D':
+                                switch (assembler_advance(assembler)) {
+                                case 'T': // VX DT
+                                    return 0xf007 | registernumber << 8;
+                                default:
+                                    assembler_report_error(*assembler);
+                                }
+                            case 'V': // VX VY
+                                return 0x8000 | registernumber << 8 || assembler_convert_register_to_binary(assembler) << 4;
+                            case '0':
+                                switch (assembler_peek(*assembler)) {
+                                case 'x':
+                                case 'X': // VX 0xNN
+                                    return 0x6000 | registernumber << 8 | assembler_hexa(assembler, 2);
+                                default:
+                                    assembler_report_error(*assembler);
+                                }
                             default:
                                 assembler_report_error(*assembler);
                             }
-                        case 'V': // VX VY
-                            return 0x8000 | registernumber << 8 || assembler_convert_register_to_binary(assembler) << 4;
-                        case '0':
-                            switch (assembler_peek(*assembler)) {
-                            case 'x':
-                            case 'X': // VX 0xNN
-                                return 0x6000 | registernumber << 8 | assembler_hexa(assembler, 2);
-                            default:
-                                assembler_report_error(*assembler);
-                            }
-                        default:
-                            assembler_report_error(*assembler);
                         }
-                    }
                     default:
                         assembler_report_error(*assembler);
                     }
@@ -442,14 +464,16 @@ static uint16_t assembler_convert_mnemonic_to_binary(assembler_t * assembler, ch
         case 'K':
             switch (assembler_advance(assembler)) {
             case 'E': // SKE
-            {
-                uint8_t registerNumber = assembler_convert_register_to_binary(assembler);
-                assembler_skip_whitespace(assembler);
-                if (assembler_peek(*assembler) == '0')
-                    return 0x3000 | registerNumber << 8 | assembler_read_8bit_number(assembler);
-                if (assembler_peek(*assembler) == 'V')
-                    return 0x5000 | registerNumber << 8 | assembler_convert_register_to_binary(assembler) << 4;
-            }
+                {
+                    uint8_t registerNumber = assembler_convert_register_to_binary(assembler);
+                    assembler_skip_whitespace(assembler);
+                    if (assembler_peek(*assembler) == '0') {
+                        return 0x3000 | registerNumber << 8 | assembler_read_8bit_number(assembler);
+                    }
+                    if (assembler_peek(*assembler) == 'V') {
+                        return 0x5000 | registerNumber << 8 | assembler_convert_register_to_binary(assembler) << 4;
+                    }
+                }
             case 'N':
                 switch (assembler_advance(assembler)) {
                 case 'E': // SKNE - skip not equal
@@ -537,8 +561,9 @@ static void assembler_skip_whitespace(assembler_t * assembler) {
             break;
         case '#':
             // A comment goes until the end of the line.
-            while (assembler_peek(*assembler) != '\n' && !assembler_is_at_end(*assembler))
+            while (assembler_peek(*assembler) != '\n' && !assembler_is_at_end(*assembler)) {
                 assembler_advance(assembler);
+            }
             break;
         default:
             return;

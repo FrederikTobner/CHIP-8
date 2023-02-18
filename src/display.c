@@ -18,8 +18,8 @@
  * @brief Definitions regarding the display of the emulator
  */
 
-#include "../build/src/chip8_config.h"
 #include "display.h"
+#include "../build/src/chip8_config.h"
 #include "pre_compiled_header.h"
 
 static int display_set_window_icon(SDL_Window *, char const *);
@@ -33,10 +33,11 @@ void display_render(display_t display) {
             // Render black filled quad (Currently the display uses 10x10 pixels to simulate a single pixel of the
             // graphics system)
             SDL_Rect fillRect = {i * SCALE_FACTOR, j * SCALE_FACTOR, (i + 1) * SCALE_FACTOR, (j + 1) * SCALE_FACTOR};
-            if (display.graphicsSystem[i][j])
+            if (display.graphicsSystem[i][j]) {
                 SDL_SetRenderDrawColor(display.renderer, 0x00, 0x00, 0x00, 0xFF); // black color
-            else
+            } else {
                 SDL_SetRenderDrawColor(display.renderer, 0xFF, 0xFF, 0xFF, 0xFF); // white color
+            }
             SDL_RenderFillRect(display.renderer, &fillRect);
         }
     }
@@ -50,13 +51,13 @@ int display_init(display_t * display) {
         return -1;
     } else {
         // Set texture filtering to linear
-        if (!SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "1"))
+        if (!SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "1")) {
             printf("Warning: Linear texture filtering not enabled!");
+        }
 
         // Create window
-        display->window = SDL_CreateWindow("CHIP-8", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 
-            GRAPHICS_SYSTEM_WIDTH * SCALE_FACTOR, 
-            GRAPHICS_SYSTEM_HEIGHT * SCALE_FACTOR, SDL_WINDOW_SHOWN);
+        display->window = SDL_CreateWindow("CHIP-8", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, GRAPHICS_SYSTEM_WIDTH * SCALE_FACTOR,
+                                           GRAPHICS_SYSTEM_HEIGHT * SCALE_FACTOR, SDL_WINDOW_SHOWN);
         if (display->window == NULL) {
             printf("Window could not be created! SDL Error: %s\n", SDL_GetError());
             return -1;
@@ -69,9 +70,11 @@ int display_init(display_t * display) {
             }
             SDL_SetRenderDrawColor(display->renderer, 0xFF, 0xFF, 0xFF, 0xFF); // white
             // Initialize graphics system
-            for (size_t i = 0; i < GRAPHICS_SYSTEM_WIDTH; i++)
-                for (size_t j = 0; j < GRAPHICS_SYSTEM_HEIGHT; j++)
+            for (size_t i = 0; i < GRAPHICS_SYSTEM_WIDTH; i++) {
+                for (size_t j = 0; j < GRAPHICS_SYSTEM_HEIGHT; j++) {
                     display->graphicsSystem[i][j] = 0u;
+                }
+            }
             return display_set_window_icon(display->window, PROJECT_WINDOW_ICON_PATH);
         }
     }

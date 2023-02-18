@@ -38,20 +38,21 @@ static void show_help();
 int main(int argc, char ** args) {
 
     if (argc == 2) {
-        if ((strlen(args[1]) == 7 && !strncmp(args[1], "--version", 7)) || (strlen(args[1]) == 2 && !strncmp(args[1], "-v", 2)))
+        if ((strlen(args[1]) == 7 && !strncmp(args[1], "--version", 7)) || (strlen(args[1]) == 2 && !strncmp(args[1], "-v", 2))) {
             printf("%s Version %i.%i\n", PROJECT_NAME, PROJECT_VERSION_MAJOR, PROJECT_VERSION_MINOR);
-        else if ((strlen(args[1]) == 6 && !strncmp(args[1], "--help", 6)) || (strlen(args[1]) == 2 && !strncmp(args[1], "-h", 2)))
+        } else if ((strlen(args[1]) == 6 && !strncmp(args[1], "--help", 6)) || (strlen(args[1]) == 2 && !strncmp(args[1], "-h", 2))) {
             show_help();
-        else {
+        } else {
             char * source;
             assembler_t assembler;
-            chip8_t chip8;            
+            chip8_t chip8;
             source = read_file(args[1]);
             assembler_initialize(&assembler, source);
-            chip8_init(&chip8);           
-            if (assembler_process_file(&assembler, &chip8))
+            chip8_init(&chip8);
+            if (assembler_process_file(&assembler, &chip8)) {
                 exit(EXIT_CODE_ASSEMBLER_ERROR);
-            // Initialzes the SDL subsystem           
+            }
+            // Initialzes the SDL subsystem
             chip8_execute(&chip8);
             free(source);
         }
@@ -80,17 +81,20 @@ static void io_error(char const * format, ...) {
 static char * read_file(char const * path) {
     // Opens a file of a nonspecified format (b) in read mode (r)
     FILE * file = fopen(path, "rb");
-    if (!file)
+    if (!file) {
         io_error("Could not open file \"%s\".\n", path);
+    }
     fseek(file, 0L, SEEK_END);
     size_t fileSize = ftell(file);
     rewind(file);
     char * buffer = (char *)malloc(fileSize + 1);
-    if (!buffer)
+    if (!buffer) {
         io_error("Not enough memory to read \"%s\".\n", path);
+    }
     size_t bytesRead = fread(buffer, sizeof(char), fileSize, file);
-    if (bytesRead < fileSize)
+    if (bytesRead < fileSize) {
         io_error("Could not read file \"%s\".\n", path);
+    }
     // We add null the end of the source-code to mark the end of the file
     buffer[bytesRead] = '\0';
     fclose(file);
