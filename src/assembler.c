@@ -38,6 +38,7 @@ static void assembler_skip_whitespace(assembler_t *);
 static int assembler_process_section(assembler_t *, chip8_t *);
 static int32_t assembler_scan_opcode(assembler_t *);
 static void assembler_process_text_section(assembler_t *, chip8_t *);
+static void assembler_process_data_section(assembler_t * assembler, chip8_t * chip8);
 
 void assembler_initialize(assembler_t * assembler, char const * source) {
     assembler->start = source;
@@ -68,17 +69,35 @@ static int assembler_process_section(assembler_t * assembler, chip8_t * chip8) {
         return -1;
     }
     assembler_skip_whitespace(assembler);
-    if(strcmp(assembler->current, ".text")) {
-        assembler_process_text_section(assembler, chip8);    
+    if(!strncmp(assembler->current, ".text:", 6)) {
+        assembler_process_text_section(assembler, chip8);  
     }
+    else if(!strncmp(assembler->current, ".data:", 6)) {
+        assembler_process_data_section(assembler, chip8);
+    }
+    else {
+        return -1;
+    }
+    assembler_skip_whitespace(assembler);
     return 0;
+    
+}
+
+static void assembler_process_data_section(assembler_t * assembler, chip8_t * chip8) {
+    assembler->current += 6;
+    uint16_t memoryLocation = 0;
+    assembler_skip_whitespace(assembler);
+    while(!memcmp(assembler->current, "0x", 2)) {
+        chip8_write_byte_to_memory(chip8, &memoryLocation, assembler_read_8bit_number(assembler));
+        assembler_skip_whitespace(assembler);
+    }
 }
 
 /// @brief Processes the text section of a chip8 program
 /// @param assembler The assembler that processes the section
 /// @param chip8 The emulator where the program will be executed
 static void assembler_process_text_section(assembler_t * assembler, chip8_t * chip8) {
-    assembler->current += 5;
+    assembler->current += 6;
     int32_t opcode;
     uint16_t memoryLocation = 512;
 #ifdef PRINT_BYTE_CODE

@@ -101,4 +101,6 @@ target_link_libraries(${PROJECT_NAME} SDL2main SDL2-static)
 if(NOT CMAKE_BUILD_TYPE MATCHES "[Dd][Ee][Bb][Uu][Gg]")
     # Install destinations
     install(TARGETS ${PROJECT_NAME} DESTINATION bin)
+    # Adding window icon
+    install(FILES ${PROJECT_SOURCE_DIR}/icons/file_type_chip8.bmp DESTINATION icons)
 endif()

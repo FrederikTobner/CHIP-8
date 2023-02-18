@@ -20,10 +20,11 @@
 
 #include "chip8.h"
 
+// Windows specific libaries
 #if defined(OS_WINDOWS)
-// Windows specific libary - conio.h (under linux curses.h could be used) 😟
 #include <conio.h>
 #include <windows.h>
+// Unix specific libaries
 #elif defined(OS_UNIX_LIKE)
 #include <curses.h>
 #include <unistd.h>
@@ -89,10 +90,10 @@ void chip8_execute(chip8_t * chip8) {
 // TODO: Adapt sleep to handle environments that can not run at 600 HZ (negative values for 1 / 600 s - (current - last))
 #if defined(OS_WINDOWS)
         // Milliseconds -> multiply with 1000
-        Sleep((1.0 / CHIP8_CLOCK_SPEED - ((double)current_t - last_t)) * 1000u);
+        Sleep((1.0 / CHIP8_CLOCK_SPEED - ((double)current_t - last_t)) * 1000.0);
 #elif defined(OS_UNIX_LIKE)
         // Mircoseconds -> multiply with 1000000
-        usleep((1.0 / CHIP8_CLOCK_SPEED - (current_t - last_t)) * 10000000u);
+        usleep((1.0 / CHIP8_CLOCK_SPEED - (current_t - last_t)) * 10000000.0);
 #endif
     }
     display_quit(&chip8->display);
@@ -128,6 +129,14 @@ void chip8_write_opcode_to_memory(chip8_t * chip8, uint16_t * memoryLocation, ui
 #endif
     chip8->memory[(*memoryLocation)++] = opcode & 0x00ff;
     chip8->memory[(*memoryLocation)++] = (opcode & 0xff00) >> 8;
+}
+
+/// @brief Writtes the specified opcode at the specified location into memory
+/// @param chip8 The chip8 where the opcode is written to memory
+/// @param memoryLocation The location where the opcode is written to (0-4096)
+/// @param byte The byte that is written into memory
+void chip8_write_byte_to_memory(chip8_t * chip8, uint16_t * memoryLocation, uint8_t byte) {
+    chip8->memory[(*memoryLocation)++] = byte;
 }
 
 /// Executes the next opcode in memory

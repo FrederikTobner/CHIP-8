@@ -58,4 +58,6 @@ void chip8_init(chip8_t * chip8);
 
 void chip8_write_opcode_to_memory(chip8_t * chip8, uint16_t * memoryLocation, uint16_t opcode);
 
+void chip8_write_byte_to_memory(chip8_t * chip8, uint16_t * memoryLocation, uint8_t byte);
+
 #endif
