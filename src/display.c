@@ -13,13 +13,20 @@
  * License for more details.                                                *
  ****************************************************************************/
 
-#include "display.h"
+/**
+ * @file display.c
+ * @brief Definitions regarding the display of the emulator
+ */
 
+#include "../build/src/chip8_config.h"
+#include "display.h"
 #include "pre_compiled_header.h"
+
+static int display_set_window_icon(SDL_Window *, char const *);
 
 void display_render(display_t display) {
     // Clear screen
-    SDL_SetRenderDrawColor(display.renderer, 0xFF, 0xFF, 0xFF, 0xFF);
+    SDL_SetRenderDrawColor(display.renderer, 0xFF, 0xFF, 0xFF, 0xFF); // white color
     SDL_RenderClear(display.renderer);
     for (size_t i = 0; i < GRAPHICS_SYSTEM_WIDTH; i++) {
         for (size_t j = 0; j < GRAPHICS_SYSTEM_HEIGHT; j++) {
@@ -38,10 +45,7 @@ void display_render(display_t display) {
 }
 
 int display_init(display_t * display) {
-    for (size_t i = 0; i < GRAPHICS_SYSTEM_WIDTH; i++)
-        for (size_t j = 0; j < GRAPHICS_SYSTEM_HEIGHT; j++)
-            display->graphicsSystem[i][j] = 0u;
-    if (SDL_Init(SDL_INIT_VIDEO) < 0) {
+    if (SDL_Init(SDL_INIT_VIDEO) != 0) {
         printf("SDL could not initialize! SDL Error: %s\n", SDL_GetError());
         return -1;
     } else {
@@ -50,7 +54,9 @@ int display_init(display_t * display) {
             printf("Warning: Linear texture filtering not enabled!");
 
         // Create window
-        display->window = SDL_CreateWindow("CHIP-8", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, GRAPHICS_SYSTEM_WIDTH * SCALE_FACTOR, GRAPHICS_SYSTEM_HEIGHT * SCALE_FACTOR, SDL_WINDOW_SHOWN);
+        display->window = SDL_CreateWindow("CHIP-8", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 
+            GRAPHICS_SYSTEM_WIDTH * SCALE_FACTOR, 
+            GRAPHICS_SYSTEM_HEIGHT * SCALE_FACTOR, SDL_WINDOW_SHOWN);
         if (display->window == NULL) {
             printf("Window could not be created! SDL Error: %s\n", SDL_GetError());
             return -1;
@@ -60,18 +66,36 @@ int display_init(display_t * display) {
             if (display->renderer == NULL) {
                 printf("Renderer could not be created! SDL Error: %s\n", SDL_GetError());
                 return -1;
-            } else
-                SDL_SetRenderDrawColor(display->renderer, 0xFF, 0xFF, 0xFF, 0xFF); // white
+            }
+            SDL_SetRenderDrawColor(display->renderer, 0xFF, 0xFF, 0xFF, 0xFF); // white
+            // Initialize graphics system
+            for (size_t i = 0; i < GRAPHICS_SYSTEM_WIDTH; i++)
+                for (size_t j = 0; j < GRAPHICS_SYSTEM_HEIGHT; j++)
+                    display->graphicsSystem[i][j] = 0u;
+            return display_set_window_icon(display->window, PROJECT_WINDOW_ICON_PATH);
         }
     }
     return 0;
 }
 
 void display_quit(display_t * display) {
-    // Destroy window
+    // Destroy window and renderer
     SDL_DestroyRenderer(display->renderer);
     SDL_DestroyWindow(display->window);
     display->window = NULL;
     display->renderer = NULL;
     SDL_Quit();
+}
+
+
+static int display_set_window_icon(SDL_Window * window, char const * iconPath) {
+    SDL_Surface * window_icon_scurface = SDL_LoadBMP(iconPath);
+    if (!window_icon_scurface) {
+        printf("Failed to window icon %s\n", SDL_GetError());
+        return -1;
+    }
+    // Setting the icon of the window
+    SDL_SetWindowIcon(window, window_icon_scurface);
+    SDL_FreeSurface(window_icon_scurface);
+    return 0;
 }

@@ -13,6 +13,11 @@
  * License for more details.                                                *
  ****************************************************************************/
 
+/**
+ * @file display.h
+ * @brief Deklarations regarding the display of the emulator
+ */
+
 #ifndef CHIP8_DISPLAY_H_
 #define CHIP8_DISPLAY_H_
 

@@ -13,6 +13,11 @@
  * License for more details.                                                *
  ****************************************************************************/
 
+/**
+ * @file main.c
+ * @brief Main entry point of the program
+ */
+
 #include "../build/src/chip8_config.h"
 #include "assembler.h"
 #include "chip8.h"
