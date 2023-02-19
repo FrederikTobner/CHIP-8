@@ -26,6 +26,7 @@
 #define FILE_SEPERATOR ('\\')
 #elif defined(OS_UNIX_LIKE)
 #define FILE_SEPERATOR ('/')
+#define MIN(a,b) ((a) < (b) ? (a) : (b))
 #endif
 
 int path_utils_get_executable_path(char * buffer, size_t bufferSize) {
