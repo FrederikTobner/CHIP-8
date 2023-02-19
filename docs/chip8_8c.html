@@ -105,8 +105,6 @@ $(document).ready(function(){initNavTree('chip8_8c.html',''); initResizable(); }
 </div><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="define-members" name="define-members"></a>
 Macros</h2></td></tr>
-<tr class="memitem:a59962df77cb1013f9a270da92b03852a"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="chip8_8c.html#a59962df77cb1013f9a270da92b03852a">PROGRAM_START_LOCATION</a>&#160;&#160;&#160;(0x200)</td></tr>
-<tr class="separator:a59962df77cb1013f9a270da92b03852a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a15279597a97703b1c5b79aa68c170ecf"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="chip8_8c.html#a15279597a97703b1c5b79aa68c170ecf">DEFINE_8_BIT_VALUE</a>&#160;&#160;&#160;uint8_t value = chip8-&gt;currentOpcode &amp; 0x00ff;</td></tr>
 <tr class="memdesc:a15279597a97703b1c5b79aa68c170ecf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Defines a new 8-bit value based on the opcode that is currently executed.  <a href="chip8_8c.html#a15279597a97703b1c5b79aa68c170ecf">More...</a><br /></td></tr>
 <tr class="separator:a15279597a97703b1c5b79aa68c170ecf"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -127,6 +125,9 @@ Macros</h2></td></tr>
 Functions</h2></td></tr>
 <tr class="memitem:abdec20d54c5c196c216f15858fb4400a"><td class="memItemLeft" align="right" valign="top">static int8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="chip8_8c.html#abdec20d54c5c196c216f15858fb4400a">chip8_execute_next_opcode</a> (<a class="el" href="structchip8__t.html">chip8_t</a> *)</td></tr>
 <tr class="separator:abdec20d54c5c196c216f15858fb4400a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a36f683e8cceacf8bbf947c3532909e98"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="chip8_8c.html#a36f683e8cceacf8bbf947c3532909e98">chip8_place_character_sprites_in_memory</a> (<a class="el" href="structchip8__t.html">chip8_t</a> *chip8)</td></tr>
+<tr class="memdesc:a36f683e8cceacf8bbf947c3532909e98"><td class="mdescLeft">&#160;</td><td class="mdescRight">Places sprites for characters in memory.  <a href="chip8_8c.html#a36f683e8cceacf8bbf947c3532909e98">More...</a><br /></td></tr>
+<tr class="separator:a36f683e8cceacf8bbf947c3532909e98"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1506b482c7d70ced0adef1c5611c122c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="chip8_8c.html#a1506b482c7d70ced0adef1c5611c122c">chip8_execute</a> (<a class="el" href="structchip8__t.html">chip8_t</a> *chip8)</td></tr>
 <tr class="memdesc:a1506b482c7d70ced0adef1c5611c122c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Executes the program that is stored in memory.  <a href="chip8_8c.html#a1506b482c7d70ced0adef1c5611c122c">More...</a><br /></td></tr>
 <tr class="separator:a1506b482c7d70ced0adef1c5611c122c"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -223,21 +224,6 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a59962df77cb1013f9a270da92b03852a" name="a59962df77cb1013f9a270da92b03852a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a59962df77cb1013f9a270da92b03852a">&#9670;&#160;</a></span>PROGRAM_START_LOCATION</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define PROGRAM_START_LOCATION&#160;&#160;&#160;(0x200)</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p >Most Chip-8 programs start at location 0x200 (512), but some begin at 0x600 (1536). Programs beginning at 0x600 are intended for the ETI 660 computer. </p>
-
-</div>
-</div>
 <h2 class="groupheader">Function Documentation</h2>
 <a id="a1506b482c7d70ced0adef1c5611c122c" name="a1506b482c7d70ced0adef1c5611c122c"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a1506b482c7d70ced0adef1c5611c122c">&#9670;&#160;</a></span>chip8_execute()</h2>
@@ -318,6 +304,40 @@ Functions</h2></td></tr>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">chip8</td><td>The chip8 virtual machine that is initialzed </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a36f683e8cceacf8bbf947c3532909e98" name="a36f683e8cceacf8bbf947c3532909e98"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a36f683e8cceacf8bbf947c3532909e98">&#9670;&#160;</a></span>chip8_place_character_sprites_in_memory()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void chip8_place_character_sprites_in_memory </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structchip8__t.html">chip8_t</a> *&#160;</td>
+          <td class="paramname"><em>chip8</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Places sprites for characters in memory. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">chip8</td><td>The virtual machine where the sprites are placed in memory </td></tr>
   </table>
   </dd>
 </dl>

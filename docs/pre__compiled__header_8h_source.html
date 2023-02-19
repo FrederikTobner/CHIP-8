@@ -131,7 +131,17 @@ $(document).ready(function(){initNavTree('pre__compiled__header_8h_source.html',
 <div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span><span class="preprocessor">#include &lt;string.h&gt;</span></div>
 <div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span><span class="preprocessor">#include &lt;time.h&gt;</span></div>
 <div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span> </div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span><span class="comment">// OS-specific dependencies</span></div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span><span class="preprocessor">#if defined(OS_WINDOWS)</span></div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span><span class="preprocessor">#include &lt;conio.h&gt;</span></div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span><span class="preprocessor">#include &lt;windows.h&gt;</span></div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span><span class="preprocessor">#include &lt;psapi.h&gt;</span></div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span><span class="preprocessor">#elif defined(OS_UNIX_LIKE)</span></div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span><span class="preprocessor">#include &lt;curses.h&gt;</span></div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span><span class="preprocessor">#include &lt;unistd.h&gt;</span></div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span> </div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span><span class="preprocessor">#endif</span></div>
 <div class="ttc" id="apre__compiled__header_8h_html_a17d507cab6ffb42aea82ba576e1fd572"><div class="ttname"><a href="pre__compiled__header_8h.html#a17d507cab6ffb42aea82ba576e1fd572">chip8_exit_code</a></div><div class="ttdeci">chip8_exit_code</div><div class="ttdef"><b>Definition:</b> pre_compiled_header.h:24</div></div>
 <div class="ttc" id="apre__compiled__header_8h_html_a17d507cab6ffb42aea82ba576e1fd572a03ef42e09a2ce099e6b68c76a97a1f76"><div class="ttname"><a href="pre__compiled__header_8h.html#a17d507cab6ffb42aea82ba576e1fd572a03ef42e09a2ce099e6b68c76a97a1f76">EXIT_CODE_ASSEMBLER_ERROR</a></div><div class="ttdeci">@ EXIT_CODE_ASSEMBLER_ERROR</div><div class="ttdef"><b>Definition:</b> pre_compiled_header.h:27</div></div>
 <div class="ttc" id="apre__compiled__header_8h_html_a17d507cab6ffb42aea82ba576e1fd572a052a5c69a6841adc2d0b39cf54a25a72"><div class="ttname"><a href="pre__compiled__header_8h.html#a17d507cab6ffb42aea82ba576e1fd572a052a5c69a6841adc2d0b39cf54a25a72">EXIT_CODE_OK</a></div><div class="ttdeci">@ EXIT_CODE_OK</div><div class="ttdef"><b>Definition:</b> pre_compiled_header.h:25</div></div>

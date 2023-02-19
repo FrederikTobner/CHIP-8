@@ -61,6 +61,7 @@ int assembler_process_file(assembler_t * assembler, chip8_t * chip8) {
 /// @brief Processes a section in a chip8 assembly file
 /// @param assembler  The assembler that processes the program
 /// @param chip8 The emulator where the program will be executed
+/// @param memoryLocation The memory-location where the section is stored
 /// @return 0 if everything went well, -1 if an error occured
 static int assembler_process_section(assembler_t * assembler, chip8_t * chip8, int16_t * memoryLocation) {
     if (assembler_is_at_end(*assembler)) {
@@ -83,10 +84,10 @@ static int assembler_process_section(assembler_t * assembler, chip8_t * chip8, i
     return 0;
 }
 
-/// @brief 
-/// @param assembler 
-/// @param chip8 
-/// @param memoryLocation 
+/// @brief Processes the data section of a chip8 program
+/// @param assembler The assembler that processes the section
+/// @param chip8 The emulator where the program will be executed
+/// @param memoryLocation The memory-location where the data is stored
 static void assembler_process_data_section(assembler_t * assembler, chip8_t * chip8, int16_t * memoryLocation) {
     assembler->current += 6;
     assembler_skip_whitespace(assembler);
@@ -98,6 +99,7 @@ static void assembler_process_data_section(assembler_t * assembler, chip8_t * ch
 /// @brief Processes the text section of a chip8 program
 /// @param assembler The assembler that processes the section
 /// @param chip8 The emulator where the program will be executed
+/// @param memoryLocation The memory-location where the code is stored
 static void assembler_process_text_section(assembler_t * assembler, chip8_t * chip8, int16_t * memoryLocation) {
     if (*memoryLocation != PROGRAM_START_LOCATION) {
         fprintf(stderr, "Text section must be declared before data section\n");

@@ -93,6 +93,7 @@ $(document).ready(function(){initNavTree('chip8_8h.html',''); initResizable(); }
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">Data Structures</a> &#124;
+<a href="#define-members">Macros</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle"><div class="title">chip8.h File Reference</div></div>
 </div><!--header-->
@@ -112,6 +113,11 @@ Data Structures</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Models a chip8 emulator.  <a href="structchip8__t.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="define-members" name="define-members"></a>
+Macros</h2></td></tr>
+<tr class="memitem:a59962df77cb1013f9a270da92b03852a"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="chip8_8h.html#a59962df77cb1013f9a270da92b03852a">PROGRAM_START_LOCATION</a>&#160;&#160;&#160;(0x200)</td></tr>
+<tr class="separator:a59962df77cb1013f9a270da92b03852a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:a1506b482c7d70ced0adef1c5611c122c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="chip8_8h.html#a1506b482c7d70ced0adef1c5611c122c">chip8_execute</a> (<a class="el" href="structchip8__t.html">chip8_t</a> *chip8)</td></tr>
@@ -129,7 +135,23 @@ Functions</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p >Declarations regarding the virtual machine of the emulator. </p>
-</div><h2 class="groupheader">Function Documentation</h2>
+</div><h2 class="groupheader">Macro Definition Documentation</h2>
+<a id="a59962df77cb1013f9a270da92b03852a" name="a59962df77cb1013f9a270da92b03852a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a59962df77cb1013f9a270da92b03852a">&#9670;&#160;</a></span>PROGRAM_START_LOCATION</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define PROGRAM_START_LOCATION&#160;&#160;&#160;(0x200)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p >Most Chip-8 programs start at location 0x200 (512), but some begin at 0x600 (1536). Programs beginning at 0x600 are intended for the ETI 660 computer. </p>
+
+</div>
+</div>
+<h2 class="groupheader">Function Documentation</h2>
 <a id="a1506b482c7d70ced0adef1c5611c122c" name="a1506b482c7d70ced0adef1c5611c122c"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a1506b482c7d70ced0adef1c5611c122c">&#9670;&#160;</a></span>chip8_execute()</h2>
 
