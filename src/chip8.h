@@ -18,7 +18,6 @@
  * @brief Declarations regarding the virtual machine of the emulator
  */
 
-
 #ifndef CHIP8_CHIP8_H_
 #define CHIP8_CHIP8_H_
 
@@ -26,6 +25,10 @@
 #include "pre_compiled_header.h"
 
 #include "display.h"
+
+/// Most Chip-8 programs start at location 0x200 (512), but some begin at 0x600 (1536). Programs beginning at 0x600 are
+/// intended for the ETI 660 computer.
+#define PROGRAM_START_LOCATION (0x200)
 
 /// @brief Models a chip8 emulator
 typedef struct {
@@ -57,5 +60,7 @@ void chip8_execute(chip8_t * chip8);
 void chip8_init(chip8_t * chip8);
 
 void chip8_write_opcode_to_memory(chip8_t * chip8, uint16_t * memoryLocation, uint16_t opcode);
+
+void chip8_write_byte_to_memory(chip8_t * chip8, uint16_t * memoryLocation, uint8_t byte);
 
 #endif

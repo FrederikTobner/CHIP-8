@@ -15,13 +15,17 @@ then
             echo "Sucessfully generated documentation!"
         else
             echo "No html folder inside the docs foulder found"
+            cd ../scripts
             exit 70
         fi
     else
         echo "No docs folder generated"
+        cd ../scripts
         exit 70
     fi
 else
     echo "Could not find source folder"
+    cd ../scripts
     exit 70
 fi
+cd ../scripts

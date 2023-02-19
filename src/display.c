@@ -18,25 +18,33 @@
  * @brief Definitions regarding the display of the emulator
  */
 
-#include "../build/src/chip8_config.h"
 #include "display.h"
+#include "../build/src/chip8_config.h"
+#include "path_utils.h"
 #include "pre_compiled_header.h"
 
 static int display_set_window_icon(SDL_Window *, char const *);
 
 void display_render(display_t display) {
-    // Clear screen
+    // Setting renderer color
     SDL_SetRenderDrawColor(display.renderer, 0xFF, 0xFF, 0xFF, 0xFF); // white color
+    uint8_t currentColor = 0xFF;
     SDL_RenderClear(display.renderer);
     for (size_t i = 0; i < GRAPHICS_SYSTEM_WIDTH; i++) {
         for (size_t j = 0; j < GRAPHICS_SYSTEM_HEIGHT; j++) {
             // Render black filled quad (Currently the display uses 10x10 pixels to simulate a single pixel of the
             // graphics system)
             SDL_Rect fillRect = {i * SCALE_FACTOR, j * SCALE_FACTOR, (i + 1) * SCALE_FACTOR, (j + 1) * SCALE_FACTOR};
-            if (display.graphicsSystem[i][j])
+            // Check if current color is white and pixel is set before changing renderer color
+            if (currentColor && display.graphicsSystem[i][j]) {
                 SDL_SetRenderDrawColor(display.renderer, 0x00, 0x00, 0x00, 0xFF); // black color
-            else
+                currentColor = 0x00;
+            } 
+            // Check if current color is white and pixel is set before changing renderer color
+            else if (!currentColor && !display.graphicsSystem[i][j]) {
                 SDL_SetRenderDrawColor(display.renderer, 0xFF, 0xFF, 0xFF, 0xFF); // white color
+                currentColor = 0xFF;
+            }
             SDL_RenderFillRect(display.renderer, &fillRect);
         }
     }
@@ -50,13 +58,13 @@ int display_init(display_t * display) {
         return -1;
     } else {
         // Set texture filtering to linear
-        if (!SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "1"))
+        if (!SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "1")) {
             printf("Warning: Linear texture filtering not enabled!");
+        }
 
         // Create window
-        display->window = SDL_CreateWindow("CHIP-8", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 
-            GRAPHICS_SYSTEM_WIDTH * SCALE_FACTOR, 
-            GRAPHICS_SYSTEM_HEIGHT * SCALE_FACTOR, SDL_WINDOW_SHOWN);
+        display->window = SDL_CreateWindow("CHIP-8", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, GRAPHICS_SYSTEM_WIDTH * SCALE_FACTOR,
+                                           GRAPHICS_SYSTEM_HEIGHT * SCALE_FACTOR, SDL_WINDOW_SHOWN);
         if (display->window == NULL) {
             printf("Window could not be created! SDL Error: %s\n", SDL_GetError());
             return -1;
@@ -69,10 +77,12 @@ int display_init(display_t * display) {
             }
             SDL_SetRenderDrawColor(display->renderer, 0xFF, 0xFF, 0xFF, 0xFF); // white
             // Initialize graphics system
-            for (size_t i = 0; i < GRAPHICS_SYSTEM_WIDTH; i++)
-                for (size_t j = 0; j < GRAPHICS_SYSTEM_HEIGHT; j++)
+            for (size_t i = 0; i < GRAPHICS_SYSTEM_WIDTH; i++) {
+                for (size_t j = 0; j < GRAPHICS_SYSTEM_HEIGHT; j++) {
                     display->graphicsSystem[i][j] = 0u;
-            return display_set_window_icon(display->window, PROJECT_WINDOW_ICON_PATH);
+                }
+            }
+            return display_set_window_icon(display->window, "chip8_window_icon.bmp");
         }
     }
     return 0;
@@ -91,10 +101,19 @@ void display_quit(display_t * display) {
 /// @param window The window where the icon is set
 /// @param iconPath Path to the icon
 /// @return 0 if the icon was successfully appled to the window, -1 if an error occured
-static int display_set_window_icon(SDL_Window * window, char const * iconPath) {
-    SDL_Surface * window_icon_scurface = SDL_LoadBMP(iconPath);
+static int display_set_window_icon(SDL_Window * window, char const * iconName) {
+    
+    char iconPathBuffer[240];
+    if (path_utils_get_executable_path(iconPathBuffer, 240)) {
+        printf("Failed to determine path of the emulator executable\n");
+        return -1;
+    }
+    path_utils_remove_file_layer(iconPathBuffer, 2);
+    path_utils_concatenate_folder(iconPathBuffer, "icons");  
+    strcat(iconPathBuffer, iconName);
+    SDL_Surface * window_icon_scurface = SDL_LoadBMP(iconPathBuffer);
     if (!window_icon_scurface) {
-        printf("Failed to window icon %s\n", SDL_GetError());
+        printf("Failed to load window icon %s\n", SDL_GetError());
         return -1;
     }
     // Setting the icon of the window

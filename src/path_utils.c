@@ -14,41 +14,48 @@
  ****************************************************************************/
 
 /**
- * @file pre_compiled_header.h
- * @brief Precompiled header file of the emulator
- * @details Contains commonly used header files from the standard libary, os-specific header files, os-specific definitions and exit codes
+ * @file path_utils.c
+ * @brief Definitions regarding the path utilities used by the emulator
  */
 
-#ifndef CHIP8_PRE_COMPILED_HEADER_H_
-#define CHIP8_PRE_COMPILED_HEADER_H_
-typedef enum {
-    EXIT_CODE_OK = 0,
-    EXIT_CODE_COMMAND_LINE_USAGE_ERROR = 64,
-    EXIT_CODE_ASSEMBLER_ERROR = 65,
-    EXIT_CODE_RUNTIME_ERROR = 70,
-    EXIT_CODE_SYSTEM_ERROR = 71,
-    EXIT_CODE_INPUT_OUTPUT_ERROR = 74
-} chip8_exit_code;
 
-// Standard libary dependencies
-#include <limits.h>
-#include <stdarg.h>
-#include <stdbool.h>
-#include <stddef.h>
-#include <stdint.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <time.h>
+#include "path_utils.h"
 
-// OS-specific dependencies
+// OS-specific definitions
 #if defined(OS_WINDOWS)
-#include <conio.h>
-#include <windows.h>
-#include <psapi.h>
+#define FILE_SEPERATOR ('\\')
 #elif defined(OS_UNIX_LIKE)
-#include <curses.h>
-#include <unistd.h>
+#define FILE_SEPERATOR ('/')
+#define MIN(a,b) ((a) < (b) ? (a) : (b))
 #endif
 
+int path_utils_get_executable_path(char * buffer, size_t bufferSize) {
+#if defined(OS_WINDOWS)
+    return !GetModuleFileName(NULL, buffer, bufferSize);
+#elif defined(OS_UNIX_LIKE)
+    return !MIN(readlink("/proc/self/exe", buffer, bufferSize), bufferSize - 1);
 #endif
+}
+
+void path_utils_remove_file_layer(char * buffer, size_t depth) {
+    depth--;
+    for (size_t i = strlen(buffer); i > 0; i--) {
+        if (buffer[i - 1] == FILE_SEPERATOR) {
+            if(!depth) {
+                buffer[i] = '\0';
+                break;
+            }
+            else {
+                depth--;
+            }
+        }
+    }
+}
+
+void path_utils_concatenate_folder(char * buffer, char * folderName) {
+    strcat(buffer, folderName);
+    char fileSeperatorString[2];
+    fileSeperatorString[0] = FILE_SEPERATOR;
+    fileSeperatorString [1] = '\0';
+    strcat(buffer, fileSeperatorString);
+}

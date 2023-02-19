@@ -1,0 +1,26 @@
+section .text:
+    0x6048          # We store 0x48 (H) in the register V0
+    0xF000          # Prints the content of the register V0
+    0x6065          # We store 0x65 (e) in the register V0
+    0xF000          # Prints the content of the register V0
+    0x606C          # We store 0x6c (l) in the register V0
+    0xF000          # Prints the content of the register V0
+    0xF000          # Prints the content of the register V0
+    0x606F          # We store 0x6f (o) in the register V0
+    0xF000          # Prints the content of the register V0
+    0x6020          # We store 0x20 ( ) in the register V0
+    0xF000          # Prints the content of the register V0
+    0x6057          # We store 0x57 (W) in the register V0
+    0xF000          # Prints the content of the register V0
+    0x606f          # We store 0x6f (o) in the register V0
+    0xF000          # Prints the content of the register V0
+    0x6072          # We store 0x72 (r) in the register V0
+    0xF000          # Prints the content of the register V0
+    0x606C          # We store 0x6c (l) in the register V0
+    0xF000          # Prints the content of the register V0
+    0x6064          # We store 0x64 (d) in the register V0
+    0xF000          # Prints the content of the register V0
+    0x6021          # We store 0x21 (!) in the register V0
+    0xF000          # Prints the content of the register V0
+    0x600A          # We store 0x0A (\n) in the register V0
+    0xF000          # Prints the content of the register V0

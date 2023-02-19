@@ -14,43 +14,29 @@
  ****************************************************************************/
 
 /**
- * @file display.h
- * @brief Declarations regarding the display of the emulator
+ * @file path_utils.h
+ * @brief Declarations regarding the path utilities used by the emulator
  */
 
-#ifndef CHIP8_DISPLAY_H_
-#define CHIP8_DISPLAY_H_
+#ifndef CHIP8_PATH_UTILS_H_
+#define CHIP8_PATH_UTILS_H_
 
-#include "../external/SDL/include/SDL.h"
+#include "pre_compiled_header.h"
 
-/// The graphics system of the chip-8 has a height of 32 pixels
-#define GRAPHICS_SYSTEM_HEIGHT (32)
-
-/// The graphics system of the chip-8 has a width of 64 pixels
-#define GRAPHICS_SYSTEM_WIDTH  (64)
-
-/// The scale factor from the emulator display to the real display
-#define SCALE_FACTOR           (20)
-
-typedef struct {
-    SDL_Window * window;
-    SDL_Renderer * renderer;
-    uint8_t graphicsSystem[64][32];
-} display_t;
-
-/// @brief Renders the display
-/// @param display The display that is rendered
-void display_render(display_t display);
-
-/// @brief Initializes the display
-/// @param window The window where the display of the emulator is emulated
-/// @param renderer The renderer that is used to create image from
+/// @brief Determines the path of the emulator executable
+/// @param buffer The buffer where the path is stored
+/// @param bufferSize The length of the buffer
 /// @return 0 if everything went well, -1 if an error occured
-int display_init(display_t * display);
+int path_utils_get_executable_path(char * buffer, size_t bufferSize);
 
-/// @brief Quits SDL
-/// @param window The window that is closed
-/// @param renderer The renderer used to render the display of the emulator
-void display_quit(display_t * display);
+/// @brief Removes the specified amount of file-layers from the buffer  
+/// @param buffer The buffer that is 
+/// @param depth The amount of layers that are removed from the path 
+void path_utils_remove_file_layer(char * buffer, size_t depth);
+
+/// @brief Adds the specified folder name followed by a os-specific file seperator to the path
+/// @param buffer The buffer where the filename is concatenated
+/// @param folderName The name of the folder that is concatenated
+void path_utils_concatenate_folder(char * buffer, char * folderName);
 
 #endif
