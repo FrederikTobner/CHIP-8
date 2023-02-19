@@ -21,6 +21,8 @@
 #include "assembler.h"
 #include "chip8.h"
 
+#define OPCODE_CONVERSION_ERROR_MESSAGE ("Unable to convert mnemonic at source into binary\n")
+
 static inline char assembler_advance(assembler_t *);
 static uint16_t assembler_convert_address_to_binary(assembler_t *);
 static uint16_t assembler_convert_mnemonic_to_binary(assembler_t *, char);
@@ -33,7 +35,7 @@ static inline bool assembler_is_decimal(char);
 static inline bool assembler_is_hexa(char);
 static inline char assembler_peek(assembler_t);
 static uint8_t assembler_read_8bit_number(assembler_t *);
-static inline void assembler_report_error(assembler_t);
+static void assembler_report_error(assembler_t *, char const * format, ...);
 static void assembler_skip_whitespace(assembler_t *);
 static int assembler_process_section(assembler_t *, chip8_t *,  int16_t *);
 static void assembler_process_data_section(assembler_t *, chip8_t *,  int16_t *);
@@ -41,6 +43,7 @@ static void assembler_process_text_section(assembler_t *, chip8_t *,  int16_t *)
 static int32_t assembler_scan_opcode(assembler_t *);
 
 void assembler_initialize(assembler_t * assembler, char const * source) {
+    assembler->source = (char *)source;
     assembler->start = source;
     assembler->current = source;
     assembler->line = 1u;
@@ -54,7 +57,7 @@ int assembler_process_file(assembler_t * assembler, chip8_t * chip8) {
             return -1;
         }
     }
-
+    free(assembler->source);
     return 0;
 }
 
@@ -70,8 +73,7 @@ static int assembler_process_section(assembler_t * assembler, chip8_t * chip8, i
     if (!strncmp(assembler->current, "section", 7)) {
         assembler->current += 7;
     } else {
-        printf("No section in source file");
-        return -1;
+        assembler_report_error(assembler, "No section in source file\n");
     }
     assembler_skip_whitespace(assembler);
     if (!strncmp(assembler->current, ".text:", 6)) {
@@ -94,6 +96,10 @@ static void assembler_process_data_section(assembler_t * assembler, chip8_t * ch
     for (*memoryLocation += 2; !strncmp(assembler->current, "0x", 2) && *memoryLocation < 0xFFF; assembler_skip_whitespace(assembler)) {
         chip8_write_byte_to_memory(chip8, memoryLocation, assembler_read_8bit_number(assembler));
     }
+    if(*memoryLocation > 0xFFF) {
+        fprintf(stderr, "Text section is too big too be stored in memory\n");
+        exit(EXIT_CODE_ASSEMBLER_ERROR);
+    }
 }
 
 /// @brief Processes the text section of a chip8 program
@@ -115,6 +121,10 @@ static void assembler_process_text_section(assembler_t * assembler, chip8_t * ch
             assembler_skip_whitespace(assembler)) {
         chip8_write_opcode_to_memory(chip8, memoryLocation, opcode);
         
+    }
+    if(*memoryLocation > 0xFFF) {
+        fprintf(stderr, "Text section is too big too be stored in memory\n");
+        exit(EXIT_CODE_ASSEMBLER_ERROR);
     }
 }
 
@@ -153,7 +163,7 @@ static uint16_t assembler_hexa(assembler_t * assembler, size_t digitCount) {
     for (size_t i = 0; i < digitCount; i++) {
         number *= 16;
         if (!assembler_is_hexa(assembler_peek(*assembler))) {
-            assembler_report_error(*assembler);
+            assembler_report_error(assembler, "Invalid character in hexadecimal sequence\n");
         }
         if (assembler_is_decimal(assembler_peek(*assembler))) {
             number += *assembler->current++ - '0';
@@ -210,7 +220,7 @@ static uint8_t assembler_read_8bit_number(assembler_t * assembler) {
     if (c == '0' && (assembler_peek(*assembler) == 'x' || assembler_peek(*assembler) == 'X')) {
         return assembler_hexa(assembler, 2);
     }
-    assembler_report_error(*assembler);
+    assembler_report_error(assembler, "Could not parse 8 bit number\n");
 // Unreachable
 #if defined(COMPILER_MSVC)
     __assume(0);
@@ -230,7 +240,7 @@ static uint16_t assembler_convert_address_to_binary(assembler_t * assembler) {
     if (c == '0' && (assembler_peek(*assembler) == 'x' || assembler_peek(*assembler) == 'X')) {
         return assembler_hexa(assembler, 3);
     }
-    assembler_report_error(*assembler);
+    assembler_report_error(assembler, "Unable to convert address\n");
 // Unreachable
 #if defined(COMPILER_MSVC)
     __assume(0);
@@ -249,12 +259,12 @@ static uint8_t assembler_convert_register_to_binary(assembler_t * assembler) {
     switch (assembler_advance(assembler)) {
     case 'V':
         if (!assembler_is_hexa(assembler_peek(*assembler))) {
-            assembler_report_error(*assembler);
+            assembler_report_error(assembler, "Unable to read register\n");
         }
         assembler->current--;
         return assembler_hexa(assembler, 1);
     default:
-        assembler_report_error(*assembler);
+        assembler_report_error(assembler, "Unable to read register\n");
         break;
     }
 // Unreachable
@@ -278,8 +288,12 @@ static uint8_t assembler_convert_registers_to_binary(assembler_t * assembler) {
 
 /// @brief Reports an error when the assembly waas processed
 /// @param assembler The assembler where the error occured
-static inline void assembler_report_error(assembler_t assembler) {
-    printf("Unexpected character %c in opcode sequence in line %i", *assembler.current, assembler.line);
+static inline void assembler_report_error(assembler_t * assembler, char const * format, ...) {
+    va_list args;
+    va_start(args, format);
+    vfprintf(stderr, format, args);
+    va_end(args);
+    free(assembler->source);
     exit(EXIT_CODE_ASSEMBLER_ERROR);
 }
 
@@ -302,13 +316,13 @@ static uint16_t assembler_convert_mnemonic_to_binary(assembler_t * assembler, ch
                 case 'V':
                     return 0x8004 | assembler_convert_registers_to_binary(assembler) << 4;
                 default:
-                    assembler_report_error(*assembler);
+                    assembler_report_error(assembler, OPCODE_CONVERSION_ERROR_MESSAGE);
                 }
             default:
-                assembler_report_error(*assembler);
+                assembler_report_error(assembler,  OPCODE_CONVERSION_ERROR_MESSAGE);
             }
         default:
-            assembler_report_error(*assembler);
+            assembler_report_error(assembler,  OPCODE_CONVERSION_ERROR_MESSAGE);
         }
     case 'C':
         switch (assembler_advance(assembler)) {
@@ -317,17 +331,17 @@ static uint16_t assembler_convert_mnemonic_to_binary(assembler_t * assembler, ch
             case 'L':
                 return 0x2000 | assembler_convert_address_to_binary(assembler);
             default:
-                assembler_report_error(*assembler);
+                assembler_report_error(assembler, OPCODE_CONVERSION_ERROR_MESSAGE);
             }
         case 'L':
             switch (assembler_advance(assembler)) {
             case 'S':
                 return 0x00E0;
             default:
-                assembler_report_error(*assembler);
+                assembler_report_error(assembler, OPCODE_CONVERSION_ERROR_MESSAGE);
             }
         default:
-            assembler_report_error(*assembler);
+            assembler_report_error(assembler, OPCODE_CONVERSION_ERROR_MESSAGE);
         }
     case 'F':
         switch (assembler_advance(assembler)) {
@@ -336,10 +350,10 @@ static uint16_t assembler_convert_mnemonic_to_binary(assembler_t * assembler, ch
             case 'R':
                 return 0xF065 | assembler_convert_register_to_binary(assembler) << 8;
             default:
-                assembler_report_error(*assembler);
+                assembler_report_error(assembler, OPCODE_CONVERSION_ERROR_MESSAGE);
             }
         default:
-            assembler_report_error(*assembler);
+            assembler_report_error(assembler, OPCODE_CONVERSION_ERROR_MESSAGE);
         }
         break;
     case 'J':
@@ -349,7 +363,7 @@ static uint16_t assembler_convert_mnemonic_to_binary(assembler_t * assembler, ch
             case 'P':
                 return 0x1000 | assembler_convert_address_to_binary(assembler);
             default:
-                assembler_report_error(*assembler);
+                assembler_report_error(assembler, OPCODE_CONVERSION_ERROR_MESSAGE);
             }
             break;
         case 'R':
@@ -357,10 +371,10 @@ static uint16_t assembler_convert_mnemonic_to_binary(assembler_t * assembler, ch
             case 'B':
                 return 0xB000 | assembler_convert_address_to_binary(assembler);
             default:
-                assembler_report_error(*assembler);
+                assembler_report_error(assembler, OPCODE_CONVERSION_ERROR_MESSAGE);
             }
         default:
-            assembler_report_error(*assembler);
+            assembler_report_error(assembler, OPCODE_CONVERSION_ERROR_MESSAGE);
         }
         break;
     case 'M':
@@ -394,7 +408,7 @@ static uint16_t assembler_convert_mnemonic_to_binary(assembler_t * assembler, ch
                         case 'T': // DT VX
                             return 0xF015 | assembler_convert_register_to_binary(assembler) << 8;
                         default:
-                            assembler_report_error(*assembler);
+                            assembler_report_error(assembler, OPCODE_CONVERSION_ERROR_MESSAGE);
                         }
                         break;
                     case 'I': // I 0xNNN
@@ -405,7 +419,7 @@ static uint16_t assembler_convert_mnemonic_to_binary(assembler_t * assembler, ch
                         case 'T': // ST VX
                             return 0xF018 | assembler_convert_register_to_binary(assembler) << 8;
                         default:
-                            assembler_report_error(*assembler);
+                            assembler_report_error(assembler, OPCODE_CONVERSION_ERROR_MESSAGE);
                         }
                         break;
                     case 'V':
@@ -418,7 +432,7 @@ static uint16_t assembler_convert_mnemonic_to_binary(assembler_t * assembler, ch
                                 case 'T': // VX DT
                                     return 0xf007 | registernumber << 8;
                                 default:
-                                    assembler_report_error(*assembler);
+                                    assembler_report_error(assembler, OPCODE_CONVERSION_ERROR_MESSAGE);
                                 }
                             case 'V': // VX VY
                                 return 0x8000 | registernumber << 8 || assembler_convert_register_to_binary(assembler) << 4;
@@ -428,21 +442,21 @@ static uint16_t assembler_convert_mnemonic_to_binary(assembler_t * assembler, ch
                                 case 'X': // VX 0xNN
                                     return 0x6000 | registernumber << 8 | assembler_hexa(assembler, 2);
                                 default:
-                                    assembler_report_error(*assembler);
+                                    assembler_report_error(assembler, OPCODE_CONVERSION_ERROR_MESSAGE);
                                 }
                             default:
-                                assembler_report_error(*assembler);
+                                assembler_report_error(assembler, OPCODE_CONVERSION_ERROR_MESSAGE);
                             }
                         }
                     default:
-                        assembler_report_error(*assembler);
+                        assembler_report_error(assembler, OPCODE_CONVERSION_ERROR_MESSAGE);
                     }
                 }
             default:
-                assembler_report_error(*assembler);
+                assembler_report_error(assembler, OPCODE_CONVERSION_ERROR_MESSAGE);
             }
         default:
-            assembler_report_error(*assembler);
+            assembler_report_error(assembler, OPCODE_CONVERSION_ERROR_MESSAGE);
         }
         break;
     case 'R':
@@ -452,10 +466,10 @@ static uint16_t assembler_convert_mnemonic_to_binary(assembler_t * assembler, ch
             case 'T': // RET
                 return 0x00EE;
             default:
-                assembler_report_error(*assembler);
+                assembler_report_error(assembler, OPCODE_CONVERSION_ERROR_MESSAGE);
             }
         default:
-            assembler_report_error(*assembler);
+            assembler_report_error(assembler, OPCODE_CONVERSION_ERROR_MESSAGE);
         }
     case 'P':
         switch (assembler_advance(assembler)) {
@@ -464,11 +478,11 @@ static uint16_t assembler_convert_mnemonic_to_binary(assembler_t * assembler, ch
             case 'T': // PRT
                 return 0xF000 | assembler_convert_register_to_binary(assembler) << 8;
             default:
-                assembler_report_error(*assembler);
+                assembler_report_error(assembler, OPCODE_CONVERSION_ERROR_MESSAGE);
             }
             break;
         default:
-            assembler_report_error(*assembler);
+            assembler_report_error(assembler, OPCODE_CONVERSION_ERROR_MESSAGE);
         }
     case 'S':
         switch (assembler_advance(assembler)) {
@@ -492,12 +506,12 @@ static uint16_t assembler_convert_mnemonic_to_binary(assembler_t * assembler, ch
                 case 'P': // SKNP - skip not pressed
                     return 0xE0A1 | assembler_convert_register_to_binary(assembler) << 8;
                 default:
-                    assembler_report_error(*assembler);
+                    assembler_report_error(assembler, OPCODE_CONVERSION_ERROR_MESSAGE);
                 }
             case 'P':
                 return 0xE09E | assembler_convert_register_to_binary(assembler) << 8;
             default:
-                assembler_report_error(*assembler);
+                assembler_report_error(assembler, OPCODE_CONVERSION_ERROR_MESSAGE);
             }
             break;
         case 'T':
@@ -507,7 +521,7 @@ static uint16_t assembler_convert_mnemonic_to_binary(assembler_t * assembler, ch
                 case 'C': // STBC
                     return 0xF033 | assembler_convert_register_to_binary(assembler) << 8;
                 default:
-                    assembler_report_error(*assembler);
+                    assembler_report_error(assembler, OPCODE_CONVERSION_ERROR_MESSAGE);
                 }
             case 'K': // STK
                 return 0xF00A | assembler_convert_register_to_binary(assembler) << 8;
@@ -516,7 +530,7 @@ static uint16_t assembler_convert_mnemonic_to_binary(assembler_t * assembler, ch
                 case 'S': // STLS
                     return 0x8006 | assembler_convert_registers_to_binary(assembler) << 4;
                 default:
-                    assembler_report_error(*assembler);
+                    assembler_report_error(assembler, OPCODE_CONVERSION_ERROR_MESSAGE);
                 }
             case 'M':
                 switch (assembler_advance(assembler)) {
@@ -525,23 +539,23 @@ static uint16_t assembler_convert_mnemonic_to_binary(assembler_t * assembler, ch
                 case 'S': // STMS
                     return 0x800E | assembler_convert_registers_to_binary(assembler) << 4;
                 default:
-                    assembler_report_error(*assembler);
+                    assembler_report_error(assembler, OPCODE_CONVERSION_ERROR_MESSAGE);
                 }
             default:
-                assembler_report_error(*assembler);
+                assembler_report_error(assembler, OPCODE_CONVERSION_ERROR_MESSAGE);
             }
         case 'U':
             switch (assembler_advance(assembler)) {
             case 'B': // SUB
                 return 0x8005 | assembler_convert_registers_to_binary(assembler) << 4;
             default:
-                assembler_report_error(*assembler);
+                assembler_report_error(assembler, OPCODE_CONVERSION_ERROR_MESSAGE);
             }
         default:
-            assembler_report_error(*assembler);
+            assembler_report_error(assembler, OPCODE_CONVERSION_ERROR_MESSAGE);
         }
     default:
-        assembler_report_error(*assembler);
+        assembler_report_error(assembler, OPCODE_CONVERSION_ERROR_MESSAGE);
     }
 // Unreachable
 #if defined(COMPILER_MSVC)

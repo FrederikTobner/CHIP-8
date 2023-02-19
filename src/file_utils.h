@@ -14,37 +14,16 @@
  ****************************************************************************/
 
 /**
- * @file assembler.h
- * @brief Declarations regarding the assembler of the emulator
+ * @file file_utils.h
+ * @brief Declarations regarding the file utilities used by the emulator
  */
 
-#ifndef CHIP8_ASSEMLER_H_
-#define CHIP8_ASSEMLER_H_
+#ifndef CHIP8_FILE_UTILS_H_
+#define CHIP8_FILE_UTILS_H_
 
-#include "chip8.h"
-#include "pre_compiled_header.h"
-
-/// @brief Type definition of a assembler
-typedef struct {
-    /// Source file
-    char * source;
-    /// Pointer to the start of the current line
-    char const * start;
-    /// Pointer to the current position in the current line
-    char const * current;
-    /// Line counter - used for error reporting
-    uint32_t line;
-} assembler_t;
-
-/// @brief Initializes the assembler
-/// @param assembler The assembler that parses the file
-/// @param source The sourcecode that is parsed by the assembler
-void assembler_initialize(assembler_t * assembler, char const * source);
-
-/// @brief Processes a chip8 assembly file (.cp8)
-/// @param assembler The assembler that processes the file
-/// @param chip8 The virtual machine where the program is written into memory
-/// @return 0 if everything went well, -1 if an error occured
-int assembler_process_file(assembler_t * assembler, chip8_t * chip8);
+/// @brief Reads a file from a specified location and returns the content of the file as a character pointer
+/// @param path The path of the file that is read
+/// @return The content of the file as a character pointer
+char * file_utils_read_file(char const *);
 
 #endif

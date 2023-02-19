@@ -48,13 +48,13 @@ static void chip8_place_character_sprites_in_memory(chip8_t *);
 void chip8_execute(chip8_t * chip8) {
     time_t last_t, current_t;
     long numberofChip8Clocks = 0;
-    for (; chip8->programCounter < 1536; chip8->programCounter++, numberofChip8Clocks++) {
+    for (; chip8->programCounter < ((0x1000 - PROGRAM_START_LOCATION) / 2); chip8->programCounter++, numberofChip8Clocks++) {
         last_t = time(NULL);
 #ifdef TRACE_EXECUTION
         debug_trace_execution(*chip8);
 #endif
-        chip8->currentOpcode = *(chip8->memory + chip8->programCounter * 2 + PROGRAM_START_LOCATION);
-        chip8->currentOpcode += ((uint16_t) * (chip8->memory + (chip8->programCounter * 2 + 1 + PROGRAM_START_LOCATION))) << 8;
+        chip8->currentOpcode = chip8->memory[chip8->programCounter * 2 + PROGRAM_START_LOCATION];
+        chip8->currentOpcode += ((uint16_t) chip8->memory[chip8->programCounter * 2 + 1 + PROGRAM_START_LOCATION]) << 8;
         // Reached end of the program
         if (!chip8->currentOpcode) {
             return;
@@ -113,6 +113,9 @@ void chip8_init(chip8_t * chip8) {
 /// @param memoryLocation The location where the opcode is written to (0-4096)
 /// @param opcode The opcode that is written into memory
 void chip8_write_opcode_to_memory(chip8_t * chip8, uint16_t * memoryLocation, uint16_t opcode) {
+if(*memoryLocation > 0x1000u || *memoryLocation < PROGRAM_START_LOCATION) {
+    return;
+}
 #ifdef PRINT_BYTE_CODE
     debug_print_bytecode(*memoryLocation, opcode);
 #endif
@@ -125,6 +128,9 @@ void chip8_write_opcode_to_memory(chip8_t * chip8, uint16_t * memoryLocation, ui
 /// @param memoryLocation The location where the opcode is written to (0-4096)
 /// @param byte The byte that is written into memory
 void chip8_write_byte_to_memory(chip8_t * chip8, uint16_t * memoryLocation, uint8_t byte) {
+    if(*memoryLocation > 0x1000u || *memoryLocation < PROGRAM_START_LOCATION) {
+        return;
+    }
     chip8->memory[(*memoryLocation)++] = byte;
 }
 

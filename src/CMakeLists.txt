@@ -8,6 +8,7 @@ if(CMAKE_BUILD_TYPE MATCHES "[Dd][Ee][Bb][Uu][Gg]")
     "chip8.c"
     "debug.c"
     "display.c"
+    "file_utils.c"
     "main.c"    
     "path_utils.c"
     )    
@@ -16,6 +17,7 @@ if(CMAKE_BUILD_TYPE MATCHES "[Dd][Ee][Bb][Uu][Gg]")
     "chip8.h"
     "debug.h"
     "display.h"
+    "file_utils.h"
     "path_utils.h"
     )
     if(CP8_DEBUG_PRINT_BYTECODE)
@@ -25,11 +27,15 @@ if(CMAKE_BUILD_TYPE MATCHES "[Dd][Ee][Bb][Uu][Gg]")
         add_compile_definitions(TRACE_EXECUTION)
     endif()
     add_compile_definitions(BUILD_DEBUG)
+    if(CP8_BUILD_ETI_660_VERSION)
+        add_compile_definitions(ETI_660_VERSION)
+    endif()
 else()
     set(CHIP-8_SOURCE_FILES
     "assembler.c"
     "chip8.c"
     "display.c"
+    "file_utils.c"
     "main.c" 
     "path_utils.c"   
     )
@@ -37,8 +43,13 @@ else()
     "assembler.h"
     "chip8.h"
     "display.h"
+    "file_utils.h"
     "path_utils.h"
     )
+    if(CP8_BUILD_ETI_660_VERSION)
+        add_compile_definitions(ETI_660_VERSION)
+    endif()
+
     # Setting project properties used by CPack
     set(PROJECT_PAGE "https://github.com/FrederikTobner/CHIP-8")
     set(PROJECT_HELP_PAGE "https://github.com/FrederikTobner/CHIP-8/wiki")
