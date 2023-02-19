@@ -101,7 +101,7 @@ void display_quit(display_t * display) {
 /// @param iconPath Path to the icon
 /// @return 0 if the icon was successfully appled to the window, -1 if an error occured
 static int display_set_window_icon(SDL_Window * window, char const * iconName) {
-    char iconPathBuffer[240];    
+    char iconPathBuffer[240];
     // Adding OS-specific file seperator symbol
 #if defined(OS_WINDOWS)
     GetModuleFileName(NULL, iconPathBuffer, 240);
@@ -109,12 +109,23 @@ static int display_set_window_icon(SDL_Window * window, char const * iconName) {
     MIN(readlink("/proc/self/exe", iconPathBuffer, 240), 240 - 1);
 #endif
     // Removing executable name
+    bool foundFirstFileSeperator = false;
     for (size_t i = strlen(iconPathBuffer); i > 0; i--) {
-        if (iconPathBuffer[i - 1] == '\\') {
-            iconPathBuffer[i] = '\0';
-            break;
+        if (iconPathBuffer[i - 1] == FILE_SEPERATOR) {
+            if(foundFirstFileSeperator) {
+                iconPathBuffer[i] = '\0';
+                break;
+            }
+            else {
+                foundFirstFileSeperator = true;
+            }
         }
-    }    
+    }
+    strcat(iconPathBuffer, "icons");
+    char fileSeperatorString[2];
+    fileSeperatorString[0] = FILE_SEPERATOR;
+    fileSeperatorString [1] = '\0';
+    strcat(iconPathBuffer, fileSeperatorString);  
     strcat(iconPathBuffer, iconName);
     SDL_Surface * window_icon_scurface = SDL_LoadBMP(iconPathBuffer);
     if (!window_icon_scurface) {

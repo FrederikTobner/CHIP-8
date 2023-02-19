@@ -30,6 +30,13 @@ typedef enum {
     EXIT_CODE_INPUT_OUTPUT_ERROR = 74
 } chip8_exit_code;
 
+// OS-specific definitions
+#if defined(OS_WINDOWS)
+#define FILE_SEPERATOR ('\\')
+#elif defined(OS_UNIX_LIKE)
+#define FILE_SEPERATOR ('/')
+#endif
+
 // Standard libary dependencies
 #include <limits.h>
 #include <stdarg.h>
@@ -41,6 +48,7 @@ typedef enum {
 #include <string.h>
 #include <time.h>
 
+// OS-specific dependencies
 #if defined(OS_WINDOWS)
 #include <conio.h>
 #include <windows.h>
