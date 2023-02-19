@@ -20,6 +20,7 @@
 
 #include "display.h"
 #include "../build/src/chip8_config.h"
+#include "path_utils.h"
 #include "pre_compiled_header.h"
 
 static int display_set_window_icon(SDL_Window *, char const *);
@@ -101,31 +102,14 @@ void display_quit(display_t * display) {
 /// @param iconPath Path to the icon
 /// @return 0 if the icon was successfully appled to the window, -1 if an error occured
 static int display_set_window_icon(SDL_Window * window, char const * iconName) {
+    
     char iconPathBuffer[240];
-    // Adding OS-specific file seperator symbol
-#if defined(OS_WINDOWS)
-    GetModuleFileName(NULL, iconPathBuffer, 240);
-#elif defined(OS_UNIX_LIKE)
-    MIN(readlink("/proc/self/exe", iconPathBuffer, 240), 240 - 1);
-#endif
-    // Removing executable name
-    bool foundFirstFileSeperator = false;
-    for (size_t i = strlen(iconPathBuffer); i > 0; i--) {
-        if (iconPathBuffer[i - 1] == FILE_SEPERATOR) {
-            if(foundFirstFileSeperator) {
-                iconPathBuffer[i] = '\0';
-                break;
-            }
-            else {
-                foundFirstFileSeperator = true;
-            }
-        }
+    if (path_utils_get_executable_path(iconPathBuffer, 240)) {
+        printf("Failed to determine path of the emulator executable\n");
+        return -1;
     }
-    strcat(iconPathBuffer, "icons");
-    char fileSeperatorString[2];
-    fileSeperatorString[0] = FILE_SEPERATOR;
-    fileSeperatorString [1] = '\0';
-    strcat(iconPathBuffer, fileSeperatorString);  
+    path_utils_remove_file_layer(iconPathBuffer, 2);
+    path_utils_concatenate_folder(iconPathBuffer, "icons");  
     strcat(iconPathBuffer, iconName);
     SDL_Surface * window_icon_scurface = SDL_LoadBMP(iconPathBuffer);
     if (!window_icon_scurface) {

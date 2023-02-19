@@ -14,41 +14,29 @@
  ****************************************************************************/
 
 /**
- * @file pre_compiled_header.h
- * @brief Precompiled header file of the emulator
- * @details Contains commonly used header files from the standard libary, os-specific header files, os-specific definitions and exit codes
+ * @file path_utils.h
+ * @brief Declarations regarding the path utilities used by the emulator
  */
 
-#ifndef CHIP8_PRE_COMPILED_HEADER_H_
-#define CHIP8_PRE_COMPILED_HEADER_H_
-typedef enum {
-    EXIT_CODE_OK = 0,
-    EXIT_CODE_COMMAND_LINE_USAGE_ERROR = 64,
-    EXIT_CODE_ASSEMBLER_ERROR = 65,
-    EXIT_CODE_RUNTIME_ERROR = 70,
-    EXIT_CODE_SYSTEM_ERROR = 71,
-    EXIT_CODE_INPUT_OUTPUT_ERROR = 74
-} chip8_exit_code;
+#ifndef CHIP8_PATH_UTILS_H_
+#define CHIP8_PATH_UTILS_H_
 
-// Standard libary dependencies
-#include <limits.h>
-#include <stdarg.h>
-#include <stdbool.h>
-#include <stddef.h>
-#include <stdint.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <time.h>
+#include "pre_compiled_header.h"
 
-// OS-specific dependencies
-#if defined(OS_WINDOWS)
-#include <conio.h>
-#include <windows.h>
-#include <psapi.h>
-#elif defined(OS_UNIX_LIKE)
-#include <curses.h>
-#include <unistd.h>
-#endif
+/// @brief Determines the path of the emulator executable
+/// @param buffer The buffer where the path is stored
+/// @param bufferSize The length of the buffer
+/// @return 0 if everything went well, -1 if an error occured
+int path_utils_get_executable_path(char * buffer, size_t bufferSize);
+
+/// @brief Removes the specified amount of file-layers from the buffer  
+/// @param buffer The buffer that is 
+/// @param depth The amount of layers that are removed from the path 
+void path_utils_remove_file_layer(char * buffer, size_t depth);
+
+/// @brief Adds the specified folder name followed by a os-specific file seperator to the path
+/// @param buffer The buffer where the filename is concatenated
+/// @param folderName The name of the folder that is concatenated
+void path_utils_concatenate_folder(char * buffer, char * folderName);
 
 #endif

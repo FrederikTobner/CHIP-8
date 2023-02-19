@@ -24,3 +24,6 @@ section .text:
     PRT V0          # Prints the content of the register V0
     MOV V0 0x0A     # We store 0x0A (\n) in the register V0
     PRT V0          # Prints the content of the register V0
+
+section .data:
+    # No data 
