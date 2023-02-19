@@ -1,5 +1,4 @@
 ---
-
 AlignConsecutiveMacros:
   Enabled: true
   AcrossEmptyLines: true
