@@ -25,18 +25,24 @@
 static int display_set_window_icon(SDL_Window *, char const *);
 
 void display_render(display_t display) {
-    // Clear screen
+    // Setting renderer color
     SDL_SetRenderDrawColor(display.renderer, 0xFF, 0xFF, 0xFF, 0xFF); // white color
+    uint8_t currentColor = 0xFF;
     SDL_RenderClear(display.renderer);
     for (size_t i = 0; i < GRAPHICS_SYSTEM_WIDTH; i++) {
         for (size_t j = 0; j < GRAPHICS_SYSTEM_HEIGHT; j++) {
             // Render black filled quad (Currently the display uses 10x10 pixels to simulate a single pixel of the
             // graphics system)
             SDL_Rect fillRect = {i * SCALE_FACTOR, j * SCALE_FACTOR, (i + 1) * SCALE_FACTOR, (j + 1) * SCALE_FACTOR};
-            if (display.graphicsSystem[i][j]) {
+            // Check if current color is white and pixel is set before changing renderer color
+            if (currentColor && display.graphicsSystem[i][j]) {
                 SDL_SetRenderDrawColor(display.renderer, 0x00, 0x00, 0x00, 0xFF); // black color
-            } else {
+                currentColor = 0x00;
+            } 
+            // Check if current color is white and pixel is set before changing renderer color
+            else if (!currentColor && !display.graphicsSystem[i][j]) {
                 SDL_SetRenderDrawColor(display.renderer, 0xFF, 0xFF, 0xFF, 0xFF); // white color
+                currentColor = 0xFF;
             }
             SDL_RenderFillRect(display.renderer, &fillRect);
         }
@@ -75,7 +81,7 @@ int display_init(display_t * display) {
                     display->graphicsSystem[i][j] = 0u;
                 }
             }
-            return display_set_window_icon(display->window, PROJECT_WINDOW_ICON_PATH);
+            return display_set_window_icon(display->window, "chip8_window_icon.bmp");
         }
     }
     return 0;
@@ -94,10 +100,25 @@ void display_quit(display_t * display) {
 /// @param window The window where the icon is set
 /// @param iconPath Path to the icon
 /// @return 0 if the icon was successfully appled to the window, -1 if an error occured
-static int display_set_window_icon(SDL_Window * window, char const * iconPath) {
-    SDL_Surface * window_icon_scurface = SDL_LoadBMP(iconPath);
+static int display_set_window_icon(SDL_Window * window, char const * iconName) {
+    char iconPathBuffer[240];    
+    // Adding OS-specific file seperator symbol
+#if defined(OS_WINDOWS)
+    GetModuleFileName(NULL, iconPathBuffer, 240);
+#elif defined(OS_UNIX_LIKE)
+    MIN(readlink("/proc/self/exe", iconPathBuffer, 240), 240 - 1);
+#endif
+    // Removing executable name
+    for (size_t i = strlen(iconPathBuffer); i > 0; i--) {
+        if (iconPathBuffer[i - 1] == '\\') {
+            iconPathBuffer[i] = '\0';
+            break;
+        }
+    }    
+    strcat(iconPathBuffer, iconName);
+    SDL_Surface * window_icon_scurface = SDL_LoadBMP(iconPathBuffer);
     if (!window_icon_scurface) {
-        printf("Failed to window icon %s\n", SDL_GetError());
+        printf("Failed to load window icon %s\n", SDL_GetError());
         return -1;
     }
     // Setting the icon of the window

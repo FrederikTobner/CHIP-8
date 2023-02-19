@@ -20,24 +20,10 @@
 
 #include "chip8.h"
 
-// Windows specific libaries
-#if defined(OS_WINDOWS)
-#include <conio.h>
-#include <windows.h>
-// Unix specific libaries
-#elif defined(OS_UNIX_LIKE)
-#include <curses.h>
-#include <unistd.h>
-#endif
-
 #if defined(PRINT_BYTE_CODE) || defined(TRACE_EXECUTION)
 #include "debug.h"
 #endif
 #include "display.h"
-
-/// Most Chip-8 programs start at location 0x200 (512), but some begin at 0x600 (1536). Programs beginning at 0x600 are
-/// intended for the ETI 660 computer.
-#define PROGRAM_START_LOCATION (0x200)
 
 /// Defines a new 8-bit value based on the opcode that is currently executed
 #define DEFINE_8_BIT_VALUE     uint8_t value = chip8->currentOpcode & 0x00ff;
@@ -55,6 +41,7 @@
 #define CHIP8_CLOCK_SPEED      (600.0)
 
 static int8_t chip8_execute_next_opcode(chip8_t *);
+static void chip8_place_character_sprites_in_memory(chip8_t *);
 
 /// @brief Executes the program that is stored in memory
 /// @param chip8 The chip8 vm where the program that is currently held in memory is executed
@@ -78,14 +65,12 @@ void chip8_execute(chip8_t * chip8) {
         }
         // 60 hz
         if (!numberofChip8Clocks % 10) {
-            if (!chip8->delayTimer && chip8->delayTimer > 0) {
+            if (chip8->delayTimer) {
                 chip8->delayTimer--;
             }
-            if (!chip8->soundTimer) {
+            if (chip8->soundTimer) {
                 putc('\a', stdout);
-                if (chip8->soundTimer > 0) {
-                    chip8->soundTimer--;
-                }
+                chip8->soundTimer--;
             }
             display_render(chip8->display);
         }
@@ -100,7 +85,6 @@ void chip8_execute(chip8_t * chip8) {
         usleep((1.0 / CHIP8_CLOCK_SPEED - (current_t - last_t)) * 10000000.0);
 #endif
     }
-    display_quit(&chip8->display);
 }
 
 /// @brief Initializes the chip8 vm
@@ -120,10 +104,8 @@ void chip8_init(chip8_t * chip8) {
     for (uint8_t * memoryPointer = chip8->memory; memoryPointer < upperBound; memoryPointer++) {
         *memoryPointer = 0u;
     }
-    // Reseting the graphics system
-    if (display_init(&chip8->display)) {
-        exit(EXIT_CODE_SYSTEM_ERROR);
-    }
+    // Setting up Hex character sprites in memory
+    chip8_place_character_sprites_in_memory(chip8);
 }
 
 /// @brief Writtes the specified opcode at the specified location into memory
@@ -144,6 +126,12 @@ void chip8_write_opcode_to_memory(chip8_t * chip8, uint16_t * memoryLocation, ui
 /// @param byte The byte that is written into memory
 void chip8_write_byte_to_memory(chip8_t * chip8, uint16_t * memoryLocation, uint8_t byte) {
     chip8->memory[(*memoryLocation)++] = byte;
+}
+
+/// @brief Places sprites for characters in memory
+/// @param chip8 The virtual machine where the sprites are placed in memory
+static void chip8_place_character_sprites_in_memory(chip8_t * chip8) {
+    memcpy(chip8->memory + 0x50, "\xF0\x90\x90\x90\xF0\x20\x60\x20\x20\x70\xF0\x10\xF0\x80\xF0\xF0\x10\xF0\x10\xF0\x90\x90\xF0\x10\x10\xF0\x80\xF0\x10\xF0\xF0\x80\xF0\x90\xF0\xF0\x10\x20\x40\x40\xF0\x90\xF0\x90\xF0\xF0\x90\xF0\x10\xF0\xF0\x90\xF0\x90\x90\xE0\x90\xE0\x90\xE0\xF0\x80\x80\x80\xF0\xE0\x90\x90\x90\xE0\xF0\x80\xF0\x80\xF0\xF0\x80\xF0\x80\x80", 80);
 }
 
 /// Executes the next opcode in memory
@@ -432,7 +420,19 @@ static int8_t chip8_execute_next_opcode(chip8_t * chip8) {
             case 0x29:
                 // 0xFX29 - Sets I to the location of the sprite for the character in VX. Characters
                 // are represented by a 4x5 font The characters are stored at the address 0x0050 and are 20 bit large (4 by 5 bits)
-                break;
+                {
+                    DEFINE_X
+                    if (chip8->V[x] <= '9' && chip8->V[x] >= '0') {
+                        chip8->I = 0x0050 + 0x5 * (chip8->V[x] - '0');
+                    }
+                    else if (chip8->V[x] <= 'F' && chip8->V[x] >= 'A') {
+                        chip8->I = 0x0050 + 0x5 * (chip8->V[x] - 0x37);
+                    }
+                    else {
+                        goto chip8_error;
+                    }
+                    break;
+                }
             case 0x33: /* 0xFX33 - Stores the binary-coded decimal representation of VX,
                         * with the most significant of three digits at the address in I,
                         * the middle digit at I plus 1, and the least significant digit at I plus 2.

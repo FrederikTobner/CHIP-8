@@ -98,9 +98,12 @@ target_include_directories(${PROJECT_NAME} PUBLIC ${PROJECT_BINARY_DIR}/src)
 # Linking with SDL libary
 target_link_libraries(${PROJECT_NAME} SDL2main SDL2-static)
 
+# Copies window icon into the build folder
+FILE(COPY ${PROJECT_SOURCE_DIR}/icons/chip8_window_icon.bmp DESTINATION "${CMAKE_BINARY_DIR}/src")
+
 if(NOT CMAKE_BUILD_TYPE MATCHES "[Dd][Ee][Bb][Uu][Gg]")
     # Install destinations
     install(TARGETS ${PROJECT_NAME} DESTINATION bin)
     # Adding window icon
-    install(FILES ${PROJECT_SOURCE_DIR}/icons/file_type_chip8.bmp DESTINATION icons)
+    install(FILES ${PROJECT_SOURCE_DIR}/icons/chip8_window_icon.bmp DESTINATION bin)
 endif()

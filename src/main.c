@@ -52,9 +52,13 @@ int main(int argc, char ** args) {
             if (assembler_process_file(&assembler, &chip8)) {
                 exit(EXIT_CODE_ASSEMBLER_ERROR);
             }
-            // Initialzes the SDL subsystem
-            chip8_execute(&chip8);
             free(source);
+            // Initialzes the SDL subsystem
+            if (display_init(&chip8.display)) {
+                exit(EXIT_CODE_SYSTEM_ERROR);
+            }
+            chip8_execute(&chip8);
+            display_quit(&chip8.display);
         }
     } else {
         fprintf(stderr, CHIP8_USAGE_MESSAGE);

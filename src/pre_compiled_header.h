@@ -41,4 +41,13 @@ typedef enum {
 #include <string.h>
 #include <time.h>
 
+#if defined(OS_WINDOWS)
+#include <conio.h>
+#include <windows.h>
+#include <psapi.h>
+#elif defined(OS_UNIX_LIKE)
+#include <curses.h>
+#include <unistd.h>
+#endif
+
 #endif
