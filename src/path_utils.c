@@ -18,7 +18,6 @@
  * @brief Definitions regarding the path utilities used by the emulator
  */
 
-
 #include "path_utils.h"
 
 // OS-specific definitions
@@ -39,10 +38,14 @@ int path_utils_get_executable_path(char * buffer, size_t bufferSize) {
 
 void path_utils_remove_file_layer(char * buffer, size_t depth) {
     depth--;
-    for (size_t i = strlen(buffer); i > 0; i--) {
-        if (buffer[i - 1] == FILE_SEPERATOR) {
+    size_t bufferLength = strlen(buffer);
+    // Removing trailing file seperator
+    if (buffer[bufferLength - 2] == FILE_SEPERATOR)
+        buffer[bufferLength-- - 2] = '\0';
+    for (size_t i = bufferLength - 2; i > 0; i--) {
+        if (buffer[i] == FILE_SEPERATOR) {
             if(!depth) {
-                buffer[i] = '\0';
+                buffer[i + 1] = '\0';
                 break;
             }
             else {
