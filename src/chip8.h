@@ -34,7 +34,6 @@
 #define PROGRAM_START_LOCATION (0x200u)
 #endif
 
-
 /// @brief Models a chip8 emulator
 typedef struct {
     /// The opcode that is currently executed

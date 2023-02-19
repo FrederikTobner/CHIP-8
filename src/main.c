@@ -32,13 +32,16 @@ static void show_help();
 
 /// @brief Main entry point of the CHIP-8 program
 /// @param argc The amount of arguments that were used when the program was started
-/// @param argv Pointer to the arguments array that contains all the arguments that were defined by the user when the program was started
+/// @param argv Pointer to the arguments array that contains all the arguments that were defined by the user when the
+/// program was started
 /// @return 0 if everything went well
 int main(int argc, char ** args) {
     if (argc == 2) {
-        if ((strlen(args[1]) == 7 && !strncmp(args[1], "--version", 7)) || (strlen(args[1]) == 2 && !strncmp(args[1], "-v", 2))) {
+        if ((strlen(args[1]) == 7 && !strncmp(args[1], "--version", 7)) ||
+            (strlen(args[1]) == 2 && !strncmp(args[1], "-v", 2))) {
             printf("%s Version %i.%i\n", PROJECT_NAME, PROJECT_VERSION_MAJOR, PROJECT_VERSION_MINOR);
-        } else if ((strlen(args[1]) == 6 && !strncmp(args[1], "--help", 6)) || (strlen(args[1]) == 2 && !strncmp(args[1], "-h", 2))) {
+        } else if ((strlen(args[1]) == 6 && !strncmp(args[1], "--help", 6)) ||
+                   (strlen(args[1]) == 2 && !strncmp(args[1], "-h", 2))) {
             show_help();
         } else {
             char * source;

@@ -37,9 +37,9 @@ static inline char assembler_peek(assembler_t);
 static uint8_t assembler_read_8bit_number(assembler_t *);
 static void assembler_report_error(assembler_t *, char const * format, ...);
 static void assembler_skip_whitespace(assembler_t *);
-static int assembler_process_section(assembler_t *, chip8_t *,  int16_t *);
-static void assembler_process_data_section(assembler_t *, chip8_t *,  int16_t *);
-static void assembler_process_text_section(assembler_t *, chip8_t *,  int16_t *);
+static int assembler_process_section(assembler_t *, chip8_t *, int16_t *);
+static void assembler_process_data_section(assembler_t *, chip8_t *, int16_t *);
+static void assembler_process_text_section(assembler_t *, chip8_t *, int16_t *);
 static int32_t assembler_scan_opcode(assembler_t *);
 
 void assembler_initialize(assembler_t * assembler, char const * source) {
@@ -93,10 +93,11 @@ static int assembler_process_section(assembler_t * assembler, chip8_t * chip8, i
 static void assembler_process_data_section(assembler_t * assembler, chip8_t * chip8, int16_t * memoryLocation) {
     assembler->current += 6;
     assembler_skip_whitespace(assembler);
-    for (*memoryLocation += 2; !strncmp(assembler->current, "0x", 2) && *memoryLocation < 0xFFF; assembler_skip_whitespace(assembler)) {
+    for (*memoryLocation += 2; !strncmp(assembler->current, "0x", 2) && *memoryLocation < 0xFFF;
+         assembler_skip_whitespace(assembler)) {
         chip8_write_byte_to_memory(chip8, memoryLocation, assembler_read_8bit_number(assembler));
     }
-    if(*memoryLocation > 0xFFF) {
+    if (*memoryLocation > 0xFFF) {
         fprintf(stderr, "Text section is too big too be stored in memory\n");
         exit(EXIT_CODE_ASSEMBLER_ERROR);
     }
@@ -116,13 +117,12 @@ static void assembler_process_text_section(assembler_t * assembler, chip8_t * ch
 #ifdef PRINT_BYTE_CODE
     printf("=== Code ===\n");
 #endif
-    for (assembler_skip_whitespace(assembler);
-            *memoryLocation <= 0xFFF && strncmp(assembler->current, "section", 7) && (opcode = assembler_scan_opcode(assembler)) >= 0; 
-            assembler_skip_whitespace(assembler)) {
+    for (assembler_skip_whitespace(assembler); *memoryLocation <= 0xFFF && strncmp(assembler->current, "section", 7) &&
+                                               (opcode = assembler_scan_opcode(assembler)) >= 0;
+         assembler_skip_whitespace(assembler)) {
         chip8_write_opcode_to_memory(chip8, memoryLocation, opcode);
-        
     }
-    if(*memoryLocation > 0xFFF) {
+    if (*memoryLocation > 0xFFF) {
         fprintf(stderr, "Text section is too big too be stored in memory\n");
         exit(EXIT_CODE_ASSEMBLER_ERROR);
     }
@@ -153,7 +153,8 @@ static inline char assembler_advance(assembler_t * assembler) {
     return *assembler->current++;
 }
 
-/// @brief Converts the mnemonic representation of a number in the hexadecimal formtat from the the sourcefile to it's representation in binary
+/// @brief Converts the mnemonic representation of a number in the hexadecimal formtat from the the sourcefile to it's
+/// representation in binary
 /// @param assembler The assembler struct that is used to store the state of the process
 /// @param digitCount The amount of digits the number has
 /// @return The binary representation of the number
@@ -319,10 +320,10 @@ static uint16_t assembler_convert_mnemonic_to_binary(assembler_t * assembler, ch
                     assembler_report_error(assembler, OPCODE_CONVERSION_ERROR_MESSAGE);
                 }
             default:
-                assembler_report_error(assembler,  OPCODE_CONVERSION_ERROR_MESSAGE);
+                assembler_report_error(assembler, OPCODE_CONVERSION_ERROR_MESSAGE);
             }
         default:
-            assembler_report_error(assembler,  OPCODE_CONVERSION_ERROR_MESSAGE);
+            assembler_report_error(assembler, OPCODE_CONVERSION_ERROR_MESSAGE);
         }
     case 'C':
         switch (assembler_advance(assembler)) {
@@ -435,7 +436,8 @@ static uint16_t assembler_convert_mnemonic_to_binary(assembler_t * assembler, ch
                                     assembler_report_error(assembler, OPCODE_CONVERSION_ERROR_MESSAGE);
                                 }
                             case 'V': // VX VY
-                                return 0x8000 | registernumber << 8 || assembler_convert_register_to_binary(assembler) << 4;
+                                return 0x8000 | registernumber << 8 || assembler_convert_register_to_binary(assembler)
+                                                                           << 4;
                             case '0':
                                 switch (assembler_peek(*assembler)) {
                                 case 'x':
@@ -568,7 +570,8 @@ static uint16_t assembler_convert_mnemonic_to_binary(assembler_t * assembler, ch
 }
 
 /// Skips all the whitespace characters in the source file
-/// @param assembler The assembler where the whitespace's are skipped at the position in the source file that is currently processed
+/// @param assembler The assembler where the whitespace's are skipped at the position in the source file that is
+/// currently processed
 static void assembler_skip_whitespace(assembler_t * assembler) {
     for (;;) {
         char c = assembler_peek(*assembler);

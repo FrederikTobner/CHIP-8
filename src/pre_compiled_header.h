@@ -16,7 +16,8 @@
 /**
  * @file pre_compiled_header.h
  * @brief Precompiled header file of the emulator
- * @details Contains commonly used header files from the standard libary, os-specific header files, os-specific definitions and exit codes
+ * @details Contains commonly used header files from the standard libary, os-specific header files, os-specific
+ * definitions and exit codes
  */
 
 #ifndef CHIP8_PRE_COMPILED_HEADER_H_
@@ -44,8 +45,8 @@ typedef enum {
 // OS-specific dependencies
 #if defined(OS_WINDOWS)
 #include <conio.h>
-#include <windows.h>
 #include <psapi.h>
+#include <windows.h>
 #elif defined(OS_UNIX_LIKE)
 #include <curses.h>
 #include <unistd.h>

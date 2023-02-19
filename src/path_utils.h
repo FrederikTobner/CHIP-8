@@ -29,9 +29,9 @@
 /// @return 0 if everything went well, -1 if an error occured
 int path_utils_get_executable_path(char * buffer, size_t bufferSize);
 
-/// @brief Removes the specified amount of file-layers from the buffer  
-/// @param buffer The buffer that is 
-/// @param depth The amount of layers that are removed from the path 
+/// @brief Removes the specified amount of file-layers from the buffer
+/// @param buffer The buffer that is
+/// @param depth The amount of layers that are removed from the path
 void path_utils_remove_file_layer(char * buffer, size_t depth);
 
 /// @brief Adds the specified folder name followed by a os-specific file seperator to the path

@@ -39,7 +39,7 @@ void display_render(display_t display) {
             if (currentColor && display.graphicsSystem[i][j]) {
                 SDL_SetRenderDrawColor(display.renderer, 0x00, 0x00, 0x00, 0xFF); // black color
                 currentColor = 0x00;
-            } 
+            }
             // Check if current color is white and pixel is set before changing renderer color
             else if (!currentColor && !display.graphicsSystem[i][j]) {
                 SDL_SetRenderDrawColor(display.renderer, 0xFF, 0xFF, 0xFF, 0xFF); // white color
@@ -63,8 +63,9 @@ int display_init(display_t * display) {
         }
 
         // Create window
-        display->window = SDL_CreateWindow("CHIP-8", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, GRAPHICS_SYSTEM_WIDTH * SCALE_FACTOR,
-                                           GRAPHICS_SYSTEM_HEIGHT * SCALE_FACTOR, SDL_WINDOW_SHOWN);
+        display->window = SDL_CreateWindow("CHIP-8", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
+                                           GRAPHICS_SYSTEM_WIDTH * SCALE_FACTOR, GRAPHICS_SYSTEM_HEIGHT * SCALE_FACTOR,
+                                           SDL_WINDOW_SHOWN);
         if (display->window == NULL) {
             printf("Window could not be created! SDL Error: %s\n", SDL_GetError());
             return -1;
@@ -102,14 +103,14 @@ void display_quit(display_t * display) {
 /// @param iconPath Path to the icon
 /// @return 0 if the icon was successfully appled to the window, -1 if an error occured
 static int display_set_window_icon(SDL_Window * window, char const * iconName) {
-    
+
     char iconPathBuffer[240];
     if (path_utils_get_executable_path(iconPathBuffer, 240)) {
         printf("Failed to determine path of the emulator executable\n");
         return -1;
     }
     path_utils_remove_file_layer(iconPathBuffer, 2);
-    path_utils_concatenate_folder(iconPathBuffer, "icons");  
+    path_utils_concatenate_folder(iconPathBuffer, "icons");
     strcat(iconPathBuffer, iconName);
     SDL_Surface * window_icon_scurface = SDL_LoadBMP(iconPathBuffer);
     if (!window_icon_scurface) {

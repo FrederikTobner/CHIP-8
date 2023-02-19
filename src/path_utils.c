@@ -25,7 +25,7 @@
 #define FILE_SEPERATOR ('\\')
 #elif defined(OS_UNIX_LIKE)
 #define FILE_SEPERATOR ('/')
-#define MIN(a,b) ((a) < (b) ? (a) : (b))
+#define MIN(a, b)      ((a) < (b) ? (a) : (b))
 #endif
 
 int path_utils_get_executable_path(char * buffer, size_t bufferSize) {
@@ -40,15 +40,15 @@ void path_utils_remove_file_layer(char * buffer, size_t depth) {
     depth--;
     size_t bufferLength = strlen(buffer);
     // Removing trailing file seperator
-    if (buffer[bufferLength - 2] == FILE_SEPERATOR)
+    if (buffer[bufferLength - 2] == FILE_SEPERATOR) {
         buffer[bufferLength-- - 2] = '\0';
+    }
     for (size_t i = bufferLength - 2; i > 0; i--) {
         if (buffer[i] == FILE_SEPERATOR) {
-            if(!depth) {
+            if (!depth) {
                 buffer[i + 1] = '\0';
                 break;
-            }
-            else {
+            } else {
                 depth--;
             }
         }
@@ -59,6 +59,6 @@ void path_utils_concatenate_folder(char * buffer, char * folderName) {
     strcat(buffer, folderName);
     char fileSeperatorString[2];
     fileSeperatorString[0] = FILE_SEPERATOR;
-    fileSeperatorString [1] = '\0';
+    fileSeperatorString[1] = '\0';
     strcat(buffer, fileSeperatorString);
 }
