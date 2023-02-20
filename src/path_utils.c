@@ -25,27 +25,29 @@
 #define FILE_SEPERATOR ('\\')
 #elif defined(OS_UNIX_LIKE)
 #define FILE_SEPERATOR ('/')
-#define MIN(a, b)      ((a) < (b) ? (a) : (b))
 #endif
 
 int path_utils_get_executable_path(char * buffer, size_t bufferSize) {
 #if defined(OS_WINDOWS)
     return !GetModuleFileName(NULL, buffer, bufferSize);
 #elif defined(OS_UNIX_LIKE)
-    return !MIN(readlink("/proc/self/exe", buffer, bufferSize), bufferSize - 1);
+    return !readlink("/proc/self/exe", buffer, bufferSize);
 #endif
 }
 
 void path_utils_remove_file_layer(char * buffer, size_t depth) {
-    depth--;
+    if (!depth) {
+        return;
+    }
     size_t bufferLength = strlen(buffer);
     // Removing trailing file seperator
-    if (buffer[bufferLength - 2] == FILE_SEPERATOR) {
-        buffer[bufferLength-- - 2] = '\0';
+    if (buffer[bufferLength - 1] == FILE_SEPERATOR) {
+        buffer[--bufferLength] = '\0';
     }
-    for (size_t i = bufferLength - 2; i > 0; i--) {
+    for (size_t i = bufferLength - 1; i > 0; i--) {
         if (buffer[i] == FILE_SEPERATOR) {
-            if (!depth) {
+            if (depth == 1) {
+                // We don't remove the file seperator at the end
                 buffer[i + 1] = '\0';
                 break;
             } else {
@@ -55,7 +57,10 @@ void path_utils_remove_file_layer(char * buffer, size_t depth) {
     }
 }
 
-void path_utils_concatenate_folder(char * buffer, char * folderName) {
+void path_utils_concatenate_folder(char * buffer, char * folderName, size_t maxBufferSize) {
+    if (strlen(buffer) + strlen(folderName) + 2 > maxBufferSize) {
+        return;
+    }
     strcat(buffer, folderName);
     char fileSeperatorString[2];
     fileSeperatorString[0] = FILE_SEPERATOR;

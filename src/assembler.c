@@ -37,9 +37,9 @@ static inline char assembler_peek(assembler_t);
 static uint8_t assembler_read_8bit_number(assembler_t *);
 static void assembler_report_error(assembler_t *, char const * format, ...);
 static void assembler_skip_whitespace(assembler_t *);
-static int assembler_process_section(assembler_t *, chip8_t *, int16_t *);
-static void assembler_process_data_section(assembler_t *, chip8_t *, int16_t *);
-static void assembler_process_text_section(assembler_t *, chip8_t *, int16_t *);
+static int assembler_process_section(assembler_t *, chip8_t *, uint16_t *);
+static void assembler_process_data_section(assembler_t *, chip8_t *, uint16_t *);
+static void assembler_process_text_section(assembler_t *, chip8_t *, uint16_t *);
 static int32_t assembler_scan_opcode(assembler_t *);
 
 void assembler_initialize(assembler_t * assembler, char const * source) {
@@ -66,7 +66,7 @@ int assembler_process_file(assembler_t * assembler, chip8_t * chip8) {
 /// @param chip8 The emulator where the program will be executed
 /// @param memoryLocation The memory-location where the section is stored
 /// @return 0 if everything went well, -1 if an error occured
-static int assembler_process_section(assembler_t * assembler, chip8_t * chip8, int16_t * memoryLocation) {
+static int assembler_process_section(assembler_t * assembler, chip8_t * chip8, uint16_t * memoryLocation) {
     if (assembler_is_at_end(*assembler)) {
         return -1;
     }
@@ -90,7 +90,7 @@ static int assembler_process_section(assembler_t * assembler, chip8_t * chip8, i
 /// @param assembler The assembler that processes the section
 /// @param chip8 The emulator where the program will be executed
 /// @param memoryLocation The memory-location where the data is stored
-static void assembler_process_data_section(assembler_t * assembler, chip8_t * chip8, int16_t * memoryLocation) {
+static void assembler_process_data_section(assembler_t * assembler, chip8_t * chip8, uint16_t * memoryLocation) {
     assembler->current += 6;
     assembler_skip_whitespace(assembler);
     for (*memoryLocation += 2; !strncmp(assembler->current, "0x", 2) && *memoryLocation < 0xFFF;
@@ -107,7 +107,7 @@ static void assembler_process_data_section(assembler_t * assembler, chip8_t * ch
 /// @param assembler The assembler that processes the section
 /// @param chip8 The emulator where the program will be executed
 /// @param memoryLocation The memory-location where the code is stored
-static void assembler_process_text_section(assembler_t * assembler, chip8_t * chip8, int16_t * memoryLocation) {
+static void assembler_process_text_section(assembler_t * assembler, chip8_t * chip8, uint16_t * memoryLocation) {
     if (*memoryLocation != PROGRAM_START_LOCATION) {
         fprintf(stderr, "Text section must be declared before data section\n");
         exit(EXIT_CODE_ASSEMBLER_ERROR);

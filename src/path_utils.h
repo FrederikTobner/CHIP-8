@@ -37,6 +37,6 @@ void path_utils_remove_file_layer(char * buffer, size_t depth);
 /// @brief Adds the specified folder name followed by a os-specific file seperator to the path
 /// @param buffer The buffer where the filename is concatenated
 /// @param folderName The name of the folder that is concatenated
-void path_utils_concatenate_folder(char * buffer, char * folderName);
+void path_utils_concatenate_folder(char * buffer, char * folderName, size_t maxBufferSize);
 
 #endif
