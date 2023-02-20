@@ -32,9 +32,13 @@
 /// The scale factor from the emulator display to the real display
 #define SCALE_FACTOR           (20)
 
+/// @brief Models the display of the emulator using SDL
 typedef struct {
+    /// The window where the display of the emulator is displayed
     SDL_Window * window;
+    /// The renderer that is used to render the display of the emulator in the window
     SDL_Renderer * renderer;
+    /// The underlying graphics system of the CHIP-8
     uint8_t graphicsSystem[64][32];
 } display_t;
 
