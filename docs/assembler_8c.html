@@ -149,6 +149,7 @@ Functions</h2></td></tr>
 <tr class="memdesc:ad5c6aa5b2ea71fb9cee6344447a54770"><td class="mdescLeft">&#160;</td><td class="mdescRight">Processes a section in a chip8 assembly file.  <a href="assembler_8c.html#ad5c6aa5b2ea71fb9cee6344447a54770">More...</a><br /></td></tr>
 <tr class="separator:ad5c6aa5b2ea71fb9cee6344447a54770"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a48e532f5fc1d4e4171c5c2293a674398"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="assembler_8c.html#a48e532f5fc1d4e4171c5c2293a674398">assembler_process_data_section</a> (<a class="el" href="structassembler__t.html">assembler_t</a> *assembler, <a class="el" href="structchip8__t.html">chip8_t</a> *chip8, int16_t *memoryLocation)</td></tr>
+<tr class="memdesc:a48e532f5fc1d4e4171c5c2293a674398"><td class="mdescLeft">&#160;</td><td class="mdescRight">Processes the data section of a chip8 program.  <a href="assembler_8c.html#a48e532f5fc1d4e4171c5c2293a674398">More...</a><br /></td></tr>
 <tr class="separator:a48e532f5fc1d4e4171c5c2293a674398"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2bc4a52be4592144471f9aa5662808c5"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="assembler_8c.html#a2bc4a52be4592144471f9aa5662808c5">assembler_process_text_section</a> (<a class="el" href="structassembler__t.html">assembler_t</a> *assembler, <a class="el" href="structchip8__t.html">chip8_t</a> *chip8, int16_t *memoryLocation)</td></tr>
 <tr class="memdesc:a2bc4a52be4592144471f9aa5662808c5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Processes the text section of a chip8 program.  <a href="assembler_8c.html#a2bc4a52be4592144471f9aa5662808c5">More...</a><br /></td></tr>
@@ -649,12 +650,13 @@ Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Processes the data section of a chip8 program. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">assembler</td><td></td></tr>
-    <tr><td class="paramname">chip8</td><td></td></tr>
-    <tr><td class="paramname">memoryLocation</td><td><br  />
- </td></tr>
+    <tr><td class="paramname">assembler</td><td>The assembler that processes the section </td></tr>
+    <tr><td class="paramname">chip8</td><td>The emulator where the program will be executed </td></tr>
+    <tr><td class="paramname">memoryLocation</td><td>The memory-location where the data is stored </td></tr>
   </table>
   </dd>
 </dl>
@@ -744,6 +746,7 @@ Functions</h2></td></tr>
   <table class="params">
     <tr><td class="paramname">assembler</td><td>The assembler that processes the program </td></tr>
     <tr><td class="paramname">chip8</td><td>The emulator where the program will be executed </td></tr>
+    <tr><td class="paramname">memoryLocation</td><td>The memory-location where the section is stored </td></tr>
   </table>
   </dd>
 </dl>
@@ -796,6 +799,7 @@ Functions</h2></td></tr>
   <table class="params">
     <tr><td class="paramname">assembler</td><td>The assembler that processes the section </td></tr>
     <tr><td class="paramname">chip8</td><td>The emulator where the program will be executed </td></tr>
+    <tr><td class="paramname">memoryLocation</td><td>The memory-location where the code is stored </td></tr>
   </table>
   </dd>
 </dl>

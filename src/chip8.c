@@ -26,19 +26,19 @@
 #include "display.h"
 
 /// Defines a new 8-bit value based on the opcode that is currently executed
-#define DEFINE_8_BIT_VALUE     uint8_t value = chip8->currentOpcode & 0x00ff;
+#define DEFINE_8_BIT_VALUE  uint8_t value = chip8->currentOpcode & 0x00ff;
 
 /// Defines a new 12-bit value based on the opcode that is currently executed
-#define DEFINE_12_BIT_VALUE    uint16_t value = chip8->currentOpcode & 0x0fff;
+#define DEFINE_12_BIT_VALUE uint16_t value = chip8->currentOpcode & 0x0fff;
 
 /// Defines a new 4-bit value based on the opcode that is currently executed
-#define DEFINE_X               uint8_t x = (chip8->currentOpcode & 0x0f00u) >> 8;
+#define DEFINE_X            uint8_t x = (chip8->currentOpcode & 0x0f00u) >> 8;
 
 /// Defines a new 4-bit value based on the opcode that is currently executed
-#define DEFINE_Y               uint8_t y = (chip8->currentOpcode & 0x00f0u) >> 4;
+#define DEFINE_Y            uint8_t y = (chip8->currentOpcode & 0x00f0u) >> 4;
 
 /// The clock speed of the CHIP-8 CPU (600 Hz)
-#define CHIP8_CLOCK_SPEED      (600.0)
+#define CHIP8_CLOCK_SPEED   (600.0)
 
 static int8_t chip8_execute_next_opcode(chip8_t *);
 static void chip8_place_character_sprites_in_memory(chip8_t *);
@@ -48,13 +48,14 @@ static void chip8_place_character_sprites_in_memory(chip8_t *);
 void chip8_execute(chip8_t * chip8) {
     time_t last_t, current_t;
     long numberofChip8Clocks = 0;
-    for (; chip8->programCounter < 1536; chip8->programCounter++, numberofChip8Clocks++) {
+    for (; chip8->programCounter < ((0x1000 - PROGRAM_START_LOCATION) / 2);
+         chip8->programCounter++, numberofChip8Clocks++) {
         last_t = time(NULL);
 #ifdef TRACE_EXECUTION
         debug_trace_execution(*chip8);
 #endif
-        chip8->currentOpcode = *(chip8->memory + chip8->programCounter * 2 + PROGRAM_START_LOCATION);
-        chip8->currentOpcode += ((uint16_t) * (chip8->memory + (chip8->programCounter * 2 + 1 + PROGRAM_START_LOCATION))) << 8;
+        chip8->currentOpcode = chip8->memory[chip8->programCounter * 2 + PROGRAM_START_LOCATION];
+        chip8->currentOpcode += ((uint16_t)chip8->memory[chip8->programCounter * 2 + 1 + PROGRAM_START_LOCATION]) << 8;
         // Reached end of the program
         if (!chip8->currentOpcode) {
             return;
@@ -76,7 +77,8 @@ void chip8_execute(chip8_t * chip8) {
         }
         // Wait for a 1/600 second minus the time elapsed
         current_t = time(NULL);
-// TODO: Adapt sleep to handle environments that can not run at 600 HZ (negative values for 1 / 600 s - (current - last))
+// TODO: Adapt sleep to handle environments that can not run at 600 HZ (negative values for 1 / 600 s - (current -
+// last))
 #if defined(OS_WINDOWS)
         // Milliseconds -> multiply with 1000
         Sleep((1.0 / CHIP8_CLOCK_SPEED - ((double)current_t - last_t)) * 1000.0);
@@ -113,6 +115,9 @@ void chip8_init(chip8_t * chip8) {
 /// @param memoryLocation The location where the opcode is written to (0-4096)
 /// @param opcode The opcode that is written into memory
 void chip8_write_opcode_to_memory(chip8_t * chip8, uint16_t * memoryLocation, uint16_t opcode) {
+    if (*memoryLocation > 0x1000u || *memoryLocation < PROGRAM_START_LOCATION) {
+        return;
+    }
 #ifdef PRINT_BYTE_CODE
     debug_print_bytecode(*memoryLocation, opcode);
 #endif
@@ -125,13 +130,21 @@ void chip8_write_opcode_to_memory(chip8_t * chip8, uint16_t * memoryLocation, ui
 /// @param memoryLocation The location where the opcode is written to (0-4096)
 /// @param byte The byte that is written into memory
 void chip8_write_byte_to_memory(chip8_t * chip8, uint16_t * memoryLocation, uint8_t byte) {
+    if (*memoryLocation > 0x1000u || *memoryLocation < PROGRAM_START_LOCATION) {
+        return;
+    }
     chip8->memory[(*memoryLocation)++] = byte;
 }
 
 /// @brief Places sprites for characters in memory
 /// @param chip8 The virtual machine where the sprites are placed in memory
 static void chip8_place_character_sprites_in_memory(chip8_t * chip8) {
-    memcpy(chip8->memory + 0x50, "\xF0\x90\x90\x90\xF0\x20\x60\x20\x20\x70\xF0\x10\xF0\x80\xF0\xF0\x10\xF0\x10\xF0\x90\x90\xF0\x10\x10\xF0\x80\xF0\x10\xF0\xF0\x80\xF0\x90\xF0\xF0\x10\x20\x40\x40\xF0\x90\xF0\x90\xF0\xF0\x90\xF0\x10\xF0\xF0\x90\xF0\x90\x90\xE0\x90\xE0\x90\xE0\xF0\x80\x80\x80\xF0\xE0\x90\x90\x90\xE0\xF0\x80\xF0\x80\xF0\xF0\x80\xF0\x80\x80", 80);
+    memcpy(
+        chip8->memory + 0x50,
+        "\xF0\x90\x90\x90\xF0\x20\x60\x20\x20\x70\xF0\x10\xF0\x80\xF0\xF0\x10\xF0\x10\xF0\x90\x90\xF0\x10\x10\xF0\x80"
+        "\xF0\x10\xF0\xF0\x80\xF0\x90\xF0\xF0\x10\x20\x40\x40\xF0\x90\xF0\x90\xF0\xF0\x90\xF0\x10\xF0\xF0\x90\xF0\x90"
+        "\x90\xE0\x90\xE0\x90\xE0\xF0\x80\x80\x80\xF0\xE0\x90\x90\x90\xE0\xF0\x80\xF0\x80\xF0\xF0\x80\xF0\x80\x80",
+        80);
 }
 
 /// Executes the next opcode in memory
@@ -392,8 +405,8 @@ static int8_t chip8_execute_next_opcode(chip8_t * chip8) {
                     chip8->V[x] = chip8->delayTimer;
                     break;
                 }
-            case 0xa: // 0xFX0A - A key press is awaited, and then stored in VX. (Blocking Operation. All instruction halted
-                      // until next key event)
+            case 0xa: // 0xFX0A - A key press is awaited, and then stored in VX. (Blocking Operation. All instruction
+                      // halted until next key event)
                 {
                     DEFINE_X
                     chip8->V[x] = getchar();
@@ -419,16 +432,15 @@ static int8_t chip8_execute_next_opcode(chip8_t * chip8) {
                 }
             case 0x29:
                 // 0xFX29 - Sets I to the location of the sprite for the character in VX. Characters
-                // are represented by a 4x5 font The characters are stored at the address 0x0050 and are 20 bit large (4 by 5 bits)
+                // are represented by a 4x5 font The characters are stored at the address 0x0050 and are 20 bit large (4
+                // by 5 bits)
                 {
                     DEFINE_X
                     if (chip8->V[x] <= '9' && chip8->V[x] >= '0') {
                         chip8->I = 0x0050 + 0x5 * (chip8->V[x] - '0');
-                    }
-                    else if (chip8->V[x] <= 'F' && chip8->V[x] >= 'A') {
+                    } else if (chip8->V[x] <= 'F' && chip8->V[x] >= 'A') {
                         chip8->I = 0x0050 + 0x5 * (chip8->V[x] - 0x37);
-                    }
-                    else {
+                    } else {
                         goto chip8_error;
                     }
                     break;
