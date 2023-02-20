@@ -46,6 +46,7 @@ typedef enum {
 #if defined(OS_WINDOWS)
 #include <conio.h>
 #include <windows.h>
+// Has to come after windows.h dependency or the emulator won't build
 #include <psapi.h>
 #elif defined(OS_UNIX_LIKE)
 #include <curses.h>
