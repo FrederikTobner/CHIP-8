@@ -84,7 +84,7 @@ void chip8_execute(chip8_t * chip8) {
         Sleep((1.0 / CHIP8_CLOCK_SPEED - ((double)current_t - last_t)) * 1000.0);
 #elif defined(OS_UNIX_LIKE)
         // Mircoseconds -> multiply with 1000000
-        usleep((1.0 / CHIP8_CLOCK_SPEED - (current_t - last_t)) * 10000000.0);
+        usleep((1.0 / CHIP8_CLOCK_SPEED - ((double)current_t - last_t)) * 10000000.0);
 #endif
     }
 }
@@ -138,7 +138,7 @@ void chip8_write_byte_to_memory(chip8_t * chip8, uint16_t * memoryLocation, uint
 
 /// @brief Places sprites for characters in memory
 /// @param chip8 The virtual machine where the sprites are placed in memory
-static void chip8_place_character_sprites_in_memory(chip8_t * chip8) {
+static inline void chip8_place_character_sprites_in_memory(chip8_t * chip8) {
     memcpy(
         chip8->memory + 0x50,
         "\xF0\x90\x90\x90\xF0\x20\x60\x20\x20\x70\xF0\x10\xF0\x80\xF0\xF0\x10\xF0\x10\xF0\x90\x90\xF0\x10\x10\xF0\x80"
