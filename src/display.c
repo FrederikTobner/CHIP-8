@@ -41,7 +41,7 @@ void display_render(display_t display) {
                 SDL_SetRenderDrawColor(display.renderer, 0x00, 0x00, 0x00, 0xFF); // black color
                 currentColor = 0x00;
             }
-            // Check if current color is white and pixel is set before changing renderer color
+            // Check if current color is black and pixel is not set before changing renderer color
             else if (!currentColor && !display.graphicsSystem[width][height]) {
                 SDL_SetRenderDrawColor(display.renderer, 0xFF, 0xFF, 0xFF, 0xFF); // white color
                 currentColor = 0xFF;

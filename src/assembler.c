@@ -474,6 +474,19 @@ static uint16_t assembler_convert_mnemonic_to_binary(assembler_t * assembler, ch
             assembler_report_error(assembler, OPCODE_CONVERSION_ERROR_MESSAGE);
         }
         break;
+    case 'N':
+        switch (assembler_advance(assembler)) {
+        case 'O':
+            switch (assembler_advance(assembler)) {
+            case 'P': // NOP
+                return 0x0001;
+            default:
+                assembler_report_error(assembler, OPCODE_CONVERSION_ERROR_MESSAGE);
+            }
+            break;
+        default:
+            assembler_report_error(assembler, OPCODE_CONVERSION_ERROR_MESSAGE);
+        }    
     case 'R':
         switch (assembler_advance(assembler)) {
         case 'E':
