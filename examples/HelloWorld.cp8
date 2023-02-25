@@ -26,4 +26,4 @@ section .text:
     PRT V0          # Prints the content of the register V0
 
 section .data:
-    # No data 
+                    # No data 

@@ -85,7 +85,7 @@ void chip8_execute(chip8_t * chip8) {
         // Wait for a 1/600 second minus the time elapsed
         current_t = time(NULL);
         if (1.0 / CHIP8_CLOCK_SPEED > ((double)current_t - last_t)) {
-// Lets pretend SDL_Delay does not exist
+            // Lets pretend SDL_Delay does not exist
 #if defined(OS_WINDOWS)
             // Milliseconds -> multiply with 1000
             Sleep((1.0 / CHIP8_CLOCK_SPEED - ((double)current_t - last_t)) * 1000.0);
