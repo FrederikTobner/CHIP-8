@@ -41,4 +41,6 @@ section .text:
     NOP
     NOP
     NOP
+section .data:
+                    # No data 
     
