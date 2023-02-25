@@ -8,6 +8,8 @@ var files_dup =
     [ "debug.h", "debug_8h.html", "debug_8h" ],
     [ "display.c", "display_8c.html", "display_8c" ],
     [ "display.h", "display_8h.html", "display_8h" ],
+    [ "file_utils.c", "file__utils_8c.html", "file__utils_8c" ],
+    [ "file_utils.h", "file__utils_8h.html", "file__utils_8h" ],
     [ "main.c", "main_8c.html", "main_8c" ],
     [ "path_utils.c", "path__utils_8c.html", "path__utils_8c" ],
     [ "path_utils.h", "path__utils_8h.html", "path__utils_8h" ],

@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['graphics_5fsystem_5fheight_49',['GRAPHICS_SYSTEM_HEIGHT',['../chip8_8h.html#a846edf15a40fb5b159f0b8bd4e993c80',1,'chip8.h']]],
-  ['graphics_5fsystem_5fwidth_50',['GRAPHICS_SYSTEM_WIDTH',['../chip8_8h.html#aa92341dbbef8194f52ad4ded98c8ce3d',1,'chip8.h']]],
-  ['graphicssystem_51',['graphicsSystem',['../structchip8__t.html#ada26d3fde51f0ecb3d3f564da583cdf4',1,'chip8_t']]]
+  ['file_5futils_2ec_60',['file_utils.c',['../file__utils_8c.html',1,'']]],
+  ['file_5futils_2eh_61',['file_utils.h',['../file__utils_8h.html',1,'']]],
+  ['file_5futils_5fread_5ffile_62',['file_utils_read_file',['../file__utils_8c.html#ac87877332e2bda07a8a8dfaee26e9117',1,'file_utils_read_file(char const *path):&#160;file_utils.c'],['../file__utils_8h.html#a8c9524c518c802824f503fca1bf13765',1,'file_utils_read_file(char const *):&#160;file_utils.c']]]
 ];

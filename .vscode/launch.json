@@ -7,7 +7,7 @@
             "request": "launch",
             "program": "${workspaceFolder}/build/src/CHIP-8.exe",
             "args": [
-                "${workspaceFolder}/examples/HelloWorld.cp8",
+                "${workspaceFolder}/examples/Graphics.cp8",
             ],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['v_74',['V',['../structchip8__t.html#a7212d8d49da04eaad9ce0feb0d001b4d',1,'chip8_t']]]
+  ['renderer_85',['renderer',['../structdisplay__t.html#a966da7a60c4ea3ba301e26ccc5efe452',1,'display_t']]]
 ];

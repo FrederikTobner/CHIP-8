@@ -24,3 +24,5 @@ section .text:
     0xF000          # Prints the content of the register V0
     0x600A          # We store 0x0A (\n) in the register V0
     0xF000          # Prints the content of the register V0
+section .data:
+                    # No data 
