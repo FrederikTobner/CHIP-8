@@ -245,7 +245,7 @@ static int8_t chip8_execute_next_opcode(chip8_t * chip8) {
         {
             DEFINE_8_BIT_VALUE
             DEFINE_X
-            chip8->V[x] = value;
+            chip8->V[x] += value;
             break;
         }
     case 0x8000:
@@ -282,10 +282,11 @@ static int8_t chip8_execute_next_opcode(chip8_t * chip8) {
             {
                 DEFINE_X
                 DEFINE_Y
-                uint8_t result = chip8->V[y] - chip8->V[x];
+                uint8_t result = chip8->V[y] + chip8->V[x];
                 if (result > (result - chip8->V[x])) {
                     chip8->V[0xf] = 0x1u;
                 }
+                chip8->V[x] = result;
                 break;
             }
         case 0x5: // 0x8XY5 - VY is subtracted from VX. VF is set to 0 when there's a borrow, and 1 when there is not.
@@ -296,6 +297,7 @@ static int8_t chip8_execute_next_opcode(chip8_t * chip8) {
                 if (result < (result - chip8->V[x])) {
                     chip8->V[0xf] = 0x1u;
                 }
+                chip8->V[x] = result;
                 break;
             }
         case 0x6: // 0x8XY6 - Stores the least significant bit of VX in VF and then shifts VX to the right by 1
@@ -374,7 +376,7 @@ static int8_t chip8_execute_next_opcode(chip8_t * chip8) {
             chip8->V[0xf] = 0;
             for (size_t height = 0; height < spriteHeight; height++) {
                 for (size_t width = 0; width < 8; width++) {
-                    if ((chip8->memory[(chip8->I + height) & 4095] >> width) & 0x01) {
+                    if ((chip8->memory[(chip8->I + height) & 4095] >> (8 - width)) & 0x01) {
                         if (!setVF && chip8->display.graphicsSystem[width + chip8->V[x] & (GRAPHICS_SYSTEM_WIDTH - 1)]
                                                                    [height +  chip8->V[y] & (GRAPHICS_SYSTEM_HEIGHT - 1)]) {
                             chip8->V[0xf] = 1;
