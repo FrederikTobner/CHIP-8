@@ -349,10 +349,8 @@ static uint16_t assembler_convert_mnemonic_to_binary(assembler_t * assembler, ch
         switch (assembler_advance(assembler)) {
         case 'S':
             switch (assembler_advance(assembler)) {
-            case 'P':
-               // DSP
-               uint16_t opcode = (0xD000 | assembler_convert_registers_to_binary(assembler) << 4);
-                return opcode | (assembler_read_8bit_number(assembler) & 0xf);
+            case 'P': // DSP
+                return (0xD000 | assembler_convert_registers_to_binary(assembler) << 4) | (assembler_read_8bit_number(assembler) & 0xf);
             default:
                 assembler_report_error(assembler, OPCODE_CONVERSION_ERROR_MESSAGE);
             }
