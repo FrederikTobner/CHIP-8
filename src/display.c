@@ -30,18 +30,19 @@ void display_render(display_t display) {
     SDL_SetRenderDrawColor(display.renderer, 0xFF, 0xFF, 0xFF, 0xFF); // white color
     uint8_t currentColor = 0xFF;
     SDL_RenderClear(display.renderer);
-    for (size_t i = 0; i < GRAPHICS_SYSTEM_WIDTH; i++) {
-        for (size_t j = 0; j < GRAPHICS_SYSTEM_HEIGHT; j++) {
-            // Render black filled quad (Currently the display uses 10x10 pixels to simulate a single pixel of the
+    for (size_t width = 0; width < GRAPHICS_SYSTEM_WIDTH; width++) {
+        for (size_t height = 0; height < GRAPHICS_SYSTEM_HEIGHT; height++) {
+            // Render black filled quad (Currently the display uses 20x20 pixels to simulate a single pixel of the
             // graphics system)
-            SDL_Rect fillRect = {i * SCALE_FACTOR, j * SCALE_FACTOR, (i + 1) * SCALE_FACTOR, (j + 1) * SCALE_FACTOR};
+            SDL_Rect fillRect = {width * SCALE_FACTOR, height * SCALE_FACTOR, (width + 1) * SCALE_FACTOR,
+                                 (height + 1) * SCALE_FACTOR};
             // Check if current color is white and pixel is set before changing renderer color
-            if (currentColor && display.graphicsSystem[i][j]) {
+            if (currentColor && display.graphicsSystem[width][height]) {
                 SDL_SetRenderDrawColor(display.renderer, 0x00, 0x00, 0x00, 0xFF); // black color
                 currentColor = 0x00;
             }
             // Check if current color is white and pixel is set before changing renderer color
-            else if (!currentColor && !display.graphicsSystem[i][j]) {
+            else if (!currentColor && !display.graphicsSystem[width][height]) {
                 SDL_SetRenderDrawColor(display.renderer, 0xFF, 0xFF, 0xFF, 0xFF); // white color
                 currentColor = 0xFF;
             }
@@ -78,9 +79,9 @@ int display_init(display_t * display) {
             }
             SDL_SetRenderDrawColor(display->renderer, 0xFF, 0xFF, 0xFF, 0xFF); // white
             // Initialize graphics system
-            for (size_t i = 0; i < GRAPHICS_SYSTEM_WIDTH; i++) {
-                for (size_t j = 0; j < GRAPHICS_SYSTEM_HEIGHT; j++) {
-                    display->graphicsSystem[i][j] = 0u;
+            for (size_t width = 0; width < GRAPHICS_SYSTEM_WIDTH; width++) {
+                for (size_t height = 0; height < GRAPHICS_SYSTEM_HEIGHT; height++) {
+                    display->graphicsSystem[width][height] = 0u;
                 }
             }
             return display_set_window_icon(display->window, "chip8_window_icon.bmp");

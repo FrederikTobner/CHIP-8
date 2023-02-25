@@ -1,7 +1,8 @@
 var searchData=
 [
-  ['pre_5fcompiled_5fheader_2ec_61',['pre_compiled_header.c',['../pre__compiled__header_8c.html',1,'']]],
-  ['pre_5fcompiled_5fheader_2eh_62',['pre_compiled_header.h',['../pre__compiled__header_8h.html',1,'']]],
-  ['program_5fstart_5flocation_63',['PROGRAM_START_LOCATION',['../chip8_8c.html#a59962df77cb1013f9a270da92b03852a',1,'chip8.c']]],
-  ['programcounter_64',['programCounter',['../structchip8__t.html#ac2c697bf7b6fc26b306c9e24196566e6',1,'chip8_t']]]
+  ['main_70',['main',['../main_8c.html#a7a29781a20c5dd4153c3c1cecf0ff328',1,'main.c']]],
+  ['main_20page_71',['Main Page',['../index.html',1,'']]],
+  ['main_2ec_72',['main.c',['../main_8c.html',1,'']]],
+  ['main_2edox_73',['main.dox',['../main_8dox.html',1,'']]],
+  ['memory_74',['memory',['../structchip8__t.html#a5987db636a9b13af8d42f867f621fadb',1,'chip8_t']]]
 ];

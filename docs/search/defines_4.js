@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['scale_5ffactor_148',['SCALE_FACTOR',['../display_8c.html#adb1f1d5b685f5a444190abe4ac18d972',1,'display.c']]]
+  ['program_5fstart_5flocation_187',['PROGRAM_START_LOCATION',['../chip8_8h.html#a59962df77cb1013f9a270da92b03852a',1,'chip8.h']]]
 ];

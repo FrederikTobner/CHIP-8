@@ -1,11 +1,12 @@
 var searchData=
 [
-  ['scale_5ffactor_66',['SCALE_FACTOR',['../display_8c.html#adb1f1d5b685f5a444190abe4ac18d972',1,'display.c']]],
-  ['sdl_5finit_67',['sdl_init',['../main_8c.html#a35eb123031c91301b962f247afdd76f3',1,'main.c']]],
-  ['sdl_5fquit_68',['sdl_quit',['../main_8c.html#a86040d9c39fe8ed0077377bf0c4c0ce2',1,'main.c']]],
-  ['show_5fhelp_69',['show_help',['../main_8c.html#a81962ff36a3740bd2a6a458b74e57e26',1,'main.c']]],
-  ['soundtimer_70',['soundTimer',['../structchip8__t.html#a7626db69808827148dbf69697cf5e862',1,'chip8_t']]],
-  ['stack_71',['stack',['../structchip8__t.html#a0004a78051dbbf272e3fdbefa09412c5',1,'chip8_t']]],
-  ['stackpointer_72',['stackPointer',['../structchip8__t.html#a80d3489d91c6975e450cd5827014afac',1,'chip8_t']]],
-  ['start_73',['start',['../structassembler__t.html#ac621bcfb466f3b6a6421c5f48b30ade3',1,'assembler_t']]]
+  ['path_5futils_2ec_76',['path_utils.c',['../path__utils_8c.html',1,'']]],
+  ['path_5futils_2eh_77',['path_utils.h',['../path__utils_8h.html',1,'']]],
+  ['path_5futils_5fconcatenate_5ffolder_78',['path_utils_concatenate_folder',['../path__utils_8c.html#acb59813a74e09fa41e587cfc0df82f0f',1,'path_utils_concatenate_folder(char *buffer, char *folderName, size_t maxBufferSize):&#160;path_utils.c'],['../path__utils_8h.html#acb59813a74e09fa41e587cfc0df82f0f',1,'path_utils_concatenate_folder(char *buffer, char *folderName, size_t maxBufferSize):&#160;path_utils.c']]],
+  ['path_5futils_5fget_5fexecutable_5fpath_79',['path_utils_get_executable_path',['../path__utils_8c.html#a03c4a75529bfa4c6e008b642eeb559db',1,'path_utils_get_executable_path(char *buffer, size_t bufferSize):&#160;path_utils.c'],['../path__utils_8h.html#a03c4a75529bfa4c6e008b642eeb559db',1,'path_utils_get_executable_path(char *buffer, size_t bufferSize):&#160;path_utils.c']]],
+  ['path_5futils_5fremove_5ffile_5flayer_80',['path_utils_remove_file_layer',['../path__utils_8c.html#a34127f3a0eeb18c5ef4620e2bb112826',1,'path_utils_remove_file_layer(char *buffer, size_t depth):&#160;path_utils.c'],['../path__utils_8h.html#a34127f3a0eeb18c5ef4620e2bb112826',1,'path_utils_remove_file_layer(char *buffer, size_t depth):&#160;path_utils.c']]],
+  ['pre_5fcompiled_5fheader_2ec_81',['pre_compiled_header.c',['../pre__compiled__header_8c.html',1,'']]],
+  ['pre_5fcompiled_5fheader_2eh_82',['pre_compiled_header.h',['../pre__compiled__header_8h.html',1,'']]],
+  ['program_5fstart_5flocation_83',['PROGRAM_START_LOCATION',['../chip8_8h.html#a59962df77cb1013f9a270da92b03852a',1,'chip8.h']]],
+  ['programcounter_84',['programCounter',['../structchip8__t.html#ac2c697bf7b6fc26b306c9e24196566e6',1,'chip8_t']]]
 ];

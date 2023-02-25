@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['line_55',['line',['../structassembler__t.html#a311196674133e618759342d6be698474',1,'assembler_t']]]
+  ['key_68',['key',['../structchip8__t.html#a742229490b6759a90ece7ba82ba129d5',1,'chip8_t']]]
 ];

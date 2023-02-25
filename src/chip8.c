@@ -77,8 +77,7 @@ void chip8_execute(chip8_t * chip8) {
         }
         // Wait for a 1/600 second minus the time elapsed
         current_t = time(NULL);
-// TODO: Adapt sleep to handle environments that can not run at 600 HZ (negative values for 1 / 600 s - (current -
-// last))
+// Lets pretend SDL_Delay does not exist
 #if defined(OS_WINDOWS)
         // Milliseconds -> multiply with 1000
         Sleep((1.0 / CHIP8_CLOCK_SPEED - ((double)current_t - last_t)) * 1000.0);
@@ -160,6 +159,15 @@ static int8_t chip8_execute_next_opcode(chip8_t * chip8) {
                     for (uint8_t x = 0; x < GRAPHICS_SYSTEM_WIDTH; x++) {
                         for (uint8_t y = 0; x < GRAPHICS_SYSTEM_HEIGHT; y++) {
                             chip8->display.graphicsSystem[x][y] = 0;
+                        }
+                    }
+                    break;
+                }
+            case 0x0E1: // 0x00E1 - Toggle the pixels on the screen
+                {
+                    for (uint8_t x = 0; x < GRAPHICS_SYSTEM_WIDTH; x++) {
+                        for (uint8_t y = 0; x < GRAPHICS_SYSTEM_HEIGHT; y++) {
+                            chip8->display.graphicsSystem[x][y] = !chip8->display.graphicsSystem[x][y];
                         }
                     }
                     break;
@@ -348,8 +356,30 @@ static int8_t chip8_execute_next_opcode(chip8_t * chip8) {
                   * As described above, VF is set to 1 if any screen pixels are flipped from set to unset when the
                   * sprite is drawn, and to 0 if that does not happen
                   */
-        // TODO: Handle OPCODE
-        break;
+        {
+            DEFINE_X
+            DEFINE_Y
+            uint8_t spriteHeight = chip8->currentOpcode & 0x000f;
+            bool setVF = false;
+            // Stays zero if no screen pixels are flipped from set to unset
+            chip8->V[0xf] = 0;
+            for (size_t height = 0; height < spriteHeight; height++) {
+                for (size_t width = 0; width < 8; width++) {
+                    if ((chip8->memory[(chip8->I + height) & 4095] >> width) & 0x01) {
+                        if (!setVF && chip8->display.graphicsSystem[width + x & (GRAPHICS_SYSTEM_WIDTH - 1)]
+                                                                   [height + y & (GRAPHICS_SYSTEM_HEIGHT - 1)]) {
+                            chip8->V[0xf] = 1;
+                            setVF = true;
+                        }
+                        chip8->display.graphicsSystem[width + x & (GRAPHICS_SYSTEM_WIDTH - 1)]
+                                                     [height + y & (GRAPHICS_SYSTEM_HEIGHT - 1)] =
+                            !chip8->display.graphicsSystem[width + x & (GRAPHICS_SYSTEM_WIDTH - 1)]
+                                                          [height + y & (GRAPHICS_SYSTEM_HEIGHT - 1)];
+                    }
+                }
+            }
+            break;
+        }
     case 0xe000:
         {
             switch (chip8->currentOpcode & 0x00ff) {
@@ -397,6 +427,8 @@ static int8_t chip8_execute_next_opcode(chip8_t * chip8) {
                 {
                     DEFINE_X
                     putchar(chip8->V[x]);
+                    // We need to flush the buffer to make sure the character is printed
+                    fflush(stdout);
                     break;
                 }
             case 0x7: // 0xFX07 - Sets VX to the value of the delay timer.
