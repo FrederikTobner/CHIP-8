@@ -35,7 +35,7 @@ static inline bool assembler_is_decimal(char);
 static inline bool assembler_is_hexa(char);
 static inline char assembler_peek(assembler_t);
 static uint8_t assembler_read_8bit_number(assembler_t *);
-static void assembler_report_error(assembler_t *, char const * format, ...);
+static void assembler_report_error(assembler_t *, char const *, ...);
 static void assembler_skip_whitespace(assembler_t *);
 static int assembler_process_section(assembler_t *, chip8_t *, uint16_t *);
 static void assembler_process_data_section(assembler_t *, chip8_t *, uint16_t *);

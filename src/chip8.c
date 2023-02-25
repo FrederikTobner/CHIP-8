@@ -41,15 +41,22 @@
 #define CHIP8_CLOCK_SPEED   (600.0)
 
 static int8_t chip8_execute_next_opcode(chip8_t *);
-static void chip8_place_character_sprites_in_memory(chip8_t *);
+static inline void chip8_place_character_sprites_in_memory(chip8_t *);
 
 /// @brief Executes the program that is stored in memory
 /// @param chip8 The chip8 vm where the program that is currently held in memory is executed
 void chip8_execute(chip8_t * chip8) {
     time_t last_t, current_t;
     long numberofChip8Clocks = 0;
+    SDL_Event event;
     for (; chip8->programCounter < ((0x1000 - PROGRAM_START_LOCATION) / 2);
          chip8->programCounter++, numberofChip8Clocks++) {
+        // Polling SDL events
+        while (SDL_PollEvent(&event)) {
+            if (event.type == SDL_QUIT) {
+                return;
+            }
+        }
         last_t = time(NULL);
 #ifdef TRACE_EXECUTION
         debug_trace_execution(*chip8);
@@ -65,7 +72,7 @@ void chip8_execute(chip8_t * chip8) {
             return;
         }
         // 60 hz
-        if (!numberofChip8Clocks % 10) {
+        if (!(numberofChip8Clocks % 10)) {
             if (chip8->delayTimer) {
                 chip8->delayTimer--;
             }
@@ -77,14 +84,16 @@ void chip8_execute(chip8_t * chip8) {
         }
         // Wait for a 1/600 second minus the time elapsed
         current_t = time(NULL);
+        if (1.0 / CHIP8_CLOCK_SPEED > ((double)current_t - last_t)) {
 // Lets pretend SDL_Delay does not exist
 #if defined(OS_WINDOWS)
-        // Milliseconds -> multiply with 1000
-        Sleep((1.0 / CHIP8_CLOCK_SPEED - ((double)current_t - last_t)) * 1000.0);
+            // Milliseconds -> multiply with 1000
+            Sleep((1.0 / CHIP8_CLOCK_SPEED - ((double)current_t - last_t)) * 1000.0);
 #elif defined(OS_UNIX_LIKE)
-        // Mircoseconds -> multiply with 1000000
-        usleep((1.0 / CHIP8_CLOCK_SPEED - ((double)current_t - last_t)) * 10000000.0);
+            // Mircoseconds -> multiply with 1000000
+            usleep((1.0 / CHIP8_CLOCK_SPEED - ((double)current_t - last_t)) * 10000000.0);
 #endif
+        }
     }
 }
 
@@ -157,7 +166,7 @@ static int8_t chip8_execute_next_opcode(chip8_t * chip8) {
             case 0x0E0: // 0x00E0 - Clear the screen
                 {
                     for (uint8_t x = 0; x < GRAPHICS_SYSTEM_WIDTH; x++) {
-                        for (uint8_t y = 0; x < GRAPHICS_SYSTEM_HEIGHT; y++) {
+                        for (uint8_t y = 0; y < GRAPHICS_SYSTEM_HEIGHT; y++) {
                             chip8->display.graphicsSystem[x][y] = 0;
                         }
                     }
@@ -166,7 +175,7 @@ static int8_t chip8_execute_next_opcode(chip8_t * chip8) {
             case 0x0E1: // 0x00E1 - Toggle the pixels on the screen
                 {
                     for (uint8_t x = 0; x < GRAPHICS_SYSTEM_WIDTH; x++) {
-                        for (uint8_t y = 0; x < GRAPHICS_SYSTEM_HEIGHT; y++) {
+                        for (uint8_t y = 0; y < GRAPHICS_SYSTEM_HEIGHT; y++) {
                             chip8->display.graphicsSystem[x][y] = !chip8->display.graphicsSystem[x][y];
                         }
                     }

@@ -51,6 +51,7 @@ void display_render(display_t display) {
     }
     // Update screen
     SDL_RenderPresent(display.renderer);
+    SDL_UpdateWindowSurface(display.window);
 }
 
 int display_init(display_t * display) {
