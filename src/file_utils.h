@@ -21,9 +21,13 @@
 #ifndef CHIP8_FILE_UTILS_H_
 #define CHIP8_FILE_UTILS_H_
 
+#include "chip8.h"
+
 /// @brief Reads a file from a specified location and returns the content of the file as a character pointer
 /// @param path The path of the file that is read
 /// @return The content of the file as a character pointer
 char * file_utils_read_file(char const *);
+
+void file_utils_read_file_to_memory(char const * path, chip8_t * chip8);
 
 #endif

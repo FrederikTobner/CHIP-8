@@ -39,7 +39,7 @@ typedef struct {
     /// The renderer that is used to render the display of the emulator in the window
     SDL_Renderer * renderer;
     /// The underlying graphics system of the CHIP-8
-    uint8_t graphicsSystem[64][32];
+    uint8_t graphicsSystem[GRAPHICS_SYSTEM_WIDTH][GRAPHICS_SYSTEM_HEIGHT];
 } display_t;
 
 /// @brief Renders the display

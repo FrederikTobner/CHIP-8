@@ -1,3 +1,7 @@
+#
+# Hello World test program in hex
+#
+
 section .text:
     0x6048          # We store 0x48 (H) in the register V0
     0xF000          # Prints the content of the register V0

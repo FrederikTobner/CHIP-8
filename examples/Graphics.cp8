@@ -1,32 +1,29 @@
-section .text:
-    MOV V0 0x1C
-    MOV V1 0x0B
-    MOV I 0x050     # We store 0x50 (H) in the register I
-    DSP V0 V1 0x05  # Draw character 0 at the center of the screen
-    MOV V0 0x48     # We store 0x48 (H) in the register V0
-    PRT V0          # Prints the content of the register V0
-    MOV V0 0x65     # We store 0x65 (e) in the register V0
-    PRT V0          # Prints the content of the register V0
-    MOV V0 0x6C     # We store 0x6c (l) in the register V0
-    PRT V0          # Prints the content of the register V0
-    PRT V0          # Prints the content of the register V0
-    MOV V0 0x6F     # We store 0x6f (o) in the register V0
-    PRT V0          # Prints the content of the register V0
-    MOV V0 0x20     # We store 0x20 ( ) in the register V0
-    PRT V0          # Prints the content of the register V0
-    MOV V0 0x57     # We store 0x57 (W) in the register V0
-    PRT V0          # Prints the content of the register V0
-    MOV V0 0x6f     # We store 0x6f (o) in the register V0
-    PRT V0          # Prints the content of the register V0
-    MOV V0 0x72     # We store 0x72 (r) in the register V0
-    PRT V0          # Prints the content of the register V0
-    MOV V0 0x6C     # We store 0x6c (l) in the register V0
-    PRT V0          # Prints the content of the register V0
-    MOV V0 0x64     # We store 0x64 (d) in the register V0
-    PRT V0          # Prints the content of the register V0
-    MOV V0 0x21     # We store 0x21 (!) in the register V0
-    PRT V0          # Prints the content of the register V0
-    MOV V0 0x0A     # We store 0x0A (\n) in the register V0
-    PRT V0          # Prints the content of the register V0
+#
+# Graphics test program
+#
 
+section .text:
+    MOV V2 0x05
+    MOV V0 0x00
+    MOV V1 0x0B
+    MOV I 0x050     # We store 0x50 (location of sprite 0) in the register I (0x206)
+    DSP V0 V1 0x05  # Draw character
+    ADD V0 V2
+    ADD I V2
+    SKE V0 0x32
+    JMP 0x208
+    # Making sure the last frame ist still rendered
+    NOP
+    NOP
+    NOP
+    NOP
+    NOP
+    NOP
+    NOP
+    NOP
+    NOP
+    NOP
+    NOP
+section .data:
+                    # No data 
     
