@@ -55,7 +55,7 @@ void display_render(display_t display) {
 }
 
 int display_init(display_t * display) {
-    if (SDL_Init(SDL_INIT_VIDEO) != 0) {
+    if (SDL_Init(SDL_INIT_VIDEO)) {
         printf("SDL could not initialize! SDL Error: %s\n", SDL_GetError());
         return -1;
     } else {
@@ -68,13 +68,13 @@ int display_init(display_t * display) {
         display->window = SDL_CreateWindow("CHIP-8", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
                                            GRAPHICS_SYSTEM_WIDTH * SCALE_FACTOR, GRAPHICS_SYSTEM_HEIGHT * SCALE_FACTOR,
                                            SDL_WINDOW_SHOWN);
-        if (display->window == NULL) {
+        if (!display->window) {
             printf("Window could not be created! SDL Error: %s\n", SDL_GetError());
             return -1;
         } else {
             // Create renderer for window
             display->renderer = SDL_CreateRenderer(display->window, -1, SDL_RENDERER_ACCELERATED);
-            if (display->renderer == NULL) {
+            if (!display->renderer) {
                 printf("Renderer could not be created! SDL Error: %s\n", SDL_GetError());
                 return -1;
             }

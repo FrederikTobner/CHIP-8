@@ -1,3 +1,7 @@
+#
+# Character sprites stored in memory at address 0x050
+#
+
 section .text:
 section .data:
 

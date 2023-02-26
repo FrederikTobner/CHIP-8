@@ -35,16 +35,34 @@ char * file_utils_read_file(char const * path) {
     rewind(file);
     char * buffer = (char *)malloc(fileSize + 1);
     if (!buffer) {
-        io_error("Not enough memory to read \"%s\".\n", path);
+        io_error("Could not allocate memory to read \"%s\".\n", path);
     }
     size_t bytesRead = fread(buffer, sizeof(char), fileSize, file);
     if (bytesRead < fileSize) {
-        io_error("Could not read file \"%s\".\n", path);
+        io_error("Could not fully read file \"%s\".\n", path);
     }
-    // We add null the end of the source-code to mark the end of the file
+    // We add the null-character the end of the source-code to mark the end of the file
     buffer[bytesRead] = '\0';
     fclose(file);
     return buffer;
+}
+
+void file_utils_read_file_to_memory(char const * path, chip8_t * chip8) {
+// Opens a file of a nonspecified format (b) in read mode (r)
+    FILE * file = fopen(path, "rb");
+    if (!file) {
+        io_error("Could not open file \"%s\".\n", path);
+    }
+    fseek(file, 0L, SEEK_END);
+    size_t fileSize = ftell(file);
+    rewind(file);
+    if (fileSize > (4096 - PROGRAM_START_LOCATION)) {
+        io_error("Could is to big to store it in memory \"%s\".\n", path);
+    }
+    size_t bytesRead = fread(chip8->memory + PROGRAM_START_LOCATION, sizeof(char), fileSize, file);
+    if (bytesRead < fileSize) {
+        io_error("Could not fully read file \"%s\".\n", path);
+    }    
 }
 
 /// @brief Reports an error that has occured during a IO operation

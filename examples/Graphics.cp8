@@ -1,36 +1,19 @@
+#
+# Graphics test program
+#
+
 section .text:
     MOV V2 0x05
     MOV V0 0x00
     MOV V1 0x0B
-    MOV I 0x050     # We store 0x50 (location of sprite 0) in the register I
-    DSP V0 V1 0x05  # Draw character 0
+    MOV I 0x050     # We store 0x50 (location of sprite 0) in the register I (0x206)
+    DSP V0 V1 0x05  # Draw character
     ADD V0 V2
-    MOV I 0x055     # We store 0x55 (location of sprite 1) in the register I
-    DSP V0 V1 0x05  # Draw character 1
-    ADD V0 V2
-    MOV I 0x05A     # We store 0x5A (location of sprite 2) in the register I
-    DSP V0 V1 0x05  # Draw character 2
-    ADD V0 V2
-    MOV I 0x05f     # We store 0x5f (location of sprite 3) in the register I
-    DSP V0 V1 0x05  # Draw character 3
-    ADD V0 V2
-    MOV I 0x064     # We store 0x64 (location of sprite 4) in the register I
-    DSP V0 V1 0x05  # Draw character 4
-    ADD V0 V2
-    MOV I 0x069     # We store 0x69 (location of sprite 5) in the register I
-    DSP V0 V1 0x05  # Draw character 5
-    ADD V0 V2
-    MOV I 0x06e     # We store 0x6e (location of sprite 6) in the register I
-    DSP V0 V1 0x05  # Draw character 6
-    ADD V0 V2
-    MOV I 0x073     # We store 0x73 (location of sprite 7) in the register I
-    DSP V0 V1 0x05  # Draw character 7
-    ADD V0 V2
-    MOV I 0x078     # We store 0x78 (location of sprite 8) in the register I
-    DSP V0 V1 0x05  # Draw character 8
-    ADD V0 V2
-    MOV I 0x07d     # We store 0x7d (location of sprite 9) in the register I
-    DSP V0 V1 0x05  # Draw character 9
+    ADD I V2
+    SKE V0 0x32
+    JMP 0x208
+    # Making sure the last frame ist still rendered
+    NOP
     NOP
     NOP
     NOP

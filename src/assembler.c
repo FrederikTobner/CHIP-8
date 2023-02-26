@@ -94,12 +94,26 @@ static int assembler_process_section(assembler_t * assembler, chip8_t * chip8, u
 static void assembler_process_data_section(assembler_t * assembler, chip8_t * chip8, uint16_t * memoryLocation) {
     assembler->current += 6;
     assembler_skip_whitespace(assembler);
-    for (*memoryLocation += 2; !strncmp(assembler->current, "0x", 2) && *memoryLocation < 0xFFF;
+    if(!strncmp(assembler->current, "org", 3)) {
+          assembler->current += 3;
+        assembler_skip_whitespace(assembler);
+        uint16_t specifiedMemoryLocation = assembler_convert_address_to_binary(assembler);
+        if(specifiedMemoryLocation < *memoryLocation) {
+            fprintf(stderr, "Address specified in org collided with text segment\n");
+            exit(EXIT_CODE_ASSEMBLER_ERROR);
+        }
+        *memoryLocation = specifiedMemoryLocation;
+        assembler_skip_whitespace(assembler);
+    }
+    else{
+        *memoryLocation += 2;
+    }
+    for (; !strncmp(assembler->current, "0x", 2) && *memoryLocation < 0xFFF;
          assembler_skip_whitespace(assembler)) {
         chip8_write_byte_to_memory(chip8, memoryLocation, assembler_read_8bit_number(assembler));
     }
     if (*memoryLocation > 0xFFF) {
-        fprintf(stderr, "Text section is too big too be stored in memory\n");
+        fprintf(stderr, "Data section is too big too be stored in memory\n");
         exit(EXIT_CODE_ASSEMBLER_ERROR);
     }
 }

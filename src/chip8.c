@@ -193,7 +193,7 @@ static int8_t chip8_execute_next_opcode(chip8_t * chip8) {
         }
     case 0x1000: // 0x1NNN - Jumps to address NNN
         {
-            chip8->programCounter = chip8->currentOpcode & 0x0fff;
+            chip8->programCounter = (((chip8->currentOpcode & 0x0fff) - PROGRAM_START_LOCATION) / 2 ) - 1;
             break;
         }
     case 0x2000: // 0x2NNN - Calls subroutine at NNN
@@ -284,7 +284,7 @@ static int8_t chip8_execute_next_opcode(chip8_t * chip8) {
             {
                 DEFINE_X
                 DEFINE_Y
-                uint8_t result = chip8->V[y] + chip8->V[x];
+                uint8_t result = chip8->V[x] + chip8->V[y];
                 if (result > (result - chip8->V[x])) {
                     chip8->V[0xf] = 0x1u;
                 }
@@ -295,7 +295,7 @@ static int8_t chip8_execute_next_opcode(chip8_t * chip8) {
             {
                 DEFINE_X
                 DEFINE_Y
-                uint8_t result = chip8->V[y] + chip8->V[x];
+                uint8_t result = chip8->V[x] - chip8->V[y];
                 if (result < (result - chip8->V[x])) {
                     chip8->V[0xf] = 0x1u;
                 }
