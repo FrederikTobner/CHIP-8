@@ -48,7 +48,7 @@ char * file_utils_read_file(char const * path) {
 }
 
 void file_utils_read_file_to_memory(char const * path, chip8_t * chip8) {
-// Opens a file of a nonspecified format (b) in read mode (r)
+    // Opens a file of a nonspecified format (b) in read mode (r)
     FILE * file = fopen(path, "rb");
     if (!file) {
         io_error("Could not open file \"%s\".\n", path);
@@ -62,7 +62,7 @@ void file_utils_read_file_to_memory(char const * path, chip8_t * chip8) {
     size_t bytesRead = fread(chip8->memory + PROGRAM_START_LOCATION, sizeof(char), fileSize, file);
     if (bytesRead < fileSize) {
         io_error("Could not fully read file \"%s\".\n", path);
-    }    
+    }
 }
 
 /// @brief Reports an error that has occured during a IO operation
