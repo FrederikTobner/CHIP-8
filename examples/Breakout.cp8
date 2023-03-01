@@ -1,8 +1,12 @@
-#
-# Breakout game
-#
+#################
+# Breakout game #
+#################
 section .text:
-    # Setting up bricks
+
+    #####################
+    # Setting up bricks #
+    #####################
+
     MOV V3 0x03                         # Vertical distance between blocks
     MOV V2 0x07                         # Horizontal distance between blocks
     MOV V1 0x00                         # Initialize y-coordinate of the sprites
@@ -13,15 +17,18 @@ section .text:
             DSP V0 V1 0x01              # Draw nth brick in row i (0x20a)
             ADD V0 V2
         # }
-        SKE V0 0x38                 # Last brick in row ?
+        SKE V0 0x38                     # Last brick in row ?
         JMP 0x20a
 
         ADD V1 V3
     # } 
-    SKE V1 0x09                     # Last row ? (third row)
+    SKE V1 0x09                         # Last row ? (third row)
     JMP 0x208
-    
-    # Setting up player and ball
+
+    ##############################
+    # Setting up player and ball #
+    ##############################
+
     MOV V2 0x02
     MOV V0 0x00
     MOV V1 0x1f
@@ -30,7 +37,11 @@ section .text:
     ADD V0 V2
     MOV I 0x901                         # We store 0x901 (location of ball sprite) in the register I
     DSP V0 V1 0x01                      # Draw ball
-    # Making sure the last frame ist still rendered
+
+    #################################################
+    # Making sure the last frame ist still rendered #
+    #################################################
+    
     NOP
     NOP
     NOP
