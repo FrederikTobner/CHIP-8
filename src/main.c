@@ -28,7 +28,7 @@
 /// Short message that explains the usage of the CHIP-8 emulator
 #define CHIP8_USAGE_MESSAGE "Usage: Chip8 [path]\n"
 #define PROJECT_INIT_LETTERING \
-("   _____ _    _ _____ _____        ___  \n\
+    ("   _____ _    _ _____ _____        ___  \n\
   / ____| |  | |_   _|  __ \\      / _ \\ \n\
  | |    | |__| | | | | |__) |____| (_) |\n\
  | |    |  __  | | | |  ___/______> _ < \n\
@@ -38,7 +38,6 @@
 
 static void run_from_file(char *);
 static void show_help();
-
 
 /// @brief Main entry point of the CHIP-8 program
 /// @param argc The amount of arguments that were used when the program was started
@@ -66,24 +65,22 @@ int main(int argc, char ** args) {
 /// @brief Executes a chip8 program stored in a file
 /// @param filePath The path of the program
 static void run_from_file(char * filePath) {
-    char * source;            
+    char * source;
     chip8_t chip8;
-    size_t pathLength = strlen(filePath);            
+    size_t pathLength = strlen(filePath);
     chip8_init(&chip8);
-    if (pathLength > 4 && !strcmp(filePath + pathLength - 4, ".cp8")) {            
+    if (pathLength > 4 && !strcmp(filePath + pathLength - 4, ".cp8")) {
         // The source is provided in assembly language
         assembler_t assembler;
         source = file_utils_read_file(filePath);
-        assembler_initialize(&assembler, source);            
+        assembler_initialize(&assembler, source);
         if (assembler_process_file(&assembler, &chip8)) {
             exit(EXIT_CODE_ASSEMBLER_ERROR);
         }
-    }
-    else if (pathLength > 4 && !strcmp(filePath + pathLength - 4, ".ch8")) {            
+    } else if (pathLength > 4 && !strcmp(filePath + pathLength - 4, ".ch8")) {
         // The source is provided in binary -> just store it in memory
         file_utils_read_file_to_memory(filePath, &chip8);
-    }
-    else {
+    } else {
         fprintf(stderr, "File type not supported");
         exit(EXIT_CODE_COMMAND_LINE_USAGE_ERROR);
     }

@@ -100,7 +100,7 @@ void display_quit(display_t * display) {
     SDL_Quit();
 }
 
-/// @brief Sets the icon a window
+/// @brief Sets the icon of a window
 /// @param window The window where the icon is set
 /// @param iconPath Path to the icon
 /// @return 0 if the icon was successfully appled to the window, -1 if an error occured

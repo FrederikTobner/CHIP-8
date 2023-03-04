@@ -17,106 +17,21 @@ option(CP8_DEBUG_PRINT_BYTECODE "Determines whether the instructions are printed
 option(CP8_DEBUG_TRACE_EXECUTION "Determines whether the execution shall be traced" OFF)
 option(CP8_BUILD_ETI_660_VERSION "Determines whether thee 660 version is built" OFF)
 
-if(UNIX)
-    # Adding CheckIncludeFile CMake module
-    include(CheckIncludeFile) 
-    # Check dependecies under unix-like systems   
-    CHECK_INCLUDE_FILE("curses.h" CURSES_AVAILABLE)
-    CHECK_INCLUDE_FILE("unistd.h" UNISTD_AVAILABLE)
-    if(NOT ${CURSES_AVAILABLE})
-        message(FATAL_ERROR "curses.h is required to build the emulator under unix-like systems. \
-\   \   Please make sure it is available to the compiler and try again after that")
-    endif() # curses.h
-    if(NOT ${UNISTD_AVAILABLE})
-        message(FATAL_ERROR "unistd.h is required to build the emulator under unix-like systems. \
-\   \   Please make sure it is available to the compiler and try again after that")
-    endif() # unistd.h
-elseif(WIN32)
-    # Adding CheckIncludeFile CMake module
-    include(CheckIncludeFile)
-    # Check dependecies under windows
-    CHECK_INCLUDE_FILE("conio.h" CONIO_AVAILABLE)
-    CHECK_INCLUDE_FILE("windows.h" WINDOWS_AVAILABLE)
-    if(NOT ${CONIO_AVAILABLE})
-        message(FATAL_ERROR "conio.h is required to build the emulator under windows. \
-\   \   Please make sure it is available to the compiler and try again after that")
-    endif() # conio.h
-    if(NOT ${WINDOWS_AVAILABLE})
-        message(FATAL_ERROR "windows.h is required to build the emulator under windows. \
-\   \   Please make sure it is available to the compiler and try again after that"
-        )
-    endif() # windows.h
-endif()
+ # Adding CheckIncludeFile CMake module
+include(CheckIncludeFile) 
+
+# Checking dependencies
+include(./cmake/chip8_check_dependencies.cmake)
+CHIP8_Check_Dependencies()
 
 # Build SDL
 add_subdirectory(external/SDL)
 
-# We determine the compiler so we can do some optimization for a specific compiler
-if(CMAKE_C_COMPILER_ID STREQUAL "GNU")
-    add_compile_definitions(COMPILER_GCC)
-elseif(CMAKE_C_COMPILER_ID STREQUAL "Clang")
-    add_compile_definitions(COMPILER_CLANG)
-elseif(CMAKE_C_COMPILER_ID STREQUAL "MSVC")
-    add_compile_definitions(COMPILER_MSVC)
-elseif (CMAKE_CXX_COMPILER_ID STREQUAL "Intel")
-    add_compile_definitions(COMPILER_INTEL)
-else()
-    add_compile_definitions(COMPILER_UNKNOWN)    
-endif()
+include(./cmake/chip8_determine_compiler.cmake)
+CHIP8_Determine_Compiler()
 
-# Adding os-specific compiler definitions
-if(UNIX)
-    add_compile_definitions(OS_UNIX_LIKE)    
-    if(NOT APPLE) 
-        if(CMAKE_SYSTEM_NAME MATCHES ".*Linux")
-            add_compile_definitions(OS_LINUX)
-        elseif(CMAKE_SYSTEM_NAME MATCHES "kFreeBSD.*")
-            add_compile_definitions(OS_FREEBSD)
-        elseif(CMAKE_SYSTEM_NAME MATCHES "kNetBSD.*|NetBSD.*")
-            add_compile_definitions(OS_NETBSD)
-        elseif(CMAKE_SYSTEM_NAME MATCHES "kOpenBSD.*|OpenBSD.*")
-            add_compile_definitions(OS_OPENBSD)
-        elseif(CMAKE_SYSTEM_NAME MATCHES ".*GNU.*")
-            add_compile_definitions(OS_GNU)
-        elseif(CMAKE_SYSTEM_NAME MATCHES ".*BSDI.*")
-            add_compile_definitions(OS_BSDI)
-        elseif(CMAKE_SYSTEM_NAME MATCHES "DragonFly.*|FreeBSD")
-            add_compile_definitions(OS_FREEBSD)
-        elseif(CMAKE_SYSTEM_NAME MATCHES "SYSV5.*")
-            add_compile_definitions(OS_SYSV5)
-        elseif(CMAKE_SYSTEM_NAME MATCHES "Solaris.*|SunOS.*")
-            add_compile_definitions(OS_SOLARIS)
-        elseif(CMAKE_SYSTEM_NAME MATCHES "HP-UX.*")
-            add_compile_definitions(OS_HPUX)
-        elseif(CMAKE_SYSTEM_NAME MATCHES "AIX.*")
-            add_compile_definitions(OS_AIX)
-        elseif(CMAKE_SYSTEM_NAME MATCHES "Minix.*")
-            add_compile_definitions(OS_MINIX)
-        else()
-            add_compile_definitions(OS_UNKNOWN_UNIX)
-        endif()
-    else() 
-        if(CMAKE_SYSTEM_NAME MATCHES ".*Darwin.*")
-            add_compile_definitions(OS_DARWIN)
-        elseif(CMAKE_SYSTEM_NAME MATCHES ".*MacOS.*")
-            add_compile_definitions(OS_MACOS)
-        elseif(CMAKE_SYSTEM_NAME MATCHES ".*tvOS.*")
-            add_compile_definitions(OS_TVOS)
-        elseif(CMAKE_SYSTEM_NAME MATCHES ".*iOS.*")
-            add_compile_definitions(OS_IOS)
-        else()
-            add_compile_definitions(OS_UNKNOWN_APPLE)
-        endif()
-    endif()
-elseif(WIN32)
-    add_compile_definitions(OS_WINDOWS)
-elseif(CMAKE_SYSTEM_NAME MATCHES "Haiku.*")
-    message(FATAL_ERROR "The emulator has not been implemented for Haiku yet")
-elseif(NINTENDO_3DS)
-    message(FATAL_ERROR "The emulator has not been implemented for the 3DS yet")
-else()
-    message(FATAL_ERROR "The underlying operating system was not recognized")
-endif()
+include(./cmake/chip8_detect_platform.cmake)
+CHIP8_Detect_Platform()
 
 # Build CHIP-8 project
 add_subdirectory(src)
