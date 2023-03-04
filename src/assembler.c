@@ -295,8 +295,7 @@ static uint8_t assembler_convert_register_to_binary(assembler_t * assembler) {
 /// @param assembler The assembler that proceeses the assembly file
 /// @return The binary representation of the registers
 static uint8_t assembler_convert_registers_to_binary(assembler_t * assembler) {
-    uint8_t value = assembler_convert_register_to_binary(assembler);
-    value <<= 4;
+    uint8_t value = assembler_convert_register_to_binary(assembler) << 4;
     return value += assembler_convert_register_to_binary(assembler);
 }
 

@@ -1,6 +1,8 @@
 name: Build CHIP-8
 
 on:
+  push:
+    branches: [ "dev" ]
   pull_request:
     branches: [ "master" ]
 
@@ -22,8 +24,11 @@ jobs:
       with:
         submodules: recursive
 
+    - name: Setup Ninja
+      uses: ashutoshvarma/setup-ninja@master
+    
     - name: Configure CMake
-      run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+      run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -G Ninja
 
     - name: Build Emulator
       run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
