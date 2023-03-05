@@ -107,11 +107,7 @@ int address_table_insert_entry(address_hash_table_entry_t * node, address_hash_t
     if(table->used >= ((double)table->allocated) * TABLE_GROWTH_TRIGGER_VALUE)
         if(address_table_grow_table(table))
             return -1;
-#ifdef HASH_32_BIT
-    uint32_t index, try;
-#else
-    uint64_t index, try;
-#endif  
+    hashValue_t index, try; 
     index = fnv1a_hash_data(node->key, strlen(node->key));
     for (size_t i = 0; i < table->allocated; i++)
     {
@@ -131,17 +127,10 @@ address_hash_table_entry_t *address_table_remove_entry(address_hash_table_entry_
 {
     if(!table)
         return NULL;
-#ifdef HASH_32_BIT
-    uint32_t index = fnv1a_hash_data(node->key, strlen(node->key));
-    for (uint32_t i = 0; i < table->allocated; i++)
+    hashValue_t index = fnv1a_hash_data(node->key, strlen(node->key));
+    for (hashValue_t i = 0; i < table->allocated; i++)
     {
-        uint32_t try = (i + index) & (table->allocated - 1);
-#else
-    uint64_t index = fnv1a_hash_data(node->key, strlen(node->key));
-    for (uint64_t i = 0; i < table->allocated; i++)
-    {
-        uint64_t try = (i + index) & (table->allocated - 1);
-#endif 
+        hashValue_t try = (i + index) & (table->allocated - 1);
         // When we reach the end of the hashTable we continue from the beginning        
         if (!table->entries[try])
             return false;
@@ -159,18 +148,11 @@ address_hash_table_entry_t *address_table_remove_entry(address_hash_table_entry_
 address_hash_table_entry_t * address_table_look_up_entry(char const * key, address_hash_table_t * table)
 {
     if(!table)
-        return NULL;
-#ifdef HASH_32_BIT   
-    uint32_t index = fnv1a_hash_data(key, strlen(key));
-    for (uint32_t i = 0; i < table->allocated; i++)
+        return NULL; 
+    hashValue_t index = fnv1a_hash_data(key, strlen(key));
+    for (hashValue_t i = 0; i < table->allocated; i++)
     {
-        uint32_t try = (i + index) & (table->allocated - 1);
-#else
-    uint64_t index = fnv1a_hash_data(key, strlen(key));
-    for (uint64_t i = 0; i < table->allocated; i++)
-    {
-        uint64_t try = (i + index) & (table->allocated - 1);
-#endif   
+        hashValue_t try = (i + index) & (table->allocated - 1);   
         if (!table->entries[try])
             return NULL;
         if (!strncmp(table->entries[try]->key, key, MAX_KEY_LENGTH))            
