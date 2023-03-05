@@ -95,6 +95,11 @@ void address_table_free_entries(address_hash_table_t * table)
 {
     if(!table->entries)
         return;
+    for (size_t i = 0; i < table->allocated; i++)
+    {
+        if (table->entries[i]->key)
+            free((char*)table->entries[i]->key);
+    }    
     free(table->entries);
     table->allocated = table->used = 0;
     table->entries = NULL;

@@ -151,6 +151,9 @@ static void assembler_process_text_section(assembler_t * assembler, chip8_t * ch
     }
 }
 
+/// @brief 
+/// @param assembler 
+/// @param memoryLocation 
 static void assembler_scan_label(assembler_t * assembler, uint16_t memoryLocation) {
     assembler_advance(assembler);
     char const * labelStart = assembler->current;
@@ -301,6 +304,9 @@ static uint16_t assembler_convert_address_to_binary(assembler_t * assembler) {
 #endif
 }
 
+/// @brief 
+/// @param assembler 
+/// @return 
 static uint16_t assembler_convert_label_to_address(assembler_t * assembler) {
     char const * labelStart = assembler->current;
     char const * labelEnd = NULL;
