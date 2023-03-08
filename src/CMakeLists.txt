@@ -59,10 +59,6 @@ else()
     include(CPack)
 endif()
 
-if(CP8_CP8_32_BIT_HASHING)
-    add_compile_definitions(HASH_32_BIT)
-endif()
-
 # Creating the final executable
 add_executable(${PROJECT_NAME} ${CHIP-8_SOURCE_FILES} ${CHIP-8_HEADER_FILES})
 

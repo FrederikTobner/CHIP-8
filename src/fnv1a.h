@@ -21,12 +21,6 @@
 #ifndef CHIP8_FNV1A_H_
 #define CHIP8_FNV1A_H_
 
-#ifdef HASH_32_BIT
-typedef uint32_t hashValue_t;
-#else
-typedef uint64_t hashValue_t;
-#endif 
-
 #include <stdint.h>
 #include <stddef.h>
 
@@ -36,6 +30,6 @@ typedef uint64_t hashValue_t;
 /// @param data The data that is hashed
 /// @param length The length of the data that is hashed
 /// @return an unsigned 32-bit or 64-bit integer 
-hashValue_t fnv1a_hash_data(uint8_t const * data, size_t length);
+uint32_t fnv1a_hash_data(uint8_t const * data, size_t length);
 
 #endif

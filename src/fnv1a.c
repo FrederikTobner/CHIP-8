@@ -20,20 +20,12 @@
 
 #include "fnv1a.h"
 
-#ifdef HASH_32_BIT
 #define OFFSET_BASIS 0x811c9dc5u
 #define PRIME 0x01000193u
-#else
-#define OFFSET_BASIS 0xcbf29ce484222325 
-#define PRIME 0x00000100000001B3
-#endif 
-hashValue_t fnv1a_hash_data(uint8_t const * data, size_t length)
+
+uint32_t fnv1a_hash_data(uint8_t const * data, size_t length)
 {
-    #ifdef HASH_32_BIT
-        uint32_t hash = OFFSET_BASIS;
-    #else
-        uint64_t hash = OFFSET_BASIS;
-    #endif
+    uint32_t hash = OFFSET_BASIS;
     for (size_t i = 0; i < length; i++)
     {
         hash ^= data[i];
