@@ -15,7 +15,6 @@ set(CMAKE_C_STANDARD_REQUIRED True)
 # These options only affect the build if the built-type is Debug - otherwise they will be ignored
 option(CP8_DEBUG_PRINT_BYTECODE "Determines whether the instructions are printed" OFF)
 option(CP8_DEBUG_TRACE_EXECUTION "Determines whether the execution shall be traced" OFF)
-option(CP8_BUILD_ETI_660_VERSION "Determines whether thee 660 version is built" OFF)
 
  # Adding CheckIncludeFile CMake module
 include(CheckIncludeFile) 

@@ -4,20 +4,24 @@ configure_file(chip8_config.h.in chip8_config.h)
 # Adding debug compile definitions
 if(CMAKE_BUILD_TYPE MATCHES "[Dd][Ee][Bb][Uu][Gg]")
     set(CHIP-8_SOURCE_FILES
+    "address_hash_table.c"
     "assembler.c"
     "chip8.c"
     "debug.c"
     "display.c"
     "file_utils.c"
+    "fnv1a.c"
     "main.c"    
     "path_utils.c"
     )    
     set(CHIP-8_HEADER_FILES
+    "address_hash_table.h"
     "assembler.h"
     "chip8.h"
     "debug.h"
     "display.h"
     "file_utils.h"
+    "fnv1a.h"
     "path_utils.h"
     )
     if(CP8_DEBUG_PRINT_BYTECODE)
@@ -27,28 +31,26 @@ if(CMAKE_BUILD_TYPE MATCHES "[Dd][Ee][Bb][Uu][Gg]")
         add_compile_definitions(TRACE_EXECUTION)
     endif()
     add_compile_definitions(BUILD_DEBUG)
-    if(CP8_BUILD_ETI_660_VERSION)
-        add_compile_definitions(ETI_660_VERSION)
-    endif()
 else()
     set(CHIP-8_SOURCE_FILES
+    "address_hash_table.c"
     "assembler.c"
     "chip8.c"
     "display.c"
     "file_utils.c"
+    "fnv1a.c"
     "main.c" 
     "path_utils.c"   
     )
     set(CHIP-8_HEADER_FILES
+    "address_hash_table.h"
     "assembler.h"
     "chip8.h"
     "display.h"
     "file_utils.h"
+    "fnv1a.h"
     "path_utils.h"
     )
-    if(CP8_BUILD_ETI_660_VERSION)
-        add_compile_definitions(ETI_660_VERSION)
-    endif()
 
     include(../cmake/chip8_set_package_properties.cmake)
     CHIP8_Set_Package_Properties()
@@ -56,7 +58,6 @@ else()
     # Includes the CPack module     
     include(CPack)
 endif()
-
 
 # Creating the final executable
 add_executable(${PROJECT_NAME} ${CHIP-8_SOURCE_FILES} ${CHIP-8_HEADER_FILES})

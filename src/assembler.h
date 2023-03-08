@@ -22,6 +22,7 @@
 #define CHIP8_ASSEMLER_H_
 
 #include "chip8.h"
+#include "address_hash_table.h"
 #include "pre_compiled_header.h"
 
 /// @brief Type definition of a assembler
@@ -34,6 +35,7 @@ typedef struct {
     char const * current;
     /// Line counter - used for error reporting
     uint32_t line;
+    address_hash_table_t table;
 } assembler_t;
 
 /// @brief Initializes the assembler

@@ -19,6 +19,7 @@
 // the configured options and settings for the CHIP-8 emulator
 #define PROJECT_VERSION_MAJOR (@CHIP-8_VERSION_MAJOR@)
 #define PROJECT_VERSION_MINOR (@CHIP-8_VERSION_MINOR@)
+#define PROJECT_VERSION_PATCH (@CHIP-8_VERSION_PATCH@)
 #define PROJECT_NAME ("@PROJECT_NAME@")
 
 #endif

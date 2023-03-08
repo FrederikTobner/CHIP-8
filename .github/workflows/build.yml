@@ -3,6 +3,20 @@ name: Build CHIP-8
 on:
   pull_request:
     branches: [ "master" ]
+    paths-ignore:
+     - '**/*.md'    # Markdown
+     - '**/*.yaml'  # Scripts
+     - '**/*.bat'   
+     - '**/*.sh'
+     - '**/*.cp8'   # CHIP 8 assembly language
+     - '**/*.html'  # Documentation
+     - '**/*.js'
+     - '**/*.png'
+     - '**/*.css'
+     - '**/*.dox'
+     - '**/*.svg'
+     - '**/*.bmp'
+     - '**/*.ico'
 
 jobs:
   build:

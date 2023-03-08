@@ -10,32 +10,34 @@ section .text:
     MOV V3 0x03                         # Vertical distance between blocks
     MOV V2 0x07                         # Horizontal distance between blocks
     MOV V1 0x00                         # Initialize y-coordinate of the sprites
-    MOV I 0x900                         # We store 0x900 (location of paddle sprite) in the register I (0x206)
-    # for (i = 0; i < 9; i+=3) {
+    MOV I 0x900                         # We store 0x900 (location of paddle sprite) in the register I
+    # for (y = 0; y < 9; y+=3) {
+_drawLine:
         MOV V0 0x00
-        # for (n = 0; n < 63; n+=7) {      
-            DSP V0 V1 0x01              # Draw nth brick in row i (0x20a)
+        # for (x = 0; x < 63; x+=7) {      
+_drawBrick:
+            DSP V0 V1 0x01              # Draw brick at location x/y
             ADD V0 V2
         # }
-        SKE V0 0x3f                     # Last brick in row ? (V0 == 63) (0x20e)
-        JMP 0x20a
+        SKE V0 0x3f                     # Last brick in row ? (V0 == 63)
+        JMP drawBrick
         ADD V1 V3
     # } 
     SKE V1 0x09                         # Last row ? (third row)
-    JMP 0x208
+    JMP drawLine
 
     ##############################
     # Setting up player and ball #
     ##############################
 
-    MOV V2 0x02                         # (0x219)
+    MOV V2 0x02
     MOV V0 0x00
     MOV V1 0x1f
-    DSP V0 V1 0x01                      # Draw player paddle (0x221)
+    DSP V0 V1 0x01                      # Draw player paddle
     SUB V1 V2
     ADD V0 V2
     MOV I 0x901                         # We store 0x901 (location of ball sprite) in the register I
-    DSP V0 V1 0x01                      # Draw ball (0x229)
+    DSP V0 V1 0x01                      # Draw ball
 
     ################################################
     # Making sure the last frame is still rendered #

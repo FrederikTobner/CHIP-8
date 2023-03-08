@@ -25,6 +25,7 @@
 
 static inline char assembler_advance(assembler_t *);
 static uint16_t assembler_convert_address_to_binary(assembler_t *);
+static uint16_t assembler_convert_label_to_address(assembler_t *);
 static uint16_t assembler_convert_mnemonic_to_binary(assembler_t *, char);
 static uint8_t assembler_convert_register_to_binary(assembler_t *);
 static uint8_t assembler_convert_registers_to_binary(assembler_t *);
@@ -40,6 +41,7 @@ static void assembler_skip_whitespace(assembler_t *);
 static int assembler_process_section(assembler_t *, chip8_t *, uint16_t *);
 static void assembler_process_data_section(assembler_t *, chip8_t *, uint16_t *);
 static void assembler_process_text_section(assembler_t *, chip8_t *, uint16_t *);
+static void assembler_scan_label(assembler_t *, uint16_t);
 static int32_t assembler_scan_opcode(assembler_t *);
 
 void assembler_initialize(assembler_t * assembler, char const * source) {
@@ -47,6 +49,7 @@ void assembler_initialize(assembler_t * assembler, char const * source) {
     assembler->start = source;
     assembler->current = source;
     assembler->line = 1u;
+    address_table_init_table(&assembler->table);
 }
 
 int assembler_process_file(assembler_t * assembler, chip8_t * chip8) {
@@ -58,6 +61,7 @@ int assembler_process_file(assembler_t * assembler, chip8_t * chip8) {
         }
     }
     free(assembler->source);
+    //address_table_free_entries(&assembler->table);
     return 0;
 }
 
@@ -130,15 +134,50 @@ static void assembler_process_text_section(assembler_t * assembler, chip8_t * ch
 #ifdef PRINT_BYTE_CODE
     printf("=== Code ===\n");
 #endif
-    for (assembler_skip_whitespace(assembler); *memoryLocation <= 0xFFF && strncmp(assembler->current, "section", 7) &&
-                                               (opcode = assembler_scan_opcode(assembler)) >= 0;
+    for (assembler_skip_whitespace(assembler); *memoryLocation <= 0xFFF && strncmp(assembler->current, "section", 7);
          assembler_skip_whitespace(assembler)) {
-        chip8_write_opcode_to_memory(chip8, memoryLocation, opcode);
+        if (assembler_peek(*assembler) == '_')
+            assembler_scan_label(assembler, *memoryLocation);
+        else {
+            opcode = assembler_scan_opcode(assembler);
+            if (opcode <= 0)
+                break;
+            chip8_write_opcode_to_memory(chip8, memoryLocation, opcode);
+        }
     }
     if (*memoryLocation > 0xFFF) {
         fprintf(stderr, "Text section is too big too be stored in memory\n");
         exit(EXIT_CODE_ASSEMBLER_ERROR);
     }
+}
+
+/// @brief 
+/// @param assembler 
+/// @param memoryLocation 
+static void assembler_scan_label(assembler_t * assembler, uint16_t memoryLocation) {
+    assembler_advance(assembler);
+    char const * labelStart = assembler->current;
+    char const * labelEnd = NULL;
+    while(!assembler_is_at_end(*assembler)) {
+        if (assembler_peek(*assembler) == ':')
+            break;
+        if (!assembler_is_alpha(assembler_peek(*assembler)))
+            assembler_report_error(assembler, "A label can only consist of alphanumeric characters");
+        labelEnd = assembler->current;
+        assembler_advance(assembler);
+    }
+    if (!labelEnd)
+        return;
+    char * label = malloc(labelEnd - labelStart);
+    if (!label)
+        return;
+    memcpy(label, labelStart,labelEnd - labelStart + 1);
+    label[labelEnd - labelStart + 1] = '\0';
+    address_hash_table_entry_t * entry = address_table_entry_new(memoryLocation, label);
+    if (!entry)
+        return;
+    address_table_insert_entry(entry, &assembler->table);
+    assembler_advance(assembler);
 }
 
 /// @brief Scans the next opcode in the sourcefile
@@ -265,6 +304,23 @@ static uint16_t assembler_convert_address_to_binary(assembler_t * assembler) {
 #endif
 }
 
+/// @brief 
+/// @param assembler 
+/// @return 
+static uint16_t assembler_convert_label_to_address(assembler_t * assembler) {
+    char const * labelStart = assembler->current;
+    char const * labelEnd = NULL;
+    for(;!assembler_is_at_end(*assembler) && assembler_is_alpha(assembler_peek(*assembler)); labelEnd = assembler->current,assembler_advance(assembler)) {
+    }
+    char * label = malloc(labelEnd - labelStart - 2);
+    if (!label)
+        assembler_report_error(assembler, "Unable to allocate memory for label");
+    memcpy(label, labelStart,labelEnd - labelStart + 1);
+    label[labelEnd - labelStart + 1] = '\0';
+    uint16_t opCode = address_table_look_up_entry(label, &assembler->table)->opcodeAddress;
+    return opCode;
+}
+
 /// @brief Converts the mnemnic representation of a register to binary
 /// @param assembler The assembler that proceeses the assembly file
 /// @return The binary representation of the register
@@ -387,7 +443,13 @@ static uint16_t assembler_convert_mnemonic_to_binary(assembler_t * assembler, ch
         case 'M':
             switch (assembler_advance(assembler)) {
             case 'P':
-                return 0x1000 | assembler_convert_address_to_binary(assembler);
+            {
+                assembler_skip_whitespace(assembler);
+                if (assembler_is_alpha(assembler_peek(*assembler)))
+                    return 0x1000 | assembler_convert_label_to_address(assembler);
+                else
+                    return 0x1000 | assembler_convert_address_to_binary(assembler);
+            }
             default:
                 assembler_report_error(assembler, OPCODE_CONVERSION_ERROR_MESSAGE);
             }
