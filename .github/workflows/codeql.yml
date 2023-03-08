@@ -64,7 +64,10 @@ jobs:
       with:
         # filter out all external dependencies
         patterns: |
-          - external/**/**
+          -**/*SDL*.c
+          -**/*sdl*.c
+          -**/*SDL*.h
+          -**/*sdl*.h
         input: sarif-results/${{ matrix.language }}.sarif
         output: sarif-results/${{ matrix.language }}.sarif
 
