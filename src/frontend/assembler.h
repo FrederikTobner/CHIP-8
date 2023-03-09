@@ -41,7 +41,7 @@ typedef struct {
 /// @brief Initializes the assembler
 /// @param assembler The assembler that parses the file
 /// @param source The sourcecode that is parsed by the assembler
-void assembler_initialize(assembler_t * assembler, char const * source);
+int assembler_initialize(assembler_t * assembler, char const * source);
 
 /// @brief Processes a chip8 assembly file (.cp8)
 /// @param assembler The assembler that processes the file
