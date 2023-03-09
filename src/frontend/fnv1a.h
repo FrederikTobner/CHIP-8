@@ -21,15 +21,15 @@
 #ifndef CHIP8_FNV1A_H_
 #define CHIP8_FNV1A_H_
 
-#include <stdint.h>
 #include <stddef.h>
+#include <stdint.h>
 
 // Fowler-Noll-Vo hashing function https://en.wikipedia.org/wiki/Fowler%E2%80%93Noll%E2%80%93Vo_hash_function
 
 /// @brief Hashes the data using fowler noll vo
 /// @param data The data that is hashed
 /// @param length The length of the data that is hashed
-/// @return an unsigned 32-bit or 64-bit integer 
+/// @return an unsigned 32-bit or 64-bit integer
 uint32_t fnv1a_hash_data(uint8_t const * data, size_t length);
 
 #endif

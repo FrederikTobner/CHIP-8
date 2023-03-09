@@ -19,11 +19,12 @@
  */
 
 #include "../build/src/chip8_config.h"
-#include "frontend/assembler.h"
 #include "backend/chip8.h"
 #include "backend/display.h"
-#include "utils/file_utils.h"
+#include "frontend/assembler.h"
 #include "pre_compiled_header.h"
+#include "utils/file_utils.h"
+
 
 /// Short message that explains the usage of the CHIP-8 emulator
 #define CHIP8_USAGE_MESSAGE "Usage: Chip8 [path]\n"
@@ -48,7 +49,8 @@ int main(int argc, char ** args) {
     if (argc == 2) {
         if ((strlen(args[1]) == 7 && !strncmp(args[1], "--version", 7)) ||
             (strlen(args[1]) == 2 && !strncmp(args[1], "-v", 2))) {
-            printf("%s Version %i.%i.%i\n", PROJECT_NAME, PROJECT_VERSION_MAJOR, PROJECT_VERSION_MINOR, PROJECT_VERSION_PATCH);
+            printf("%s Version %i.%i.%i\n", PROJECT_NAME, PROJECT_VERSION_MAJOR, PROJECT_VERSION_MINOR,
+                   PROJECT_VERSION_PATCH);
         } else if ((strlen(args[1]) == 6 && !strncmp(args[1], "--help", 6)) ||
                    (strlen(args[1]) == 2 && !strncmp(args[1], "-h", 2))) {
             show_help();
@@ -88,7 +90,8 @@ static void run_from_file(char * filePath) {
     if (display_init(&chip8.display)) {
         exit(EXIT_CODE_SYSTEM_ERROR);
     }
-    printf("%s\t\t\t\t Version %i.%i.%i\n", PROJECT_INIT_LETTERING, PROJECT_VERSION_MAJOR, PROJECT_VERSION_MINOR, PROJECT_VERSION_PATCH);
+    printf("%s\t\t\t\t Version %i.%i.%i\n", PROJECT_INIT_LETTERING, PROJECT_VERSION_MAJOR, PROJECT_VERSION_MINOR,
+           PROJECT_VERSION_PATCH);
     chip8_execute(&chip8);
     display_quit(&chip8.display);
 }

@@ -61,7 +61,7 @@ int assembler_process_file(assembler_t * assembler, chip8_t * chip8) {
         }
     }
     free(assembler->source);
-    //address_table_free_entries(&assembler->table);
+    // address_table_free_entries(&assembler->table);
     return 0;
 }
 
@@ -136,12 +136,13 @@ static void assembler_process_text_section(assembler_t * assembler, chip8_t * ch
 #endif
     for (assembler_skip_whitespace(assembler); *memoryLocation <= 0xFFF && strncmp(assembler->current, "section", 7);
          assembler_skip_whitespace(assembler)) {
-        if (assembler_peek(*assembler) == '_')
+        if (assembler_peek(*assembler) == '_') {
             assembler_scan_label(assembler, *memoryLocation);
-        else {
+        } else {
             opcode = assembler_scan_opcode(assembler);
-            if (opcode <= 0)
+            if (opcode <= 0) {
                 break;
+            }
             chip8_write_opcode_to_memory(chip8, memoryLocation, opcode);
         }
     }
@@ -151,31 +152,36 @@ static void assembler_process_text_section(assembler_t * assembler, chip8_t * ch
     }
 }
 
-/// @brief 
-/// @param assembler 
-/// @param memoryLocation 
+/// @brief
+/// @param assembler
+/// @param memoryLocation
 static void assembler_scan_label(assembler_t * assembler, uint16_t memoryLocation) {
     assembler_advance(assembler);
     char const * labelStart = assembler->current;
     char const * labelEnd = NULL;
-    while(!assembler_is_at_end(*assembler)) {
-        if (assembler_peek(*assembler) == ':')
+    while (!assembler_is_at_end(*assembler)) {
+        if (assembler_peek(*assembler) == ':') {
             break;
-        if (!assembler_is_alpha(assembler_peek(*assembler)))
+        }
+        if (!assembler_is_alpha(assembler_peek(*assembler))) {
             assembler_report_error(assembler, "A label can only consist of alphanumeric characters");
+        }
         labelEnd = assembler->current;
         assembler_advance(assembler);
     }
-    if (!labelEnd)
+    if (!labelEnd) {
         return;
+    }
     char * label = malloc(labelEnd - labelStart);
-    if (!label)
+    if (!label) {
         return;
-    memcpy(label, labelStart,labelEnd - labelStart + 1);
+    }
+    memcpy(label, labelStart, labelEnd - labelStart + 1);
     label[labelEnd - labelStart + 1] = '\0';
     address_hash_table_entry_t * entry = address_table_entry_new(memoryLocation, label);
-    if (!entry)
+    if (!entry) {
         return;
+    }
     address_table_insert_entry(entry, &assembler->table);
     assembler_advance(assembler);
 }
@@ -304,18 +310,20 @@ static uint16_t assembler_convert_address_to_binary(assembler_t * assembler) {
 #endif
 }
 
-/// @brief 
-/// @param assembler 
-/// @return 
+/// @brief
+/// @param assembler
+/// @return
 static uint16_t assembler_convert_label_to_address(assembler_t * assembler) {
     char const * labelStart = assembler->current;
     char const * labelEnd = NULL;
-    for(;!assembler_is_at_end(*assembler) && assembler_is_alpha(assembler_peek(*assembler)); labelEnd = assembler->current,assembler_advance(assembler)) {
+    for (; !assembler_is_at_end(*assembler) && assembler_is_alpha(assembler_peek(*assembler));
+         labelEnd = assembler->current, assembler_advance(assembler)) {
     }
     char * label = malloc(labelEnd - labelStart - 2);
-    if (!label)
+    if (!label) {
         assembler_report_error(assembler, "Unable to allocate memory for label");
-    memcpy(label, labelStart,labelEnd - labelStart + 1);
+    }
+    memcpy(label, labelStart, labelEnd - labelStart + 1);
     label[labelEnd - labelStart + 1] = '\0';
     uint16_t opCode = address_table_look_up_entry(label, &assembler->table)->opcodeAddress;
     return opCode;
@@ -443,13 +451,14 @@ static uint16_t assembler_convert_mnemonic_to_binary(assembler_t * assembler, ch
         case 'M':
             switch (assembler_advance(assembler)) {
             case 'P':
-            {
-                assembler_skip_whitespace(assembler);
-                if (assembler_is_alpha(assembler_peek(*assembler)))
-                    return 0x1000 | assembler_convert_label_to_address(assembler);
-                else
-                    return 0x1000 | assembler_convert_address_to_binary(assembler);
-            }
+                {
+                    assembler_skip_whitespace(assembler);
+                    if (assembler_is_alpha(assembler_peek(*assembler))) {
+                        return 0x1000 | assembler_convert_label_to_address(assembler);
+                    } else {
+                        return 0x1000 | assembler_convert_address_to_binary(assembler);
+                    }
+                }
             default:
                 assembler_report_error(assembler, OPCODE_CONVERSION_ERROR_MESSAGE);
             }

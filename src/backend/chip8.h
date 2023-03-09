@@ -30,7 +30,6 @@
 /// intended for the ETI 660 computer.
 #define PROGRAM_START_LOCATION (0x200u)
 
-
 /// @brief Models a chip8 emulator
 typedef struct {
     /// The opcode that is currently executed

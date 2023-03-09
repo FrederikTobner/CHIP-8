@@ -94,20 +94,25 @@ $(document).ready(function(){initNavTree('main_8c.html',''); initResizable(); })
 <p>Main entry point of the program.  
 <a href="#details">More...</a></p>
 <div class="textblock"><code>#include &quot;../build/src/chip8_config.h&quot;</code><br />
-<code>#include &quot;<a class="el" href="assembler_8h_source.html">assembler.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="chip8_8h_source.html">chip8.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="display_8h_source.html">display.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="file__utils_8h_source.html">file_utils.h</a>&quot;</code><br />
+<code>#include &quot;backend/chip8.h&quot;</code><br />
+<code>#include &quot;backend/display.h&quot;</code><br />
+<code>#include &quot;frontend/assembler.h&quot;</code><br />
 <code>#include &quot;<a class="el" href="pre__compiled__header_8h_source.html">pre_compiled_header.h</a>&quot;</code><br />
+<code>#include &quot;utils/file_utils.h&quot;</code><br />
 </div><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
 Macros</h2></td></tr>
 <tr class="memitem:ad98b845c77ce21b1771e1ddd07264d41"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8c.html#ad98b845c77ce21b1771e1ddd07264d41">CHIP8_USAGE_MESSAGE</a>&#160;&#160;&#160;&quot;Usage: Chip8 [path]\n&quot;</td></tr>
 <tr class="memdesc:ad98b845c77ce21b1771e1ddd07264d41"><td class="mdescLeft">&#160;</td><td class="mdescRight">Short message that explains the usage of the CHIP-8 emulator.  <a href="main_8c.html#ad98b845c77ce21b1771e1ddd07264d41">More...</a><br /></td></tr>
 <tr class="separator:ad98b845c77ce21b1771e1ddd07264d41"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6a1ba09401bc03d6f81472f56ab2bd4d"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8c.html#a6a1ba09401bc03d6f81472f56ab2bd4d">PROJECT_INIT_LETTERING</a>&#160;&#160;&#160;    (&quot;   _____ _    _ _____ _____        ___  \n\  / ____| |  | |_   _|  __ \\      / _ \\ \n\ | |    | |__| | | | | |__) |____| (_) |\n\ | |    |  __  | | | |  ___/______&gt; _ &lt; \n\ | |____| |  | |_| |_| |         | (_) |\n\  \\_____|_|  |_|_____|_|          \\___/ \n\&quot;)</td></tr>
+<tr class="separator:a6a1ba09401bc03d6f81472f56ab2bd4d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
+<tr class="memitem:a0507145c2d895c1162e0bea7924fd904"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8c.html#a0507145c2d895c1162e0bea7924fd904">run_from_file</a> (char *filePath)</td></tr>
+<tr class="memdesc:a0507145c2d895c1162e0bea7924fd904"><td class="mdescLeft">&#160;</td><td class="mdescRight">Executes a chip8 program stored in a file.  <a href="main_8c.html#a0507145c2d895c1162e0bea7924fd904">More...</a><br /></td></tr>
+<tr class="separator:a0507145c2d895c1162e0bea7924fd904"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a81962ff36a3740bd2a6a458b74e57e26"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8c.html#a81962ff36a3740bd2a6a458b74e57e26">show_help</a> ()</td></tr>
 <tr class="memdesc:a81962ff36a3740bd2a6a458b74e57e26"><td class="mdescLeft">&#160;</td><td class="mdescRight">Displays the help of the emulator.  <a href="main_8c.html#a81962ff36a3740bd2a6a458b74e57e26">More...</a><br /></td></tr>
 <tr class="separator:a81962ff36a3740bd2a6a458b74e57e26"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -131,6 +136,20 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Short message that explains the usage of the CHIP-8 emulator. </p>
+
+</div>
+</div>
+<a id="a6a1ba09401bc03d6f81472f56ab2bd4d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6a1ba09401bc03d6f81472f56ab2bd4d">&#9670;&nbsp;</a></span>PROJECT_INIT_LETTERING</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define PROJECT_INIT_LETTERING&#160;&#160;&#160;    (&quot;   _____ _    _ _____ _____        ___  \n\  / ____| |  | |_   _|  __ \\      / _ \\ \n\ | |    | |__| | | | | |__) |____| (_) |\n\ | |    |  __  | | | |  ___/______&gt; _ &lt; \n\ | |____| |  | |_| |_| |         | (_) |\n\  \\_____|_|  |_|_____|_|          \\___/ \n\&quot;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
 
 </div>
 </div>
@@ -170,6 +189,40 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>0 if everything went well </dd></dl>
+
+</div>
+</div>
+<a id="a0507145c2d895c1162e0bea7924fd904"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0507145c2d895c1162e0bea7924fd904">&#9670;&nbsp;</a></span>run_from_file()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void run_from_file </td>
+          <td>(</td>
+          <td class="paramtype">char *&#160;</td>
+          <td class="paramname"><em>filePath</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Executes a chip8 program stored in a file. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">filePath</td><td>The path of the program </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>

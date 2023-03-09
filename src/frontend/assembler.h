@@ -22,8 +22,8 @@
 #define CHIP8_ASSEMLER_H_
 
 #include "../backend/chip8.h"
-#include "address_hash_table.h"
 #include "../pre_compiled_header.h"
+#include "address_hash_table.h"
 
 /// @brief Type definition of a assembler
 typedef struct {

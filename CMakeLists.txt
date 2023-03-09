@@ -10,7 +10,6 @@ LANGUAGES C
 # C99 standard is required to build the emulator
 set(CMAKE_C_STANDARD 99)
 set(CMAKE_C_STANDARD_REQUIRED True)
-
 # CMake Build options
 # These options only affect the build if the built-type is Debug - otherwise they will be ignored
 option(CP8_DEBUG_PRINT_BYTECODE "Determines whether the instructions are printed" OFF)
