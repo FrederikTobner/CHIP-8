@@ -22,8 +22,6 @@ jobs:
   analyze:
     name: Analyze
     runs-on: ${{matrix.operatingsystems}}
-    env:
-      buildtypes: [Release]
     permissions:
       actions: read
       contents: read
