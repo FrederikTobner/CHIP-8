@@ -57,7 +57,7 @@ void file_utils_read_file_to_memory(char const * path, chip8_t * chip8) {
     size_t fileSize = ftell(file);
     rewind(file);
     if (fileSize > (4096 - PROGRAM_START_LOCATION)) {
-        io_error("Could is to big to store it in memory \"%s\".\n", path);
+        io_error("Content is to big to store it in memory \"%s\".\n", path);
     }
     size_t bytesRead = fread(chip8->memory + PROGRAM_START_LOCATION, sizeof(char), fileSize, file);
     if (bytesRead < fileSize) {

@@ -21,11 +21,10 @@
 #ifndef CHIP8_ADDRESS_HASH_TABLE_H_
 #define CHIP8_ADDRESS_HASH_TABLE_H_
 
-#include "pre_compiled_header.h"
+#include "../pre_compiled_header.h"
 
 // Type Definition of an Entry structure in a hashtable (linear probing)
-typedef struct
-{
+typedef struct {
     /// Key of the entry 🔑 / The label
     char const * key;
     /// Value that is stored in the entry
@@ -33,12 +32,11 @@ typedef struct
 } address_hash_table_entry_t;
 
 // Type definition of a HashTable structure using linear probing for hash collisions
-typedef struct
-{
+typedef struct {
     /// The amount or allocated entries
     size_t allocated;
     /// The amount of used entries
-    size_t used;    
+    size_t used;
     /// Pointer to the entries
     address_hash_table_entry_t ** entries;
 } address_hash_table_t;
@@ -72,7 +70,8 @@ int address_table_insert_entry(address_hash_table_entry_t * entry, address_hash_
 /// @param entry The entry that is removed from the hashtable
 /// @param table The table where the entry is removed
 /// @return The entry that was removed or null if no entry was removed
-address_hash_table_entry_t * address_table_remove_entry(address_hash_table_entry_t * entry, address_hash_table_t * table);
+address_hash_table_entry_t * address_table_remove_entry(address_hash_table_entry_t * entry,
+                                                        address_hash_table_t * table);
 
 /// @brief Looks up a entry in the hashtable
 /// @param key The key that is used to look up the entry

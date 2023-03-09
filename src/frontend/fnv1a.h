@@ -15,21 +15,21 @@
 
 /**
  * @file fnv1a.h
- * @brief Definitions regarding the fowler-noll-vo hashing function
+ * @brief Declarations regarding the fowler-noll-vo hashing function
  */
 
-#include "fnv1a.h"
+#ifndef CHIP8_FNV1A_H_
+#define CHIP8_FNV1A_H_
 
-#define OFFSET_BASIS 0x811c9dc5u
-#define PRIME 0x01000193u
+#include <stddef.h>
+#include <stdint.h>
 
-uint32_t fnv1a_hash_data(uint8_t const * data, size_t length)
-{
-    uint32_t hash = OFFSET_BASIS;
-    for (size_t i = 0; i < length; i++)
-    {
-        hash ^= data[i];
-        hash *= PRIME;
-    }
-    return hash;
-}
+// Fowler-Noll-Vo hashing function https://en.wikipedia.org/wiki/Fowler%E2%80%93Noll%E2%80%93Vo_hash_function
+
+/// @brief Hashes the data using fowler noll vo
+/// @param data The data that is hashed
+/// @param length The length of the data that is hashed
+/// @return an unsigned 32-bit or 64-bit integer
+uint32_t fnv1a_hash_data(uint8_t const * data, size_t length);
+
+#endif
