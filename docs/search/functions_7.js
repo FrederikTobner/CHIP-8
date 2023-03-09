@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['show_5fhelp_152',['show_help',['../main_8c.html#a81962ff36a3740bd2a6a458b74e57e26',1,'main.c']]]
+  ['run_5ffrom_5ffile_206',['run_from_file',['../main_8c.html#a0507145c2d895c1162e0bea7924fd904',1,'main.c']]]
 ];

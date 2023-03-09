@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['current_153',['current',['../structassembler__t.html#a5bed065f1f0fbd1e07b996a2de6bd1a7',1,'assembler_t']]],
-  ['currentopcode_154',['currentOpcode',['../structchip8__t.html#a2e997fd6947efc8fe1c66ca97c7f3c24',1,'chip8_t']]]
+  ['allocated_208',['allocated',['../structaddress__hash__table__t.html#ae1bb12c74f8787980ecef2b1f772239b',1,'address_hash_table_t']]]
 ];

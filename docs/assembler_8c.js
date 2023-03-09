@@ -3,6 +3,7 @@ var assembler_8c =
     [ "OPCODE_CONVERSION_ERROR_MESSAGE", "assembler_8c.html#a98c02dfcb4baf45365006751dc630c4b", null ],
     [ "assembler_advance", "assembler_8c.html#acc76437694fec8e423c5603216235fc4", null ],
     [ "assembler_convert_address_to_binary", "assembler_8c.html#ab06bcc2ee5b4c46199d0337b581fd2d1", null ],
+    [ "assembler_convert_label_to_address", "assembler_8c.html#a740d0b8b424450c1e21624bc956cf871", null ],
     [ "assembler_convert_mnemonic_to_binary", "assembler_8c.html#a105e3e3610d5fd59a3d07aa2b8108417", null ],
     [ "assembler_convert_register_to_binary", "assembler_8c.html#a7ec599c0532c50a23839f30c99b02611", null ],
     [ "assembler_convert_registers_to_binary", "assembler_8c.html#a09681d50efe38ff95c8f9d20ee85b1fa", null ],
@@ -19,6 +20,7 @@ var assembler_8c =
     [ "assembler_process_text_section", "assembler_8c.html#a15e8a1adc9d9bd0d738cf23a58a32f8d", null ],
     [ "assembler_read_8bit_number", "assembler_8c.html#a89bbc3a8b582cee58d9efbf0b98c6174", null ],
     [ "assembler_report_error", "assembler_8c.html#aa8e9b429d8e001f5250e009a2bb6e92f", null ],
+    [ "assembler_scan_label", "assembler_8c.html#a607a48b2ec7f9b17d78cde9f2789e88b", null ],
     [ "assembler_scan_opcode", "assembler_8c.html#a17abccff086051fe413ee89219c1ad78", null ],
     [ "assembler_skip_whitespace", "assembler_8c.html#a17dc0c350b40d18062784b4b63826fa1", null ]
 ];

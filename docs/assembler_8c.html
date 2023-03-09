@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.9.1"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>CHIP-8: assembler.c File Reference</title>
+<title>CHIP-8: frontend/assembler.c File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -94,7 +94,7 @@ $(document).ready(function(){initNavTree('assembler_8c.html',''); initResizable(
 <p>Definitions regarding the assembler of the emulator.  
 <a href="#details">More...</a></p>
 <div class="textblock"><code>#include &quot;<a class="el" href="assembler_8h_source.html">assembler.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="chip8_8h_source.html">chip8.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="chip8_8h_source.html">../backend/chip8.h</a>&quot;</code><br />
 </div><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
 Macros</h2></td></tr>
@@ -109,6 +109,8 @@ Functions</h2></td></tr>
 <tr class="memitem:ab06bcc2ee5b4c46199d0337b581fd2d1"><td class="memItemLeft" align="right" valign="top">static uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="assembler_8c.html#ab06bcc2ee5b4c46199d0337b581fd2d1">assembler_convert_address_to_binary</a> (<a class="el" href="structassembler__t.html">assembler_t</a> *assembler)</td></tr>
 <tr class="memdesc:ab06bcc2ee5b4c46199d0337b581fd2d1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts the mnemnic representation of a address to binary.  <a href="assembler_8c.html#ab06bcc2ee5b4c46199d0337b581fd2d1">More...</a><br /></td></tr>
 <tr class="separator:ab06bcc2ee5b4c46199d0337b581fd2d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a740d0b8b424450c1e21624bc956cf871"><td class="memItemLeft" align="right" valign="top">static uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="assembler_8c.html#a740d0b8b424450c1e21624bc956cf871">assembler_convert_label_to_address</a> (<a class="el" href="structassembler__t.html">assembler_t</a> *assembler)</td></tr>
+<tr class="separator:a740d0b8b424450c1e21624bc956cf871"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a105e3e3610d5fd59a3d07aa2b8108417"><td class="memItemLeft" align="right" valign="top">static uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="assembler_8c.html#a105e3e3610d5fd59a3d07aa2b8108417">assembler_convert_mnemonic_to_binary</a> (<a class="el" href="structassembler__t.html">assembler_t</a> *assembler, char c)</td></tr>
 <tr class="memdesc:a105e3e3610d5fd59a3d07aa2b8108417"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts the next mnemonic representation of an opcode in the source file to it's binary representation.  <a href="assembler_8c.html#a105e3e3610d5fd59a3d07aa2b8108417">More...</a><br /></td></tr>
 <tr class="separator:a105e3e3610d5fd59a3d07aa2b8108417"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -153,6 +155,8 @@ Functions</h2></td></tr>
 <tr class="memitem:a15e8a1adc9d9bd0d738cf23a58a32f8d"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="assembler_8c.html#a15e8a1adc9d9bd0d738cf23a58a32f8d">assembler_process_text_section</a> (<a class="el" href="structassembler__t.html">assembler_t</a> *assembler, <a class="el" href="structchip8__t.html">chip8_t</a> *chip8, uint16_t *memoryLocation)</td></tr>
 <tr class="memdesc:a15e8a1adc9d9bd0d738cf23a58a32f8d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Processes the text section of a chip8 program.  <a href="assembler_8c.html#a15e8a1adc9d9bd0d738cf23a58a32f8d">More...</a><br /></td></tr>
 <tr class="separator:a15e8a1adc9d9bd0d738cf23a58a32f8d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a607a48b2ec7f9b17d78cde9f2789e88b"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="assembler_8c.html#a607a48b2ec7f9b17d78cde9f2789e88b">assembler_scan_label</a> (<a class="el" href="structassembler__t.html">assembler_t</a> *assembler, uint16_t memoryLocation)</td></tr>
+<tr class="separator:a607a48b2ec7f9b17d78cde9f2789e88b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a17abccff086051fe413ee89219c1ad78"><td class="memItemLeft" align="right" valign="top">static int32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="assembler_8c.html#a17abccff086051fe413ee89219c1ad78">assembler_scan_opcode</a> (<a class="el" href="structassembler__t.html">assembler_t</a> *assembler)</td></tr>
 <tr class="memdesc:a17abccff086051fe413ee89219c1ad78"><td class="mdescLeft">&#160;</td><td class="mdescRight">Scans the next opcode in the sourcefile.  <a href="assembler_8c.html#a17abccff086051fe413ee89219c1ad78">More...</a><br /></td></tr>
 <tr class="separator:a17abccff086051fe413ee89219c1ad78"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -248,6 +252,39 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The binary representation of the address </dd></dl>
+
+</div>
+</div>
+<a id="a740d0b8b424450c1e21624bc956cf871"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a740d0b8b424450c1e21624bc956cf871">&#9670;&nbsp;</a></span>assembler_convert_label_to_address()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static uint16_t assembler_convert_label_to_address </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structassembler__t.html">assembler_t</a> *&#160;</td>
+          <td class="paramname"><em>assembler</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">assembler</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
 </div>
 </div>
@@ -905,6 +942,49 @@ Functions</h2></td></tr>
 
 </div>
 </div>
+<a id="a607a48b2ec7f9b17d78cde9f2789e88b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a607a48b2ec7f9b17d78cde9f2789e88b">&#9670;&nbsp;</a></span>assembler_scan_label()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void assembler_scan_label </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structassembler__t.html">assembler_t</a> *&#160;</td>
+          <td class="paramname"><em>assembler</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint16_t&#160;</td>
+          <td class="paramname"><em>memoryLocation</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">assembler</td><td></td></tr>
+    <tr><td class="paramname">memoryLocation</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="a17abccff086051fe413ee89219c1ad78"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a17abccff086051fe413ee89219c1ad78">&#9670;&nbsp;</a></span>assembler_scan_opcode()</h2>
 
@@ -977,7 +1057,7 @@ Functions</h2></td></tr>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="assembler_8c.html">assembler.c</a></li>
+    <li class="navelem"><a class="el" href="dir_ca0386ec887ae6362f93b0d653b52e0c.html">frontend</a></li><li class="navelem"><a class="el" href="assembler_8c.html">assembler.c</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>

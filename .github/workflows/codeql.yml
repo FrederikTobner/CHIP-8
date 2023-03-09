@@ -2,11 +2,8 @@ name: "CodeQL"
 on:
   push:
     branches: ["master"]
-  pull_request:
-    branches: ["master"]
     paths-ignore:
      - '**/*.md'    # Markdown
-     - '**/*.yaml'  # Scripts
      - '**/*.bat'   
      - '**/*.sh'
      - '**/*.cp8'   # CHIP 8 assembly language

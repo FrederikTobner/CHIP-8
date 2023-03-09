@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['renderer_163',['renderer',['../structdisplay__t.html#a966da7a60c4ea3ba301e26ccc5efe452',1,'display_t']]]
+  ['memory_218',['memory',['../structchip8__t.html#a5987db636a9b13af8d42f867f621fadb',1,'chip8_t']]]
 ];

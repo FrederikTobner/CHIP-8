@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['pre_5fcompiled_5fheader_2ec_19',['pre_compiled_header.c',['../pre__compiled__header_8c.html',1,'']]],
-  ['pre_5fcompiled_5fheader_2eh_20',['pre_compiled_header.h',['../pre__compiled__header_8h.html',1,'']]]
+  ['chip8_2ec_139',['chip8.c',['../chip8_8c.html',1,'']]],
+  ['chip8_2eh_140',['chip8.h',['../chip8_8h.html',1,'']]]
 ];
