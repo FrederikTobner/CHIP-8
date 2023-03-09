@@ -19,7 +19,7 @@
  */
 
 #include "assembler.h"
-#include "chip8.h"
+#include "../backend/chip8.h"
 
 #define OPCODE_CONVERSION_ERROR_MESSAGE ("Unable to convert mnemonic at source into binary\n")
 

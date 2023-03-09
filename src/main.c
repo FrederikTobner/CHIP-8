@@ -19,10 +19,10 @@
  */
 
 #include "../build/src/chip8_config.h"
-#include "assembler.h"
-#include "chip8.h"
-#include "display.h"
-#include "file_utils.h"
+#include "frontend/assembler.h"
+#include "backend/chip8.h"
+#include "backend/display.h"
+#include "utils/file_utils.h"
 #include "pre_compiled_header.h"
 
 /// Short message that explains the usage of the CHIP-8 emulator

@@ -20,7 +20,7 @@
 
 #include "file_utils.h"
 
-#include "pre_compiled_header.h"
+#include "../pre_compiled_header.h"
 
 static void io_error(char const *, ...);
 

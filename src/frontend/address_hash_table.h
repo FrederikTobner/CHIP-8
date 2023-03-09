@@ -21,7 +21,7 @@
 #ifndef CHIP8_ADDRESS_HASH_TABLE_H_
 #define CHIP8_ADDRESS_HASH_TABLE_H_
 
-#include "pre_compiled_header.h"
+#include "../pre_compiled_header.h"
 
 // Type Definition of an Entry structure in a hashtable (linear probing)
 typedef struct

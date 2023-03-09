@@ -4,25 +4,25 @@ configure_file(chip8_config.h.in chip8_config.h)
 # Adding debug compile definitions
 if(CMAKE_BUILD_TYPE MATCHES "[Dd][Ee][Bb][Uu][Gg]")
     set(CHIP-8_SOURCE_FILES
-    "address_hash_table.c"
-    "assembler.c"
-    "chip8.c"
-    "debug.c"
-    "display.c"
-    "file_utils.c"
-    "fnv1a.c"
+    "frontend/address_hash_table.c"
+    "frontend/assembler.c"
+    "backend/chip8.c"
+    "backend/debug.c"
+    "backend/display.c"
+    "utils/file_utils.c"
+    "frontend/fnv1a.c"
     "main.c"    
-    "path_utils.c"
+    "utils/path_utils.c"
     )    
     set(CHIP-8_HEADER_FILES
-    "address_hash_table.h"
-    "assembler.h"
-    "chip8.h"
-    "debug.h"
-    "display.h"
-    "file_utils.h"
-    "fnv1a.h"
-    "path_utils.h"
+    "frontend/address_hash_table.h"
+    "frontend/assembler.h"
+    "backend/chip8.h"
+    "backend/debug.h"
+    "backend/display.h"
+    "utils/file_utils.h"
+    "frontend/fnv1a.h"
+    "utils/path_utils.h"
     )
     if(CP8_DEBUG_PRINT_BYTECODE)
         add_compile_definitions(PRINT_BYTE_CODE)
@@ -33,23 +33,23 @@ if(CMAKE_BUILD_TYPE MATCHES "[Dd][Ee][Bb][Uu][Gg]")
     add_compile_definitions(BUILD_DEBUG)
 else()
     set(CHIP-8_SOURCE_FILES
-    "address_hash_table.c"
-    "assembler.c"
-    "chip8.c"
-    "display.c"
-    "file_utils.c"
-    "fnv1a.c"
-    "main.c" 
-    "path_utils.c"   
-    )
+    "frontend/address_hash_table.c"
+    "frontend/assembler.c"
+    "backend/chip8.c"
+    "backend/display.c"
+    "utils/file_utils.c"
+    "frontend/fnv1a.c"
+    "main.c"    
+    "utils/path_utils.c"
+    )    
     set(CHIP-8_HEADER_FILES
-    "address_hash_table.h"
-    "assembler.h"
-    "chip8.h"
-    "display.h"
-    "file_utils.h"
-    "fnv1a.h"
-    "path_utils.h"
+    "frontend/address_hash_table.h"
+    "frontend/assembler.h"
+    "backend/chip8.h"
+    "backend/display.h"
+    "utils/file_utils.h"
+    "frontend/fnv1a.h"
+    "utils/path_utils.h"
     )
 
     include(../cmake/chip8_set_package_properties.cmake)

@@ -14,29 +14,39 @@
  ****************************************************************************/
 
 /**
- * @file path_utils.h
- * @brief Declarations regarding the path utilities used by the emulator
+ * @file assembler.h
+ * @brief Declarations regarding the assembler of the emulator
  */
 
-#ifndef CHIP8_PATH_UTILS_H_
-#define CHIP8_PATH_UTILS_H_
+#ifndef CHIP8_ASSEMLER_H_
+#define CHIP8_ASSEMLER_H_
 
-#include "pre_compiled_header.h"
+#include "../backend/chip8.h"
+#include "address_hash_table.h"
+#include "../pre_compiled_header.h"
 
-/// @brief Determines the path of the emulator executable
-/// @param buffer The buffer where the path is stored
-/// @param bufferSize The length of the buffer
+/// @brief Type definition of a assembler
+typedef struct {
+    /// Source file
+    char * source;
+    /// Pointer to the start of the current line
+    char const * start;
+    /// Pointer to the current position in the current line
+    char const * current;
+    /// Line counter - used for error reporting
+    uint32_t line;
+    address_hash_table_t table;
+} assembler_t;
+
+/// @brief Initializes the assembler
+/// @param assembler The assembler that parses the file
+/// @param source The sourcecode that is parsed by the assembler
+void assembler_initialize(assembler_t * assembler, char const * source);
+
+/// @brief Processes a chip8 assembly file (.cp8)
+/// @param assembler The assembler that processes the file
+/// @param chip8 The virtual machine where the program is written into memory
 /// @return 0 if everything went well, -1 if an error occured
-int path_utils_get_executable_path(char * buffer, size_t bufferSize);
-
-/// @brief Removes the specified amount of file-layers from the buffer
-/// @param buffer The buffer that is
-/// @param depth The amount of layers that are removed from the path
-void path_utils_remove_file_layer(char * buffer, size_t depth);
-
-/// @brief Adds the specified folder name followed by a os-specific file seperator to the path
-/// @param buffer The buffer where the filename is concatenated
-/// @param folderName The name of the folder that is concatenated
-void path_utils_concatenate_folder(char * buffer, char * folderName, size_t maxBufferSize);
+int assembler_process_file(assembler_t * assembler, chip8_t * chip8);
 
 #endif

@@ -21,7 +21,7 @@
 #ifndef CHIP8_FILE_UTILS_H_
 #define CHIP8_FILE_UTILS_H_
 
-#include "chip8.h"
+#include "../backend/chip8.h"
 
 /// @brief Reads a file from a specified location and returns the content of the file as a character pointer
 /// @param path The path of the file that is read
