@@ -16,20 +16,21 @@ option(CP8_DEBUG_PRINT_BYTECODE "Determines whether the instructions are printed
 option(CP8_DEBUG_TRACE_EXECUTION "Determines whether the execution shall be traced" OFF)
 
  # Adding CheckIncludeFile CMake module
-include(CheckIncludeFile) 
+include(CheckIncludeFile)
+# Adding own cmake scripts
+include(./cmake/chip8_check.cmake)
 
 # Checking dependencies
-include(./cmake/chip8_check_dependencies.cmake)
 CHIP8_Check_Dependencies()
 
 # Build SDL
 add_subdirectory(external/SDL)
 
-include(./cmake/chip8_determine_compiler.cmake)
-CHIP8_Determine_Compiler()
+# Determine the compiler that is used
+CHIP8_Check_Compiler()
 
-include(./cmake/chip8_detect_platform.cmake)
-CHIP8_Detect_Platform()
+# Detect the platform that we build for
+CHIP8_Check_Platform()
 
 # Build CHIP-8 project
 add_subdirectory(src)

@@ -26,6 +26,6 @@ else()
     )
 endif()
 
-add_library(${PROJECT_NAME}Backend ${BACKEND_SOURCE_FILES} ${BACKEND_HEADER_FILES})
+add_library(${PROJECT_NAME}Backend STATIC ${BACKEND_SOURCE_FILES} ${BACKEND_HEADER_FILES})
 
 target_link_libraries(${PROJECT_NAME}Backend SDL2-static)
