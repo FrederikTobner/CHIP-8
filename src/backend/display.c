@@ -21,7 +21,7 @@
 #include "display.h"
 #include "../../build/src/chip8_config.h"
 #include "../pre_compiled_header.h"
-#include "../utils/path_utils.h"
+#include "path_utils.h"
 
 static int display_set_window_icon(SDL_Window *, char const *);
 

@@ -21,10 +21,9 @@
 #include "../build/src/chip8_config.h"
 #include "backend/chip8.h"
 #include "backend/display.h"
+#include "file_utils.h"
 #include "frontend/assembler.h"
 #include "pre_compiled_header.h"
-#include "utils/file_utils.h"
-
 
 /// Short message that explains the usage of the CHIP-8 emulator
 #define CHIP8_USAGE_MESSAGE "Usage: Chip8 [path]\n"
