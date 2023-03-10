@@ -61,8 +61,8 @@ void chip8_execute(chip8_t * chip8) {
 #ifdef TRACE_EXECUTION
         debug_trace_execution(*chip8);
 #endif
-        chip8->currentOpcode = chip8->memory[chip8->programCounter * 2 + PROGRAM_START_LOCATION];
-        chip8->currentOpcode += ((uint16_t)chip8->memory[chip8->programCounter * 2 + 1 + PROGRAM_START_LOCATION]) << 8;
+        chip8->currentOpcode = (uint16_t)chip8->memory[chip8->programCounter * 2 + 1 + PROGRAM_START_LOCATION];
+        chip8->currentOpcode += chip8->memory[chip8->programCounter * 2 + PROGRAM_START_LOCATION] << 8;
         // Reached end of the program
         if (!chip8->currentOpcode) {
             return;
@@ -129,8 +129,8 @@ void chip8_write_opcode_to_memory(chip8_t * chip8, uint16_t * memoryLocation, ui
 #ifdef PRINT_BYTE_CODE
     debug_print_bytecode(*memoryLocation, opcode);
 #endif
-    chip8->memory[(*memoryLocation)++] = opcode & 0x00ff;
     chip8->memory[(*memoryLocation)++] = (opcode & 0xff00) >> 8;
+    chip8->memory[(*memoryLocation)++] = opcode & 0x00ff;
 }
 
 /// @brief Writtes the specified opcode at the specified location into memory
