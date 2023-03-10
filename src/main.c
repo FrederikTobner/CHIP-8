@@ -23,6 +23,7 @@
 #include "backend/display.h"
 #include "file_utils.h"
 #include "frontend/assembler.h"
+
 #include "pre_compiled_header.h"
 
 /// Short message that explains the usage of the CHIP-8 emulator

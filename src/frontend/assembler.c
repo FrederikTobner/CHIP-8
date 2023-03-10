@@ -35,6 +35,7 @@ static inline bool assembler_is_at_end(assembler_t);
 static inline bool assembler_is_decimal(char);
 static inline bool assembler_is_hexa(char);
 static inline char assembler_peek(assembler_t);
+static char assembler_peek_ahead(assembler_t, uint8_t);
 static uint8_t assembler_read_8bit_number(assembler_t *);
 static void assembler_report_error(assembler_t *, char const *, ...);
 static void assembler_skip_whitespace(assembler_t *);
@@ -274,6 +275,31 @@ static inline char assembler_peek(assembler_t assembler) {
     return *assembler.current;
 }
 
+static char assembler_peek_ahead(assembler_t assembler, uint8_t amount) {
+    char currentChar = *assembler.current;
+    for (size_t i = 0; amount || currentChar == ' ';)
+    {
+        switch (currentChar)
+        {
+        case '\0':
+            return '\0';
+        case ' ':
+        case '\r':
+        case '\t':
+        case '\n':
+        case '#':
+            i++;
+            break;
+        default:
+            i++;
+            amount--;
+            break;
+        }
+        currentChar = *(assembler.current + i);
+    }
+    return currentChar;    
+}
+
 /// @brief Converts the mnemnic representation of a byte to binary
 /// @param assembler The assembler that proceeses the assembly file
 /// @return The binary representation of the byte
@@ -395,7 +421,16 @@ static uint16_t assembler_convert_mnemonic_to_binary(assembler_t * assembler, ch
                     assembler_advance(assembler);
                     return 0xF01E | assembler_convert_register_to_binary(assembler) << 8;
                 case 'V': // ADD V
-                    return 0x8004 | assembler_convert_registers_to_binary(assembler) << 4;
+                    switch (assembler_peek_ahead(*assembler, 2) )
+                    {
+                    case 'V':
+                        return 0x8004 | assembler_convert_registers_to_binary(assembler) << 4;
+                    case '0':
+                        return 0x7000 | assembler_convert_register_to_binary(assembler) << 8 | assembler_read_8bit_number(assembler);
+                    default:
+                        assembler_report_error(assembler, OPCODE_CONVERSION_ERROR_MESSAGE);
+                    } 
+                    break;                   
                 default:
                     assembler_report_error(assembler, OPCODE_CONVERSION_ERROR_MESSAGE);
                 }

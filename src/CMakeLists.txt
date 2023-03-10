@@ -33,18 +33,10 @@ endif()
 # Creating the final executable
 add_executable(${PROJECT_NAME} ${CHIP-8_SOURCE_FILES} ${CHIP-8_HEADER_FILES})
 
-# Precompiles common.h to speed up compilation of the target
-if(MSVC)
-    # VisualStudio only accepts header files that also have a source file    
-    target_precompile_headers(${PROJECT_NAME} PUBLIC pre_compiled_header.h pre_compiled_header.c) 
-else()
-    target_precompile_headers(${PROJECT_NAME} PUBLIC pre_compiled_header.h)
-endif()
-
 # for including the chip8_config.h file
 target_include_directories(${PROJECT_NAME} PUBLIC ${PROJECT_BINARY_DIR}/src)
 
-# Linking with SDL libary
+# Linking with SDL libary and the front and backend libary of the emulators
 target_link_libraries(${PROJECT_NAME} SDL2main ${PROJECT_NAME}Backend ${PROJECT_NAME}Frontend)
 
 # Copies window icon into the build folder

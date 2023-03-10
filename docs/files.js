@@ -1,12 +1,10 @@
 var files =
 [
-    [ "chip8.c", "chip8_8c.html", "chip8_8c" ],
-    [ "chip8.h", "chip8_8h.html", "chip8_8h" ],
-    [ "common.h", "common_8h.html", "common_8h" ],
-    [ "debug.c", "debug_8c.html", "debug_8c" ],
-    [ "debug.h", "debug_8h.html", "debug_8h" ],
-    [ "flags.h", "flags_8h.html", "flags_8h" ],
-    [ "lexer.c", "lexer_8c.html", "lexer_8c" ],
-    [ "lexer.h", "lexer_8h.html", "lexer_8h" ],
+    [ "backend", "dir_8c739bbef76d64b22d6b0911c526dd76.html", "dir_8c739bbef76d64b22d6b0911c526dd76" ],
+    [ "frontend", "dir_ca0386ec887ae6362f93b0d653b52e0c.html", "dir_ca0386ec887ae6362f93b0d653b52e0c" ],
+    [ "pre_compiled_header.c", "pre__compiled__header_8c.html", null ],
+    [ "pre_compiled_header.h", "pre__compiled__header_8h.html", "pre__compiled__header_8h" ],
+    [ "file_utils.c", "file__utils_8c.html", "file__utils_8c" ],
+    [ "file_utils.h", "file__utils_8h.html", "file__utils_8h" ],
     [ "main.c", "main_8c.html", "main_8c" ]
 ];
