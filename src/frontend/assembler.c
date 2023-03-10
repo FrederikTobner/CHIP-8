@@ -275,17 +275,20 @@ static inline char assembler_peek(assembler_t assembler) {
     return *assembler.current;
 }
 
+/// @brief Peeks ahead by the specified amount of characters skipping whitespace characters
+/// @param assembler The assembler where the character is peeked
+/// @param amount The amount of characters that are skipped
+/// @return The next character after the amount of characters that where skipt
 static char assembler_peek_ahead(assembler_t assembler, uint8_t amount) {
     char currentChar = *assembler.current;
-    for (size_t i = 0; amount || currentChar == ' ';)
-    {
-        switch (currentChar)
-        {
+    for (size_t i = 0; amount || currentChar == ' ';) {
+        switch (currentChar) {
         case '\0':
             return '\0';
         case ' ':
         case '\r':
         case '\t':
+        case '\v':
         case '\n':
         case '#':
             i++;
@@ -297,7 +300,7 @@ static char assembler_peek_ahead(assembler_t assembler, uint8_t amount) {
         }
         currentChar = *(assembler.current + i);
     }
-    return currentChar;    
+    return currentChar;
 }
 
 /// @brief Converts the mnemnic representation of a byte to binary
@@ -421,16 +424,16 @@ static uint16_t assembler_convert_mnemonic_to_binary(assembler_t * assembler, ch
                     assembler_advance(assembler);
                     return 0xF01E | assembler_convert_register_to_binary(assembler) << 8;
                 case 'V': // ADD V
-                    switch (assembler_peek_ahead(*assembler, 2) )
-                    {
+                    switch (assembler_peek_ahead(*assembler, 2)) {
                     case 'V':
                         return 0x8004 | assembler_convert_registers_to_binary(assembler) << 4;
                     case '0':
-                        return 0x7000 | assembler_convert_register_to_binary(assembler) << 8 | assembler_read_8bit_number(assembler);
+                        return 0x7000 | assembler_convert_register_to_binary(assembler) << 8 |
+                               assembler_read_8bit_number(assembler);
                     default:
                         assembler_report_error(assembler, OPCODE_CONVERSION_ERROR_MESSAGE);
-                    } 
-                    break;                   
+                    }
+                    break;
                 default:
                     assembler_report_error(assembler, OPCODE_CONVERSION_ERROR_MESSAGE);
                 }
@@ -747,6 +750,7 @@ static void assembler_skip_whitespace(assembler_t * assembler) {
         case ' ':
         case '\r':
         case '\t':
+        case '\v':
             // Whitespaces tabstops and carriage returns are ignored
             assembler_advance(assembler);
             break;

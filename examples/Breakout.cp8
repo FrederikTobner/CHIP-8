@@ -36,6 +36,15 @@ _drawBrick:
     MOV I 0x901                         # We store 0x901 (location of ball sprite) in the register I
     DSP V0 V1 0x01                      # Draw ball
 
+    # Main game loop
+    # Setting up timer
+    # Check timer
+    # Detect collisions
+    # Detect ball hitting bottom (maybe jump to game over)
+    # Handle user input
+    # Loop back to Main Game loop if there are some bars still left to destroy
+    # Game over
+
     ################################################
     # Making sure the last frame is still rendered #
     ################################################

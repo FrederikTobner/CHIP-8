@@ -63,7 +63,6 @@ int display_init(display_t * display) {
         if (!SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "1")) {
             printf("Warning: Linear texture filtering not enabled!");
         }
-
         // Create window
         display->window = SDL_CreateWindow("CHIP-8", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
                                            GRAPHICS_SYSTEM_WIDTH * SCALE_FACTOR, GRAPHICS_SYSTEM_HEIGHT * SCALE_FACTOR,
