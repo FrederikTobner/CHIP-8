@@ -475,6 +475,18 @@ static uint16_t assembler_convert_mnemonic_to_binary(assembler_t * assembler, ch
         default:
             assembler_report_error(assembler, OPCODE_CONVERSION_ERROR_MESSAGE);
         }
+    case 'E':
+        switch (assembler_advance(assembler)) {
+        case 'X':
+            switch (assembler_advance(assembler)) {
+            case 'T': // EXT
+                return 0X0002;
+            default:
+                assembler_report_error(assembler, OPCODE_CONVERSION_ERROR_MESSAGE);
+            }
+        default:
+            assembler_report_error(assembler, OPCODE_CONVERSION_ERROR_MESSAGE);
+        }
     case 'F':
         switch (assembler_advance(assembler)) {
         case 'M':
@@ -543,6 +555,7 @@ static uint16_t assembler_convert_mnemonic_to_binary(assembler_t * assembler, ch
                     assembler_skip_whitespace(assembler);
                     switch (assembler_peek(*assembler)) {
                     case 'D':
+                        assembler_advance(assembler);
                         switch (assembler_advance(assembler)) {
                         case 'T': // DT VX
                             return 0xF015 | assembler_convert_register_to_binary(assembler) << 8;
@@ -663,7 +676,16 @@ static uint16_t assembler_convert_mnemonic_to_binary(assembler_t * assembler, ch
             case 'N':
                 switch (assembler_advance(assembler)) {
                 case 'E': // SKNE - skip not equal
-                    return 0x9000 | assembler_convert_registers_to_binary(assembler) << 4;
+                    {
+                        uint8_t registerNumber = assembler_convert_register_to_binary(assembler);
+                        assembler_skip_whitespace(assembler);
+                        if (assembler_peek(*assembler) == '0') {
+                            return 0x4000 | registerNumber << 8 | assembler_read_8bit_number(assembler);
+                        }
+                        if (assembler_peek(*assembler) == 'V') {
+                            return 0x9000 | registerNumber << 8 | assembler_convert_register_to_binary(assembler) << 4;
+                        }
+                    }
                 case 'P': // SKNP - skip not pressed
                     return 0xE0A1 | assembler_convert_register_to_binary(assembler) << 8;
                 default:

@@ -165,6 +165,9 @@ static int8_t chip8_execute_next_opcode(chip8_t * chip8) {
             switch (chip8->currentOpcode & 0x0fff) {
             case 0x001: // 0x0001 - NOP
                 break;
+            case 0x002: // 0x0002 - EXT
+                exit(0);
+                break;
             case 0x0E0: // 0x00E0 - Clear the screen
                 {
                     for (uint8_t x = 0; x < GRAPHICS_SYSTEM_WIDTH; x++) {
