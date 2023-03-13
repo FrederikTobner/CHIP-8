@@ -412,7 +412,7 @@ static inline void assembler_report_error(assembler_t * assembler, char const * 
 /// @param c The next character in the source code
 /// @return The mnemonic representation converted to the representation in binary
 static uint16_t assembler_convert_mnemonic_to_binary(assembler_t * assembler, char c) {
-    switch (c) {
+    switch (toupper(c)) {
     case 'A':
         switch (assembler_advance(assembler)) {
         case 'D':

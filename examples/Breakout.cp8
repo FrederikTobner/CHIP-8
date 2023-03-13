@@ -1,12 +1,13 @@
-#################
-# Breakout game #
-#################
+#########################
+# Breakout game         #
+# V0 - ball x position  #
+# V1 - ball y position  #
+# V2 - ball x direction #
+# V3 - ball y direction #
+# VE - temp storage     #
+#########################
 section .text:
-
-    #####################
-    # Setting up bricks #
-    #####################
-
+    # Setting up bricks
     MOV V1 0x00                         # Initialize y-coordinate of the sprites
     MOV I 0x900                         # We store 0x900 (location of paddle sprite) in the register I
     # for (y = 0; y < 9; y+=3) {
@@ -23,56 +24,54 @@ _drawBrick:
     # } 
     SKE V1 0x09                         # Last row ? (third row)
     JMP drawLine
-
-    ##############################
-    # Setting up player and ball #
-    ##############################
-
+    # Setting up player and ball
     MOV V0 0x00
     MOV V1 0x1f
     DSP V0 V1 0x01                      # Draw player paddle
     MOV V1 0x1d
     MOV V0 0x03
-    MOV V2 0x01 # 1 -> up
-    MOV V3 0x00 # 1 -> right
+    MOV V2 0x01 # 0 -> right
+    MOV V3 0x01 # 1 -> up  
 _gameloop: 
+    # Main game loop
     MOV I 0x901                         # We store 0x901 (location of ball sprite) in the register I
-    DSP V0 V1 0x01                      # Draw ball    
-    MOV V4 0x10
-    MOV DT V4
+    DSP V0 V1 0x01                      # Draw ball at (x: V0, y V1)   
+    # Setting up timer
+    MOV VE 0x10
+    MOV DT VE    
 _waitForFrame: 
-    MOV V4 DT
-    SKE V4 0x00
+    # Check timer
+    MOV VE DT
+    SKE VE 0x00
     JMP waitForFrame
     #clear ball
     DSP V0 V1 0x01 
 _playerMovement:
-    # y
+    # Determine player movement x and y
     SKE V2 0x00
-    SUB V1 V2
-    SKNE V2 0x00
-    ADD V1 0x01
-    # x
-    SKE V3 0x00
     SUB V0 V2
-    SKNE V3 0x00
+    SKNE V2 0x00
     ADD V0 0x01
+    SKE V3 0x00
+    SUB V1 V3
+    SKNE V3 0x00
+    ADD V1 0x01  
 _checkBounds:
+    # Detect collisions  
     SKNE V0 0x00
-    EXT
-    SKNE V0 0x1f
-    EXT
+    MOV V2 0x00
+    SKNE V0 0x3f
+    MOV V2 0x01
     SKNE V1 0x00
-    EXT
-    SKNE V1 0x3f
-    EXT                    
+    MOV V3 0x00
+    SKNE V1 0x1f
+    EXT             
     JMP gameloop
-    # Main game loop
-    # Setting up timer
-    # Check timer
-    # Detect collisions
-    # Detect ball hitting bottom (maybe jump to game over)
+
+    # TODO:
     # Handle user input
+    # Handle ball collisions bricks
+    # Handle ball collisions paddle
     # Loop back to Main Game loop if there are some bars still left to destroy
     # Game over
 
