@@ -35,6 +35,7 @@ static inline bool assembler_is_at_end(assembler_t);
 static inline bool assembler_is_decimal(char);
 static inline bool assembler_is_hexa(char);
 static inline char assembler_peek(assembler_t);
+static char assembler_peek_ahead(assembler_t, uint8_t);
 static uint8_t assembler_read_8bit_number(assembler_t *);
 static void assembler_report_error(assembler_t *, char const *, ...);
 static void assembler_skip_whitespace(assembler_t *);
@@ -44,12 +45,15 @@ static void assembler_process_text_section(assembler_t *, chip8_t *, uint16_t *)
 static void assembler_scan_label(assembler_t *, uint16_t);
 static int32_t assembler_scan_opcode(assembler_t *);
 
-void assembler_initialize(assembler_t * assembler, char const * source) {
+int assembler_initialize(assembler_t * assembler, char const * source) {
     assembler->source = (char *)source;
     assembler->start = source;
     assembler->current = source;
     assembler->line = 1u;
-    address_table_init_table(&assembler->table);
+    if (address_table_init_table(&assembler->table)) {
+        return -1;
+    }
+    return 0;
 }
 
 int assembler_process_file(assembler_t * assembler, chip8_t * chip8) {
@@ -152,9 +156,10 @@ static void assembler_process_text_section(assembler_t * assembler, chip8_t * ch
     }
 }
 
-/// @brief
-/// @param assembler
-/// @param memoryLocation
+/// @brief Scans a label declaration in a chip-8 assembly file
+/// @param assembler The assembler where the label will be declared
+/// @param memoryLocation The current location of the next opcode that will be written into the memory of the virtual
+/// machine
 static void assembler_scan_label(assembler_t * assembler, uint16_t memoryLocation) {
     assembler_advance(assembler);
     char const * labelStart = assembler->current;
@@ -270,6 +275,34 @@ static inline char assembler_peek(assembler_t assembler) {
     return *assembler.current;
 }
 
+/// @brief Peeks ahead by the specified amount of characters skipping whitespace characters
+/// @param assembler The assembler where the character is peeked
+/// @param amount The amount of characters that are skipped
+/// @return The next character after the amount of characters that where skipt
+static char assembler_peek_ahead(assembler_t assembler, uint8_t amount) {
+    char currentChar = *assembler.current;
+    for (size_t i = 0; amount || currentChar == ' ';) {
+        switch (currentChar) {
+        case '\0':
+            return '\0';
+        case ' ':
+        case '\r':
+        case '\t':
+        case '\v':
+        case '\n':
+        case '#':
+            i++;
+            break;
+        default:
+            i++;
+            amount--;
+            break;
+        }
+        currentChar = *(assembler.current + i);
+    }
+    return currentChar;
+}
+
 /// @brief Converts the mnemnic representation of a byte to binary
 /// @param assembler The assembler that proceeses the assembly file
 /// @return The binary representation of the byte
@@ -310,9 +343,9 @@ static uint16_t assembler_convert_address_to_binary(assembler_t * assembler) {
 #endif
 }
 
-/// @brief
-/// @param assembler
-/// @return
+/// @brief Converts a label to it's corresponding address in memory
+/// @param assembler The assembler where the label and it's address are stored
+/// @return The memory address of the label
 static uint16_t assembler_convert_label_to_address(assembler_t * assembler) {
     char const * labelStart = assembler->current;
     char const * labelEnd = NULL;
@@ -325,8 +358,8 @@ static uint16_t assembler_convert_label_to_address(assembler_t * assembler) {
     }
     memcpy(label, labelStart, labelEnd - labelStart + 1);
     label[labelEnd - labelStart + 1] = '\0';
-    uint16_t opCode = address_table_look_up_entry(label, &assembler->table)->opcodeAddress;
-    return opCode;
+    uint16_t address = address_table_look_up_entry(label, &assembler->table)->opcodeAddress;
+    return address;
 }
 
 /// @brief Converts the mnemnic representation of a register to binary
@@ -379,7 +412,7 @@ static inline void assembler_report_error(assembler_t * assembler, char const * 
 /// @param c The next character in the source code
 /// @return The mnemonic representation converted to the representation in binary
 static uint16_t assembler_convert_mnemonic_to_binary(assembler_t * assembler, char c) {
-    switch (c) {
+    switch (toupper(c)) {
     case 'A':
         switch (assembler_advance(assembler)) {
         case 'D':
@@ -391,7 +424,16 @@ static uint16_t assembler_convert_mnemonic_to_binary(assembler_t * assembler, ch
                     assembler_advance(assembler);
                     return 0xF01E | assembler_convert_register_to_binary(assembler) << 8;
                 case 'V': // ADD V
-                    return 0x8004 | assembler_convert_registers_to_binary(assembler) << 4;
+                    switch (assembler_peek_ahead(*assembler, 2)) {
+                    case 'V':
+                        return 0x8004 | assembler_convert_registers_to_binary(assembler) << 4;
+                    case '0':
+                        return 0x7000 | assembler_convert_register_to_binary(assembler) << 8 |
+                               assembler_read_8bit_number(assembler);
+                    default:
+                        assembler_report_error(assembler, OPCODE_CONVERSION_ERROR_MESSAGE);
+                    }
+                    break;
                 default:
                     assembler_report_error(assembler, OPCODE_CONVERSION_ERROR_MESSAGE);
                 }
@@ -427,6 +469,18 @@ static uint16_t assembler_convert_mnemonic_to_binary(assembler_t * assembler, ch
             case 'P': // DSP
                 return (0xD000 | assembler_convert_registers_to_binary(assembler) << 4) |
                        (assembler_read_8bit_number(assembler) & 0xf);
+            default:
+                assembler_report_error(assembler, OPCODE_CONVERSION_ERROR_MESSAGE);
+            }
+        default:
+            assembler_report_error(assembler, OPCODE_CONVERSION_ERROR_MESSAGE);
+        }
+    case 'E':
+        switch (assembler_advance(assembler)) {
+        case 'X':
+            switch (assembler_advance(assembler)) {
+            case 'T': // EXT
+                return 0X0002;
             default:
                 assembler_report_error(assembler, OPCODE_CONVERSION_ERROR_MESSAGE);
             }
@@ -501,6 +555,7 @@ static uint16_t assembler_convert_mnemonic_to_binary(assembler_t * assembler, ch
                     assembler_skip_whitespace(assembler);
                     switch (assembler_peek(*assembler)) {
                     case 'D':
+                        assembler_advance(assembler);
                         switch (assembler_advance(assembler)) {
                         case 'T': // DT VX
                             return 0xF015 | assembler_convert_register_to_binary(assembler) << 8;
@@ -621,7 +676,16 @@ static uint16_t assembler_convert_mnemonic_to_binary(assembler_t * assembler, ch
             case 'N':
                 switch (assembler_advance(assembler)) {
                 case 'E': // SKNE - skip not equal
-                    return 0x9000 | assembler_convert_registers_to_binary(assembler) << 4;
+                    {
+                        uint8_t registerNumber = assembler_convert_register_to_binary(assembler);
+                        assembler_skip_whitespace(assembler);
+                        if (assembler_peek(*assembler) == '0') {
+                            return 0x4000 | registerNumber << 8 | assembler_read_8bit_number(assembler);
+                        }
+                        if (assembler_peek(*assembler) == 'V') {
+                            return 0x9000 | registerNumber << 8 | assembler_convert_register_to_binary(assembler) << 4;
+                        }
+                    }
                 case 'P': // SKNP - skip not pressed
                     return 0xE0A1 | assembler_convert_register_to_binary(assembler) << 8;
                 default:
@@ -708,6 +772,7 @@ static void assembler_skip_whitespace(assembler_t * assembler) {
         case ' ':
         case '\r':
         case '\t':
+        case '\v':
             // Whitespaces tabstops and carriage returns are ignored
             assembler_advance(assembler);
             break;

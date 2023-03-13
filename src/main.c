@@ -23,6 +23,7 @@
 #include "backend/display.h"
 #include "file_utils.h"
 #include "frontend/assembler.h"
+
 #include "pre_compiled_header.h"
 
 /// Short message that explains the usage of the CHIP-8 emulator
@@ -74,8 +75,7 @@ static void run_from_file(char * filePath) {
         // The source is provided in assembly language
         assembler_t assembler;
         source = file_utils_read_file(filePath);
-        assembler_initialize(&assembler, source);
-        if (assembler_process_file(&assembler, &chip8)) {
+        if (assembler_initialize(&assembler, source) || assembler_process_file(&assembler, &chip8)) {
             exit(EXIT_CODE_ASSEMBLER_ERROR);
         }
     } else if (pathLength > 4 && !strcmp(filePath + pathLength - 4, ".ch8")) {

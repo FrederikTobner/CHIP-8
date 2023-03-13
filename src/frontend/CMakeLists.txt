@@ -10,4 +10,12 @@ set(FRONTEND_HEADER_FILES
 "fnv1a.h"
 )
 
-add_library(${PROJECT_NAME}Frontend ${FRONTEND_SOURCE_FILES} ${FRONTEND_HEADER_FILES})
+add_library(${PROJECT_NAME}Frontend STATIC ${FRONTEND_SOURCE_FILES} ${FRONTEND_HEADER_FILES})
+
+# Precompiles common.h to speed up compilation of the target
+if(MSVC)
+    # VisualStudio only accepts header files that also have a source file    
+    target_precompile_headers(${PROJECT_NAME}Frontend PUBLIC pre_compiled_header.h pre_compiled_header.c) 
+else()
+    target_precompile_headers(${PROJECT_NAME}Frontend PUBLIC pre_compiled_header.h)
+endif()

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['key_159',['key',['../structchip8__t.html#a742229490b6759a90ece7ba82ba129d5',1,'chip8_t']]]
+  ['graphicssystem',['graphicsSystem',['../structdisplay__t.html#a2fe9b27f14729aee5fdea9b4e059b2c9',1,'display_t']]]
 ];

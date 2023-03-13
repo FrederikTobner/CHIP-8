@@ -21,7 +21,7 @@
 #ifndef CHIP8_PATH_UTILS_H_
 #define CHIP8_PATH_UTILS_H_
 
-#include "../pre_compiled_header.h"
+#include "pre_compiled_header.h"
 
 /// @brief Determines the path of the emulator executable
 /// @param buffer The buffer where the path is stored

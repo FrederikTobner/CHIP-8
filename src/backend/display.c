@@ -20,7 +20,7 @@
 
 #include "display.h"
 #include "../../build/src/chip8_config.h"
-#include "../pre_compiled_header.h"
+#include "pre_compiled_header.h"
 #include "path_utils.h"
 
 static int display_set_window_icon(SDL_Window *, char const *);
@@ -63,7 +63,6 @@ int display_init(display_t * display) {
         if (!SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "1")) {
             printf("Warning: Linear texture filtering not enabled!");
         }
-
         // Create window
         display->window = SDL_CreateWindow("CHIP-8", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
                                            GRAPHICS_SYSTEM_WIDTH * SCALE_FACTOR, GRAPHICS_SYSTEM_HEIGHT * SCALE_FACTOR,

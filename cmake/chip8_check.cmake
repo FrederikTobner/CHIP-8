@@ -1,5 +1,35 @@
-macro(CHIP8_Detect_Platform)
-    # Adding os-specific compiler definitions
+# Checking availabilty of external dependencies
+macro(CHIP8_Check_Dependencies)
+    if(UNIX)
+    # Check dependecies under unix-like systems   
+    CHECK_INCLUDE_FILE("curses.h" CURSES_AVAILABLE)
+    CHECK_INCLUDE_FILE("unistd.h" UNISTD_AVAILABLE)
+    if(NOT ${CURSES_AVAILABLE})
+        message(FATAL_ERROR "curses.h is required to build the emulator under unix-like systems. \
+    \   \   Please make sure it is available to the compiler and try again after that")
+    endif() # curses.h
+    if(NOT ${UNISTD_AVAILABLE})
+        message(FATAL_ERROR "unistd.h is required to build the emulator under unix-like systems. \
+    \   \   Please make sure it is available to the compiler and try again after that")
+    endif() # unistd.h
+    elseif(WIN32)
+        # Check dependecies under windows
+        CHECK_INCLUDE_FILE("conio.h" CONIO_AVAILABLE)
+        CHECK_INCLUDE_FILE("windows.h" WINDOWS_AVAILABLE)
+        if(NOT ${CONIO_AVAILABLE})
+            message(FATAL_ERROR "conio.h is required to build the emulator under windows. \
+        \   \   Please make sure it is available to the compiler and try again after that")
+        endif() # conio.h
+        if(NOT ${WINDOWS_AVAILABLE})
+            message(FATAL_ERROR "windows.h is required to build the emulator under windows. \
+        \   \   Please make sure it is available to the compiler and try again after that"
+            )
+        endif() # windows.h
+    endif()
+endmacro(CHIP8_Check_Dependencies)
+
+# Adding os-specific compiler definitions
+macro(CHIP8_Check_Platform)
     if(UNIX)
     add_compile_definitions(OS_UNIX_LIKE)    
     if(NOT APPLE) 
@@ -52,4 +82,19 @@ macro(CHIP8_Detect_Platform)
     else()
     message(FATAL_ERROR "The underlying operating system was not recognized")
     endif()
-endmacro(CHIP8_Detect_Platform)
+endmacro(CHIP8_Check_Platform)
+
+# We determine the compiler so we can do some optimization for a specific compiler
+macro(CHIP8_Check_Compiler)
+    if(CMAKE_C_COMPILER_ID STREQUAL "GNU")
+    add_compile_definitions(COMPILER_GCC)
+    elseif(CMAKE_C_COMPILER_ID STREQUAL "Clang")
+    add_compile_definitions(COMPILER_CLANG)
+    elseif(CMAKE_C_COMPILER_ID STREQUAL "MSVC")
+    add_compile_definitions(COMPILER_MSVC)
+    elseif (CMAKE_CXX_COMPILER_ID STREQUAL "Intel")
+    add_compile_definitions(COMPILER_INTEL)
+    else()
+    add_compile_definitions(COMPILER_UNKNOWN)
+    endif()
+endmacro(CHIP8_Check_Compiler)

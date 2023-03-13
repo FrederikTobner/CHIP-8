@@ -22,8 +22,10 @@
 #define CHIP8_ASSEMLER_H_
 
 #include "../backend/chip8.h"
-#include "../pre_compiled_header.h"
+
 #include "address_hash_table.h"
+#include "pre_compiled_header.h"
+
 
 /// @brief Type definition of a assembler
 typedef struct {
@@ -41,7 +43,7 @@ typedef struct {
 /// @brief Initializes the assembler
 /// @param assembler The assembler that parses the file
 /// @param source The sourcecode that is parsed by the assembler
-void assembler_initialize(assembler_t * assembler, char const * source);
+int assembler_initialize(assembler_t * assembler, char const * source);
 
 /// @brief Processes a chip8 assembly file (.cp8)
 /// @param assembler The assembler that processes the file
