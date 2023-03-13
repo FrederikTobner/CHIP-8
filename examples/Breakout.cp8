@@ -70,8 +70,8 @@ _checkBounds:
 
     # TODO:
     # Handle user input
-    # Handle ball collisions bricks
-    # Handle ball collisions paddle
+    # Handle ball collisions - bricks
+    # Handle ball collisions - paddle
     # Loop back to Main Game loop if there are some bars still left to destroy
     # Game over
 

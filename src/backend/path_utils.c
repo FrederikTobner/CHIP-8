@@ -19,6 +19,7 @@
  */
 
 #include "path_utils.h"
+#include "string.h"
 
 // OS-specific definitions
 #if defined(OS_WINDOWS)
