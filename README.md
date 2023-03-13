@@ -2,10 +2,10 @@
 
 [![Build](https://github.com/FrederikTobner/CHIP-8/actions/workflows/build.yml/badge.svg)](https://github.com/FrederikTobner/CHIP-8/actions/workflows/build.yml)
 [![Analyze](https://github.com/FrederikTobner/CHIP-8/actions/workflows/codeql.yml/badge.svg)](https://github.com/FrederikTobner/CHIP-8/actions/workflows/codeql.yml)
-
+> **NOTE**: 🚧 Under active development. 🚧
 Simple [CHIP-8](https://en.wikipedia.org/wiki/CHIP-8) emulator written in C, with a custom assembly language.
 
-[Breakout game](./assets/Breakout.png)
+![Breakout game](./assets/Breakout.png)
 
 ## Table of Contents
 
