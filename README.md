@@ -5,6 +5,8 @@
 
 Simple [CHIP-8](https://en.wikipedia.org/wiki/CHIP-8) emulator written in C, with a custom assembly language.
 
+[Breakout game](./assets/Breakout.png)
+
 ## Table of Contents
 
 * [Dependencies](#dependencies)
