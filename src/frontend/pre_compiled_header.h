@@ -27,6 +27,7 @@ typedef enum {
 } chip8_frontend_exit_code;
 
 // Standard libary dependencies
+#include <ctype.h>
 #include <stdarg.h>
 #include <stdbool.h>
 #include <stddef.h>
