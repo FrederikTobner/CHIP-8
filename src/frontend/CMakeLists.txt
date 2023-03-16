@@ -1,13 +1,18 @@
 set(FRONTEND_SOURCE_FILES
 "address_hash_table.c"
+"addresses_hash_table.c"
 "assembler.c"
+"dynamic_address_array.c"
 "fnv1a.c"
 )
 
 set(FRONTEND_HEADER_FILES
 "address_hash_table.h"
+"addresses_hash_table.h"
 "assembler.h"
+"dynamic_address_array.h"
 "fnv1a.h"
+"table.h"
 )
 
 add_library(${PROJECT_NAME}Frontend STATIC ${FRONTEND_SOURCE_FILES} ${FRONTEND_HEADER_FILES})
