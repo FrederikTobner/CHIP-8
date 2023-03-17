@@ -35,7 +35,7 @@ addresses_hash_table_t * addresses_table_new() {
     if (!table) {
         return NULL;
     }
-    address_table_init_table(table);
+    addresses_table_init_table(table);
     return table;
 }
 
@@ -43,7 +43,7 @@ void addresses_table_destory(addresses_hash_table_t ** table) {
     if (!*table) {
         return;
     }
-    address_table_free_entries(*table);
+    addresses_table_free_entries(*table);
     free(*table);
     *table = NULL;
 }
@@ -81,7 +81,7 @@ void addresses_table_free_entries(addresses_hash_table_t * table) {
 int addresses_table_add(uint16_t address, char const * label, addresses_hash_table_t * table) {
     // Lookup label
     addresses_hash_table_entry_t * entry;
-    if (entry = addresses_table_look_up_entry(label, table)) {
+    if ((entry = addresses_table_look_up_entry(label, table))) {
         dynamic_address_array_write(entry->array, address);
     }
     if (!label || !table) {
