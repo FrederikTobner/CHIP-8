@@ -28,7 +28,7 @@
 /// Used to mark a bucket that has stored an entry that has been removed
 #define TOMBSTONE                          (addresses_hash_table_entry_t *)(0xFFFFFFFFFFFFFFFFUL)
 
-static int address_table_grow_table(addresses_hash_table_t *);
+static int addresses_table_grow_table(addresses_hash_table_t *);
 
 addresses_hash_table_t * addresses_table_new() {
     addresses_hash_table_t * table = new(addresses_hash_table_t);
