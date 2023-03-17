@@ -15,7 +15,7 @@
 
 /**
  * @file address_hash_table.h
- * @brief Declarations regarding the hashtable that stored memory adresses under their label
+ * @brief Declarations regarding the hashtable that stores multiple memory adresses under their label
  */
 
 #ifndef CHIP8_ADDRESSES_HASH_TABLE_H_
@@ -41,8 +41,6 @@ typedef struct {
     /// Pointer to the entries
     addresses_hash_table_entry_t ** entries;
 } addresses_hash_table_t;
-
-addresses_hash_table_entry_t * addresses_table_entry_new(uint16_t opcodeAddress, char const * key);
 
 /// @brief Initializes a new hashtable
 /// @param table The hashtable that is initialized
@@ -72,7 +70,7 @@ int addresses_table_insert_entry(addresses_hash_table_entry_t * entry, addresses
 /// @param table The table where the entry is removed
 /// @return The entry that was removed or null if no entry was removed
 addresses_hash_table_entry_t * addresses_table_remove_entry(addresses_hash_table_entry_t * entry,
-                                                        addresses_hash_table_t * table);
+                                                            addresses_hash_table_t * table);
 
 /// @brief Looks up a entry in the hashtable
 /// @param key The key that is used to look up the entry

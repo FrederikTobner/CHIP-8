@@ -30,7 +30,7 @@
 
 static int address_table_grow_table(addresses_hash_table_t *);
 
-addresses_hash_table_t * address_table_new() {
+addresses_hash_table_t * addresses_table_new() {
     addresses_hash_table_t * table = new(addresses_hash_table_t);
     if (!table) {
         return NULL;

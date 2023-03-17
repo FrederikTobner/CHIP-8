@@ -13,23 +13,13 @@
  * License for more details.                                                *
  ****************************************************************************/
 
-/**
- * @file pre_compiled_header.h
- * @brief Precompiled header file of the emulator
- * @details Contains commonly used header files from the standard libary and exit codes
- */
+#ifndef CHIP8_CONFIGURATION_H_
+#define CHIP8_CONFIGURATION_H_
 
-#ifndef CHIP8_PRE_COMPILED_HEADER_H_
-#define CHIP8_PRE_COMPILED_HEADER_H_
-typedef enum {
-    EXIT_CODE_OK = 0,
-    EXIT_CODE_COMMAND_LINE_USAGE_ERROR = 64,
-    EXIT_CODE_RUNTIME_ERROR = 70,
-    EXIT_CODE_SYSTEM_ERROR = 71,
-    EXIT_CODE_INPUT_OUTPUT_ERROR = 74
-} chip8_exit_code;
-
-// Standard libary dependencies
-#include <stdio.h>
+// the configured options and settings for the CHIP-8 emulator
+#define PROJECT_VERSION_MAJOR (@CHIP-8_VERSION_MAJOR@)
+#define PROJECT_VERSION_MINOR (@CHIP-8_VERSION_MINOR@)
+#define PROJECT_VERSION_PATCH (@CHIP-8_VERSION_PATCH@)
+#define PROJECT_NAME ("@PROJECT_NAME@")
 
 #endif

@@ -21,7 +21,7 @@
 #ifndef CHIP8_DYNAMIC_ADDRESS_ARRAY_H_
 #define CHIP8_DYNAMIC_ADDRESS_ARRAY_H_
 
-#include <stdint.h>
+#include "pre_compiled_header.h"
 
 /// @brief A dynamic value array
 /// @details A size of a dynamic array can varry, meaning it can shrink or grow.

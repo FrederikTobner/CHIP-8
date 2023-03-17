@@ -40,7 +40,6 @@
 /// @details Treats a overflow parameters when malloc was called like a usual allocation error
 #define CHECKED_MALLOC_USING_TYPE(n, type) (SIZE_CHECK_USING_TYPE((n), (type)) ? malloc((n) * sizeof(type)) : 0)
 
-#define new(type) \
- (malloc(sizeof(type)))
+#define new(type)                          (malloc(sizeof(type)))
 
 #endif

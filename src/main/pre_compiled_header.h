@@ -14,20 +14,15 @@
  ****************************************************************************/
 
 /**
- * @file file_utils.h
- * @brief Declarations regarding the file utilities used by the emulator
+ * @file pre_compiled_header.h
+ * @brief Precompiled header file of the emulator
+ * @details Contains commonly used header files from the standard libary and exit codes
  */
 
-#ifndef CHIP8_FILE_UTILS_H_
-#define CHIP8_FILE_UTILS_H_
+#ifndef CHIP8_PRE_COMPILED_HEADER_H_
+#define CHIP8_PRE_COMPILED_HEADER_H_
 
-#include "backend/chip8.h"
-
-/// @brief Reads a file from a specified location and returns the content of the file as a character pointer
-/// @param path The path of the file that is read
-/// @return The content of the file as a character pointer
-char * file_utils_read_file(char const *);
-
-void file_utils_read_file_to_memory(char const * path, chip8_t * chip8);
+// Standard libary dependencies
+#include <stdio.h>
 
 #endif

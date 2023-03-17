@@ -14,29 +14,20 @@
  ****************************************************************************/
 
 /**
- * @file path_utils.h
- * @brief Declarations regarding the path utilities used by the emulator
+ * @file file_utils.h
+ * @brief Declarations regarding the file utilities used by the emulator
  */
 
-#ifndef CHIP8_PATH_UTILS_H_
-#define CHIP8_PATH_UTILS_H_
+#ifndef CHIP8_FILE_UTILS_H_
+#define CHIP8_FILE_UTILS_H_
 
-#include "pre_compiled_header.h"
+#include <stdint.h>
 
-/// @brief Determines the path of the emulator executable
-/// @param buffer The buffer where the path is stored
-/// @param bufferSize The length of the buffer
-/// @return 0 if everything went well, -1 if an error occured
-int path_utils_get_executable_path(char * buffer, size_t bufferSize);
+/// @brief Reads a file from a specified location and returns the content of the file as a character pointer
+/// @param path The path of the file that is read
+/// @return The content of the file as a character pointer
+char * file_utils_read_file(char const *);
 
-/// @brief Removes the specified amount of file-layers from the buffer
-/// @param buffer The buffer that is
-/// @param depth The amount of layers that are removed from the path
-void path_utils_remove_file_layer(char * buffer, size_t depth);
-
-/// @brief Adds the specified folder name followed by a os-specific file seperator to the path
-/// @param buffer The buffer where the filename is concatenated
-/// @param folderName The name of the folder that is concatenated
-void path_utils_concatenate_folder(char * buffer, char * folderName, size_t maxBufferSize);
+void file_utils_read_file_to_memory(char const * path, uint8_t * memory);
 
 #endif

@@ -20,6 +20,12 @@
 
 #include "path_utils.h"
 
+#if defined(OS_WINDOWS)
+#include <windows.h>
+// Has to come after windows.h dependency or the emulator won't build
+#include <psapi.h>
+#endif
+
 // OS-specific definitions
 #if defined(OS_WINDOWS)
 #define FILE_SEPERATOR ('\\')
