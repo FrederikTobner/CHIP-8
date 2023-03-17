@@ -19,7 +19,7 @@ static void * dynamic_address_array_reallocate(void *, size_t, size_t);
 
 void dynamic_address_array_free(dynamic_address_array_t * array) {
     FREE_ARRAY(uint16_t, array->addresses, array->capacity);
-    dynamic_value_array_init(array);
+    dynamic_address_array_init(array);
 }
 
 void dynamic_address_array_init(dynamic_address_array_t * array) {

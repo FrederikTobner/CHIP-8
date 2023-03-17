@@ -3,8 +3,7 @@ macro(CHIP8_Check_Dependencies)
     if(UNIX)
     # Check dependecies under unix-like systems   
     CHECK_INCLUDE_FILE("curses.h" CURSES_AVAILABLE)
-    CHECK_INCLUDE_FILE("unistd.h" UNISTD_AVAILABLE)
-    
+    CHECK_INCLUDE_FILE("unistd.h" UNISTD_AVAILABLE)    
     if(NOT ${CURSES_AVAILABLE})
         message(FATAL_ERROR "curses.h is required to build the emulator under unix-like systems. Please make sure it is available to the compiler and try again after that")
     endif() # curses.h
@@ -24,7 +23,7 @@ macro(CHIP8_Check_Dependencies)
             )
         endif() # windows.h
         if(NOT ${PSAPI_AVAILABLE})
-        message(FATAL_ERROR "unistd.h is required to build the emulator under unix-like systems. Please make sure it is available to the compiler and try again after that")
+        message(FATAL_ERROR "psapi.h is required to build the emulator under windows. Please make sure it is available to the compiler and try again after that")
         endif() # psapi.h
     endif()
 endmacro(CHIP8_Check_Dependencies)
