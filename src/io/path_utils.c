@@ -20,6 +20,7 @@
 
 #include "path_utils.h"
 
+#include "string.h"
 #if defined(OS_WINDOWS)
 #include <windows.h>
 // Has to come after windows.h dependency or the emulator won't build
