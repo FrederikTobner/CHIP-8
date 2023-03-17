@@ -6,8 +6,6 @@ var dir_8c739bbef76d64b22d6b0911c526dd76 =
     [ "debug.h", "debug_8h.html", "debug_8h" ],
     [ "display.c", "display_8c.html", "display_8c" ],
     [ "display.h", "display_8h.html", "display_8h" ],
-    [ "path_utils.c", "path__utils_8c.html", "path__utils_8c" ],
-    [ "path_utils.h", "path__utils_8h.html", "path__utils_8h" ],
     [ "pre_compiled_header.c", "backend_2pre__compiled__header_8c.html", null ],
     [ "pre_compiled_header.h", "backend_2pre__compiled__header_8h.html", null ]
 ];

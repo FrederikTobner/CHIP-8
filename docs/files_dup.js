@@ -1,10 +1,8 @@
 var files_dup =
 [
     [ "backend", "dir_8c739bbef76d64b22d6b0911c526dd76.html", "dir_8c739bbef76d64b22d6b0911c526dd76" ],
+    [ "base", "dir_e914ee4d4a44400f1fdb170cb4ead18a.html", "dir_e914ee4d4a44400f1fdb170cb4ead18a" ],
     [ "frontend", "dir_ca0386ec887ae6362f93b0d653b52e0c.html", "dir_ca0386ec887ae6362f93b0d653b52e0c" ],
-    [ "pre_compiled_header.c", "pre__compiled__header_8c.html", null ],
-    [ "pre_compiled_header.h", "pre__compiled__header_8h.html", "pre__compiled__header_8h" ],
-    [ "file_utils.c", "file__utils_8c.html", "file__utils_8c" ],
-    [ "file_utils.h", "file__utils_8h.html", "file__utils_8h" ],
-    [ "main.c", "main_8c.html", "main_8c" ]
+    [ "io", "dir_bc161955dc3a3d2485839eba21420d01.html", "dir_bc161955dc3a3d2485839eba21420d01" ],
+    [ "main", "dir_5c982d53a68cdbcd421152b4020263a9.html", "dir_5c982d53a68cdbcd421152b4020263a9" ]
 ];
