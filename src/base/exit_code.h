@@ -14,20 +14,20 @@
  ****************************************************************************/
 
 /**
- * @file file_utils.h
- * @brief Declarations regarding the file utilities used by the emulator
+ * @file path_utils.c
+ * @brief Definitions regarding the path utilities used by the emulator
  */
 
-#ifndef CHIP8_FILE_UTILS_H_
-#define CHIP8_FILE_UTILS_H_
+#ifndef CHIP8_BASE_H_
+#define CHIP8_BASE_H_
 
-#include "backend/chip8.h"
+typedef enum {
+    EXIT_CODE_OK = 0,
+    EXIT_CODE_COMMAND_LINE_USAGE_ERROR = 64,
+    EXIT_CODE_ASSEMBLER_ERROR = 65,
+    EXIT_CODE_RUNTIME_ERROR = 70,
+    EXIT_CODE_SYSTEM_ERROR = 71,
+    EXIT_CODE_INPUT_OUTPUT_ERROR = 74
+} chip8_exit_code;
 
-/// @brief Reads a file from a specified location and returns the content of the file as a character pointer
-/// @param path The path of the file that is read
-/// @return The content of the file as a character pointer
-char * file_utils_read_file(char const *);
-
-void file_utils_read_file_to_memory(char const * path, chip8_t * chip8);
-
-#endif
+#endif 

@@ -14,22 +14,15 @@
  ****************************************************************************/
 
 /**
- * @file pre_compiled_header.h
- * @brief Precompiled header file of the emulator
- * @details Contains commonly used header files from the standard libary and exit codes
+ * @file path_utils.c
+ * @brief Definitions regarding the path utilities used by the emulator
  */
 
-#ifndef CHIP8_PRE_COMPILED_HEADER_H_
-#define CHIP8_PRE_COMPILED_HEADER_H_
-typedef enum {
-    EXIT_CODE_OK = 0,
-    EXIT_CODE_COMMAND_LINE_USAGE_ERROR = 64,
-    EXIT_CODE_RUNTIME_ERROR = 70,
-    EXIT_CODE_SYSTEM_ERROR = 71,
-    EXIT_CODE_INPUT_OUTPUT_ERROR = 74
-} chip8_exit_code;
+#ifndef CHIP8_ALIAS_H_
+#define CHIP8_ALIAS_H_
 
-// Standard libary dependencies
-#include <stdio.h>
+/// Most Chip-8 programs start at location 0x200 (512), but some begin at 0x600 (1536). Programs beginning at 0x600 are
+/// intended for the ETI 660 computer.
+#define PROGRAM_START_LOCATION (0x200u)
 
 #endif

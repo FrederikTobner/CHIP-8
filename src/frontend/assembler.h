@@ -26,7 +26,6 @@
 #include "address_hash_table.h"
 #include "pre_compiled_header.h"
 
-
 /// @brief Type definition of a assembler
 typedef struct {
     /// Source file

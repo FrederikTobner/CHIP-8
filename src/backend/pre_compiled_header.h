@@ -23,6 +23,7 @@
 #define CHIP8_PRE_COMPILED_HEADER_BACKEND_H_
 
 // Standard libary dependencies
+#include "string.h"
 #include <limits.h>
 #include <stdarg.h>
 #include <stdbool.h>
@@ -30,7 +31,6 @@
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include "string.h"
 #include <time.h>
 
 // OS-specific dependencies

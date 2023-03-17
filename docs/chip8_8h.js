@@ -1,7 +1,6 @@
 var chip8_8h =
 [
     [ "chip8_t", "structchip8__t.html", "structchip8__t" ],
-    [ "PROGRAM_START_LOCATION", "chip8_8h.html#a59962df77cb1013f9a270da92b03852a", null ],
     [ "chip8_execute", "chip8_8h.html#a1506b482c7d70ced0adef1c5611c122c", null ],
     [ "chip8_init", "chip8_8h.html#a4f87773037082c3429e63f508f5297df", null ],
     [ "chip8_write_byte_to_memory", "chip8_8h.html#acc4d8cb0e6d30737adb250633cd2b00e", null ],

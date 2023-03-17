@@ -14,29 +14,15 @@
  ****************************************************************************/
 
 /**
- * @file path_utils.h
- * @brief Declarations regarding the path utilities used by the emulator
+ * @file pre_compiled_header.h
+ * @brief Precompiled header file of the emulator
+ * @details Contains commonly used header files from the standard libary and exit codes
  */
 
-#ifndef CHIP8_PATH_UTILS_H_
-#define CHIP8_PATH_UTILS_H_
+#ifndef CHIP8_PRE_COMPILED_HEADER_H_
+#define CHIP8_PRE_COMPILED_HEADER_H_
 
-#include "pre_compiled_header.h"
-
-/// @brief Determines the path of the emulator executable
-/// @param buffer The buffer where the path is stored
-/// @param bufferSize The length of the buffer
-/// @return 0 if everything went well, -1 if an error occured
-int path_utils_get_executable_path(char * buffer, size_t bufferSize);
-
-/// @brief Removes the specified amount of file-layers from the buffer
-/// @param buffer The buffer that is
-/// @param depth The amount of layers that are removed from the path
-void path_utils_remove_file_layer(char * buffer, size_t depth);
-
-/// @brief Adds the specified folder name followed by a os-specific file seperator to the path
-/// @param buffer The buffer where the filename is concatenated
-/// @param folderName The name of the folder that is concatenated
-void path_utils_concatenate_folder(char * buffer, char * folderName, size_t maxBufferSize);
+// Standard libary dependencies
+#include <stdio.h>
 
 #endif

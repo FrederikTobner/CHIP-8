@@ -20,7 +20,12 @@
 
 #include "file_utils.h"
 
-#include "pre_compiled_header.h"
+#include "stdarg.h"
+#include "stdio.h"
+#include "stdlib.h"
+
+#include "../base/alias.h"
+#include "../base/exit_code.h"
 
 static void io_error(char const *, ...);
 
@@ -47,7 +52,7 @@ char * file_utils_read_file(char const * path) {
     return buffer;
 }
 
-void file_utils_read_file_to_memory(char const * path, chip8_t * chip8) {
+void file_utils_read_file_to_memory(char const * path, uint8_t * memory) {
     // Opens a file of a nonspecified format (b) in read mode (r)
     FILE * file = fopen(path, "rb");
     if (!file) {
@@ -59,7 +64,7 @@ void file_utils_read_file_to_memory(char const * path, chip8_t * chip8) {
     if (fileSize > (4096 - PROGRAM_START_LOCATION)) {
         io_error("Content is to big to store it in memory \"%s\".\n", path);
     }
-    size_t bytesRead = fread(chip8->memory + PROGRAM_START_LOCATION, sizeof(char), fileSize, file);
+    size_t bytesRead = fread(memory + PROGRAM_START_LOCATION, sizeof(char), fileSize, file);
     if (bytesRead < fileSize) {
         io_error("Could not fully read file \"%s\".\n", path);
     }

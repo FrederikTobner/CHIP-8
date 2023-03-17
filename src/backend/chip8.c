@@ -24,6 +24,7 @@
 #include "debug.h"
 #endif
 #include "display.h"
+#include "../base/alias.h"
 
 /// Defines a new 8-bit value based on the opcode that is currently executed
 #define DEFINE_8_BIT_VALUE  uint8_t value = chip8->currentOpcode & 0x00ff;

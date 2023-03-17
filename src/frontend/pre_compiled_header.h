@@ -22,10 +22,6 @@
 #ifndef CHIP8_PRE_COMPILED_HEADER_FRONTEND_H_
 #define CHIP8_PRE_COMPILED_HEADER_FRONTEND_H_
 
-typedef enum {
-    EXIT_CODE_ASSEMBLER_ERROR = 65
-} chip8_frontend_exit_code;
-
 // Standard libary dependencies
 #include <ctype.h>
 #include <stdarg.h>

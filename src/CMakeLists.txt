@@ -1,50 +1,17 @@
-# configure chip-8 config to show version
-configure_file(chip8_config.h.in chip8_config.h)
+include(../cmake/chip8_check.cmake)
+
+# Determine the compiler that is used
+CHIP8_Check_Compiler()
+
+# Detect the platform that we build for
+CHIP8_Check_Platform()
+
+add_subdirectory(base)
+
+add_subdirectory(io)
 
 add_subdirectory(backend)
 
 add_subdirectory(frontend)
 
-set(CHIP-8_SOURCE_FILES
-"file_utils.c"
-"main.c"    
-)    
-set(CHIP-8_HEADER_FILES
-"file_utils.h"
-)
-
-# Adding debug compile definitions
-if(CMAKE_BUILD_TYPE MATCHES "[Dd][Ee][Bb][Uu][Gg]")
-
-    if(CP8_DEBUG_PRINT_BYTECODE)
-        add_compile_definitions(PRINT_BYTE_CODE)
-    endif()
-    if(CP8_DEBUG_TRACE_EXECUTION)
-        add_compile_definitions(TRACE_EXECUTION)
-    endif()
-    add_compile_definitions(BUILD_DEBUG)
-else()
-    include(../cmake/chip8_set_package_properties.cmake)
-    CHIP8_Set_Package_Properties()
-    # Includes the CPack module     
-    include(CPack)
-endif()
-
-# Creating the final executable
-add_executable(${PROJECT_NAME} ${CHIP-8_SOURCE_FILES} ${CHIP-8_HEADER_FILES})
-
-# for including the chip8_config.h file
-target_include_directories(${PROJECT_NAME} PUBLIC ${PROJECT_BINARY_DIR}/src)
-
-# Linking with SDL libary and the front and backend libary of the emulators
-target_link_libraries(${PROJECT_NAME} SDL2main ${PROJECT_NAME}Backend ${PROJECT_NAME}Frontend)
-
-# Copies window icon into the build folder
-FILE(COPY ${PROJECT_SOURCE_DIR}/assets/chip8_window_icon.bmp DESTINATION "${CMAKE_BINARY_DIR}/icons")
-
-if(NOT CMAKE_BUILD_TYPE MATCHES "[Dd][Ee][Bb][Uu][Gg]")
-    # Install destinations
-    install(TARGETS ${PROJECT_NAME} DESTINATION bin)
-    # Adding window icon
-    install(FILES ${PROJECT_SOURCE_DIR}/assets/chip8_window_icon.bmp DESTINATION icons)
-endif()
+add_subdirectory(main)

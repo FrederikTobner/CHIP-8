@@ -1,11 +1,12 @@
-#########################
-# Breakout game         #
-# V0 - ball x position  #
-# V1 - ball y position  #
-# V2 - ball x direction #
-# V3 - ball y direction #
-# VE - temp storage     #
-#########################
+##########################
+# Breakout game          #
+# V0 - ball x position   #
+# V1 - ball y position   #
+# V2 - ball x direction  #
+# V3 - ball y direction  #
+# V4 - paddle y position #
+# VE - temp storage      #
+##########################
 section .text:
     # Setting up bricks
     MOV V1 0x00                         # Initialize y-coordinate of the sprites
@@ -65,9 +66,13 @@ _checkBounds:
     SKNE V1 0x00
     MOV V3 0x00
     SKNE V1 0x1f
-    EXT             
+    EXT
+# Handle input
+    #MOV VE 0xA
+    #SKP VE
+    
     JMP gameloop
-
+    
     # TODO:
     # Handle user input
     # Handle ball collisions - bricks
