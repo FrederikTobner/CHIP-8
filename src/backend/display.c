@@ -19,7 +19,7 @@
  */
 
 #include "display.h"
-#include "../../build/src/chip8_config.h"
+#include "../../build/src/main/chip8_config.h"
 #include "pre_compiled_header.h"
 #include "../io/path_utils.h"
 

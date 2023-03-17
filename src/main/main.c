@@ -18,7 +18,7 @@
  * @brief Main entry point of the program
  */
 
-#include "../../build/src/chip8_config.h"
+#include "../../build/src/main/chip8_config.h"
 #include "../backend/chip8.h"
 #include "../backend/display.h"
 #include "../frontend/assembler.h"
