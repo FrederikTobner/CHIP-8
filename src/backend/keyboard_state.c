@@ -1,6 +1,6 @@
 #include "keyboard_state.h"
 
-void keyboard_update_keyboard_down_state(SDL_Event event, uint16_t * state) {
+void keyboard_update_keyboard_down_state(SDL_Event event, keyBoardState_t * state) {
     switch (event.key.keysym.scancode) {
     case SDL_SCANCODE_0:
         *state |= CHIP8_KEY_CODE_0;
@@ -55,7 +55,7 @@ void keyboard_update_keyboard_down_state(SDL_Event event, uint16_t * state) {
     }
 }
 
-void keyboard_update_keyboard_up_state(SDL_Event event, uint16_t * state) {
+void keyboard_update_keyboard_up_state(SDL_Event event, keyBoardState_t * state) {
     switch (event.key.keysym.scancode) {
     case SDL_SCANCODE_0:
         *state ^= CHIP8_KEY_CODE_0;

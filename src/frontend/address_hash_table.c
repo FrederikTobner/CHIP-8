@@ -24,7 +24,7 @@
 #include "table.h"
 
 /// Used to mark a bucket that has stored an entry that has been removed
-#define TOMBSTONE                          (address_hash_table_entry_t *)(0xFFFFFFFFFFFFFFFFUL)
+#define ADDRESS_ENTRY_TOMBSTONE                          (address_hash_table_entry_t *)(0xFFFFFFFFFFFFFFFFUL)
 
 static int address_table_grow_table(address_hash_table_t *);
 
@@ -77,6 +77,9 @@ void address_table_free_entries(address_hash_table_t * table) {
         return;
     }
     for (size_t i = 0; i < table->allocated; i++) {
+        if (!table->entries[i] || table->entries[i] == ADDRESS_ENTRY_TOMBSTONE) {
+            break;
+        }
         if (table->entries[i]->key) {
             free((char *)table->entries[i]->key);
         }
@@ -100,7 +103,7 @@ int address_table_insert_entry(address_hash_table_entry_t * node, address_hash_t
     for (size_t i = 0; i < table->allocated; i++) {
         // When we reach the end of the hashTable we continue from the beginning
         try = (i + index) & (table->allocated - 1);
-        if (!table->entries[try] || table->entries[try] == TOMBSTONE) {
+        if (!table->entries[try] || table->entries[try] == ADDRESS_ENTRY_TOMBSTONE) {
             table->entries[try] = node;
             table->used++;
             return 0;
@@ -123,7 +126,7 @@ address_hash_table_entry_t * address_table_remove_entry(address_hash_table_entry
         }
         if (!strncmp(table->entries[try]->key, node->key, MAX_KEY_LENGTH)) {
             address_hash_table_entry_t * tempNode = table->entries[try];
-            table->entries[try] = TOMBSTONE;
+            table->entries[try] = ADDRESS_ENTRY_TOMBSTONE;
             table->used--;
             return tempNode;
         }

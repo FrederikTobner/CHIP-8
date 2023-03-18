@@ -49,14 +49,14 @@ typedef struct {
     uint8_t memory[4096];
     /// Registers of the virtual macine (16 8-bit registers)
     uint8_t V[16];
-} chip8_t;
+} virtual_machine_t;
 
-void chip8_execute(chip8_t * chip8);
+void virtual_machine_execute(virtual_machine_t * vm);
 
-void chip8_init(chip8_t * chip8);
+void virtual_machine_init(virtual_machine_t * vm);
 
-void chip8_write_opcode_to_memory(chip8_t * chip8, uint16_t * memoryLocation, uint16_t opcode);
+void virtual_machine_write_opcode_to_memory(virtual_machine_t * chip8, uint16_t * memoryLocation, uint16_t opcode);
 
-void chip8_write_byte_to_memory(chip8_t * chip8, uint16_t * memoryLocation, uint8_t byte);
+void virtual_machine_write_byte_to_memory(virtual_machine_t * chip8, uint16_t * memoryLocation, uint8_t byte);
 
 #endif

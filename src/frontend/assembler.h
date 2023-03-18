@@ -21,8 +21,6 @@
 #ifndef CHIP8_ASSEMLER_H_
 #define CHIP8_ASSEMLER_H_
 
-#include "../backend/chip8.h"
-
 #include "address_hash_table.h"
 #include "addresses_hash_table.h"
 #include "pre_compiled_header.h"
@@ -37,9 +35,9 @@ typedef struct {
     char const * current;
     /// Line counter - used for error reporting
     uint32_t line;
-    /// @brief Address table - used to store the adress of a label definition
+    /// Address table - used to store the adress of a label definition
     address_hash_table_t addressTable;
-    /// @brief Address table - used to store unresolved label references
+    /// Address table - used to store unresolved label references
     addresses_hash_table_t addressesTable;
 } assembler_t;
 
@@ -50,8 +48,8 @@ int assembler_initialize(assembler_t * assembler, char const * source);
 
 /// @brief Processes a chip8 assembly file (.cp8)
 /// @param assembler The assembler that processes the file
-/// @param chip8 The virtual machine where the program is written into memory
+/// @param vm The virtual machine where the program is written into memory
 /// @return 0 if everything went well, -1 if an error occured
-int assembler_process_file(assembler_t * assembler, chip8_t * chip8);
+int assembler_process_file(assembler_t * assembler, uint8_t * memory);
 
 #endif

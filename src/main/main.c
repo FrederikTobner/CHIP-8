@@ -21,7 +21,7 @@
 #include <stdio.h>
 
 #include "../../build/src/main/chip8_config.h"
-#include "../backend/chip8.h"
+#include "../backend/virtual_machine.h"
 #include "../backend/display.h"
 #include "../frontend/assembler.h"
 #include "../io/file_utils.h"
@@ -40,7 +40,7 @@
   \\_____|_|  |_|_____|_|          \\___/ \n\
 ")
 
-static void run_from_file(char *);
+static void run_from_file(char const *);
 static void show_help();
 
 /// @brief Main entry point of the CHIP-8 program
@@ -69,33 +69,33 @@ int main(int argc, char ** args) {
 
 /// @brief Executes a chip8 program stored in a file
 /// @param filePath The path of the program
-static void run_from_file(char * filePath) {
+static void run_from_file(char const * filePath) {
     char * source;
-    chip8_t chip8;
+    virtual_machine_t vm;
     size_t pathLength = strlen(filePath);
-    chip8_init(&chip8);
+    virtual_machine_init(&vm);
     if (pathLength > 4 && !strcmp(filePath + pathLength - 4, ".cp8")) {
         // The source is provided in assembly language
         assembler_t assembler;
         source = file_utils_read_file(filePath);
-        if (assembler_initialize(&assembler, source) || assembler_process_file(&assembler, &chip8)) {
+        if (assembler_initialize(&assembler, source) || assembler_process_file(&assembler, vm.memory)) {
             exit(EXIT_CODE_ASSEMBLER_ERROR);
         }
     } else if (pathLength > 4 && !strcmp(filePath + pathLength - 4, ".ch8")) {
         // The source is provided in binary -> just store it in memory
-        file_utils_read_file_to_memory(filePath, chip8.memory);
+        file_utils_read_file_to_memory(filePath, vm.memory);
     } else {
         fprintf(stderr, "File type not supported");
         exit(EXIT_CODE_COMMAND_LINE_USAGE_ERROR);
     }
     // Initialzes the SDL subsystem
-    if (display_init(&chip8.display)) {
+    if (display_init(&vm.display)) {
         exit(EXIT_CODE_SYSTEM_ERROR);
     }
     printf("%s\t\t\t\t Version %i.%i.%i\n", PROJECT_INIT_LETTERING, PROJECT_VERSION_MAJOR, PROJECT_VERSION_MINOR,
            PROJECT_VERSION_PATCH);
-    chip8_execute(&chip8);
-    display_quit(&chip8.display);
+    virtual_machine_execute(&vm);
+    display_quit(&vm.display);
 }
 
 /// @brief Displays the help of the emulator

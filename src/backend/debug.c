@@ -24,22 +24,22 @@ void debug_print_bytecode(uint16_t memoryLocation, uint16_t opcode) {
     printf("0x%04X: [0x%04X]\n", memoryLocation, opcode);
 }
 
-void debug_trace_execution(chip8_t chip8) {
+void debug_trace_execution(virtual_machine_t vm) {
     printf("Data registers: [");
     for (uint8_t i = 0; i < 16; i++) {
-        printf("0x%02X, ", chip8.V[i]);
+        printf("0x%02X, ", vm.V[i]);
     }
     printf("]\n");
-    printf("Program counter: 0x%04X\n", chip8.programCounter);
-    printf("Current opcode: 0x%04X\n", chip8.currentOpcode);
-    printf("Address register: 0x%04X\n", chip8.I);
+    printf("Program counter: 0x%04X\n", vm.programCounter);
+    printf("Current opcode: 0x%04X\n", vm.currentOpcode);
+    printf("Address register: 0x%04X\n", vm.I);
 
     printf("Stack: [");
-    uint16_t * upperBound = chip8.stack + 16;
-    for (uint16_t * stackPointer = chip8.stack; stackPointer < upperBound; stackPointer++) {
+    uint16_t * upperBound = vm.stack + 16;
+    for (uint16_t * stackPointer = vm.stack; stackPointer < upperBound; stackPointer++) {
         printf("0x%04X, ", *stackPointer);
     }
     printf("]\n");
-    printf("Delay timer: 0x%02X\n", chip8.delayTimer);
-    printf("Sound timer: 0x%02X\n", chip8.soundTimer);
+    printf("Delay timer: 0x%02X\n", vm.delayTimer);
+    printf("Sound timer: 0x%02X\n", vm.soundTimer);
 }

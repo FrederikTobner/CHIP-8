@@ -19,15 +19,15 @@
  */
 
 #include "assembler.h"
-#include "../base/alias.h"
+#include "../base/chip8.h"
 #include "../base/exit_code.h"
 
 #define OPCODE_CONVERSION_ERROR_MESSAGE ("Unable to convert mnemonic at source into binary")
 
 static inline char assembler_advance(assembler_t *);
 static uint16_t assembler_convert_address_to_binary(assembler_t *);
-static uint16_t assembler_convert_label_to_address(assembler_t *);
-static uint16_t assembler_convert_mnemonic_to_binary(assembler_t *, char);
+static uint16_t assembler_convert_label_to_address(assembler_t *, uint16_t);
+static uint16_t assembler_convert_mnemonic_to_binary(assembler_t *, char, uint16_t);
 static uint8_t assembler_convert_register_to_binary(assembler_t *);
 static uint8_t assembler_convert_registers_to_binary(assembler_t *);
 static uint16_t assembler_hexa(assembler_t *, size_t);
@@ -40,11 +40,12 @@ static char assembler_peek_ahead(assembler_t, uint8_t);
 static uint8_t assembler_read_8bit_number(assembler_t *);
 static void assembler_report_error(assembler_t *, char const *, ...);
 static void assembler_skip_whitespace(assembler_t *);
-static int assembler_process_section(assembler_t *, chip8_t *, uint16_t *);
-static void assembler_process_data_section(assembler_t *, chip8_t *, uint16_t *);
-static void assembler_process_text_section(assembler_t *, chip8_t *, uint16_t *);
+static void assembler_patch_jump_instructions(assembler_t *, uint8_t *);
+static int assembler_process_section(assembler_t *, uint8_t *, uint16_t *);
+static void assembler_process_data_section(assembler_t *, uint8_t *, uint16_t *);
+static void assembler_process_text_section(assembler_t *, uint8_t *, uint16_t *);
 static void assembler_scan_label(assembler_t *, uint16_t);
-static int32_t assembler_scan_opcode(assembler_t *);
+static int32_t assembler_scan_opcode(assembler_t *, uint16_t);
 
 int assembler_initialize(assembler_t * assembler, char const * source) {
     assembler->source = (char *)source;
@@ -60,16 +61,18 @@ int assembler_initialize(assembler_t * assembler, char const * source) {
     return 0;
 }
 
-int assembler_process_file(assembler_t * assembler, chip8_t * chip8) {
+int assembler_process_file(assembler_t * assembler, uint8_t * memory) {
     uint16_t memoryLocation = PROGRAM_START_LOCATION;
     assembler_skip_whitespace(assembler);
     while (!assembler_is_at_end(*assembler)) {
-        if (assembler_process_section(assembler, chip8, &memoryLocation)) {
+        if (assembler_process_section(assembler, memory, &memoryLocation)) {
             return -1;
         }
     }
+    assembler_patch_jump_instructions(assembler, memory);
     free(assembler->source);
-    // address_table_free_entries(&assembler->addressTable);
+    address_table_free_entries(&assembler->addressTable);
+    addresses_table_free_entries(&assembler->addressesTable);
     return 0;
 }
 
@@ -78,7 +81,7 @@ int assembler_process_file(assembler_t * assembler, chip8_t * chip8) {
 /// @param chip8 The emulator where the program will be executed
 /// @param memoryLocation The memory-location where the section is stored
 /// @return 0 if everything went well, -1 if an error occured
-static int assembler_process_section(assembler_t * assembler, chip8_t * chip8, uint16_t * memoryLocation) {
+static int assembler_process_section(assembler_t * assembler, uint8_t * memory, uint16_t * memoryLocation) {
     assembler_skip_whitespace(assembler);
     if (assembler_is_at_end(*assembler)) {
         return -1;
@@ -90,9 +93,9 @@ static int assembler_process_section(assembler_t * assembler, chip8_t * chip8, u
     }
     assembler_skip_whitespace(assembler);
     if (!strncmp(assembler->current, ".text:", 6)) {
-        assembler_process_text_section(assembler, chip8, memoryLocation);
+        assembler_process_text_section(assembler, memory, memoryLocation);
     } else if (!strncmp(assembler->current, ".data:", 6)) {
-        assembler_process_data_section(assembler, chip8, memoryLocation);
+        assembler_process_data_section(assembler, memory, memoryLocation);
     } else {
         return -1;
     }
@@ -103,7 +106,7 @@ static int assembler_process_section(assembler_t * assembler, chip8_t * chip8, u
 /// @param assembler The assembler that processes the section
 /// @param chip8 The emulator where the program will be executed
 /// @param memoryLocation The memory-location where the data is stored
-static void assembler_process_data_section(assembler_t * assembler, chip8_t * chip8, uint16_t * memoryLocation) {
+static void assembler_process_data_section(assembler_t * assembler, uint8_t * memory, uint16_t * memoryLocation) {
     assembler->current += 6;
     assembler_skip_whitespace(assembler);
     if (!strncmp(assembler->current, "org", 3)) {
@@ -121,7 +124,10 @@ static void assembler_process_data_section(assembler_t * assembler, chip8_t * ch
     }
     for (; (!strncmp(assembler->current, "0x", 2) || !strncmp(assembler->current, "0X", 2)) && *memoryLocation < 0xFFF;
          assembler_skip_whitespace(assembler)) {
-        chip8_write_byte_to_memory(chip8, memoryLocation, assembler_read_8bit_number(assembler));
+        if (*memoryLocation > 0x1000u || *memoryLocation < PROGRAM_START_LOCATION) {
+            break;
+        }
+        memory[(*memoryLocation)++] = assembler_read_8bit_number(assembler);
     }
     if (*memoryLocation > 0xFFF) {
         fprintf(stderr, "Data section is too big too be stored in memory");
@@ -133,7 +139,7 @@ static void assembler_process_data_section(assembler_t * assembler, chip8_t * ch
 /// @param assembler The assembler that processes the section
 /// @param chip8 The emulator where the program will be executed
 /// @param memoryLocation The memory-location where the code is stored
-static void assembler_process_text_section(assembler_t * assembler, chip8_t * chip8, uint16_t * memoryLocation) {
+static void assembler_process_text_section(assembler_t * assembler, uint8_t * memory, uint16_t * memoryLocation) {
     if (*memoryLocation != PROGRAM_START_LOCATION) {
         fprintf(stderr, "Text section must be declared before data section");
         exit(EXIT_CODE_ASSEMBLER_ERROR);
@@ -148,11 +154,18 @@ static void assembler_process_text_section(assembler_t * assembler, chip8_t * ch
         if (assembler_peek(*assembler) == '_') {
             assembler_scan_label(assembler, *memoryLocation);
         } else {
-            opcode = assembler_scan_opcode(assembler);
+            opcode = assembler_scan_opcode(assembler, *memoryLocation);
             if (opcode <= 0) {
                 break;
             }
-            chip8_write_opcode_to_memory(chip8, memoryLocation, opcode);
+            if (*memoryLocation > 0x1000u || *memoryLocation < PROGRAM_START_LOCATION) {
+                break;
+            }
+#ifdef PRINT_BYTE_CODE
+            debug_print_bytecode(*memoryLocation, opcode);
+#endif
+            memory[(*memoryLocation)++] = (opcode & 0xff00) >> 8;
+            memory[(*memoryLocation)++] = opcode & 0x00ff;
         }
     }
     if (*memoryLocation > 0xFFF) {
@@ -199,14 +212,14 @@ static void assembler_scan_label(assembler_t * assembler, uint16_t memoryLocatio
 /// @brief Scans the next opcode in the sourcefile
 /// @param assembler The assembler where the next opcode is scanned
 /// @return The opcode or -1 if we have reached the end of the file or the opcode wasn't processed properly
-static int32_t assembler_scan_opcode(assembler_t * assembler) {
+static int32_t assembler_scan_opcode(assembler_t * assembler, uint16_t memoryLocation) {
     if (assembler_is_at_end(*assembler)) {
         return -1;
     }
     assembler->start = assembler->current;
     char c = assembler_advance(assembler);
     if (assembler_is_alpha(c)) {
-        return assembler_convert_mnemonic_to_binary(assembler, c);
+        return assembler_convert_mnemonic_to_binary(assembler, c, memoryLocation);
     }
     if (c == '0' && (assembler_peek(*assembler) == 'x' || assembler_peek(*assembler) == 'X')) {
         return assembler_hexa(assembler, 4);
@@ -351,7 +364,7 @@ static uint16_t assembler_convert_address_to_binary(assembler_t * assembler) {
 /// @brief Converts a label to it's corresponding address in memory
 /// @param assembler The assembler where the label and it's address are stored
 /// @return The memory address of the label
-static uint16_t assembler_convert_label_to_address(assembler_t * assembler) {
+static uint16_t assembler_convert_label_to_address(assembler_t * assembler, uint16_t memoryLocation) {
     char const * labelStart = assembler->current;
     char const * labelEnd = NULL;
     for (; !assembler_is_at_end(*assembler) && assembler_is_alpha(assembler_peek(*assembler));
@@ -363,7 +376,15 @@ static uint16_t assembler_convert_label_to_address(assembler_t * assembler) {
     }
     memcpy(label, labelStart, labelEnd - labelStart + 1);
     label[labelEnd - labelStart + 1] = '\0';
-    uint16_t address = address_table_look_up_entry(label, &assembler->addressTable)->opcodeAddress;
+    uint16_t address = 0;
+    address_hash_table_entry_t * entry = address_table_look_up_entry(label, &assembler->addressTable);
+    if (entry) {
+        // The label is defined
+        address = entry->opcodeAddress;
+    } else {
+        // The label is not defined
+        addresses_table_add(memoryLocation, label, &assembler->addressesTable);
+    }
     return address;
 }
 
@@ -413,11 +434,31 @@ static inline void assembler_report_error(assembler_t * assembler, char const * 
     exit(EXIT_CODE_ASSEMBLER_ERROR);
 }
 
+/// @brief
+/// @param assembler
+/// @param memory
+static void assembler_patch_jump_instructions(assembler_t * assembler, uint8_t * memory) {
+    for (size_t i = 0; i < assembler->addressesTable.allocated; i++) {
+        if (assembler->addressesTable.entries[i] && assembler->addressesTable.entries[i] != ADDRESSES_ENTRY_TOMBSTONE) {
+            address_hash_table_entry_t * addressEntry = NULL;
+            addressEntry =
+                address_table_look_up_entry(assembler->addressesTable.entries[i]->key, &assembler->addressTable);
+            if (!addressEntry) {
+                assembler_report_error(assembler, "Unable to resolve label reference %s",
+                                       assembler->addressesTable.entries[i]->key);
+            }
+            for (size_t j = 0; j < assembler->addressesTable.entries[i]->array->count; j++) {
+                memory[assembler->addressesTable.entries[i]->array->addresses[j]] |= addressEntry->opcodeAddress;
+            }
+        }
+    }
+}
+
 /// @brief Converts the next mnemonic representation of an opcode in the source file to it's binary representation
 /// @param assembler The assembler that proceeses the assembly file
 /// @param c The next character in the source code
 /// @return The mnemonic representation converted to the representation in binary
-static uint16_t assembler_convert_mnemonic_to_binary(assembler_t * assembler, char c) {
+static uint16_t assembler_convert_mnemonic_to_binary(assembler_t * assembler, char c, uint16_t memoryLocation) {
 #define SWITCH_ADVANCE switch (toupper(assembler_advance(assembler)))
 #define SWITCH_PEEK    switch (toupper(assembler_peek(*assembler)))
 #define SWITCH_CASE_RETURN(character, returnValue) \
@@ -512,7 +553,7 @@ static uint16_t assembler_convert_mnemonic_to_binary(assembler_t * assembler, ch
                 {
                     assembler_skip_whitespace(assembler);
                     if (assembler_is_alpha(assembler_peek(*assembler))) {
-                        return 0x1000 | assembler_convert_label_to_address(assembler);
+                        return 0x1000 | assembler_convert_label_to_address(assembler, memoryLocation);
                     } else {
                         return 0x1000 | assembler_convert_address_to_binary(assembler);
                     }

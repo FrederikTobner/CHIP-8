@@ -25,9 +25,6 @@
 #include "fnv1a.h"
 #include "table.h"
 
-/// Used to mark a bucket that has stored an entry that has been removed
-#define TOMBSTONE                          (addresses_hash_table_entry_t *)(0xFFFFFFFFFFFFFFFFUL)
-
 static int addresses_table_grow_table(addresses_hash_table_t *);
 
 addresses_hash_table_t * addresses_table_new() {
@@ -38,6 +35,17 @@ addresses_hash_table_t * addresses_table_new() {
     addresses_table_init_table(table);
     return table;
 }
+
+addresses_hash_table_entry_t * addresses_table_entry_new(char const * key, dynamic_address_array_t * array) {
+    addresses_hash_table_entry_t * entry = new(addresses_hash_table_entry_t);
+    if (!entry) {
+        return NULL;
+    }
+    entry->key = key;
+    entry->array = array;
+    return entry;
+}
+
 
 void addresses_table_destory(addresses_hash_table_t ** table) {
     if (!*table) {
@@ -69,9 +77,11 @@ void addresses_table_free_entries(addresses_hash_table_t * table) {
         return;
     }
     for (size_t i = 0; i < table->allocated; i++) {
-        if (table->entries[i]->key) {
-            free((char *)table->entries[i]->key);
+        if (!table->entries[i] || table->entries[i] == ADDRESSES_ENTRY_TOMBSTONE) {
+            break;
         }
+        free((char *)table->entries[i]->key);
+        dynamic_address_array_free(table->entries[i]->array);
     }
     free(table->entries);
     table->allocated = table->used = 0;
@@ -97,7 +107,7 @@ int addresses_table_add(uint16_t address, char const * label, addresses_hash_tab
     for (size_t i = 0; i < table->allocated; i++) {
         // When we reach the end of the hashTable we continue from the beginning
         try = (i + index) & (table->allocated - 1);
-        if ((!table->entries[try] || table->entries[try] == TOMBSTONE)) {
+        if ((!table->entries[try] || table->entries[try] == ADDRESSES_ENTRY_TOMBSTONE)) {
             entry = new(addresses_hash_table_entry_t);
             dynamic_address_array_init(table->entries[try]->array);
             dynamic_address_array_write(table->entries[try]->array, address);
@@ -122,7 +132,7 @@ addresses_hash_table_entry_t * addresses_table_remove_entry(addresses_hash_table
         }
         if (!strncmp(table->entries[try]->key, node->key, MAX_KEY_LENGTH)) {
             addresses_hash_table_entry_t * tempNode = table->entries[try];
-            table->entries[try] = TOMBSTONE;
+            table->entries[try] = ADDRESSES_ENTRY_TOMBSTONE;
             table->used--;
             return tempNode;
         }
@@ -161,7 +171,7 @@ int addresses_table_insert_entry(addresses_hash_table_entry_t * node, addresses_
     for (size_t i = 0; i < table->allocated; i++) {
         // When we reach the end of the hashTable we continue from the beginning
         try = (i + index) & (table->allocated - 1);
-        if (!table->entries[try] || table->entries[try] == TOMBSTONE) {
+        if (!table->entries[try] || table->entries[try] == ADDRESSES_ENTRY_TOMBSTONE) {
             table->entries[try] = node;
             table->used++;
             return 0;

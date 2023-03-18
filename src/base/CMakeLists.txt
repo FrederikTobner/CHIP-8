@@ -1,6 +1,6 @@
 
 set(CHIP-8_BASE_HEADER_FILES
-"alias.h"
+"chip8.h"
 "exit_code.h"
 )
 
