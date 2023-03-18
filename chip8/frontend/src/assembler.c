@@ -19,8 +19,8 @@
  */
 
 #include "assembler.h"
-#include "../base/chip8.h"
-#include "../base/exit_code.h"
+#include "../../base/src/chip8.h"
+#include "../../base/src/exit_code.h"
 
 #define OPCODE_CONVERSION_ERROR_MESSAGE ("Unable to convert mnemonic at source into binary")
 
@@ -444,8 +444,9 @@ static void assembler_patch_jump_instructions(assembler_t * assembler, uint8_t *
             addressEntry =
                 address_table_look_up_entry(assembler->addressesTable.entries[i]->key, &assembler->addressTable);
             if (!addressEntry) {
-                assembler_report_error(assembler, "Unable to resolve label reference %s",
-                                       assembler->addressesTable.entries[i]->key);
+                printf("Unable to resolve label reference %s\n", assembler->addressesTable.entries[i]->key);
+                free(assembler->source);
+                exit(EXIT_CODE_ASSEMBLER_ERROR);
             }
             for (size_t j = 0; j < assembler->addressesTable.entries[i]->array->count; j++) {
                 memory[assembler->addressesTable.entries[i]->array->addresses[j]] |= addressEntry->opcodeAddress;

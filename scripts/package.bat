@@ -34,44 +34,44 @@ cmake --build ../build/x86_x64 --config Release --target CHIP-8
 
 :: x64
 ECHO Zipping CHIP-8 x64 ...
-IF NOT EXIST ..\build\x64\src (
+IF NOT EXIST ..\build\x64\chip8\main\src\ (
     ECHO Can not find x64 Build folder ...
     EXIT
 )
-cd ..\build\x64\src
+cd ..\build\x64\chip8\main\src\
 cpack -G ZIP --config ../CPackConfig.cmake
 ECHO Creating installer - x64 using NSIS ...
 cpack -G NSIS64 --config ../CPackConfig.cmake
 
 :: x86
 ECHO Zipping CHIP-8 x86 ...
-IF NOT EXIST ..\..\x86\src (
+IF NOT EXIST ..\..\x86\chip8\main\src\ (
     ECHO Can not find x86 Build folder ...
     EXIT
 )
-cd ..\..\x86\src
+cd ..\..\x86\chip8\main\src\
 cpack -G ZIP --config ../CPackConfig.cmake
 ECHO Creating installer - x86 using NSIS ...
 cpack -G NSIS --config ../CPackConfig.cmake
 
 :: x64_x86
 ECHO Zipping CHIP-8 x64_x86 ...
-IF NOT EXIST ..\..\x64_x86\src (
+IF NOT EXIST ..\..\x64_x86\chip8\main\src\  (
     ECHO Can not find x64_x86 Build folder ...
     EXIT
 )
-cd ..\..\x64_x86 \src
+cd ..\..\x64_x86 \chip8\main\src\
 cpack -G ZIP --config ../CPackConfig.cmake
 ECHO Creating installer - x64_x86  using NSIS ...
 cpack -G NSIS --config ../CPackConfig.cmake
 
 :: x86_x64
 ECHO Zipping CHIP-8 x86_x64 ...
-IF NOT EXIST ..\..\x86_x64\src (
+IF NOT EXIST ..\..\x86_x64\chip8\main\src\  (
     ECHO Can not find x86_x64 Build folder ...
     EXIT
 )
-cd ..\..\x86_x64\src
+cd ..\..\x86_x64\chip8\main\src\ 
 cpack -G ZIP --config ../CPackConfig.cmake
 ECHO Creating installer - x86_x64 using NSIS ...
 cpack -G NSIS --config ../CPackConfig.cmake

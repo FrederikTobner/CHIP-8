@@ -20,15 +20,13 @@
 
 #include <stdio.h>
 
-#include "../../build/src/main/chip8_config.h"
-#include "../backend/virtual_machine.h"
-#include "../backend/display.h"
-#include "../frontend/assembler.h"
-#include "../io/file_utils.h"
-#include "../base/exit_code.h"
+#include "../../build/chip8/chip8_config.h"
 
-
-
+#include "../../backend/src/virtual_machine.h"
+#include "../../backend/src/display.h"
+#include "../../base/src/exit_code.h"
+#include "../../frontend/src/assembler.h"
+#include "../../io/src/file_utils.h"
 /// Short message that explains the usage of the CHIP-8 emulator
 #define CHIP8_USAGE_MESSAGE "Usage: Chip8 [path]\n"
 #define PROJECT_INIT_LETTERING \

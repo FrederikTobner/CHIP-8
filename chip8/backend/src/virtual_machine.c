@@ -23,7 +23,7 @@
 #if defined(PRINT_BYTE_CODE) || defined(TRACE_EXECUTION)
 #include "debug.h"
 #endif
-#include "../base/chip8.h"
+#include "../../base/src/chip8.h"
 #include "display.h"
 #include "keyboard_state.h"
 #include "pre_compiled_header.h"

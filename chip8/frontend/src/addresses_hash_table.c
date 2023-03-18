@@ -88,13 +88,13 @@ void addresses_table_free_entries(addresses_hash_table_t * table) {
     table->entries = NULL;
 }
 
-int addresses_table_add(uint16_t address, char const * label, addresses_hash_table_t * table) {
+int addresses_table_add(uint16_t address, char const * key, addresses_hash_table_t * table) {
     // Lookup label
     addresses_hash_table_entry_t * entry;
-    if ((entry = addresses_table_look_up_entry(label, table))) {
+    if ((entry = addresses_table_look_up_entry(key, table))) {
         dynamic_address_array_write(entry->array, address);
     }
-    if (!label || !table) {
+    if (!key || !table) {
         return -1;
     }
     if (table->used >= ((double)table->allocated) * TABLE_GROWTH_TRIGGER_VALUE) {
@@ -103,7 +103,7 @@ int addresses_table_add(uint16_t address, char const * label, addresses_hash_tab
         }
     }
     uint32_t index, try;
-    index = fnv1a_hash_data((uint8_t *)label, strlen(label));
+    index = fnv1a_hash_data((uint8_t *)key, strlen(key));
     for (size_t i = 0; i < table->allocated; i++) {
         // When we reach the end of the hashTable we continue from the beginning
         try = (i + index) & (table->allocated - 1);

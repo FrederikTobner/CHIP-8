@@ -21,7 +21,7 @@
 #ifndef CHIP8_DISPLAY_H_
 #define CHIP8_DISPLAY_H_
 
-#include "../../external/SDL/include/SDL.h"
+#include "../../../external/SDL/include/SDL.h"
 
 /// The graphics system of the chip-8 has a height of 32 pixels
 #define GRAPHICS_SYSTEM_HEIGHT (32)

@@ -21,7 +21,7 @@
 #ifndef CHIP8_CHIP8_H_
 #define CHIP8_CHIP8_H_
 
-#include "../../external/SDL/include/SDL.h"
+#include "../../../external/SDL/include/SDL.h"
 #include "pre_compiled_header.h"
 
 #include "display.h"

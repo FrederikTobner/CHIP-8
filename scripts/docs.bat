@@ -1,10 +1,10 @@
 :: Generates documentation using doxyxgen (https://www.doxygen.nl/)
 @ECHO OFF
-IF NOT EXIST ..\src (
+IF NOT EXIST ..\chip8 (
     ECHO Can not find source directory
     EXIT
 )
-cd ..\src
+cd ..\chip8
 ECHO Generating Documentation ...
 doxygen
 ECHO Moving generated content out of the html folder ...

@@ -21,6 +21,12 @@
 #ifndef CHIP8_FNV1A_H_
 #define CHIP8_FNV1A_H_
 
+
+// This file is included in the test-suite that is written in c++ using the google-test framework
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include <stddef.h>
 #include <stdint.h>
 
@@ -29,7 +35,11 @@
 /// @brief Hashes the data using fowler noll vo
 /// @param data The data that is hashed
 /// @param length The length of the data that is hashed
-/// @return an unsigned 32-bit or 64-bit integer
+/// @return an unsigned 32-bit
 uint32_t fnv1a_hash_data(uint8_t const * data, size_t length);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

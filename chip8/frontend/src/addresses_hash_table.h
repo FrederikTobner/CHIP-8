@@ -26,7 +26,7 @@
 
 // Type Definition of an Entry structure in a hashtable (linear probing)
 typedef struct {
-    /// Key of the entry 🔑 / The label
+    /// Key of the entry 🔑
     char const * key;
     /// Addresses that are stored in the entry
     dynamic_address_array_t * array;
@@ -62,18 +62,18 @@ addresses_hash_table_entry_t * addresses_table_entry_new(char const * key, dynam
 
 /// @brief Frees the memory occupied by a hashtable (does not free the memory occupied by the entries)
 /// @param table The table that is freed
-void addressess_table_destory(addresses_hash_table_t ** table);
+void addresses_table_destory(addresses_hash_table_t ** table);
 
 /// @brief  Frees the memory used by the hashtable
 /// @param table The hashtable where the entries are freed
 void addresses_table_free_entries(addresses_hash_table_t * table);
 
-/// @brief
-/// @param address
-/// @param label
-/// @param table
-/// @return
-int addresses_table_add(uint16_t address, char const * label, addresses_hash_table_t * table);
+/// @brief Adds the memory location to the table
+/// @param address The address that is added to the table
+/// @param key The label that is referenced
+/// @param table The table where the address is added
+/// @return 0 if the address was added, -1 if the address couldn't be added
+int addresses_table_add(uint16_t address, char const * key, addresses_hash_table_t * table);
 
 /// @brief Removes a entry from the hashtable
 /// @param entry The entry that is removed from the hashtable
