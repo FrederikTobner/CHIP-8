@@ -16,7 +16,7 @@ if(CMAKE_BUILD_TYPE MATCHES "[Dd][Ee][Bb][Uu][Gg]")
     endif()
     add_compile_definitions(BUILD_DEBUG)
 else()
-    include(../../cmake/chip8_set_package_properties.cmake)
+    include(../../../cmake/chip8_set_package_properties.cmake)
     CHIP8_Set_Package_Properties()
     # Includes the CPack module     
     include(CPack)
