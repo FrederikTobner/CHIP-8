@@ -21,7 +21,7 @@
 #ifndef CHIP8_DEBUG_H_
 #define CHIP8_DEBUG_H_
 
-#include "pre_compiled_header.h"
+#include "backend_pre_compiled_header.h"
 
 #include "virtual_machine.h"
 

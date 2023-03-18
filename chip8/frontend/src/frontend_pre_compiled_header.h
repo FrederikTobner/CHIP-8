@@ -14,10 +14,22 @@
  ****************************************************************************/
 
 /**
- * @file pre_compiled_header.c
- * @brief File is needed for MSCV compatability
+ * @file frontend_pre_compiled_header.h
+ * @brief Precompiled header file of the emulator frontend
+ * @details Contains commonly used header files from the standard libary files and exit codes
  */
 
-#include "pre_compiled_header.h"
+#ifndef CHIP8_FRONTEND_PRE_COMPILED_HEADER_H_
+#define CHIP8_FRONTEND_PRE_COMPILED_HEADER_H_
 
-// File is needed for MSCV compatability
+// Standard libary dependencies
+#include <ctype.h>
+#include <stdarg.h>
+#include <stdbool.h>
+#include <stddef.h>
+#include <stdint.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+#endif

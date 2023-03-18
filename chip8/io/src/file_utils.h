@@ -21,7 +21,7 @@
 #ifndef CHIP8_FILE_UTILS_H_
 #define CHIP8_FILE_UTILS_H_
 
-#include "pre_compiled_header.h"
+#include "io_pre_compiled_header.h"
 
 /// @brief Reads a file from a specified location and returns the content of the file as a character pointer
 /// @param path The path of the file that is read

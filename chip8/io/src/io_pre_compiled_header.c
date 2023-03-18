@@ -14,10 +14,10 @@
  ****************************************************************************/
 
 /**
- * @file pre_compiled_header.c
+ * @file io_pre_compiled_header.c
  * @brief File is needed for MSCV compatability
  */
 
-#include "pre_compiled_header.h"
+#include "io_pre_compiled_header.h"
 
 // File is needed for MSCV compatability

@@ -1,6 +1,26 @@
+/****************************************************************************
+ * Copyright (C) 2023 by Frederik Tobner                                    *
+ *                                                                          *
+ * This file is part of CHIP-8.                                             *
+ *                                                                          *
+ * Permission to use, copy, modify, and distribute this software and its    *
+ * documentation under the terms of the GNU General Public License is       *
+ * hereby granted.                                                          *
+ * No representations are made about the suitability of this software for   *
+ * any purpose.                                                             *
+ * It is provided "as is" without express or implied warranty.              *
+ * See the <https://www.gnu.org/licenses/gpl-3.0.html/>GNU General Public   *
+ * License for more details.                                                *
+ ****************************************************************************/
+
+/**
+ * @file keyboard_state.c
+ * @brief Definitions regarding the keyboard of the emulator
+ */
+
 #include "keyboard_state.h"
 
-void keyboard_update_keyboard_down_state(SDL_Event event, keyBoardState_t * state) {
+void keyboard_handle_key_down_event(SDL_Event event, keyBoardState_t * state) {
     switch (event.key.keysym.scancode) {
     case SDL_SCANCODE_0:
         *state |= CHIP8_KEY_CODE_0;
@@ -55,7 +75,7 @@ void keyboard_update_keyboard_down_state(SDL_Event event, keyBoardState_t * stat
     }
 }
 
-void keyboard_update_keyboard_up_state(SDL_Event event, keyBoardState_t * state) {
+void keyboard_handle_key_up_event(SDL_Event event, keyBoardState_t * state) {
     switch (event.key.keysym.scancode) {
     case SDL_SCANCODE_0:
         *state ^= CHIP8_KEY_CODE_0;

@@ -1,6 +1,6 @@
 #include "dynamic_address_array.h"
 
-#include "pre_compiled_header.h"
+#include "frontend_pre_compiled_header.h"
 
 /// Growth factor of a dynamic value array
 #define ARRAY_GROWTH_FACTOR                 (1.5)
@@ -46,7 +46,6 @@ void dynamic_address_array_write(dynamic_address_array_t * array, uint16_t value
     array->addresses[array->count] = value;
     array->count++;
 }
-
 
 static void * dynamic_address_array_reallocate(void * pointer, size_t oldSize, size_t newSize) {
     if (!newSize) {

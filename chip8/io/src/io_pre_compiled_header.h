@@ -15,29 +15,25 @@
 
 /**
  * @file pre_compiled_header.h
- * @brief Precompiled header file of the backend
+ * @brief Precompiled header file of the io library
  * @details Contains commonly used header files from the standard libary and os-specific header files
  */
 
-#ifndef CHIP8_PRE_COMPILED_HEADER_BACKEND_H_
-#define CHIP8_PRE_COMPILED_HEADER_BACKEND_H_
+#ifndef CHIP8_IO_PRE_COMPILED_HEADER_H_
+#define CHIP8_IO_PRE_COMPILED_HEADER_H_
 
-// Standard libary dependencies
-#include "string.h"
-#include <limits.h>
 #include <stdarg.h>
-#include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <time.h>
-
-// OS-specific dependencies
-#if defined(_WIN32)
-#include <conio.h>
-#elif defined(_UNIX__)
-#include <curses.h>
+#include <string.h>
+#if defined(OS_WINDOWS)
+#include <windows.h>
+// Has to come after windows.h dependency or the emulator won't build
+#include <psapi.h>
+#elif defined(OS_UNIX_LIKE)
+#include <unistd.h>
 #endif
 
 #endif

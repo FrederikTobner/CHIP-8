@@ -1,6 +1,3 @@
-# configure chip-8 config to show version
-configure_file(chip8_config.h.in chip8_config.h)
-
 include(../cmake/chip8_check.cmake)
 
 # Determine the compiler that is used

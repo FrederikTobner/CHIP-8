@@ -31,9 +31,9 @@ add_library(${PROJECT_NAME}_Backend STATIC ${BACKEND_SOURCE_FILES} ${BACKEND_HEA
 # Precompiles common.h to speed up compilation of the target
 if(MSVC)
     # VisualStudio only accepts header files that also have a source file    
-    target_precompile_headers(${PROJECT_NAME}_Backend PUBLIC pre_compiled_header.h pre_compiled_header.c) 
+    target_precompile_headers(${PROJECT_NAME}_Backend PUBLIC backend_pre_compiled_header.h backend_pre_compiled_header.c) 
 else()
-    target_precompile_headers(${PROJECT_NAME}_Backend PUBLIC pre_compiled_header.h)
+    target_precompile_headers(${PROJECT_NAME}_Backend PUBLIC backend_pre_compiled_header.h)
 endif()
 
 target_link_libraries(${PROJECT_NAME}_Backend SDL2-static ${PROJECT_NAME}_Base ${PROJECT_NAME}_IO)

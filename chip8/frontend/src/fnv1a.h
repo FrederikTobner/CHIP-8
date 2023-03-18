@@ -21,14 +21,12 @@
 #ifndef CHIP8_FNV1A_H_
 #define CHIP8_FNV1A_H_
 
-
 // This file is included in the test-suite that is written in c++ using the google-test framework
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-#include <stddef.h>
-#include <stdint.h>
+#include "frontend_pre_compiled_header.h"
 
 // Fowler-Noll-Vo hashing function https://en.wikipedia.org/wiki/Fowler%E2%80%93Noll%E2%80%93Vo_hash_function
 

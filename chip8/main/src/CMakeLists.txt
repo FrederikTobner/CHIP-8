@@ -1,3 +1,6 @@
+# configure chip-8 config to show version
+configure_file(chip8_config.h.in chip8_config.h)
+
 set(CHIP-8_SOURCE_FILES
 "main.c"    
 )

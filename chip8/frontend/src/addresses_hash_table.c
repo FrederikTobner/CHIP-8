@@ -20,7 +20,7 @@
 
 #include "addresses_hash_table.h"
 
-#include "pre_compiled_header.h"
+#include "frontend_pre_compiled_header.h"
 
 #include "fnv1a.h"
 #include "table.h"
@@ -28,7 +28,7 @@
 static int addresses_table_grow_table(addresses_hash_table_t *);
 
 addresses_hash_table_t * addresses_table_new() {
-    addresses_hash_table_t * table = new(addresses_hash_table_t);
+    addresses_hash_table_t * table = new (addresses_hash_table_t);
     if (!table) {
         return NULL;
     }
@@ -37,7 +37,7 @@ addresses_hash_table_t * addresses_table_new() {
 }
 
 addresses_hash_table_entry_t * addresses_table_entry_new(char const * key, dynamic_address_array_t * array) {
-    addresses_hash_table_entry_t * entry = new(addresses_hash_table_entry_t);
+    addresses_hash_table_entry_t * entry = new (addresses_hash_table_entry_t);
     if (!entry) {
         return NULL;
     }
@@ -45,7 +45,6 @@ addresses_hash_table_entry_t * addresses_table_entry_new(char const * key, dynam
     entry->array = array;
     return entry;
 }
-
 
 void addresses_table_destory(addresses_hash_table_t ** table) {
     if (!*table) {
@@ -108,7 +107,7 @@ int addresses_table_add(uint16_t address, char const * key, addresses_hash_table
         // When we reach the end of the hashTable we continue from the beginning
         try = (i + index) & (table->allocated - 1);
         if ((!table->entries[try] || table->entries[try] == ADDRESSES_ENTRY_TOMBSTONE)) {
-            entry = new(addresses_hash_table_entry_t);
+            entry = new (addresses_hash_table_entry_t);
             dynamic_address_array_init(table->entries[try]->array);
             dynamic_address_array_write(table->entries[try]->array, address);
             table->used++;
@@ -119,7 +118,7 @@ int addresses_table_add(uint16_t address, char const * key, addresses_hash_table
 }
 
 addresses_hash_table_entry_t * addresses_table_remove_entry(addresses_hash_table_entry_t * node,
-                                                        addresses_hash_table_t * table) {
+                                                            addresses_hash_table_t * table) {
     if (!table) {
         return NULL;
     }

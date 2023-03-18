@@ -25,11 +25,6 @@
 var NAVTREE =
 [
   [ "CHIP-8", "index.html", [
-    [ "Main Page", "index.html", [
-      [ "Introduction", "index.html#intro_sec", null ],
-      [ "Building", "index.html#building_sec", null ],
-      [ "License", "index.html#license_sec", null ]
-    ] ],
     [ "Data Structures", "annotated.html", [
       [ "Data Structures", "annotated.html", "annotated_dup" ],
       [ "Data Structure Index", "classes.html", null ],
@@ -43,6 +38,7 @@ var NAVTREE =
       [ "Globals", "globals.html", [
         [ "All", "globals.html", null ],
         [ "Functions", "globals_func.html", null ],
+        [ "Typedefs", "globals_type.html", null ],
         [ "Enumerations", "globals_enum.html", null ],
         [ "Enumerator", "globals_eval.html", null ],
         [ "Macros", "globals_defs.html", null ]
@@ -53,7 +49,8 @@ var NAVTREE =
 
 var NAVTREEINDEX =
 [
-"address__hash__table_8c.html"
+"address__hash__table_8c.html",
+"structvirtual__machine__t.html#a742229490b6759a90ece7ba82ba129d5"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

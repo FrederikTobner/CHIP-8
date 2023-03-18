@@ -20,8 +20,8 @@
 
 #include "display.h"
 #include "../../../build/chip8/chip8_config.h"
-#include "pre_compiled_header.h"
 #include "../../io/src/path_utils.h"
+#include "backend_pre_compiled_header.h"
 
 static int display_set_window_icon(SDL_Window *, char const *);
 

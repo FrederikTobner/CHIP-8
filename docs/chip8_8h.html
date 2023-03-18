@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.5"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>CHIP-8: backend/chip8.h File Reference</title>
+<title>CHIP-8: chip8/base/src/chip8.h File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -91,181 +91,36 @@ $(document).ready(function(){initNavTree('chip8_8h.html',''); initResizable(); }
 
 <div class="header">
   <div class="summary">
-<a href="#nested-classes">Data Structures</a> &#124;
-<a href="#func-members">Functions</a>  </div>
+<a href="#define-members">Macros</a>  </div>
   <div class="headertitle"><div class="title">chip8.h File Reference</div></div>
 </div><!--header-->
 <div class="contents">
 
 <p>Declarations regarding the virtual machine of the emulator.  
 <a href="#details">More...</a></p>
-<div class="textblock"><code>#include &quot;../../external/SDL/include/SDL.h&quot;</code><br />
-<code>#include &quot;<a class="el" href="backend_2pre__compiled__header_8h_source.html">pre_compiled_header.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="display_8h_source.html">display.h</a>&quot;</code><br />
-</div>
+
 <p><a href="chip8_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
-Data Structures</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchip8__t.html">chip8_t</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Models a chip8 emulator.  <a href="structchip8__t.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
-Functions</h2></td></tr>
-<tr class="memitem:a1506b482c7d70ced0adef1c5611c122c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="chip8_8h.html#a1506b482c7d70ced0adef1c5611c122c">chip8_execute</a> (<a class="el" href="structchip8__t.html">chip8_t</a> *chip8)</td></tr>
-<tr class="memdesc:a1506b482c7d70ced0adef1c5611c122c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Executes the program that is stored in memory.  <a href="chip8_8h.html#a1506b482c7d70ced0adef1c5611c122c">More...</a><br /></td></tr>
-<tr class="separator:a1506b482c7d70ced0adef1c5611c122c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4f87773037082c3429e63f508f5297df"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="chip8_8h.html#a4f87773037082c3429e63f508f5297df">chip8_init</a> (<a class="el" href="structchip8__t.html">chip8_t</a> *chip8)</td></tr>
-<tr class="memdesc:a4f87773037082c3429e63f508f5297df"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes the chip8 vm.  <a href="chip8_8h.html#a4f87773037082c3429e63f508f5297df">More...</a><br /></td></tr>
-<tr class="separator:a4f87773037082c3429e63f508f5297df"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa7733b89232d27cfd9678fd97ba72d81"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="chip8_8h.html#aa7733b89232d27cfd9678fd97ba72d81">chip8_write_opcode_to_memory</a> (<a class="el" href="structchip8__t.html">chip8_t</a> *chip8, uint16_t *memoryLocation, uint16_t opcode)</td></tr>
-<tr class="memdesc:aa7733b89232d27cfd9678fd97ba72d81"><td class="mdescLeft">&#160;</td><td class="mdescRight">Writtes the specified opcode at the specified location into memory.  <a href="chip8_8h.html#aa7733b89232d27cfd9678fd97ba72d81">More...</a><br /></td></tr>
-<tr class="separator:aa7733b89232d27cfd9678fd97ba72d81"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acc4d8cb0e6d30737adb250633cd2b00e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="chip8_8h.html#acc4d8cb0e6d30737adb250633cd2b00e">chip8_write_byte_to_memory</a> (<a class="el" href="structchip8__t.html">chip8_t</a> *chip8, uint16_t *memoryLocation, uint8_t byte)</td></tr>
-<tr class="memdesc:acc4d8cb0e6d30737adb250633cd2b00e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Writtes the specified opcode at the specified location into memory.  <a href="chip8_8h.html#acc4d8cb0e6d30737adb250633cd2b00e">More...</a><br /></td></tr>
-<tr class="separator:acc4d8cb0e6d30737adb250633cd2b00e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="define-members" name="define-members"></a>
+Macros</h2></td></tr>
+<tr class="memitem:a59962df77cb1013f9a270da92b03852a"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="chip8_8h.html#a59962df77cb1013f9a270da92b03852a">PROGRAM_START_LOCATION</a>&#160;&#160;&#160;(0x200u)</td></tr>
+<tr class="separator:a59962df77cb1013f9a270da92b03852a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p >Declarations regarding the virtual machine of the emulator. </p>
-</div><h2 class="groupheader">Function Documentation</h2>
-<a id="a1506b482c7d70ced0adef1c5611c122c" name="a1506b482c7d70ced0adef1c5611c122c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1506b482c7d70ced0adef1c5611c122c">&#9670;&#160;</a></span>chip8_execute()</h2>
+</div><h2 class="groupheader">Macro Definition Documentation</h2>
+<a id="a59962df77cb1013f9a270da92b03852a" name="a59962df77cb1013f9a270da92b03852a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a59962df77cb1013f9a270da92b03852a">&#9670;&#160;</a></span>PROGRAM_START_LOCATION</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void chip8_execute </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="structchip8__t.html">chip8_t</a> *&#160;</td>
-          <td class="paramname"><em>chip8</em></td><td>)</td>
-          <td></td>
+          <td class="memname">#define PROGRAM_START_LOCATION&#160;&#160;&#160;(0x200u)</td>
         </tr>
       </table>
 </div><div class="memdoc">
-
-<p>Executes the program that is stored in memory. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">chip8</td><td>The chip8 vm where the program that is currently held in memory is executed </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<a id="a4f87773037082c3429e63f508f5297df" name="a4f87773037082c3429e63f508f5297df"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4f87773037082c3429e63f508f5297df">&#9670;&#160;</a></span>chip8_init()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void chip8_init </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="structchip8__t.html">chip8_t</a> *&#160;</td>
-          <td class="paramname"><em>chip8</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Initializes the chip8 vm. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">chip8</td><td>The chip8 virtual machine that is initialzed </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<a id="acc4d8cb0e6d30737adb250633cd2b00e" name="acc4d8cb0e6d30737adb250633cd2b00e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#acc4d8cb0e6d30737adb250633cd2b00e">&#9670;&#160;</a></span>chip8_write_byte_to_memory()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void chip8_write_byte_to_memory </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="structchip8__t.html">chip8_t</a> *&#160;</td>
-          <td class="paramname"><em>chip8</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">uint16_t *&#160;</td>
-          <td class="paramname"><em>memoryLocation</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">uint8_t&#160;</td>
-          <td class="paramname"><em>byte</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Writtes the specified opcode at the specified location into memory. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">chip8</td><td>The chip8 where the opcode is written to memory </td></tr>
-    <tr><td class="paramname">memoryLocation</td><td>The location where the opcode is written to (0-4096) </td></tr>
-    <tr><td class="paramname">byte</td><td>The byte that is written into memory </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<a id="aa7733b89232d27cfd9678fd97ba72d81" name="aa7733b89232d27cfd9678fd97ba72d81"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa7733b89232d27cfd9678fd97ba72d81">&#9670;&#160;</a></span>chip8_write_opcode_to_memory()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void chip8_write_opcode_to_memory </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="structchip8__t.html">chip8_t</a> *&#160;</td>
-          <td class="paramname"><em>chip8</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">uint16_t *&#160;</td>
-          <td class="paramname"><em>memoryLocation</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">uint16_t&#160;</td>
-          <td class="paramname"><em>opcode</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Writtes the specified opcode at the specified location into memory. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">chip8</td><td>The chip8 where the opcode is written to memory </td></tr>
-    <tr><td class="paramname">memoryLocation</td><td>The location where the opcode is written to (0-4096) </td></tr>
-    <tr><td class="paramname">opcode</td><td>The opcode that is written into memory </td></tr>
-  </table>
-  </dd>
-</dl>
+<p >Most Chip-8 programs start at location 0x200 (512), but some begin at 0x600 (1536). Programs beginning at 0x600 are intended for the ETI 660 computer. </p>
 
 </div>
 </div>
@@ -274,7 +129,7 @@ Functions</h2></td></tr>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_8c739bbef76d64b22d6b0911c526dd76.html">backend</a></li><li class="navelem"><a class="el" href="chip8_8h.html">chip8.h</a></li>
+    <li class="navelem"><a class="el" href="dir_d447c1f28e7500b1cedb201eaf65d36e.html">chip8</a></li><li class="navelem"><a class="el" href="dir_be6d8ddecb076a1f7d7234cb461a60fe.html">base</a></li><li class="navelem"><a class="el" href="dir_6801c736f17faad8b919090f080b5e45.html">src</a></li><li class="navelem"><a class="el" href="chip8_8h.html">chip8.h</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.5 </li>
   </ul>
 </div>

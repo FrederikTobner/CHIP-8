@@ -22,7 +22,7 @@
 #define CHIP8_KEY_BOARD_STATE_H_
 
 #include "../../../external/SDL/include/SDL.h"
-#include "pre_compiled_header.h"
+#include "backend_pre_compiled_header.h"
 
 typedef uint16_t keyBoardState_t;
 
@@ -45,8 +45,14 @@ typedef enum {
     CHIP8_KEY_CODE_F = 0b1000000000000000,
 } key_code;
 
-void keyboard_update_keyboard_down_state(SDL_Event event, keyBoardState_t * state);
+/// @brief
+/// @param event
+/// @param state
+void keyboard_handle_key_down_event(SDL_Event event, keyBoardState_t * state);
 
-void keyboard_update_keyboard_up_state(SDL_Event event, keyBoardState_t * state);
+/// @brief
+/// @param event
+/// @param state
+void keyboard_handle_key_up_event(SDL_Event event, keyBoardState_t * state);
 
 #endif

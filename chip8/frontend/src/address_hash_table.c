@@ -24,12 +24,12 @@
 #include "table.h"
 
 /// Used to mark a bucket that has stored an entry that has been removed
-#define ADDRESS_ENTRY_TOMBSTONE                          (address_hash_table_entry_t *)(0xFFFFFFFFFFFFFFFFUL)
+#define ADDRESS_ENTRY_TOMBSTONE (address_hash_table_entry_t *)(0xFFFFFFFFFFFFFFFFUL)
 
 static int address_table_grow_table(address_hash_table_t *);
 
 address_hash_table_t * address_table_new() {
-    address_hash_table_t * table = new(address_hash_table_t);
+    address_hash_table_t * table = new (address_hash_table_t);
     if (!table) {
         return NULL;
     }
@@ -38,7 +38,7 @@ address_hash_table_t * address_table_new() {
 }
 
 address_hash_table_entry_t * address_table_entry_new(uint16_t address, char const * key) {
-    address_hash_table_entry_t * entry = new(address_hash_table_entry_t);
+    address_hash_table_entry_t * entry = new (address_hash_table_entry_t);
     if (!entry) {
         return NULL;
     }

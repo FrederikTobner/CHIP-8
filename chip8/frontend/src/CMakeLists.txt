@@ -22,7 +22,7 @@ target_link_libraries(${PROJECT_NAME}_Frontend ${PROJECT_NAME}_Base)
 # Precompiles common.h to speed up compilation of the target
 if(MSVC)
     # VisualStudio only accepts header files that also have a source file    
-    target_precompile_headers(${PROJECT_NAME}_Frontend PUBLIC pre_compiled_header.h pre_compiled_header.c) 
+    target_precompile_headers(${PROJECT_NAME}_Frontend PUBLIC frontend_pre_compiled_header.h frontend_pre_compiled_header.c) 
 else()
-    target_precompile_headers(${PROJECT_NAME}_Frontend PUBLIC pre_compiled_header.h)
+    target_precompile_headers(${PROJECT_NAME}_Frontend PUBLIC frontend_pre_compiled_header.h)
 endif()

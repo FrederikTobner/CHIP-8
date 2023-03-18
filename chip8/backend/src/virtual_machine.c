@@ -26,7 +26,6 @@
 #include "../../base/src/chip8.h"
 #include "display.h"
 #include "keyboard_state.h"
-#include "pre_compiled_header.h"
 
 /// Defines a new 8-bit value based on the opcode that is currently executed
 #define DEFINE_8_BIT_VALUE  uint8_t value = vm->currentOpcode & 0x00ff;
@@ -53,18 +52,17 @@ void virtual_machine_execute(virtual_machine_t * vm) {
     uint64_t numberofChip8Clocks = 0;
     SDL_Event event;
     keyBoardState_t keyBoardState = 0;
-    for (; vm->programCounter < ((0x1000 - PROGRAM_START_LOCATION) / 2);
-         vm->programCounter++, numberofChip8Clocks++) {
+    for (; vm->programCounter < ((0x1000 - PROGRAM_START_LOCATION) / 2); vm->programCounter++, numberofChip8Clocks++) {
         // Polling SDL events
         while (SDL_PollEvent(&event)) {
             switch (event.type) {
             case SDL_QUIT:
                 return;
             case SDL_KEYDOWN:
-                keyboard_update_keyboard_down_state(event, &keyBoardState);
+                keyboard_handle_key_down_event(event, &keyBoardState);
                 break;
             case SDL_KEYUP:
-                keyboard_update_keyboard_up_state(event, &keyBoardState);
+                keyboard_handle_key_up_event(event, &keyBoardState);
                 break;
             default:
                 break;
@@ -395,16 +393,15 @@ static int8_t virtual_machine_execute_next_opcode(virtual_machine_t * vm, uint16
             for (size_t height = 0; height < spriteHeight; height++) {
                 for (size_t width = 0; width < 8; width++) {
                     if ((vm->memory[(vm->I + height) & 4095] >> (8 - width)) & 0x01) {
-                        if (!setVF &&
-                            vm->display.graphicsSystem[width + vm->V[x] & (GRAPHICS_SYSTEM_WIDTH - 1)]
-                                                         [height + vm->V[y] & (GRAPHICS_SYSTEM_HEIGHT - 1)]) {
+                        if (!setVF && vm->display.graphicsSystem[width + vm->V[x] & (GRAPHICS_SYSTEM_WIDTH - 1)]
+                                                                [height + vm->V[y] & (GRAPHICS_SYSTEM_HEIGHT - 1)]) {
                             vm->V[0xf] = 1;
                             setVF = true;
                         }
                         vm->display.graphicsSystem[width + vm->V[x] & (GRAPHICS_SYSTEM_WIDTH - 1)]
-                                                     [height + vm->V[y] & (GRAPHICS_SYSTEM_HEIGHT - 1)] =
+                                                  [height + vm->V[y] & (GRAPHICS_SYSTEM_HEIGHT - 1)] =
                             !vm->display.graphicsSystem[width + vm->V[x] & (GRAPHICS_SYSTEM_WIDTH - 1)]
-                                                          [height + vm->V[y] & (GRAPHICS_SYSTEM_HEIGHT - 1)];
+                                                       [height + vm->V[y] & (GRAPHICS_SYSTEM_HEIGHT - 1)];
                     }
                 }
             }

@@ -22,7 +22,7 @@
 #define CHIP8_CHIP8_H_
 
 #include "../../../external/SDL/include/SDL.h"
-#include "pre_compiled_header.h"
+#include "backend_pre_compiled_header.h"
 
 #include "display.h"
 

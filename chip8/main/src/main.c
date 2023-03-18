@@ -20,10 +20,10 @@
 
 #include <stdio.h>
 
-#include "../../build/chip8/chip8_config.h"
+#include "../../build/chip8/main/src/chip8_config.h"
 
-#include "../../backend/src/virtual_machine.h"
 #include "../../backend/src/display.h"
+#include "../../backend/src/virtual_machine.h"
 #include "../../base/src/exit_code.h"
 #include "../../frontend/src/assembler.h"
 #include "../../io/src/file_utils.h"

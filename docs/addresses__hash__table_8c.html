@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.5"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>CHIP-8: frontend/addresses_hash_table.c File Reference</title>
+<title>CHIP-8: chip8/frontend/src/addresses_hash_table.c File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -91,30 +91,28 @@ $(document).ready(function(){initNavTree('addresses__hash__table_8c.html',''); i
 
 <div class="header">
   <div class="summary">
-<a href="#define-members">Macros</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle"><div class="title">addresses_hash_table.c File Reference</div></div>
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><code>#include &quot;<a class="el" href="addresses__hash__table_8h_source.html">addresses_hash_table.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="frontend_2pre__compiled__header_8h_source.html">pre_compiled_header.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="frontend__pre__compiled__header_8h_source.html">frontend_pre_compiled_header.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="fnv1a_8h_source.html">fnv1a.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="table_8h_source.html">table.h</a>&quot;</code><br />
 </div><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="define-members" name="define-members"></a>
-Macros</h2></td></tr>
-<tr class="memitem:abbfa2c01002e78dec9027ab712a296e7"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="addresses__hash__table_8c.html#abbfa2c01002e78dec9027ab712a296e7">TOMBSTONE</a>&#160;&#160;&#160;(<a class="el" href="structaddresses__hash__table__entry__t.html">addresses_hash_table_entry_t</a> *)(0xFFFFFFFFFFFFFFFFUL)</td></tr>
-<tr class="memdesc:abbfa2c01002e78dec9027ab712a296e7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Used to mark a bucket that has stored an entry that has been removed.  <a href="addresses__hash__table_8c.html#abbfa2c01002e78dec9027ab712a296e7">More...</a><br /></td></tr>
-<tr class="separator:abbfa2c01002e78dec9027ab712a296e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a99b6369b841173e41e2b5079c56fd6ab"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="addresses__hash__table_8c.html#a99b6369b841173e41e2b5079c56fd6ab">address_table_grow_table</a> (<a class="el" href="structaddresses__hash__table__t.html">addresses_hash_table_t</a> *)</td></tr>
-<tr class="separator:a99b6369b841173e41e2b5079c56fd6ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3a7b1791e9be3a182ac73e3e58bfc3e4"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="addresses__hash__table_8c.html#a3a7b1791e9be3a182ac73e3e58bfc3e4">addresses_table_grow_table</a> (<a class="el" href="structaddresses__hash__table__t.html">addresses_hash_table_t</a> *table)</td></tr>
+<tr class="memdesc:a3a7b1791e9be3a182ac73e3e58bfc3e4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Grows the size of a linear probing hashtable.  <a href="addresses__hash__table_8c.html#a3a7b1791e9be3a182ac73e3e58bfc3e4">More...</a><br /></td></tr>
+<tr class="separator:a3a7b1791e9be3a182ac73e3e58bfc3e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a484daf83625e94899c4901bc279dd9a7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structaddresses__hash__table__t.html">addresses_hash_table_t</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="addresses__hash__table_8c.html#a484daf83625e94899c4901bc279dd9a7">addresses_table_new</a> ()</td></tr>
 <tr class="memdesc:a484daf83625e94899c4901bc279dd9a7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates and initializes a new hashtable.  <a href="addresses__hash__table_8c.html#a484daf83625e94899c4901bc279dd9a7">More...</a><br /></td></tr>
 <tr class="separator:a484daf83625e94899c4901bc279dd9a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1e9af14d896e112a99de0422de5d380c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structaddresses__hash__table__entry__t.html">addresses_hash_table_entry_t</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="addresses__hash__table_8c.html#a1e9af14d896e112a99de0422de5d380c">addresses_table_entry_new</a> (char const *key, <a class="el" href="structdynamic__address__array__t.html">dynamic_address_array_t</a> *array)</td></tr>
+<tr class="memdesc:a1e9af14d896e112a99de0422de5d380c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a new addresses table entry.  <a href="addresses__hash__table_8c.html#a1e9af14d896e112a99de0422de5d380c">More...</a><br /></td></tr>
+<tr class="separator:a1e9af14d896e112a99de0422de5d380c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6da191019ec0bc7cf794c1e367994c1a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="addresses__hash__table_8c.html#a6da191019ec0bc7cf794c1e367994c1a">addresses_table_destory</a> (<a class="el" href="structaddresses__hash__table__t.html">addresses_hash_table_t</a> **table)</td></tr>
+<tr class="memdesc:a6da191019ec0bc7cf794c1e367994c1a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Frees the memory occupied by a hashtable (does not free the memory occupied by the entries)  <a href="addresses__hash__table_8c.html#a6da191019ec0bc7cf794c1e367994c1a">More...</a><br /></td></tr>
 <tr class="separator:a6da191019ec0bc7cf794c1e367994c1a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7ff68b9e5e810bb6c143725954aa69c6"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="addresses__hash__table_8c.html#a7ff68b9e5e810bb6c143725954aa69c6">addresses_table_init_table</a> (<a class="el" href="structaddresses__hash__table__t.html">addresses_hash_table_t</a> *table)</td></tr>
 <tr class="memdesc:a7ff68b9e5e810bb6c143725954aa69c6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes a new hashtable.  <a href="addresses__hash__table_8c.html#a7ff68b9e5e810bb6c143725954aa69c6">More...</a><br /></td></tr>
@@ -122,64 +120,22 @@ Functions</h2></td></tr>
 <tr class="memitem:a425edd57de57029b2cae8b593db73e86"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="addresses__hash__table_8c.html#a425edd57de57029b2cae8b593db73e86">addresses_table_free_entries</a> (<a class="el" href="structaddresses__hash__table__t.html">addresses_hash_table_t</a> *table)</td></tr>
 <tr class="memdesc:a425edd57de57029b2cae8b593db73e86"><td class="mdescLeft">&#160;</td><td class="mdescRight">Frees the memory used by the hashtable.  <a href="addresses__hash__table_8c.html#a425edd57de57029b2cae8b593db73e86">More...</a><br /></td></tr>
 <tr class="separator:a425edd57de57029b2cae8b593db73e86"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9621008178dd082ff92b3aba1ceba0d7"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="addresses__hash__table_8c.html#a9621008178dd082ff92b3aba1ceba0d7">addresses_table_add</a> (uint16_t address, char const *label, <a class="el" href="structaddresses__hash__table__t.html">addresses_hash_table_t</a> *table)</td></tr>
-<tr class="separator:a9621008178dd082ff92b3aba1ceba0d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1d84051abc392a63d1e53598aec6c254"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="addresses__hash__table_8c.html#a1d84051abc392a63d1e53598aec6c254">addresses_table_add</a> (uint16_t address, char const *key, <a class="el" href="structaddresses__hash__table__t.html">addresses_hash_table_t</a> *table)</td></tr>
+<tr class="memdesc:a1d84051abc392a63d1e53598aec6c254"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds the memory location to the table.  <a href="addresses__hash__table_8c.html#a1d84051abc392a63d1e53598aec6c254">More...</a><br /></td></tr>
+<tr class="separator:a1d84051abc392a63d1e53598aec6c254"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6e64deb8c3c2c2d71cd0fca47fb5e49b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structaddresses__hash__table__entry__t.html">addresses_hash_table_entry_t</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="addresses__hash__table_8c.html#a6e64deb8c3c2c2d71cd0fca47fb5e49b">addresses_table_remove_entry</a> (<a class="el" href="structaddresses__hash__table__entry__t.html">addresses_hash_table_entry_t</a> *node, <a class="el" href="structaddresses__hash__table__t.html">addresses_hash_table_t</a> *table)</td></tr>
 <tr class="memdesc:a6e64deb8c3c2c2d71cd0fca47fb5e49b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Removes a entry from the hashtable.  <a href="addresses__hash__table_8c.html#a6e64deb8c3c2c2d71cd0fca47fb5e49b">More...</a><br /></td></tr>
 <tr class="separator:a6e64deb8c3c2c2d71cd0fca47fb5e49b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1d6d8da673dc3a28ca8d838abb965a85"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structaddresses__hash__table__entry__t.html">addresses_hash_table_entry_t</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="addresses__hash__table_8c.html#a1d6d8da673dc3a28ca8d838abb965a85">addresses_table_look_up_entry</a> (char const *key, <a class="el" href="structaddresses__hash__table__t.html">addresses_hash_table_t</a> *table)</td></tr>
 <tr class="memdesc:a1d6d8da673dc3a28ca8d838abb965a85"><td class="mdescLeft">&#160;</td><td class="mdescRight">Looks up a entry in the hashtable.  <a href="addresses__hash__table_8c.html#a1d6d8da673dc3a28ca8d838abb965a85">More...</a><br /></td></tr>
 <tr class="separator:a1d6d8da673dc3a28ca8d838abb965a85"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3a7b1791e9be3a182ac73e3e58bfc3e4"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="addresses__hash__table_8c.html#a3a7b1791e9be3a182ac73e3e58bfc3e4">addresses_table_grow_table</a> (<a class="el" href="structaddresses__hash__table__t.html">addresses_hash_table_t</a> *table)</td></tr>
-<tr class="memdesc:a3a7b1791e9be3a182ac73e3e58bfc3e4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Grows the size of a linear probing hashtable.  <a href="addresses__hash__table_8c.html#a3a7b1791e9be3a182ac73e3e58bfc3e4">More...</a><br /></td></tr>
-<tr class="separator:a3a7b1791e9be3a182ac73e3e58bfc3e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3fd2c84d7ffea8c4cc8909dc2d9b9a17"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="addresses__hash__table_8c.html#a3fd2c84d7ffea8c4cc8909dc2d9b9a17">addresses_table_insert_entry</a> (<a class="el" href="structaddresses__hash__table__entry__t.html">addresses_hash_table_entry_t</a> *node, <a class="el" href="structaddresses__hash__table__t.html">addresses_hash_table_t</a> *table)</td></tr>
+<tr class="memdesc:a3fd2c84d7ffea8c4cc8909dc2d9b9a17"><td class="mdescLeft">&#160;</td><td class="mdescRight">Inserts a new entry into the hashtable.  <a href="addresses__hash__table_8c.html#a3fd2c84d7ffea8c4cc8909dc2d9b9a17">More...</a><br /></td></tr>
+<tr class="separator:a3fd2c84d7ffea8c4cc8909dc2d9b9a17"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Macro Definition Documentation</h2>
-<a id="abbfa2c01002e78dec9027ab712a296e7" name="abbfa2c01002e78dec9027ab712a296e7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abbfa2c01002e78dec9027ab712a296e7">&#9670;&#160;</a></span>TOMBSTONE</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define TOMBSTONE&#160;&#160;&#160;(<a class="el" href="structaddresses__hash__table__entry__t.html">addresses_hash_table_entry_t</a> *)(0xFFFFFFFFFFFFFFFFUL)</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Used to mark a bucket that has stored an entry that has been removed. </p>
-
-</div>
-</div>
 <h2 class="groupheader">Function Documentation</h2>
-<a id="a99b6369b841173e41e2b5079c56fd6ab" name="a99b6369b841173e41e2b5079c56fd6ab"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a99b6369b841173e41e2b5079c56fd6ab">&#9670;&#160;</a></span>address_table_grow_table()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">static int address_table_grow_table </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="structaddresses__hash__table__t.html">addresses_hash_table_t</a> *&#160;</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="a9621008178dd082ff92b3aba1ceba0d7" name="a9621008178dd082ff92b3aba1ceba0d7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9621008178dd082ff92b3aba1ceba0d7">&#9670;&#160;</a></span>addresses_table_add()</h2>
+<a id="a1d84051abc392a63d1e53598aec6c254" name="a1d84051abc392a63d1e53598aec6c254"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1d84051abc392a63d1e53598aec6c254">&#9670;&#160;</a></span>addresses_table_add()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -194,7 +150,7 @@ Functions</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">char const *&#160;</td>
-          <td class="paramname"><em>label</em>, </td>
+          <td class="paramname"><em>key</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -209,6 +165,17 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Adds the memory location to the table. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">address</td><td>The address that is added to the table </td></tr>
+    <tr><td class="paramname">key</td><td>The label that is referenced </td></tr>
+    <tr><td class="paramname">table</td><td>The table where the address is added </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>0 if the address was added, -1 if the address couldn't be added </dd></dl>
 
 </div>
 </div>
@@ -227,6 +194,52 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Frees the memory occupied by a hashtable (does not free the memory occupied by the entries) </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">table</td><td>The table that is freed </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a1e9af14d896e112a99de0422de5d380c" name="a1e9af14d896e112a99de0422de5d380c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1e9af14d896e112a99de0422de5d380c">&#9670;&#160;</a></span>addresses_table_entry_new()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structaddresses__hash__table__entry__t.html">addresses_hash_table_entry_t</a> * addresses_table_entry_new </td>
+          <td>(</td>
+          <td class="paramtype">char const *&#160;</td>
+          <td class="paramname"><em>key</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structdynamic__address__array__t.html">dynamic_address_array_t</a> *&#160;</td>
+          <td class="paramname"><em>array</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Creates a new addresses table entry. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">key</td><td>The key of the entry </td></tr>
+    <tr><td class="paramname">array</td><td>Pointer to the array of addresses </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The newly created entry </dd></dl>
 
 </div>
 </div>
@@ -315,6 +328,44 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>0 if it could be initialized, -1 if not </dd></dl>
+
+</div>
+</div>
+<a id="a3fd2c84d7ffea8c4cc8909dc2d9b9a17" name="a3fd2c84d7ffea8c4cc8909dc2d9b9a17"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3fd2c84d7ffea8c4cc8909dc2d9b9a17">&#9670;&#160;</a></span>addresses_table_insert_entry()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int addresses_table_insert_entry </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structaddresses__hash__table__entry__t.html">addresses_hash_table_entry_t</a> *&#160;</td>
+          <td class="paramname"><em>node</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structaddresses__hash__table__t.html">addresses_hash_table_t</a> *&#160;</td>
+          <td class="paramname"><em>table</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Inserts a new entry into the hashtable. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">entry</td><td>The entry that is inserted </td></tr>
+    <tr><td class="paramname">table</td><td>The table where the entry is inserted </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>0 if the entry was added, -1 if the entry couldn't be added </dd></dl>
 
 </div>
 </div>
@@ -419,7 +470,7 @@ Functions</h2></td></tr>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_ca0386ec887ae6362f93b0d653b52e0c.html">frontend</a></li><li class="navelem"><a class="el" href="addresses__hash__table_8c.html">addresses_hash_table.c</a></li>
+    <li class="navelem"><a class="el" href="dir_d447c1f28e7500b1cedb201eaf65d36e.html">chip8</a></li><li class="navelem"><a class="el" href="dir_01ca3f5e3fe98743fdc44c8646915c8e.html">frontend</a></li><li class="navelem"><a class="el" href="dir_5f16cb8542c317645afa3ec29a194f53.html">src</a></li><li class="navelem"><a class="el" href="addresses__hash__table_8c.html">addresses_hash_table.c</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.5 </li>
   </ul>
 </div>

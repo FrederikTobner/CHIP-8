@@ -115,12 +115,48 @@ Data Fields</h2></td></tr>
 <tr class="memitem:a311196674133e618759342d6be698474"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structassembler__t.html#a311196674133e618759342d6be698474">line</a></td></tr>
 <tr class="memdesc:a311196674133e618759342d6be698474"><td class="mdescLeft">&#160;</td><td class="mdescRight">Line counter - used for error reporting.  <a href="structassembler__t.html#a311196674133e618759342d6be698474">More...</a><br /></td></tr>
 <tr class="separator:a311196674133e618759342d6be698474"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab3a8789e87fe5a81412f5c6fc6e87c95"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structaddress__hash__table__t.html">address_hash_table_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structassembler__t.html#ab3a8789e87fe5a81412f5c6fc6e87c95">table</a></td></tr>
-<tr class="separator:ab3a8789e87fe5a81412f5c6fc6e87c95"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a28ca3e85c0b411cb2b7e007a698896f7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structaddress__hash__table__t.html">address_hash_table_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structassembler__t.html#a28ca3e85c0b411cb2b7e007a698896f7">addressTable</a></td></tr>
+<tr class="memdesc:a28ca3e85c0b411cb2b7e007a698896f7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Address table - used to store the adress of a label definition.  <a href="structassembler__t.html#a28ca3e85c0b411cb2b7e007a698896f7">More...</a><br /></td></tr>
+<tr class="separator:a28ca3e85c0b411cb2b7e007a698896f7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adf85dcb1626f14a069a55ec133943a09"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structaddresses__hash__table__t.html">addresses_hash_table_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structassembler__t.html#adf85dcb1626f14a069a55ec133943a09">addressesTable</a></td></tr>
+<tr class="memdesc:adf85dcb1626f14a069a55ec133943a09"><td class="mdescLeft">&#160;</td><td class="mdescRight">Address table - used to store unresolved label references.  <a href="structassembler__t.html#adf85dcb1626f14a069a55ec133943a09">More...</a><br /></td></tr>
+<tr class="separator:adf85dcb1626f14a069a55ec133943a09"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p >Type definition of a assembler. </p>
 </div><h2 class="groupheader">Field Documentation</h2>
+<a id="adf85dcb1626f14a069a55ec133943a09" name="adf85dcb1626f14a069a55ec133943a09"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adf85dcb1626f14a069a55ec133943a09">&#9670;&#160;</a></span>addressesTable</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structaddresses__hash__table__t.html">addresses_hash_table_t</a> addressesTable</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Address table - used to store unresolved label references. </p>
+
+</div>
+</div>
+<a id="a28ca3e85c0b411cb2b7e007a698896f7" name="a28ca3e85c0b411cb2b7e007a698896f7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a28ca3e85c0b411cb2b7e007a698896f7">&#9670;&#160;</a></span>addressTable</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structaddress__hash__table__t.html">address_hash_table_t</a> addressTable</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Address table - used to store the adress of a label definition. </p>
+
+</div>
+</div>
 <a id="a5bed065f1f0fbd1e07b996a2de6bd1a7" name="a5bed065f1f0fbd1e07b996a2de6bd1a7"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a5bed065f1f0fbd1e07b996a2de6bd1a7">&#9670;&#160;</a></span>current</h2>
 
@@ -185,22 +221,8 @@ Data Fields</h2></td></tr>
 
 </div>
 </div>
-<a id="ab3a8789e87fe5a81412f5c6fc6e87c95" name="ab3a8789e87fe5a81412f5c6fc6e87c95"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab3a8789e87fe5a81412f5c6fc6e87c95">&#9670;&#160;</a></span>table</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="structaddress__hash__table__t.html">address_hash_table_t</a> table</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
 <hr/>The documentation for this struct was generated from the following file:<ul>
-<li>frontend/<a class="el" href="assembler_8h_source.html">assembler.h</a></li>
+<li>chip8/frontend/src/<a class="el" href="assembler_8h_source.html">assembler.h</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->

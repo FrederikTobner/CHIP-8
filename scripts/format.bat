@@ -11,8 +11,8 @@ IF NOT EXIST ..\chip8 (
 
 cd ..\chip8
 
-ECHO Formatting all the source file's in our src directory
+ECHO Formatting all the source file's in the chip8 directory
 
-for /r %%t in (*.cpp *.h) do clang-format -i --style=file "%%t"
+for /r %%t in (*.cpp *.c *.h) do clang-format -i --style=file "%%t"
 
 cd ..\scripts
