@@ -14,12 +14,12 @@
  ****************************************************************************/
 
 /**
- * @file chip8.h
+ * @file virtual_machine.h
  * @brief Declarations regarding the virtual machine of the emulator
  */
 
-#ifndef CHIP8_CHIP8_H_
-#define CHIP8_CHIP8_H_
+#ifndef CHIP8_VIRTUAL_MACHINE_H_
+#define CHIP8_VIRTUAL_MACHINE_H_
 
 #include "../../../external/SDL/include/SDL.h"
 #include "backend_pre_compiled_header.h"
@@ -55,8 +55,8 @@ void virtual_machine_execute(virtual_machine_t * vm);
 
 void virtual_machine_init(virtual_machine_t * vm);
 
-void virtual_machine_write_opcode_to_memory(virtual_machine_t * chip8, uint16_t * memoryLocation, uint16_t opcode);
+void virtual_machine_write_opcode_to_memory(virtual_machine_t * vm, uint16_t * memoryLocation, uint16_t opcode);
 
-void virtual_machine_write_byte_to_memory(virtual_machine_t * chip8, uint16_t * memoryLocation, uint8_t byte);
+void virtual_machine_write_byte_to_memory(virtual_machine_t * vm, uint16_t * memoryLocation, uint8_t byte);
 
 #endif

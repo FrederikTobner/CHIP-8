@@ -46,7 +46,7 @@ static int8_t virtual_machine_execute_next_opcode(virtual_machine_t *, keyBoardS
 static inline void virtual_machine_place_character_sprites_in_memory(virtual_machine_t *);
 
 /// @brief Executes the program that is stored in memory
-/// @param chip8 The chip8 vm where the program that is currently held in memory is executed
+/// @param vm The chip8 vm where the program that is currently held in memory is executed
 void virtual_machine_execute(virtual_machine_t * vm) {
     time_t last_t, current_t;
     uint64_t numberofChip8Clocks = 0;
@@ -109,7 +109,7 @@ void virtual_machine_execute(virtual_machine_t * vm) {
 }
 
 /// @brief Initializes the chip8 vm
-/// @param chip8 The chip8 virtual machine that is initialzed
+/// @param vm The chip8 virtual machine that is initialzed
 void virtual_machine_init(virtual_machine_t * vm) {
     uint8_t * upperBound = (vm->V + 16u);
     for (uint8_t * memoryPointer = vm->V; memoryPointer < upperBound; memoryPointer++) {
@@ -130,7 +130,7 @@ void virtual_machine_init(virtual_machine_t * vm) {
 }
 
 /// @brief Writtes the specified opcode at the specified location into memory
-/// @param chip8 The chip8 where the opcode is written to memory
+/// @param vm The chip8 where the opcode is written to memory
 /// @param memoryLocation The location where the opcode is written to (0-4096)
 /// @param opcode The opcode that is written into memory
 void virtual_machine_write_opcode_to_memory(virtual_machine_t * vm, uint16_t * memoryLocation, uint16_t opcode) {
@@ -145,18 +145,18 @@ void virtual_machine_write_opcode_to_memory(virtual_machine_t * vm, uint16_t * m
 }
 
 /// @brief Writtes the specified opcode at the specified location into memory
-/// @param chip8 The chip8 where the opcode is written to memory
+/// @param vm The chip8 where the opcode is written to memory
 /// @param memoryLocation The location where the opcode is written to (0-4096)
 /// @param byte The byte that is written into memory
-void virtual_machine_write_byte_to_memory(virtual_machine_t * chip8, uint16_t * memoryLocation, uint8_t byte) {
+void virtual_machine_write_byte_to_memory(virtual_machine_t * vm, uint16_t * memoryLocation, uint8_t byte) {
     if (*memoryLocation > 0x1000u || *memoryLocation < PROGRAM_START_LOCATION) {
         return;
     }
-    chip8->memory[(*memoryLocation)++] = byte;
+    vm->memory[(*memoryLocation)++] = byte;
 }
 
 /// @brief Places sprites for characters in memory
-/// @param chip8 The virtual machine where the sprites are placed in memory
+/// @param vm The virtual machine where the sprites are placed in memory
 static inline void virtual_machine_place_character_sprites_in_memory(virtual_machine_t * vm) {
     memcpy(
         vm->memory + 0x50,
@@ -167,7 +167,7 @@ static inline void virtual_machine_place_character_sprites_in_memory(virtual_mac
 }
 
 /// Executes the next opcode in memory
-/// @param chip8 The chip8 virtual machine where the next opcode is executed
+/// @param vm The chip8 virtual machine where the next opcode is executed
 /// @return 0 if the opcode was executed properly, -1 if not
 static int8_t virtual_machine_execute_next_opcode(virtual_machine_t * vm, uint16_t keyBoardState) {
     switch (vm->currentOpcode & 0xf000) {

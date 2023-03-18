@@ -14,8 +14,8 @@
  ****************************************************************************/
 
 /**
- * @file path_utils.c
- * @brief Definitions regarding the path utilities used by the emulator
+ * @file exit_code.c
+ * @brief Exit codes used by the emulator
  */
 
 #ifndef CHIP8_BASE_H_

@@ -14,7 +14,7 @@
  ****************************************************************************/
 
 /**
- * @file address_hash_table.c
+ * @file addresses_hash_table.c
  * @brief Definitions regarding the hashtable that stored memory adresses under their label
  */
 

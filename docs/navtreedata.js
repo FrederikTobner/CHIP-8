@@ -25,6 +25,11 @@
 var NAVTREE =
 [
   [ "CHIP-8", "index.html", [
+    [ "Main Page", "index.html", [
+      [ "Introduction", "index.html#intro_sec", null ],
+      [ "Building", "index.html#building_sec", null ],
+      [ "License", "index.html#license_sec", null ]
+    ] ],
     [ "Data Structures", "annotated.html", [
       [ "Data Structures", "annotated.html", "annotated_dup" ],
       [ "Data Structure Index", "classes.html", null ],
@@ -50,7 +55,7 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "address__hash__table_8c.html",
-"structvirtual__machine__t.html#a742229490b6759a90ece7ba82ba129d5"
+"structvirtual__machine__t.html#a28f6e00c32f4a0752920fd295ea27c2d"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

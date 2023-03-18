@@ -14,7 +14,7 @@
  ****************************************************************************/
 
 /**
- * @file address_hash_table.h
+ * @file addresses_hash_table.h
  * @brief Declarations regarding the hashtable that stores multiple memory adresses under their label
  */
 
