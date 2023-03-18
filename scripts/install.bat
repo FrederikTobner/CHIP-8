@@ -3,4 +3,4 @@
 @ECHO OFF
 CALL build.bat Release
 ECHO Installing CHIP-8 ...
-cmake --install ../build/src --config Release
+cmake --install ../build/chip8/main/src/ --config Release

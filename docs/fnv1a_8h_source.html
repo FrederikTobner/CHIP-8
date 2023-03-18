@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.5"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>CHIP-8: frontend/fnv1a.h Source File</title>
+<title>CHIP-8: chip8/frontend/src/fnv1a.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -111,21 +111,30 @@ $(document).ready(function(){initNavTree('fnv1a_8h_source.html',''); initResizab
 <div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="preprocessor">#ifndef CHIP8_FNV1A_H_</span></div>
 <div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="preprocessor">#define CHIP8_FNV1A_H_</span></div>
 <div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span> </div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span><span class="preprocessor">#include &lt;stddef.h&gt;</span></div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span><span class="preprocessor">#include &lt;stdint.h&gt;</span></div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span> </div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span><span class="comment">// Fowler-Noll-Vo hashing function https://en.wikipedia.org/wiki/Fowler%E2%80%93Noll%E2%80%93Vo_hash_function</span></div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span><span class="comment">// This file is included in the test-suite that is written in c++ using the google-test framework</span></div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span><span class="preprocessor">#ifdef __cplusplus</span></div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span><span class="keyword">extern</span> <span class="stringliteral">&quot;C&quot;</span> {</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span><span class="preprocessor">#endif</span></div>
 <div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span> </div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>uint32_t <a class="code hl_function" href="fnv1a_8h.html#a0cce7c088fe2df1628ceddc5c998c4af">fnv1a_hash_data</a>(uint8_t <span class="keyword">const</span> * data, <span class="keywordtype">size_t</span> length);</div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span> </div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span><span class="preprocessor">#include &quot;<a class="code" href="frontend__pre__compiled__header_8h.html">frontend_pre_compiled_header.h</a>&quot;</span></div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span> </div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span><span class="comment">// Fowler-Noll-Vo hashing function https://en.wikipedia.org/wiki/Fowler%E2%80%93Noll%E2%80%93Vo_hash_function</span></div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span> </div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>uint32_t <a class="code hl_function" href="fnv1a_8h.html#a0cce7c088fe2df1628ceddc5c998c4af">fnv1a_hash_data</a>(uint8_t <span class="keyword">const</span> * data, <span class="keywordtype">size_t</span> length);</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span> </div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span><span class="preprocessor">#ifdef __cplusplus</span></div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>}</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span> </div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span><span class="preprocessor">#endif</span></div>
 <div class="ttc" id="afnv1a_8h_html_a0cce7c088fe2df1628ceddc5c998c4af"><div class="ttname"><a href="fnv1a_8h.html#a0cce7c088fe2df1628ceddc5c998c4af">fnv1a_hash_data</a></div><div class="ttdeci">uint32_t fnv1a_hash_data(uint8_t const *data, size_t length)</div><div class="ttdoc">Hashes the data using fowler noll vo.</div><div class="ttdef"><b>Definition:</b> fnv1a.c:26</div></div>
+<div class="ttc" id="afrontend__pre__compiled__header_8h_html"><div class="ttname"><a href="frontend__pre__compiled__header_8h.html">frontend_pre_compiled_header.h</a></div><div class="ttdoc">Precompiled header file of the emulator frontend.</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_ca0386ec887ae6362f93b0d653b52e0c.html">frontend</a></li><li class="navelem"><a class="el" href="fnv1a_8h.html">fnv1a.h</a></li>
+    <li class="navelem"><a class="el" href="dir_d447c1f28e7500b1cedb201eaf65d36e.html">chip8</a></li><li class="navelem"><a class="el" href="dir_01ca3f5e3fe98743fdc44c8646915c8e.html">frontend</a></li><li class="navelem"><a class="el" href="dir_5f16cb8542c317645afa3ec29a194f53.html">src</a></li><li class="navelem"><a class="el" href="fnv1a_8h.html">fnv1a.h</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.5 </li>
   </ul>
 </div>

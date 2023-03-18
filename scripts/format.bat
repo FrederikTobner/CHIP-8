@@ -4,15 +4,15 @@
 :: We should maybe check first if the clang-format npm package is installed at all.
 
 @ECHO OFF
-IF NOT EXIST ..\src (
+IF NOT EXIST ..\chip8 (
     ECHO Can not find source directory
     EXIT
 )
 
-cd ..\src\
+cd ..\chip8
 
-ECHO Formatting all the source file's in our src directory
+ECHO Formatting all the source file's in the chip8 directory
 
-for /r %%t in (*.cpp *.h) do clang-format -i --style=file "%%t"
+for /r %%t in (*.cpp *.c *.h) do clang-format -i --style=file "%%t"
 
-cd ..\scripts\
+cd ..\scripts

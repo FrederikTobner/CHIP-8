@@ -3,9 +3,9 @@
 /bin/bash build_release.sh
 # Zipping binaries
 echo "Zipping cellox x64 ..."
-if [ -d "../build/linux_x64/src" ] 
+if [ -d "../build/linux_x64/chip8/main/src/" ] 
 then
-    cd ../build/linux_x64/src
+    cd ../build/linux_x64/chip8/main/src/
     cpack -G ZIP --config ../CPackConfig.cmake.    
 else
     echo "Can not find x64 linux build folder ..."

@@ -4,12 +4,22 @@ cmake_minimum_required(VERSION 3.16)
 # Defining project name, version and used languages
 project(CHIP-8 
 VERSION 0.1.0 
-LANGUAGES C
+LANGUAGES C CXX
 )
 
 # C99 standard is required to build the emulator
 set(CMAKE_C_STANDARD 99)
 set(CMAKE_C_STANDARD_REQUIRED True)
+
+# C++ 14 needed for Google Test Framework
+set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD_REQUIRED True)
+
+# enabling tests
+enable_testing()
+
+get_filename_component(SOURCE_PATH_FRONTEND ${PROJECT_SOURCE_DIR}/chip8/frontend/src ABSOLUTE)
+
 # CMake Build options
 # These options only affect the build if the built-type is Debug - otherwise they will be ignored
 option(CP8_DEBUG_PRINT_BYTECODE "Determines whether the instructions are printed" OFF)
@@ -27,4 +37,4 @@ CHIP8_Check_Dependencies()
 add_subdirectory(external/SDL)
 
 # Build CHIP-8 project
-add_subdirectory(src)
+add_subdirectory(chip8)

@@ -1,6 +1,6 @@
 var address__hash__table_8c =
 [
-    [ "TOMBSTONE", "address__hash__table_8c.html#abbfa2c01002e78dec9027ab712a296e7", null ],
+    [ "ADDRESS_ENTRY_TOMBSTONE", "address__hash__table_8c.html#a6af49f271c078ad40efc253b73dcd150", null ],
     [ "address_table_destory", "address__hash__table_8c.html#a5afb30c48bb26ca4e7c90890c8af33c1", null ],
     [ "address_table_entry_new", "address__hash__table_8c.html#ac3f97e2bd195edd6dc2ad7de42c42b96", null ],
     [ "address_table_free_entries", "address__hash__table_8c.html#a12191f941280bb6d140b69a8ef8907d9", null ],

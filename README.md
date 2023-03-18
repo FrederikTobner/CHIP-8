@@ -13,6 +13,11 @@ Simple [CHIP-8](https://en.wikipedia.org/wiki/CHIP-8) emulator written in C, wit
 * [Dependencies](#dependencies)
 * [License](#license)
 
+## Key concepts
+
+1. Programming in binary is quite complex, therefor we provide an assembly language
+2. The assembly language should stay close to the actual opcode's representation in memory
+
 ## Dependencies
 
 The emulator has the following dependencies

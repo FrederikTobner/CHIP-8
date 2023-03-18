@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.5"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>CHIP-8: frontend/assembler.h File Reference</title>
+<title>CHIP-8: chip8/frontend/src/assembler.h File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -99,9 +99,9 @@ $(document).ready(function(){initNavTree('assembler_8h.html',''); initResizable(
 
 <p>Declarations regarding the assembler of the emulator.  
 <a href="#details">More...</a></p>
-<div class="textblock"><code>#include &quot;<a class="el" href="chip8_8h_source.html">../backend/chip8.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="address__hash__table_8h_source.html">address_hash_table.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="frontend_2pre__compiled__header_8h_source.html">pre_compiled_header.h</a>&quot;</code><br />
+<div class="textblock"><code>#include &quot;<a class="el" href="address__hash__table_8h_source.html">address_hash_table.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="addresses__hash__table_8h_source.html">addresses_hash_table.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="frontend__pre__compiled__header_8h_source.html">frontend_pre_compiled_header.h</a>&quot;</code><br />
 </div>
 <p><a href="assembler_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
@@ -116,9 +116,9 @@ Functions</h2></td></tr>
 <tr class="memitem:a638ad3bfdcb2f0f545b3bf61733eb519"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="assembler_8h.html#a638ad3bfdcb2f0f545b3bf61733eb519">assembler_initialize</a> (<a class="el" href="structassembler__t.html">assembler_t</a> *assembler, char const *source)</td></tr>
 <tr class="memdesc:a638ad3bfdcb2f0f545b3bf61733eb519"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes the assembler.  <a href="assembler_8h.html#a638ad3bfdcb2f0f545b3bf61733eb519">More...</a><br /></td></tr>
 <tr class="separator:a638ad3bfdcb2f0f545b3bf61733eb519"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afbe10e607acfbdebabb0fb13726056d0"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="assembler_8h.html#afbe10e607acfbdebabb0fb13726056d0">assembler_process_file</a> (<a class="el" href="structassembler__t.html">assembler_t</a> *assembler, <a class="el" href="structchip8__t.html">chip8_t</a> *chip8)</td></tr>
-<tr class="memdesc:afbe10e607acfbdebabb0fb13726056d0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Processes a chip8 assembly file (.cp8)  <a href="assembler_8h.html#afbe10e607acfbdebabb0fb13726056d0">More...</a><br /></td></tr>
-<tr class="separator:afbe10e607acfbdebabb0fb13726056d0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9f3971971d1703fbe4b83d98a677329d"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="assembler_8h.html#a9f3971971d1703fbe4b83d98a677329d">assembler_process_file</a> (<a class="el" href="structassembler__t.html">assembler_t</a> *assembler, uint8_t *memory)</td></tr>
+<tr class="memdesc:a9f3971971d1703fbe4b83d98a677329d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Processes a chip8 assembly file (.cp8)  <a href="assembler_8h.html#a9f3971971d1703fbe4b83d98a677329d">More...</a><br /></td></tr>
+<tr class="separator:a9f3971971d1703fbe4b83d98a677329d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p >Declarations regarding the assembler of the emulator. </p>
@@ -160,8 +160,8 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="afbe10e607acfbdebabb0fb13726056d0" name="afbe10e607acfbdebabb0fb13726056d0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afbe10e607acfbdebabb0fb13726056d0">&#9670;&#160;</a></span>assembler_process_file()</h2>
+<a id="a9f3971971d1703fbe4b83d98a677329d" name="a9f3971971d1703fbe4b83d98a677329d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9f3971971d1703fbe4b83d98a677329d">&#9670;&#160;</a></span>assembler_process_file()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -175,8 +175,8 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="structchip8__t.html">chip8_t</a> *&#160;</td>
-          <td class="paramname"><em>chip8</em>&#160;</td>
+          <td class="paramtype">uint8_t *&#160;</td>
+          <td class="paramname"><em>memory</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -190,7 +190,7 @@ Functions</h2></td></tr>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">assembler</td><td>The assembler that processes the file </td></tr>
-    <tr><td class="paramname">chip8</td><td>The virtual machine where the program is written into memory </td></tr>
+    <tr><td class="paramname">vm</td><td>The virtual machine where the program is written into memory </td></tr>
   </table>
   </dd>
 </dl>
@@ -203,7 +203,7 @@ Functions</h2></td></tr>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_ca0386ec887ae6362f93b0d653b52e0c.html">frontend</a></li><li class="navelem"><a class="el" href="assembler_8h.html">assembler.h</a></li>
+    <li class="navelem"><a class="el" href="dir_d447c1f28e7500b1cedb201eaf65d36e.html">chip8</a></li><li class="navelem"><a class="el" href="dir_01ca3f5e3fe98743fdc44c8646915c8e.html">frontend</a></li><li class="navelem"><a class="el" href="dir_5f16cb8542c317645afa3ec29a194f53.html">src</a></li><li class="navelem"><a class="el" href="assembler_8h.html">assembler.h</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.5 </li>
   </ul>
 </div>

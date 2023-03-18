@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.5"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>CHIP-8: main/main.c File Reference</title>
+<title>CHIP-8: chip8/main/src/main.c File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -99,13 +99,13 @@ $(document).ready(function(){initNavTree('main_8c.html',''); initResizable(); })
 
 <p>Main entry point of the program.  
 <a href="#details">More...</a></p>
-<div class="textblock"><code>#include &quot;../../build/src/chip8_config.h&quot;</code><br />
-<code>#include &quot;<a class="el" href="chip8_8h_source.html">../backend/chip8.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="display_8h_source.html">../backend/display.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="assembler_8h_source.html">../frontend/assembler.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="file__utils_8h_source.html">../io/file_utils.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="exit__code_8h_source.html">../base/exit_code.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="main_2pre__compiled__header_8h_source.html">pre_compiled_header.h</a>&quot;</code><br />
+<div class="textblock"><code>#include &lt;stdio.h&gt;</code><br />
+<code>#include &quot;../../build/chip8/main/src/chip8_config.h&quot;</code><br />
+<code>#include &quot;<a class="el" href="display_8h_source.html">../../backend/src/display.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="virtual__machine_8h_source.html">../../backend/src/virtual_machine.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="exit__code_8h_source.html">../../base/src/exit_code.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="assembler_8h_source.html">../../frontend/src/assembler.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="file__utils_8h_source.html">../../io/src/file_utils.h</a>&quot;</code><br />
 </div><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="define-members" name="define-members"></a>
 Macros</h2></td></tr>
@@ -117,9 +117,9 @@ Macros</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a0507145c2d895c1162e0bea7924fd904"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8c.html#a0507145c2d895c1162e0bea7924fd904">run_from_file</a> (char *filePath)</td></tr>
-<tr class="memdesc:a0507145c2d895c1162e0bea7924fd904"><td class="mdescLeft">&#160;</td><td class="mdescRight">Executes a chip8 program stored in a file.  <a href="main_8c.html#a0507145c2d895c1162e0bea7924fd904">More...</a><br /></td></tr>
-<tr class="separator:a0507145c2d895c1162e0bea7924fd904"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abce7fb06b80401d4c2526c2ebf6bbb3d"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8c.html#abce7fb06b80401d4c2526c2ebf6bbb3d">run_from_file</a> (char const *filePath)</td></tr>
+<tr class="memdesc:abce7fb06b80401d4c2526c2ebf6bbb3d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Executes a chip8 program stored in a file.  <a href="main_8c.html#abce7fb06b80401d4c2526c2ebf6bbb3d">More...</a><br /></td></tr>
+<tr class="separator:abce7fb06b80401d4c2526c2ebf6bbb3d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a81962ff36a3740bd2a6a458b74e57e26"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8c.html#a81962ff36a3740bd2a6a458b74e57e26">show_help</a> ()</td></tr>
 <tr class="memdesc:a81962ff36a3740bd2a6a458b74e57e26"><td class="mdescLeft">&#160;</td><td class="mdescRight">Displays the help of the emulator.  <a href="main_8c.html#a81962ff36a3740bd2a6a458b74e57e26">More...</a><br /></td></tr>
 <tr class="separator:a81962ff36a3740bd2a6a458b74e57e26"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -199,8 +199,8 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a0507145c2d895c1162e0bea7924fd904" name="a0507145c2d895c1162e0bea7924fd904"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0507145c2d895c1162e0bea7924fd904">&#9670;&#160;</a></span>run_from_file()</h2>
+<a id="abce7fb06b80401d4c2526c2ebf6bbb3d" name="abce7fb06b80401d4c2526c2ebf6bbb3d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abce7fb06b80401d4c2526c2ebf6bbb3d">&#9670;&#160;</a></span>run_from_file()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -211,7 +211,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="memname">static void run_from_file </td>
           <td>(</td>
-          <td class="paramtype">char *&#160;</td>
+          <td class="paramtype">char const *&#160;</td>
           <td class="paramname"><em>filePath</em></td><td>)</td>
           <td></td>
         </tr>
@@ -265,7 +265,7 @@ Functions</h2></td></tr>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_5c982d53a68cdbcd421152b4020263a9.html">main</a></li><li class="navelem"><a class="el" href="main_8c.html">main.c</a></li>
+    <li class="navelem"><a class="el" href="dir_d447c1f28e7500b1cedb201eaf65d36e.html">chip8</a></li><li class="navelem"><a class="el" href="dir_75cc4a0dca56427d328f5581169321b1.html">main</a></li><li class="navelem"><a class="el" href="dir_19ba3bf8670b2fb9cf82be505f7781c5.html">src</a></li><li class="navelem"><a class="el" href="main_8c.html">main.c</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.5 </li>
   </ul>
 </div>
