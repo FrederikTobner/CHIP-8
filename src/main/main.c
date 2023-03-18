@@ -18,6 +18,8 @@
  * @brief Main entry point of the program
  */
 
+#include <stdio.h>
+
 #include "../../build/src/main/chip8_config.h"
 #include "../backend/chip8.h"
 #include "../backend/display.h"
@@ -25,7 +27,7 @@
 #include "../io/file_utils.h"
 #include "../base/exit_code.h"
 
-#include "pre_compiled_header.h"
+
 
 /// Short message that explains the usage of the CHIP-8 emulator
 #define CHIP8_USAGE_MESSAGE "Usage: Chip8 [path]\n"

@@ -147,6 +147,29 @@ addresses_hash_table_entry_t * addresses_table_look_up_entry(char const * key, a
     return NULL;
 }
 
+int addresses_table_insert_entry(addresses_hash_table_entry_t * node, addresses_hash_table_t * table) {
+    if (!node || !table) {
+        return -1;
+    }
+    if (table->used >= ((double)table->allocated) * TABLE_GROWTH_TRIGGER_VALUE) {
+        if (addresses_table_grow_table(table)) {
+            return -1;
+        }
+    }
+    uint32_t index, try;
+    index = fnv1a_hash_data((uint8_t *)node->key, strlen(node->key));
+    for (size_t i = 0; i < table->allocated; i++) {
+        // When we reach the end of the hashTable we continue from the beginning
+        try = (i + index) & (table->allocated - 1);
+        if (!table->entries[try] || table->entries[try] == TOMBSTONE) {
+            table->entries[try] = node;
+            table->used++;
+            return 0;
+        }
+    }
+    return -1;
+}
+
 /// @brief Grows the size of a linear probing hashtable
 /// @param table The table that is grown
 /// @return 0 if successfull, -1 if not

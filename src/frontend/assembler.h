@@ -24,6 +24,7 @@
 #include "../backend/chip8.h"
 
 #include "address_hash_table.h"
+#include "addresses_hash_table.h"
 #include "pre_compiled_header.h"
 
 /// @brief Type definition of a assembler
@@ -36,7 +37,10 @@ typedef struct {
     char const * current;
     /// Line counter - used for error reporting
     uint32_t line;
-    address_hash_table_t table;
+    /// @brief Address table - used to store the adress of a label definition
+    address_hash_table_t addressTable;
+    /// @brief Address table - used to store unresolved label references
+    addresses_hash_table_t addressesTable;
 } assembler_t;
 
 /// @brief Initializes the assembler

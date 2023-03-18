@@ -23,8 +23,10 @@
 #if defined(PRINT_BYTE_CODE) || defined(TRACE_EXECUTION)
 #include "debug.h"
 #endif
-#include "display.h"
 #include "../base/alias.h"
+#include "display.h"
+#include "keyboard_state.h"
+#include "pre_compiled_header.h"
 
 /// Defines a new 8-bit value based on the opcode that is currently executed
 #define DEFINE_8_BIT_VALUE  uint8_t value = chip8->currentOpcode & 0x00ff;
@@ -41,7 +43,7 @@
 /// The clock speed of the CHIP-8 CPU (600 Hz)
 #define CHIP8_CLOCK_SPEED   (600.0)
 
-static int8_t chip8_execute_next_opcode(chip8_t *);
+static int8_t chip8_execute_next_opcode(chip8_t *, uint16_t);
 static inline void chip8_place_character_sprites_in_memory(chip8_t *);
 
 /// @brief Executes the program that is stored in memory
@@ -50,12 +52,22 @@ void chip8_execute(chip8_t * chip8) {
     time_t last_t, current_t;
     long numberofChip8Clocks = 0;
     SDL_Event event;
+    uint16_t keyBoardState = 0;
     for (; chip8->programCounter < ((0x1000 - PROGRAM_START_LOCATION) / 2);
          chip8->programCounter++, numberofChip8Clocks++) {
         // Polling SDL events
         while (SDL_PollEvent(&event)) {
-            if (event.type == SDL_QUIT) {
+            switch (event.type) {
+            case SDL_QUIT:
                 return;
+            case SDL_KEYDOWN:
+                keyboard_update_keyboard_down_state(event, &keyBoardState);
+                break;
+            case SDL_KEYUP:
+                keyboard_update_keyboard_up_state(event, &keyBoardState);
+                break;
+            default:
+                break;
             }
         }
         last_t = time(NULL);
@@ -69,7 +81,7 @@ void chip8_execute(chip8_t * chip8) {
             return;
         }
         // Executes next opcode
-        if (chip8_execute_next_opcode(chip8)) {
+        if (chip8_execute_next_opcode(chip8, keyBoardState)) {
             return;
         }
         // 60 hz
@@ -159,7 +171,7 @@ static inline void chip8_place_character_sprites_in_memory(chip8_t * chip8) {
 /// Executes the next opcode in memory
 /// @param chip8 The chip8 virtual machine where the next opcode is executed
 /// @return 0 if the opcode was executed properly, -1 if not
-static int8_t chip8_execute_next_opcode(chip8_t * chip8) {
+static int8_t chip8_execute_next_opcode(chip8_t * chip8, uint16_t keyBoardState) {
     switch (chip8->currentOpcode & 0xf000) {
     case 0x0000:
         {
@@ -404,33 +416,181 @@ static int8_t chip8_execute_next_opcode(chip8_t * chip8) {
             case 0x9e: // 0xEX9E - Skips the next instruction if the key stored in VX is pressed. (Usually the next
                        // instruction is a jump to skip a code block)
                 {
-                    // TODO: Add support for the instruction under unix based systems
                     DEFINE_X
-#ifdef OS_WINDOWS
-                    if (kbhit()) {
-                        char c = getch();
-                        if (chip8->V[x] == c) {
+                    switch (chip8->V[x]) {
+                    case 0x0:
+                        if (keyBoardState & CHIP8_KEY_CODE_0) {
                             chip8->programCounter++;
                         }
+                        break;
+                    case 0x1:
+                        if (keyBoardState & CHIP8_KEY_CODE_1) {
+                            chip8->programCounter++;
+                        }
+                        break;
+                    case 0x2:
+                        if (keyBoardState & CHIP8_KEY_CODE_2) {
+                            chip8->programCounter++;
+                        }
+                        break;
+                    case 0x3:
+                        if (keyBoardState & CHIP8_KEY_CODE_3) {
+                            chip8->programCounter++;
+                        }
+                        break;
+                    case 0x4:
+                        if (keyBoardState & CHIP8_KEY_CODE_4) {
+                            chip8->programCounter++;
+                        }
+                        break;
+                    case 0x5:
+                        if (keyBoardState & CHIP8_KEY_CODE_5) {
+                            chip8->programCounter++;
+                        }
+                        break;
+                    case 0x6:
+                        if (keyBoardState & CHIP8_KEY_CODE_6) {
+                            chip8->programCounter++;
+                        }
+                        break;
+                    case 0x7:
+                        if (keyBoardState & CHIP8_KEY_CODE_7) {
+                            chip8->programCounter++;
+                        }
+                        break;
+                    case 0x8:
+                        if (keyBoardState & CHIP8_KEY_CODE_8) {
+                            chip8->programCounter++;
+                        }
+                        break;
+                    case 0x9:
+                        if (keyBoardState & CHIP8_KEY_CODE_9) {
+                            chip8->programCounter++;
+                        }
+                        break;
+                    case 0xA:
+                        if (keyBoardState & CHIP8_KEY_CODE_A) {
+                            chip8->programCounter++;
+                        }
+                        break;
+                    case 0xB:
+                        if (keyBoardState & CHIP8_KEY_CODE_B) {
+                            chip8->programCounter++;
+                        }
+                        break;
+                    case 0xC:
+                        if (keyBoardState & CHIP8_KEY_CODE_C) {
+                            chip8->programCounter++;
+                        }
+                        break;
+                    case 0xD:
+                        if (keyBoardState & CHIP8_KEY_CODE_D) {
+                            chip8->programCounter++;
+                        }
+                        break;
+                    case 0xE:
+                        if (keyBoardState & CHIP8_KEY_CODE_E) {
+                            chip8->programCounter++;
+                        }
+                        break;
+                    case 0xF:
+                        if (keyBoardState & CHIP8_KEY_CODE_F) {
+                            chip8->programCounter++;
+                        }
+                        break;
+                    default:
+                        break;
                     }
-#endif
                     break;
                 }
             case 0xa1: // 0xEXA1 - Skips the next instruction if the key stored in VX is not pressed. (Usually the next
                        // instruction is a jump to skip a code block)
                 {
-                    // TODO: Add support for the instruction under unix based systems
                     DEFINE_X
-#ifdef OS_WINDOWS
-                    if (kbhit()) {
-                        char c = getch();
-                        if (chip8->V[x] != c) {
+                    switch (chip8->V[x]) {
+                    case 0x0:
+                        if (!(keyBoardState & CHIP8_KEY_CODE_0)) {
                             chip8->programCounter++;
                         }
-                    } else {
-                        chip8->programCounter++;
+                        break;
+                    case 0x1:
+                        if (!(keyBoardState & CHIP8_KEY_CODE_1)) {
+                            chip8->programCounter++;
+                        }
+                        break;
+                    case 0x2:
+                        if (!(keyBoardState & CHIP8_KEY_CODE_2)) {
+                            chip8->programCounter++;
+                        }
+                        break;
+                    case 0x3:
+                        if (!(keyBoardState & CHIP8_KEY_CODE_3)) {
+                            chip8->programCounter++;
+                        }
+                        break;
+                    case 0x4:
+                        if (!(keyBoardState & CHIP8_KEY_CODE_4)) {
+                            chip8->programCounter++;
+                        }
+                        break;
+                    case 0x5:
+                        if (!(keyBoardState & CHIP8_KEY_CODE_5)) {
+                            chip8->programCounter++;
+                        }
+                        break;
+                    case 0x6:
+                        if (!(keyBoardState & CHIP8_KEY_CODE_6)) {
+                            chip8->programCounter++;
+                        }
+                        break;
+                    case 0x7:
+                        if (!(keyBoardState & CHIP8_KEY_CODE_7)) {
+                            chip8->programCounter++;
+                        }
+                        break;
+                    case 0x8:
+                        if (!(keyBoardState & CHIP8_KEY_CODE_8)) {
+                            chip8->programCounter++;
+                        }
+                        break;
+                    case 0x9:
+                        if (!(keyBoardState & CHIP8_KEY_CODE_9)) {
+                            chip8->programCounter++;
+                        }
+                        break;
+                    case 0xA:
+                        if (!(keyBoardState & CHIP8_KEY_CODE_A)) {
+                            chip8->programCounter++;
+                        }
+                        break;
+                    case 0xB:
+                        if (!(keyBoardState & CHIP8_KEY_CODE_B)) {
+                            chip8->programCounter++;
+                        }
+                        break;
+                    case 0xC:
+                        if (!(keyBoardState & CHIP8_KEY_CODE_C)) {
+                            chip8->programCounter++;
+                        }
+                        break;
+                    case 0xD:
+                        if (!(keyBoardState & CHIP8_KEY_CODE_D)) {
+                            chip8->programCounter++;
+                        }
+                        break;
+                    case 0xE:
+                        if (!(keyBoardState & CHIP8_KEY_CODE_E)) {
+                            chip8->programCounter++;
+                        }
+                        break;
+                    case 0xF:
+                        if (!(keyBoardState & CHIP8_KEY_CODE_F)) {
+                            chip8->programCounter++;
+                        }
+                        break;
+                    default:
+                        break;
                     }
-#endif
                     break;
                 }
             default:

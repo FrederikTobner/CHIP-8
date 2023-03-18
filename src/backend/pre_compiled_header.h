@@ -34,14 +34,10 @@
 #include <time.h>
 
 // OS-specific dependencies
-#if defined(OS_WINDOWS)
+#if defined(_WIN32)
 #include <conio.h>
-#include <windows.h>
-// Has to come after windows.h dependency or the emulator won't build
-#include <psapi.h>
-#elif defined(OS_UNIX_LIKE)
+#elif defined(_UNIX__)
 #include <curses.h>
-#include <unistd.h>
 #endif
 
 #endif

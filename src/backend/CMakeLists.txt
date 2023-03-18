@@ -3,22 +3,26 @@ if(CMAKE_BUILD_TYPE MATCHES "[Dd][Ee][Bb][Uu][Gg]")
     "chip8.c"
     "debug.c"
     "display.c"
+    "keyboard_state.c"
     )
 
     set(BACKEND_HEADER_FILES
     "chip8.h"
     "debug.h"
     "display.h"
+    "keyboard_state.h"
     )
 else()
     set(BACKEND_SOURCE_FILES
     "chip8.c"
     "display.c"
+    "keyboard_state.c"
     )
 
     set(BACKEND_HEADER_FILES
     "chip8.h"
     "display.h"
+    "keyboard_state.h"
     )
 endif()
 

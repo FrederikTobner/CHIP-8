@@ -78,4 +78,10 @@ addresses_hash_table_entry_t * addresses_table_remove_entry(addresses_hash_table
 /// @return The entry that corresponds to the key or NULL if no entry corresponfing to the key was found
 addresses_hash_table_entry_t * addresses_table_look_up_entry(char const * key, addresses_hash_table_t * table);
 
+/// @brief 
+/// @param node 
+/// @param table 
+/// @return 
+int addresses_table_insert_entry(addresses_hash_table_entry_t * node, addresses_hash_table_t * table);
+
 #endif

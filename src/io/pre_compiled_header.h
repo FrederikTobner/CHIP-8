@@ -15,14 +15,25 @@
 
 /**
  * @file pre_compiled_header.h
- * @brief Precompiled header file of the emulator
- * @details Contains commonly used header files from the standard libary and exit codes
+ * @brief Precompiled header file of the io library
+ * @details Contains commonly used header files from the standard libary and os-specific header files
  */
 
-#ifndef CHIP8_PRE_COMPILED_HEADER_H_
-#define CHIP8_PRE_COMPILED_HEADER_H_
+#ifndef CHIP8_PRE_COMPILED_HEADER_IO_H_
+#define CHIP8_PRE_COMPILED_HEADER_IO_H_
 
-// Standard libary dependencies
+#include <stdarg.h>
+#include <stddef.h>
+#include <stdint.h>
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#if defined(OS_WINDOWS)
+#include <windows.h>
+// Has to come after windows.h dependency or the emulator won't build
+#include <psapi.h>
+#elif defined(OS_UNIX_LIKE)
+#include <unistd.h>
+#endif
 
 #endif

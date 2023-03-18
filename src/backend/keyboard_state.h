@@ -14,29 +14,39 @@
  ****************************************************************************/
 
 /**
- * @file path_utils.h
- * @brief Declarations regarding the path utilities used by the emulator
+ * @file keyboard_state.h
+ * @brief Declarations regarding the keyboard of the emulator
  */
 
-#ifndef CHIP8_PATH_UTILS_H_
-#define CHIP8_PATH_UTILS_H_
+#ifndef CHIP8_KEY_BOARD_STATE_H_
+#define CHIP8_KEY_BOARD_STATE_H_
 
 #include "pre_compiled_header.h"
+#include "../../external/SDL/include/SDL.h"
 
-/// @brief Determines the path of the emulator executable
-/// @param buffer The buffer where the path is stored
-/// @param bufferSize The length of the buffer
-/// @return 0 if everything went well, -1 if an error occured
-int path_utils_get_executable_path(char * buffer, size_t bufferSize);
+typedef uint16_t keyBoardState;
 
-/// @brief Removes the specified amount of file-layers from the buffer
-/// @param buffer The buffer that is
-/// @param depth The amount of layers that are removed from the path
-void path_utils_remove_file_layer(char * buffer, size_t depth);
+typedef enum {
+CHIP8_KEY_CODE_0 = 0b0000000000000001,
+CHIP8_KEY_CODE_1 = 0b0000000000000010,
+CHIP8_KEY_CODE_2 = 0b0000000000000100,
+CHIP8_KEY_CODE_3 = 0b0000000000001000,
+CHIP8_KEY_CODE_4 = 0b0000000000010000,
+CHIP8_KEY_CODE_5 = 0b0000000000100000,
+CHIP8_KEY_CODE_6 = 0b0000000001000000,
+CHIP8_KEY_CODE_7 = 0b0000000010000000,
+CHIP8_KEY_CODE_8 = 0b0000000100000000,
+CHIP8_KEY_CODE_9 = 0b0000001000000000,
+CHIP8_KEY_CODE_A = 0b0000010000000000,
+CHIP8_KEY_CODE_B = 0b0000100000000000,
+CHIP8_KEY_CODE_C = 0b0001000000000000,
+CHIP8_KEY_CODE_D = 0b0010000000000000,
+CHIP8_KEY_CODE_E = 0b0100000000000000,
+CHIP8_KEY_CODE_F = 0b1000000000000000,
+} key_code;
 
-/// @brief Adds the specified folder name followed by a os-specific file seperator to the path
-/// @param buffer The buffer where the filename is concatenated
-/// @param folderName The name of the folder that is concatenated
-void path_utils_concatenate_folder(char * buffer, char * folderName, size_t maxBufferSize);
+void keyboard_update_keyboard_down_state(SDL_Event event, uint16_t * state);
+
+void keyboard_update_keyboard_up_state(SDL_Event event, uint16_t * state);
 
 #endif

@@ -32,7 +32,7 @@ target_include_directories(${PROJECT_NAME} PUBLIC ${PROJECT_BINARY_DIR}/src)
 target_link_libraries(${PROJECT_NAME} SDL2main ${PROJECT_NAME}_Backend ${PROJECT_NAME}_Frontend ${PROJECT_NAME}_Base ${PROJECT_NAME}_IO)
 
 # Copies window icon into the build folder
-FILE(COPY ${PROJECT_SOURCE_DIR}/assets/chip8_window_icon.bmp DESTINATION "${CMAKE_BINARY_DIR}/icons")
+FILE(COPY ${PROJECT_SOURCE_DIR}/assets/chip8_window_icon.bmp DESTINATION "${CMAKE_BINARY_DIR}/src/icons")
 
 if(NOT CMAKE_BUILD_TYPE MATCHES "[Dd][Ee][Bb][Uu][Gg]")
     # Install destinations
