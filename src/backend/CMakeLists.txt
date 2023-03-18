@@ -1,24 +1,28 @@
 if(CMAKE_BUILD_TYPE MATCHES "[Dd][Ee][Bb][Uu][Gg]")
     set(BACKEND_SOURCE_FILES
-    "chip8.c"
+    "virtual_machine.c"
     "debug.c"
     "display.c"
+    "keyboard_state.c"
     )
 
     set(BACKEND_HEADER_FILES
-    "chip8.h"
+    "virtual_machine.h"
     "debug.h"
     "display.h"
+    "keyboard_state.h"
     )
 else()
     set(BACKEND_SOURCE_FILES
-    "chip8.c"
+    "virtual_machine.c"
     "display.c"
+    "keyboard_state.c"
     )
 
     set(BACKEND_HEADER_FILES
-    "chip8.h"
+    "virtual_machine.h"
     "display.h"
+    "keyboard_state.h"
     )
 endif()
 

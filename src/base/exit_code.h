@@ -30,4 +30,4 @@ typedef enum {
     EXIT_CODE_INPUT_OUTPUT_ERROR = 74
 } chip8_exit_code;
 
-#endif 
+#endif

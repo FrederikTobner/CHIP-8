@@ -20,11 +20,7 @@
 
 #include "file_utils.h"
 
-#include "stdarg.h"
-#include "stdio.h"
-#include "stdlib.h"
-
-#include "../base/alias.h"
+#include "../base/chip8.h"
 #include "../base/exit_code.h"
 
 static void io_error(char const *, ...);

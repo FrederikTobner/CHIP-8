@@ -14,24 +14,39 @@
  ****************************************************************************/
 
 /**
- * @file debug.h
- * @brief Declarations regarding the debug functionality of the emulator
+ * @file keyboard_state.h
+ * @brief Declarations regarding the keyboard of the emulator
  */
 
-#ifndef CHIP8_DEBUG_H_
-#define CHIP8_DEBUG_H_
+#ifndef CHIP8_KEY_BOARD_STATE_H_
+#define CHIP8_KEY_BOARD_STATE_H_
 
+#include "../../external/SDL/include/SDL.h"
 #include "pre_compiled_header.h"
 
-#include "virtual_machine.h"
+typedef uint16_t keyBoardState_t;
 
-/// @brief Prints the opcode stored at the specified memorylocation
-/// @param memoryLocation The memory location of the opcode
-/// @param opcode The opcode that is printed
-void debug_print_bytecode(uint16_t memoryLocation, uint16_t opcode);
+typedef enum {
+    CHIP8_KEY_CODE_0 = 0b0000000000000001,
+    CHIP8_KEY_CODE_1 = 0b0000000000000010,
+    CHIP8_KEY_CODE_2 = 0b0000000000000100,
+    CHIP8_KEY_CODE_3 = 0b0000000000001000,
+    CHIP8_KEY_CODE_4 = 0b0000000000010000,
+    CHIP8_KEY_CODE_5 = 0b0000000000100000,
+    CHIP8_KEY_CODE_6 = 0b0000000001000000,
+    CHIP8_KEY_CODE_7 = 0b0000000010000000,
+    CHIP8_KEY_CODE_8 = 0b0000000100000000,
+    CHIP8_KEY_CODE_9 = 0b0000001000000000,
+    CHIP8_KEY_CODE_A = 0b0000010000000000,
+    CHIP8_KEY_CODE_B = 0b0000100000000000,
+    CHIP8_KEY_CODE_C = 0b0001000000000000,
+    CHIP8_KEY_CODE_D = 0b0010000000000000,
+    CHIP8_KEY_CODE_E = 0b0100000000000000,
+    CHIP8_KEY_CODE_F = 0b1000000000000000,
+} key_code;
 
-/// @brief Traces the exection of a chip8 program
-/// @param chip8 The virtual machine where the execution is traced
-void debug_trace_execution(virtual_machine_t chip8);
+void keyboard_update_keyboard_down_state(SDL_Event event, keyBoardState_t * state);
+
+void keyboard_update_keyboard_up_state(SDL_Event event, keyBoardState_t * state);
 
 #endif
