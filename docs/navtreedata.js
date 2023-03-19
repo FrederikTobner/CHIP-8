@@ -55,7 +55,7 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "address__hash__table_8c.html",
-"structvirtual__machine__t.html#a28f6e00c32f4a0752920fd295ea27c2d"
+"structaddresses__hash__table__t.html#aed4e99b8cd667e88bfb8a50a4f8b1fe7"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

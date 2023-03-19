@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.5"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>CHIP-8: chip8/frontend/src/dynamic_address_array.h Source File</title>
+<title>CHIP-8: chip8/frontend/src/memory.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -64,7 +64,7 @@ $(function() {
 </div>
 <script type="text/javascript">
 /* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
-$(document).ready(function(){initNavTree('dynamic__address__array_8h_source.html',''); initResizable(); });
+$(document).ready(function(){initNavTree('memory_8h_source.html',''); initResizable(); });
 /* @license-end */
 </script>
 <div id="doc-content">
@@ -90,10 +90,10 @@ $(document).ready(function(){initNavTree('dynamic__address__array_8h_source.html
 </div>
 
 <div class="header">
-  <div class="headertitle"><div class="title">dynamic_address_array.h</div></div>
+  <div class="headertitle"><div class="title">memory.h</div></div>
 </div><!--header-->
 <div class="contents">
-<a href="dynamic__address__array_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="comment">/****************************************************************************</span></div>
+<a href="memory_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="comment">/****************************************************************************</span></div>
 <div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="comment"> * Copyright (C) 2023 by Frederik Tobner                                    *</span></div>
 <div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="comment"> *                                                                          *</span></div>
 <div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="comment"> * This file is part of CHIP-8.                                             *</span></div>
@@ -108,28 +108,32 @@ $(document).ready(function(){initNavTree('dynamic__address__array_8h_source.html
 <div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="comment"> * License for more details.                                                *</span></div>
 <div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="comment"> ****************************************************************************/</span></div>
 <div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span> </div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="preprocessor">#ifndef CHIP8_DYNAMIC_ADDRESS_ARRAY_H_</span></div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="preprocessor">#define CHIP8_DYNAMIC_ADDRESS_ARRAY_H_</span></div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="preprocessor">#ifndef CHIP8_MEMORY_H</span></div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="preprocessor">#define CHIP8_MEMORY_H</span></div>
 <div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span> </div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span><span class="preprocessor">#include &quot;<a class="code" href="frontend__pre__compiled__header_8h.html">frontend_pre_compiled_header.h</a>&quot;</span></div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span> </div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span><span class="preprocessor">#include &quot;<a class="code" href="dynamic__array__code__gen_8h.html">dynamic_array_code_gen.h</a>&quot;</span></div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span> </div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span><a class="code hl_define" href="dynamic__array__code__gen_8h.html#a24eb070acab567e57de586dfc96cd541">GEN_DYNAMIC_ARRAY_TYPE</a>(uint16_t)</div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span> </div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span><a class="code hl_define" href="dynamic__array__code__gen_8h.html#a55b9a5cfef9a1277f4af773ee1242c87">GEN_DYNAMIC_ARRAY_PROTOTYPES</a>(uint16_t)</div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span> </div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span><span class="preprocessor">#endif</span></div>
-<div class="ttc" id="adynamic__array__code__gen_8h_html"><div class="ttname"><a href="dynamic__array__code__gen_8h.html">dynamic_array_code_gen.h</a></div></div>
-<div class="ttc" id="adynamic__array__code__gen_8h_html_a24eb070acab567e57de586dfc96cd541"><div class="ttname"><a href="dynamic__array__code__gen_8h.html#a24eb070acab567e57de586dfc96cd541">GEN_DYNAMIC_ARRAY_TYPE</a></div><div class="ttdeci">#define GEN_DYNAMIC_ARRAY_TYPE(TYPE)</div><div class="ttdef"><b>Definition:</b> dynamic_array_code_gen.h:46</div></div>
-<div class="ttc" id="adynamic__array__code__gen_8h_html_a55b9a5cfef9a1277f4af773ee1242c87"><div class="ttname"><a href="dynamic__array__code__gen_8h.html#a55b9a5cfef9a1277f4af773ee1242c87">GEN_DYNAMIC_ARRAY_PROTOTYPES</a></div><div class="ttdeci">#define GEN_DYNAMIC_ARRAY_PROTOTYPES(TYPE)</div><div class="ttdef"><b>Definition:</b> dynamic_array_code_gen.h:93</div></div>
-<div class="ttc" id="afrontend__pre__compiled__header_8h_html"><div class="ttname"><a href="frontend__pre__compiled__header_8h.html">frontend_pre_compiled_header.h</a></div><div class="ttdoc">Precompiled header file of the emulator frontend.</div></div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno"><a class="line" href="memory_8h.html#a6ef9035f7d385a5bd2cc71854dffabfb">   25</a></span><span class="preprocessor">#define SIZE_CHECK_USING_TYPE(n, type)     ((SIZE_MAX / sizeof(type)) &gt;= (n))</span></div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span> </div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno"><a class="line" href="memory_8h.html#a4bce2f8eae4b9bc16779bbf6e03f0d3f">   29</a></span><span class="preprocessor">#define CHECKED_MALLOC_USING_TYPE(n, type) (SIZE_CHECK_USING_TYPE((n), (type)) ? malloc((n) * sizeof(type)) : 0)</span></div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span> </div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno"><a class="line" href="memory_8h.html#a9d617de705c5aa4e4bfaaa4572bf647e">   31</a></span><span class="preprocessor">#define CHECKED_REALLOC_USING_SIZE(p, n, obj_size) \</span></div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span><span class="preprocessor">    SIZE_CHECK_USING_SIZE((n), (obj_size)) ? realloc((p), (n) * (obj_size)) : 0</span></div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span> </div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno"><a class="line" href="memory_8h.html#a8fe54aa12ae206c85a201867ce849cb9">   34</a></span><span class="preprocessor">#define CHECKED_REALLOC_USING_TYPE(p, n, type) \</span></div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span><span class="preprocessor">    (SIZE_CHECK_USING_TYPE((n), (type)) ? realloc((p), (n) * sizeof(type)) : 0)</span></div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span> </div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno"><a class="line" href="memory_8h.html#aa3212a3279a7121e47a9f24ff94885c1">   37</a></span><span class="preprocessor">#define SIZE_CHECK_USING_SIZE(n, obj_size)     ((SIZE_MAX / (obj_size)) &gt;= (n))</span></div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span> </div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno"><a class="line" href="memory_8h.html#a690ad4d5c98f053aa769267b3edc20aa">   39</a></span><span class="preprocessor">#define CHECKED_MALLOC_USING_SIZE(n, obj_size) (SIZE_CHECK_USING_SIZE((n), (obj_size)) ? malloc((n) * (obj_size)) : 0)</span></div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span> </div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno"><a class="line" href="memory_8h.html#a518c89cb2621f36969e3e662d0491200">   41</a></span><span class="preprocessor">#define new(type)                              (malloc(sizeof(type)))</span></div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span> </div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span><span class="preprocessor">#endif</span></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_d447c1f28e7500b1cedb201eaf65d36e.html">chip8</a></li><li class="navelem"><a class="el" href="dir_01ca3f5e3fe98743fdc44c8646915c8e.html">frontend</a></li><li class="navelem"><a class="el" href="dir_5f16cb8542c317645afa3ec29a194f53.html">src</a></li><li class="navelem"><a class="el" href="dynamic__address__array_8h.html">dynamic_address_array.h</a></li>
+    <li class="navelem"><a class="el" href="dir_d447c1f28e7500b1cedb201eaf65d36e.html">chip8</a></li><li class="navelem"><a class="el" href="dir_01ca3f5e3fe98743fdc44c8646915c8e.html">frontend</a></li><li class="navelem"><a class="el" href="dir_5f16cb8542c317645afa3ec29a194f53.html">src</a></li><li class="navelem"><a class="el" href="memory_8h.html">memory.h</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.5 </li>
   </ul>
 </div>

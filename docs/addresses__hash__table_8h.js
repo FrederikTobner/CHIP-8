@@ -5,7 +5,7 @@ var addresses__hash__table_8h =
     [ "ADDRESSES_ENTRY_TOMBSTONE", "addresses__hash__table_8h.html#abde96919372f3208e925e320c0136df2", null ],
     [ "addresses_table_add", "addresses__hash__table_8h.html#a1d84051abc392a63d1e53598aec6c254", null ],
     [ "addresses_table_destory", "addresses__hash__table_8h.html#a6da191019ec0bc7cf794c1e367994c1a", null ],
-    [ "addresses_table_entry_new", "addresses__hash__table_8h.html#a1e9af14d896e112a99de0422de5d380c", null ],
+    [ "addresses_table_entry_new", "addresses__hash__table_8h.html#a045598b121638e39e809fc7757a25340", null ],
     [ "addresses_table_free_entries", "addresses__hash__table_8h.html#a425edd57de57029b2cae8b593db73e86", null ],
     [ "addresses_table_init_table", "addresses__hash__table_8h.html#a7ff68b9e5e810bb6c143725954aa69c6", null ],
     [ "addresses_table_insert_entry", "addresses__hash__table_8h.html#a3fd2c84d7ffea8c4cc8909dc2d9b9a17", null ],

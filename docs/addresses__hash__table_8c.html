@@ -102,6 +102,7 @@ $(document).ready(function(){initNavTree('addresses__hash__table_8c.html',''); i
 <code>#include &quot;<a class="el" href="frontend__pre__compiled__header_8h_source.html">frontend_pre_compiled_header.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="fnv1a_8h_source.html">fnv1a.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="table_8h_source.html">table.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="memory_8h_source.html">memory.h</a>&quot;</code><br />
 </div><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
@@ -111,9 +112,9 @@ Functions</h2></td></tr>
 <tr class="memitem:a484daf83625e94899c4901bc279dd9a7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structaddresses__hash__table__t.html">addresses_hash_table_t</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="addresses__hash__table_8c.html#a484daf83625e94899c4901bc279dd9a7">addresses_table_new</a> ()</td></tr>
 <tr class="memdesc:a484daf83625e94899c4901bc279dd9a7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates and initializes a new hashtable.  <a href="addresses__hash__table_8c.html#a484daf83625e94899c4901bc279dd9a7">More...</a><br /></td></tr>
 <tr class="separator:a484daf83625e94899c4901bc279dd9a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1e9af14d896e112a99de0422de5d380c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structaddresses__hash__table__entry__t.html">addresses_hash_table_entry_t</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="addresses__hash__table_8c.html#a1e9af14d896e112a99de0422de5d380c">addresses_table_entry_new</a> (char const *key, <a class="el" href="structdynamic__address__array__t.html">dynamic_address_array_t</a> *array)</td></tr>
-<tr class="memdesc:a1e9af14d896e112a99de0422de5d380c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a new addresses table entry.  <a href="addresses__hash__table_8c.html#a1e9af14d896e112a99de0422de5d380c">More...</a><br /></td></tr>
-<tr class="separator:a1e9af14d896e112a99de0422de5d380c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a045598b121638e39e809fc7757a25340"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structaddresses__hash__table__entry__t.html">addresses_hash_table_entry_t</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="addresses__hash__table_8c.html#a045598b121638e39e809fc7757a25340">addresses_table_entry_new</a> (char const *key, uint16_t_dynamic_array_t *array)</td></tr>
+<tr class="memdesc:a045598b121638e39e809fc7757a25340"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a new addresses table entry.  <a href="addresses__hash__table_8c.html#a045598b121638e39e809fc7757a25340">More...</a><br /></td></tr>
+<tr class="separator:a045598b121638e39e809fc7757a25340"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6da191019ec0bc7cf794c1e367994c1a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="addresses__hash__table_8c.html#a6da191019ec0bc7cf794c1e367994c1a">addresses_table_destory</a> (<a class="el" href="structaddresses__hash__table__t.html">addresses_hash_table_t</a> **table)</td></tr>
 <tr class="memdesc:a6da191019ec0bc7cf794c1e367994c1a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Frees the memory occupied by a hashtable (does not free the memory occupied by the entries)  <a href="addresses__hash__table_8c.html#a6da191019ec0bc7cf794c1e367994c1a">More...</a><br /></td></tr>
 <tr class="separator:a6da191019ec0bc7cf794c1e367994c1a"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -210,8 +211,8 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a1e9af14d896e112a99de0422de5d380c" name="a1e9af14d896e112a99de0422de5d380c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1e9af14d896e112a99de0422de5d380c">&#9670;&#160;</a></span>addresses_table_entry_new()</h2>
+<a id="a045598b121638e39e809fc7757a25340" name="a045598b121638e39e809fc7757a25340"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a045598b121638e39e809fc7757a25340">&#9670;&#160;</a></span>addresses_table_entry_new()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -225,7 +226,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="structdynamic__address__array__t.html">dynamic_address_array_t</a> *&#160;</td>
+          <td class="paramtype">uint16_t_dynamic_array_t *&#160;</td>
           <td class="paramname"><em>array</em>&#160;</td>
         </tr>
         <tr>
