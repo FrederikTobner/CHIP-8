@@ -24,20 +24,29 @@
 /// Size check using a type (used for the checked malloc)
 #define SIZE_CHECK_USING_TYPE(n, type)     ((SIZE_MAX / sizeof(type)) >= (n))
 
-/// @brief Checked malloc
+/// @brief Checked malloc using the type
 /// @details Treats a overflow parameters when malloc was called like a usual allocation error
 #define CHECKED_MALLOC_USING_TYPE(n, type) (SIZE_CHECK_USING_TYPE((n), (type)) ? malloc((n) * sizeof(type)) : 0)
 
+/// @brief Checked realloc using the size in byte
+/// @details Treats a overflow parameters when malloc was called like a usual allocation error
 #define CHECKED_REALLOC_USING_SIZE(p, n, obj_size) \
     SIZE_CHECK_USING_SIZE((n), (obj_size)) ? realloc((p), (n) * (obj_size)) : 0
 
+/// @brief Checked realloc using the type
+/// @details Treats a overflow parameters when malloc was called like a usual allocation error
 #define CHECKED_REALLOC_USING_TYPE(p, n, type) \
     (SIZE_CHECK_USING_TYPE((n), (type)) ? realloc((p), (n) * sizeof(type)) : 0)
 
+/// @brief Size check using the size in byte
+/// @details Treats a overflow parameters when malloc was called like a usual allocation error
 #define SIZE_CHECK_USING_SIZE(n, obj_size)     ((SIZE_MAX / (obj_size)) >= (n))
 
+/// @brief Checked malloc using the size in byte
+/// @details Treats a overflow parameters when malloc was called like a usual allocation error
 #define CHECKED_MALLOC_USING_SIZE(n, obj_size) (SIZE_CHECK_USING_SIZE((n), (obj_size)) ? malloc((n) * (obj_size)) : 0)
 
+/// Allocates the memory for a single value of the specified type on the heap
 #define new(type)                              (malloc(sizeof(type)))
 
 #endif

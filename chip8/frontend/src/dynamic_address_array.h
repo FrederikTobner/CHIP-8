@@ -23,10 +23,10 @@
 
 #include "frontend_pre_compiled_header.h"
 
-#include "dynamic_array_code_gen.h"
+#include "../../base/src/dynamic_array_code_gen.h"
 
-GEN_DYNAMIC_ARRAY_TYPE(uint16_t)
+GENERATE_DYNAMIC_ARRAY_TYPE(uint16_t)
 
-GEN_DYNAMIC_ARRAY_PROTOTYPES(uint16_t)
+GENERATE_DYNAMIC_ARRAY_PROTOTYPES(uint16_t)
 
 #endif

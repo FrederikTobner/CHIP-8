@@ -14,12 +14,12 @@
  ****************************************************************************/
 
 /**
- * @file path_utils.c
- * @brief Definitions regarding the path utilities used by the emulator
+ * @file chip8.h
+ * @brief Defenitions regarding the vm that need to be accessible by several libraries
  */
 
-#ifndef CHIP8_ALIAS_H_
-#define CHIP8_ALIAS_H_
+#ifndef CHIP8_CHIP8_H_
+#define CHIP8_CHIP8_H_
 
 /// Most Chip-8 programs start at location 0x200 (512), but some begin at 0x600 (1536). Programs beginning at 0x600 are
 /// intended for the ETI 660 computer.

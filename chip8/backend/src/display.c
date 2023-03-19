@@ -31,8 +31,8 @@ void display_render(display_t display) {
     SDL_SetRenderDrawColor(display.renderer, 0xFF, 0xFF, 0xFF, 0xFF); // white color
     uint8_t currentColor = 0xFF;
     SDL_RenderClear(display.renderer);
-    for (size_t width = 0; width < GRAPHICS_SYSTEM_WIDTH; width++) {
-        for (size_t height = 0; height < GRAPHICS_SYSTEM_HEIGHT; height++) {
+    for (size_t height = 0; height < GRAPHICS_SYSTEM_HEIGHT; height++) {
+        for (size_t width = 0; width < GRAPHICS_SYSTEM_WIDTH; width++) {
             // Render black filled quad (Currently the display uses 20x20 pixels to simulate a single pixel of the
             // graphics system)
             SDL_Rect fillRect = {width * SCALE_FACTOR, height * SCALE_FACTOR, (width + 1) * SCALE_FACTOR,
@@ -61,7 +61,7 @@ int display_init(display_t * display) {
         return -1;
     } else {
         log_debug("SDL initialized");
-        // Set texture filtering to linear        
+        // Set texture filtering to linear
         if (!SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "1")) {
             printf("Warning: Linear texture filtering not enabled!");
         }
@@ -114,6 +114,7 @@ static int display_set_window_icon(SDL_Window * window, char const * iconName) {
     path_utils_remove_file_layer(iconPathBuffer, 2);
     path_utils_concatenate_folder(iconPathBuffer, "assets", 240);
     strcat(iconPathBuffer, iconName);
+    // Creating a SDL scurface from the bitmap
     SDL_Surface * window_icon_scurface = SDL_LoadBMP(iconPathBuffer);
     if (!window_icon_scurface) {
         printf("Failed to load window icon %s\n", SDL_GetError());

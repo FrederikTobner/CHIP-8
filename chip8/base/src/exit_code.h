@@ -23,17 +23,17 @@
 
 /// @brief Exit codes of the emulator
 typedef enum {
-    /// @brief 
+    /// @brief
     EXIT_CODE_OK = 0,
-    /// @brief 
+    /// @brief
     EXIT_CODE_COMMAND_LINE_USAGE_ERROR = 64,
-    /// @brief 
+    /// @brief
     EXIT_CODE_ASSEMBLER_ERROR = 65,
-    /// @brief 
+    /// @brief
     EXIT_CODE_RUNTIME_ERROR = 70,
-    /// @brief 
+    /// @brief
     EXIT_CODE_SYSTEM_ERROR = 71,
-    /// @brief 
+    /// @brief
     EXIT_CODE_INPUT_OUTPUT_ERROR = 74
 } chip8_exit_code;
 

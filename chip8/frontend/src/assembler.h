@@ -36,7 +36,7 @@ typedef struct {
     /// Line counter - used for error reporting
     uint32_t line;
     /// Address table - used to store the adress of a label definition
-    address_hash_table_t addressTable;
+    uint16_t_table_t addressTable;
     /// Address table - used to store unresolved label references
     addresses_hash_table_t addressesTable;
 } assembler_t;
