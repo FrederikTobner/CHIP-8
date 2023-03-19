@@ -28,6 +28,16 @@
 /// @details Treats a overflow parameters when malloc was called like a usual allocation error
 #define CHECKED_MALLOC_USING_TYPE(n, type) (SIZE_CHECK_USING_TYPE((n), (type)) ? malloc((n) * sizeof(type)) : 0)
 
-#define new(type)                          (malloc(sizeof(type)))
+#define CHECKED_REALLOC_USING_SIZE(p, n, obj_size) \
+    SIZE_CHECK_USING_SIZE((n), (obj_size)) ? realloc((p), (n) * (obj_size)) : 0
+
+#define CHECKED_REALLOC_USING_TYPE(p, n, type) \
+    (SIZE_CHECK_USING_TYPE((n), (type)) ? realloc((p), (n) * sizeof(type)) : 0)
+
+#define SIZE_CHECK_USING_SIZE(n, obj_size)     ((SIZE_MAX / (obj_size)) >= (n))
+
+#define CHECKED_MALLOC_USING_SIZE(n, obj_size) (SIZE_CHECK_USING_SIZE((n), (obj_size)) ? malloc((n) * (obj_size)) : 0)
+
+#define new(type)                              (malloc(sizeof(type)))
 
 #endif

@@ -80,6 +80,8 @@ _waitForFrame:
     SKNP VE
     ADD V4 0x01
     JMP gameloop
+        JMP test
+_test:
     
     # TODO:
     # Handle ball collisions - bricks

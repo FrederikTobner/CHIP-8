@@ -1,6 +1,3 @@
-#ifndef CHIP8_CODE_GENERATION_H
-#define CHIP8_CODE_GENERATION_H
-
 /****************************************************************************
  * Copyright (C) 2023 by Frederik Tobner                                    *
  *                                                                          *
@@ -21,6 +18,9 @@
  * @brief Macros used for generating dynamic array's
  */
 
+#ifndef CHIP8_CODE_GENERATION_H
+#define CHIP8_CODE_GENERATION_H
+
 #include "memory.h"
 
 #define MIN(a, b)                         (((a) < (b)) ? (a) : (b))
@@ -33,18 +33,8 @@
 
 #define AT_MAX_LENGTH_USING_TYPE(n, type) ((n) == MAX_ARRAY_LENGTH_USING_TYPE(type))
 
-#define CHECKED_REALLOC_USING_TYPE(p, n, type) \
-    (SIZE_CHECK_USING_TYPE((n), (type)) ? realloc((p), (n) * sizeof(type)) : 0)
-
 #define CAPPED_DPL_SIZE_USING_TYPE(n, type) \
     (((n) < MAX_ARRAY_LENGTH_USING_TYPE(type) / 2) ? (2 * (n)) : MAX_ARRAY_LENGTH_USING_TYPE(type))
-
-#define SIZE_CHECK_USING_SIZE(n, obj_size)     ((SIZE_MAX / (obj_size)) >= (n))
-
-#define CHECKED_MALLOC_USING_SIZE(n, obj_size) (SIZE_CHECK_USING_SIZE((n), (obj_size)) ? malloc((n) * (obj_size)) : 0)
-
-#define CHECKED_REALLOC_USING_SIZE(p, n, obj_size) \
-    (SIZE_CHECK_USING_SIZE((n), (obj_size)) ? realloc((p), (n) * (obj_size)) : 0)
 
 #define MAX_ARRAY_LENGTH_USING_SIZE(obj_size) (SIZE_MAX / obj_size)
 
@@ -55,7 +45,7 @@
 
 #define GEN_DYNAMIC_ARRAY_TYPE(TYPE) \
     typedef struct {                 \
-        size_t size;                 \
+        size_t allocated;            \
         size_t used;                 \
         TYPE * data;                 \
     } TYPE##_dynamic_array_t;
@@ -64,16 +54,16 @@
     bool TYPE##_dynamic_array_init(TYPE##_dynamic_array_t * array, size_t init_size, size_t init_used) { \
         assert(init_size >= init_used);                                                                  \
         init_size = MAX(init_size, MIN_ARRAY_SIZE);                                                      \
-        array->data = CHECKED_MALLOC_USING_SIZE(init_size, *array->data);                                \
-        array->size = (array->data) ? init_size : 0;                                                     \
+        array->data = CHECKED_MALLOC_USING_TYPE(init_size, *array->data);                                \
+        array->allocated = (array->data) ? init_size : 0;                                                \
         array->used = (array->data) ? init_used : 0;                                                     \
         return !!array->data;                                                                            \
     }                                                                                                    \
                                                                                                          \
     void TYPE##_dynamic_array_free(TYPE##_dynamic_array_t * array) {                                     \
         free(array->data);                                                                               \
-        array->data = 0;                                                                                 \
-        array->size = array->used = 0;                                                                   \
+        array->data = NULL;                                                                              \
+        array->allocated = array->used = 0;                                                              \
     }                                                                                                    \
                                                                                                          \
     bool TYPE##_dynamic_array_resize(TYPE##_dynamic_array_t * array, size_t new_size) {                  \
@@ -82,16 +72,16 @@
         if (!new_data)                                                                                   \
             return false;                                                                                \
         array->data = new_data;                                                                          \
-        array->size = alloc_size;                                                                        \
+        array->allocated = alloc_size;                                                                   \
         array->used = MIN(array->used, new_size);                                                        \
         return true;                                                                                     \
     }                                                                                                    \
                                                                                                          \
     bool TYPE##_dynamic_array_write(TYPE##_dynamic_array_t * array, TYPE val) {                          \
-        if (array->used == array->size) {                                                                \
-            if (AT_MAX_LENGTH_USING_TYPE(array->size, *array->data))                                     \
+        if (array->used == array->allocated) {                                                           \
+            if (AT_MAX_LENGTH_USING_TYPE(array->allocated, *array->data))                                \
                 return false;                                                                            \
-            size_t new_size = CAPPED_DPL_USING_SIZE(array->size, *array->data);                          \
+            size_t new_size = CAPPED_DPL_USING_SIZE(array->allocated, *array->data);                     \
             int resize_success = TYPE##_dynamic_array_resize(array, new_size);                           \
             if (!resize_success)                                                                         \
                 return false;                                                                            \
