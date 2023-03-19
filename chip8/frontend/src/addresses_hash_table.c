@@ -107,9 +107,12 @@ int addresses_table_add(uint16_t address, char const * key, addresses_hash_table
         // When we reach the end of the hashTable we continue from the beginning
         try = (i + index) & (table->allocated - 1);
         if ((!table->entries[try] || table->entries[try] == ADDRESSES_ENTRY_TOMBSTONE)) {
-            entry = new (addresses_hash_table_entry_t);
-            dynamic_address_array_init(table->entries[try]->array);
-            dynamic_address_array_write(table->entries[try]->array, address);
+            entry = new(addresses_hash_table_entry_t);
+            entry->array = new(dynamic_address_array_t);
+            entry->key = key;
+            dynamic_address_array_init(entry->array);
+            dynamic_address_array_write(entry->array, address);
+            table->entries[try] = entry;
             table->used++;
             return 0;
         }

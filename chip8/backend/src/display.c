@@ -111,7 +111,7 @@ static int display_set_window_icon(SDL_Window * window, char const * iconName) {
         return -1;
     }
     path_utils_remove_file_layer(iconPathBuffer, 2);
-    path_utils_concatenate_folder(iconPathBuffer, "icons", 240);
+    path_utils_concatenate_folder(iconPathBuffer, "assets", 240);
     strcat(iconPathBuffer, iconName);
     SDL_Surface * window_icon_scurface = SDL_LoadBMP(iconPathBuffer);
     if (!window_icon_scurface) {
