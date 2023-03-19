@@ -24,6 +24,7 @@
 #include "debug.h"
 #endif
 #include "../../base/src/chip8.h"
+#include "../../base/src/logger.h"
 #include "display.h"
 #include "keyboard_state.h"
 
@@ -48,11 +49,13 @@ static inline void virtual_machine_place_character_sprites_in_memory(virtual_mac
 /// @brief Executes the program that is stored in memory
 /// @param vm The chip8 vm where the program that is currently held in memory is executed
 void virtual_machine_execute(virtual_machine_t * vm) {
-    time_t last_t, current_t;
+    clock_t last_t, current_t = clock();
     uint64_t numberofChip8Clocks = 0;
     SDL_Event event;
     keyBoardState_t keyBoardState = 0;
+    double secondsElapsed;
     for (; vm->programCounter < ((0x1000 - PROGRAM_START_LOCATION) / 2); vm->programCounter++, numberofChip8Clocks++) {
+       last_t = current_t;
         // Polling SDL events
         while (SDL_PollEvent(&event)) {
             switch (event.type) {
@@ -68,7 +71,6 @@ void virtual_machine_execute(virtual_machine_t * vm) {
                 break;
             }
         }
-        last_t = time(NULL);
 #ifdef TRACE_EXECUTION
         debug_trace_execution(*vm);
 #endif
@@ -94,15 +96,17 @@ void virtual_machine_execute(virtual_machine_t * vm) {
             display_render(vm->display);
         }
         // Wait for a 1/600 second minus the time elapsed
-        current_t = time(NULL);
-        if (1.0 / CHIP8_CLOCK_SPEED > ((double)current_t - last_t)) {
+        current_t = clock();
+        secondsElapsed = (double)(current_t - last_t);
+        log_debug("Executed cycle in %lf ms", secondsElapsed);
+        if (1.0 / CHIP8_CLOCK_SPEED > secondsElapsed) {            
             // Lets pretend SDL_Delay does not exist
 #if defined(OS_WINDOWS)
             // Milliseconds -> multiply with 1000
-            Sleep((1.0 / CHIP8_CLOCK_SPEED - ((double)current_t - last_t)) * 1000.0);
+            Sleep((1.0 / CHIP8_CLOCK_SPEED - secondsElapsed) * 1000.0);
 #elif defined(OS_UNIX_LIKE)
             // Mircoseconds -> multiply with 1000000
-            usleep((1.0 / CHIP8_CLOCK_SPEED - ((double)current_t - last_t)) * 10000000.0);
+            usleep((1.0 / CHIP8_CLOCK_SPEED - secondsElapsed) * 10000000.0);
 #endif
         }
     }

@@ -68,6 +68,8 @@ int main(int argc, char ** args) {
 /// @brief Executes a chip8 program stored in a file
 /// @param filePath The path of the program
 static void run_from_file(char const * filePath) {
+    printf("%s\t\t\t\t Version %i.%i.%i\n", PROJECT_INIT_LETTERING, PROJECT_VERSION_MAJOR, PROJECT_VERSION_MINOR,
+           PROJECT_VERSION_PATCH);
     char * source;
     virtual_machine_t vm;
     size_t pathLength = strlen(filePath);
@@ -90,8 +92,6 @@ static void run_from_file(char const * filePath) {
     if (display_init(&vm.display)) {
         exit(EXIT_CODE_SYSTEM_ERROR);
     }
-    printf("%s\t\t\t\t Version %i.%i.%i\n", PROJECT_INIT_LETTERING, PROJECT_VERSION_MAJOR, PROJECT_VERSION_MINOR,
-           PROJECT_VERSION_PATCH);
     virtual_machine_execute(&vm);
     display_quit(&vm.display);
 }

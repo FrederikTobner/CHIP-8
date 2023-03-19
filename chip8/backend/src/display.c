@@ -20,6 +20,7 @@
 
 #include "display.h"
 #include "../../../build/chip8/main/src/chip8_config.h"
+#include "../../base/src/logger.h"
 #include "../../io/src/path_utils.h"
 #include "backend_pre_compiled_header.h"
 
@@ -59,7 +60,8 @@ int display_init(display_t * display) {
         printf("SDL could not initialize! SDL Error: %s\n", SDL_GetError());
         return -1;
     } else {
-        // Set texture filtering to linear
+        log_debug("SDL initialized");
+        // Set texture filtering to linear        
         if (!SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "1")) {
             printf("Warning: Linear texture filtering not enabled!");
         }
@@ -104,7 +106,6 @@ void display_quit(display_t * display) {
 /// @param iconPath Path to the icon
 /// @return 0 if the icon was successfully appled to the window, -1 if an error occured
 static int display_set_window_icon(SDL_Window * window, char const * iconName) {
-
     char iconPathBuffer[240];
     if (path_utils_get_executable_path(iconPathBuffer, 240)) {
         printf("Failed to determine path of the emulator executable\n");

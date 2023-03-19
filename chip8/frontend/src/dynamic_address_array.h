@@ -23,7 +23,7 @@
 
 #include "frontend_pre_compiled_header.h"
 
-#include "array_code_gen.h"
+#include "dynamic_array_code_gen.h"
 
 GEN_DYNAMIC_ARRAY_TYPE(uint16_t)
 
