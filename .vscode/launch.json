@@ -5,7 +5,7 @@
             "name": "Debug - MSVC",
             "type": "cppvsdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/build/src/main/CHIP-8.exe",
+            "program": "${workspaceFolder}/build/chip8/main/src/CHIP-8.exe",
             "args": [
                 "${workspaceFolder}/examples/Breakout.cp8",
             ],
@@ -17,7 +17,7 @@
             "name": "Debug - GDB",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/build/src/main/CHIP-8",
+            "program": "${workspaceFolder}/build/chip8/main/src/CHIP-8",
             "args": [
                 "${workspaceFolder}/examples/HelloWorld.cp8",
             ],

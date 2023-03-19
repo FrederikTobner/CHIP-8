@@ -32,6 +32,6 @@ void debug_print_bytecode(uint16_t memoryLocation, uint16_t opcode);
 
 /// @brief Traces the exection of a chip8 program
 /// @param chip8 The virtual machine where the execution is traced
-void debug_trace_execution(virtual_machine_t chip8);
+void debug_trace_execution(virtual_machine_t vm);
 
 #endif

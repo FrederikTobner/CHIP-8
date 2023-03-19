@@ -448,8 +448,8 @@ static void assembler_patch_jump_instructions(assembler_t * assembler, uint8_t *
                 free(assembler->source);
                 exit(EXIT_CODE_ASSEMBLER_ERROR);
             }
-            for (size_t j = 0; j < assembler->addressesTable.entries[i]->array->count; j++) {
-                memory[assembler->addressesTable.entries[i]->array->addresses[j]] |= addressEntry->opcodeAddress;
+            for (size_t j = 0; j < assembler->addressesTable.entries[i]->array->used; j++) {
+                memory[assembler->addressesTable.entries[i]->array->data[j]] |= addressEntry->opcodeAddress;
             }
         }
     }

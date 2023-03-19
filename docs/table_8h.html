@@ -115,49 +115,10 @@ Macros</h2></td></tr>
 <tr class="memitem:a94fcac188bf57c9853152f6c003e0990"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="table_8h.html#a94fcac188bf57c9853152f6c003e0990">TABLE_INIT_SIZE</a>&#160;&#160;&#160;(8)</td></tr>
 <tr class="memdesc:a94fcac188bf57c9853152f6c003e0990"><td class="mdescLeft">&#160;</td><td class="mdescRight">The initial size of a hashtables.  <a href="table_8h.html#a94fcac188bf57c9853152f6c003e0990">More...</a><br /></td></tr>
 <tr class="separator:a94fcac188bf57c9853152f6c003e0990"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6ef9035f7d385a5bd2cc71854dffabfb"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="table_8h.html#a6ef9035f7d385a5bd2cc71854dffabfb">SIZE_CHECK_USING_TYPE</a>(n,  type)&#160;&#160;&#160;((SIZE_MAX / sizeof(type)) &gt;= (n))</td></tr>
-<tr class="memdesc:a6ef9035f7d385a5bd2cc71854dffabfb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Size check using a type (used for the checked malloc)  <a href="table_8h.html#a6ef9035f7d385a5bd2cc71854dffabfb">More...</a><br /></td></tr>
-<tr class="separator:a6ef9035f7d385a5bd2cc71854dffabfb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4bce2f8eae4b9bc16779bbf6e03f0d3f"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="table_8h.html#a4bce2f8eae4b9bc16779bbf6e03f0d3f">CHECKED_MALLOC_USING_TYPE</a>(n,  type)&#160;&#160;&#160;(<a class="el" href="table_8h.html#a6ef9035f7d385a5bd2cc71854dffabfb">SIZE_CHECK_USING_TYPE</a>((n), (type)) ? malloc((n) * sizeof(type)) : 0)</td></tr>
-<tr class="memdesc:a4bce2f8eae4b9bc16779bbf6e03f0d3f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checked malloc.  <a href="table_8h.html#a4bce2f8eae4b9bc16779bbf6e03f0d3f">More...</a><br /></td></tr>
-<tr class="separator:a4bce2f8eae4b9bc16779bbf6e03f0d3f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a518c89cb2621f36969e3e662d0491200"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="table_8h.html#a518c89cb2621f36969e3e662d0491200">new</a>(type)&#160;&#160;&#160;(malloc(sizeof(type)))</td></tr>
-<tr class="separator:a518c89cb2621f36969e3e662d0491200"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p >Macros used by the hashtable's of the project. </p>
 </div><h2 class="groupheader">Macro Definition Documentation</h2>
-<a id="a4bce2f8eae4b9bc16779bbf6e03f0d3f" name="a4bce2f8eae4b9bc16779bbf6e03f0d3f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4bce2f8eae4b9bc16779bbf6e03f0d3f">&#9670;&#160;</a></span>CHECKED_MALLOC_USING_TYPE</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define CHECKED_MALLOC_USING_TYPE</td>
-          <td>(</td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">n, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">type&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td>&#160;&#160;&#160;(<a class="el" href="table_8h.html#a6ef9035f7d385a5bd2cc71854dffabfb">SIZE_CHECK_USING_TYPE</a>((n), (type)) ? malloc((n) * sizeof(type)) : 0)</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Checked malloc. </p>
-<p >Treats a overflow parameters when malloc was called like a usual allocation error </p>
-
-</div>
-</div>
 <a id="ab4f6f82fd3600f31ee1807840e1ec5b3" name="ab4f6f82fd3600f31ee1807840e1ec5b3"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ab4f6f82fd3600f31ee1807840e1ec5b3">&#9670;&#160;</a></span>GROWTH_FACTOR</h2>
 
@@ -187,54 +148,6 @@ Macros</h2></td></tr>
 </div><div class="memdoc">
 
 <p>The maximum length of the key of a hashtable entry. </p>
-
-</div>
-</div>
-<a id="a518c89cb2621f36969e3e662d0491200" name="a518c89cb2621f36969e3e662d0491200"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a518c89cb2621f36969e3e662d0491200">&#9670;&#160;</a></span>new</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define new</td>
-          <td>(</td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">type</td><td>)</td>
-          <td>&#160;&#160;&#160;(malloc(sizeof(type)))</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="a6ef9035f7d385a5bd2cc71854dffabfb" name="a6ef9035f7d385a5bd2cc71854dffabfb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6ef9035f7d385a5bd2cc71854dffabfb">&#9670;&#160;</a></span>SIZE_CHECK_USING_TYPE</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define SIZE_CHECK_USING_TYPE</td>
-          <td>(</td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">n, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">type&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td>&#160;&#160;&#160;((SIZE_MAX / sizeof(type)) &gt;= (n))</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Size check using a type (used for the checked malloc) </p>
 
 </div>
 </div>

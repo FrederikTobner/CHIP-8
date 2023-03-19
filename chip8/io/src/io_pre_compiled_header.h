@@ -14,7 +14,7 @@
  ****************************************************************************/
 
 /**
- * @file pre_compiled_header.h
+ * @file io_pre_compiled_header.h
  * @brief Precompiled header file of the io library
  * @details Contains commonly used header files from the standard libary and os-specific header files
  */

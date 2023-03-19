@@ -101,6 +101,7 @@ $(document).ready(function(){initNavTree('virtual__machine_8c.html',''); initRes
 <a href="#details">More...</a></p>
 <div class="textblock"><code>#include &quot;<a class="el" href="virtual__machine_8h_source.html">virtual_machine.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="chip8_8h_source.html">../../base/src/chip8.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="logger_8h_source.html">../../base/src/logger.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="display_8h_source.html">display.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="keyboard__state_8h_source.html">keyboard_state.h</a>&quot;</code><br />
 </div><table class="memberdecls">
@@ -138,9 +139,9 @@ Functions</h2></td></tr>
 <tr class="memitem:a63591f8c8ee439cf747ef721dc53e9f5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="virtual__machine_8c.html#a63591f8c8ee439cf747ef721dc53e9f5">virtual_machine_write_opcode_to_memory</a> (<a class="el" href="structvirtual__machine__t.html">virtual_machine_t</a> *vm, uint16_t *memoryLocation, uint16_t opcode)</td></tr>
 <tr class="memdesc:a63591f8c8ee439cf747ef721dc53e9f5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Writtes the specified opcode at the specified location into memory.  <a href="virtual__machine_8c.html#a63591f8c8ee439cf747ef721dc53e9f5">More...</a><br /></td></tr>
 <tr class="separator:a63591f8c8ee439cf747ef721dc53e9f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ace4d6aba7f5e93479ec93ff34a782f6a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="virtual__machine_8c.html#ace4d6aba7f5e93479ec93ff34a782f6a">virtual_machine_write_byte_to_memory</a> (<a class="el" href="structvirtual__machine__t.html">virtual_machine_t</a> *chip8, uint16_t *memoryLocation, uint8_t byte)</td></tr>
-<tr class="memdesc:ace4d6aba7f5e93479ec93ff34a782f6a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Writtes the specified opcode at the specified location into memory.  <a href="virtual__machine_8c.html#ace4d6aba7f5e93479ec93ff34a782f6a">More...</a><br /></td></tr>
-<tr class="separator:ace4d6aba7f5e93479ec93ff34a782f6a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4dcc03526fd2de26d14cfd71a807b41b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="virtual__machine_8c.html#a4dcc03526fd2de26d14cfd71a807b41b">virtual_machine_write_byte_to_memory</a> (<a class="el" href="structvirtual__machine__t.html">virtual_machine_t</a> *vm, uint16_t *memoryLocation, uint8_t byte)</td></tr>
+<tr class="memdesc:a4dcc03526fd2de26d14cfd71a807b41b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Writtes the specified opcode at the specified location into memory.  <a href="virtual__machine_8c.html#a4dcc03526fd2de26d14cfd71a807b41b">More...</a><br /></td></tr>
+<tr class="separator:a4dcc03526fd2de26d14cfd71a807b41b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p >Definitions regarding the virtual machine of the emulator. </p>
@@ -245,7 +246,7 @@ Functions</h2></td></tr>
 <p>Executes the program that is stored in memory. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">chip8</td><td>The chip8 vm where the program that is currently held in memory is executed </td></tr>
+    <tr><td class="paramname">vm</td><td>The chip8 vm where the program that is currently held in memory is executed </td></tr>
   </table>
   </dd>
 </dl>
@@ -287,7 +288,7 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 <p >Executes the next opcode in memory </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">chip8</td><td>The chip8 virtual machine where the next opcode is executed </td></tr>
+    <tr><td class="paramname">vm</td><td>The chip8 virtual machine where the next opcode is executed </td></tr>
   </table>
   </dd>
 </dl>
@@ -314,7 +315,7 @@ Functions</h2></td></tr>
 <p>Initializes the chip8 vm. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">chip8</td><td>The chip8 virtual machine that is initialzed </td></tr>
+    <tr><td class="paramname">vm</td><td>The chip8 virtual machine that is initialzed </td></tr>
   </table>
   </dd>
 </dl>
@@ -348,15 +349,15 @@ Functions</h2></td></tr>
 <p>Places sprites for characters in memory. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">chip8</td><td>The virtual machine where the sprites are placed in memory </td></tr>
+    <tr><td class="paramname">vm</td><td>The virtual machine where the sprites are placed in memory </td></tr>
   </table>
   </dd>
 </dl>
 
 </div>
 </div>
-<a id="ace4d6aba7f5e93479ec93ff34a782f6a" name="ace4d6aba7f5e93479ec93ff34a782f6a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ace4d6aba7f5e93479ec93ff34a782f6a">&#9670;&#160;</a></span>virtual_machine_write_byte_to_memory()</h2>
+<a id="a4dcc03526fd2de26d14cfd71a807b41b" name="a4dcc03526fd2de26d14cfd71a807b41b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4dcc03526fd2de26d14cfd71a807b41b">&#9670;&#160;</a></span>virtual_machine_write_byte_to_memory()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -365,7 +366,7 @@ Functions</h2></td></tr>
           <td class="memname">void virtual_machine_write_byte_to_memory </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="structvirtual__machine__t.html">virtual_machine_t</a> *&#160;</td>
-          <td class="paramname"><em>chip8</em>, </td>
+          <td class="paramname"><em>vm</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -390,7 +391,7 @@ Functions</h2></td></tr>
 <p>Writtes the specified opcode at the specified location into memory. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">chip8</td><td>The chip8 where the opcode is written to memory </td></tr>
+    <tr><td class="paramname">vm</td><td>The chip8 where the opcode is written to memory </td></tr>
     <tr><td class="paramname">memoryLocation</td><td>The location where the opcode is written to (0-4096) </td></tr>
     <tr><td class="paramname">byte</td><td>The byte that is written into memory </td></tr>
   </table>
@@ -434,7 +435,7 @@ Functions</h2></td></tr>
 <p>Writtes the specified opcode at the specified location into memory. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">chip8</td><td>The chip8 where the opcode is written to memory </td></tr>
+    <tr><td class="paramname">vm</td><td>The chip8 where the opcode is written to memory </td></tr>
     <tr><td class="paramname">memoryLocation</td><td>The location where the opcode is written to (0-4096) </td></tr>
     <tr><td class="paramname">opcode</td><td>The opcode that is written into memory </td></tr>
   </table>

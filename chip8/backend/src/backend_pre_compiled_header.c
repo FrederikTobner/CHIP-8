@@ -14,7 +14,7 @@
  ****************************************************************************/
 
 /**
- * @file pre_compiled_header.c
+ * @file backend_pre_compiled_header.c
  * @brief File is needed for MSCV compatability
  */
 

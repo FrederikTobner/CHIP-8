@@ -33,13 +33,4 @@
 /// The initial size of a hashtables
 #define TABLE_INIT_SIZE                    (8)
 
-/// Size check using a type (used for the checked malloc)
-#define SIZE_CHECK_USING_TYPE(n, type)     ((SIZE_MAX / sizeof(type)) >= (n))
-
-/// @brief Checked malloc
-/// @details Treats a overflow parameters when malloc was called like a usual allocation error
-#define CHECKED_MALLOC_USING_TYPE(n, type) (SIZE_CHECK_USING_TYPE((n), (type)) ? malloc((n) * sizeof(type)) : 0)
-
-#define new(type)                          (malloc(sizeof(type)))
-
 #endif

@@ -9,6 +9,6 @@ var virtual__machine_8c =
     [ "virtual_machine_execute_next_opcode", "virtual__machine_8c.html#a21983681745fe7e9cf10508b480247ec", null ],
     [ "virtual_machine_init", "virtual__machine_8c.html#a18a1ce69966115ea894fece2802659c1", null ],
     [ "virtual_machine_place_character_sprites_in_memory", "virtual__machine_8c.html#ab7d21f634b63d475988d35ba6cca80e3", null ],
-    [ "virtual_machine_write_byte_to_memory", "virtual__machine_8c.html#ace4d6aba7f5e93479ec93ff34a782f6a", null ],
+    [ "virtual_machine_write_byte_to_memory", "virtual__machine_8c.html#a4dcc03526fd2de26d14cfd71a807b41b", null ],
     [ "virtual_machine_write_opcode_to_memory", "virtual__machine_8c.html#a63591f8c8ee439cf747ef721dc53e9f5", null ]
 ];

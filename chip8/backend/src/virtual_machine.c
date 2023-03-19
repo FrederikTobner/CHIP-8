@@ -24,6 +24,7 @@
 #include "debug.h"
 #endif
 #include "../../base/src/chip8.h"
+#include "../../base/src/logger.h"
 #include "display.h"
 #include "keyboard_state.h"
 
@@ -46,13 +47,15 @@ static int8_t virtual_machine_execute_next_opcode(virtual_machine_t *, keyBoardS
 static inline void virtual_machine_place_character_sprites_in_memory(virtual_machine_t *);
 
 /// @brief Executes the program that is stored in memory
-/// @param chip8 The chip8 vm where the program that is currently held in memory is executed
+/// @param vm The chip8 vm where the program that is currently held in memory is executed
 void virtual_machine_execute(virtual_machine_t * vm) {
-    time_t last_t, current_t;
+    clock_t last_t, current_t = clock();
     uint64_t numberofChip8Clocks = 0;
     SDL_Event event;
     keyBoardState_t keyBoardState = 0;
+    double secondsElapsed;
     for (; vm->programCounter < ((0x1000 - PROGRAM_START_LOCATION) / 2); vm->programCounter++, numberofChip8Clocks++) {
+       last_t = current_t;
         // Polling SDL events
         while (SDL_PollEvent(&event)) {
             switch (event.type) {
@@ -68,7 +71,6 @@ void virtual_machine_execute(virtual_machine_t * vm) {
                 break;
             }
         }
-        last_t = time(NULL);
 #ifdef TRACE_EXECUTION
         debug_trace_execution(*vm);
 #endif
@@ -94,22 +96,24 @@ void virtual_machine_execute(virtual_machine_t * vm) {
             display_render(vm->display);
         }
         // Wait for a 1/600 second minus the time elapsed
-        current_t = time(NULL);
-        if (1.0 / CHIP8_CLOCK_SPEED > ((double)current_t - last_t)) {
+        current_t = clock();
+        secondsElapsed = (double)(current_t - last_t);
+        log_debug("Executed cycle in %lf ms", secondsElapsed);
+        if (1.0 / CHIP8_CLOCK_SPEED > secondsElapsed) {            
             // Lets pretend SDL_Delay does not exist
 #if defined(OS_WINDOWS)
             // Milliseconds -> multiply with 1000
-            Sleep((1.0 / CHIP8_CLOCK_SPEED - ((double)current_t - last_t)) * 1000.0);
+            Sleep((1.0 / CHIP8_CLOCK_SPEED - secondsElapsed) * 1000.0);
 #elif defined(OS_UNIX_LIKE)
             // Mircoseconds -> multiply with 1000000
-            usleep((1.0 / CHIP8_CLOCK_SPEED - ((double)current_t - last_t)) * 10000000.0);
+            usleep((1.0 / CHIP8_CLOCK_SPEED - secondsElapsed) * 10000000.0);
 #endif
         }
     }
 }
 
 /// @brief Initializes the chip8 vm
-/// @param chip8 The chip8 virtual machine that is initialzed
+/// @param vm The chip8 virtual machine that is initialzed
 void virtual_machine_init(virtual_machine_t * vm) {
     uint8_t * upperBound = (vm->V + 16u);
     for (uint8_t * memoryPointer = vm->V; memoryPointer < upperBound; memoryPointer++) {
@@ -130,7 +134,7 @@ void virtual_machine_init(virtual_machine_t * vm) {
 }
 
 /// @brief Writtes the specified opcode at the specified location into memory
-/// @param chip8 The chip8 where the opcode is written to memory
+/// @param vm The chip8 where the opcode is written to memory
 /// @param memoryLocation The location where the opcode is written to (0-4096)
 /// @param opcode The opcode that is written into memory
 void virtual_machine_write_opcode_to_memory(virtual_machine_t * vm, uint16_t * memoryLocation, uint16_t opcode) {
@@ -145,18 +149,18 @@ void virtual_machine_write_opcode_to_memory(virtual_machine_t * vm, uint16_t * m
 }
 
 /// @brief Writtes the specified opcode at the specified location into memory
-/// @param chip8 The chip8 where the opcode is written to memory
+/// @param vm The chip8 where the opcode is written to memory
 /// @param memoryLocation The location where the opcode is written to (0-4096)
 /// @param byte The byte that is written into memory
-void virtual_machine_write_byte_to_memory(virtual_machine_t * chip8, uint16_t * memoryLocation, uint8_t byte) {
+void virtual_machine_write_byte_to_memory(virtual_machine_t * vm, uint16_t * memoryLocation, uint8_t byte) {
     if (*memoryLocation > 0x1000u || *memoryLocation < PROGRAM_START_LOCATION) {
         return;
     }
-    chip8->memory[(*memoryLocation)++] = byte;
+    vm->memory[(*memoryLocation)++] = byte;
 }
 
 /// @brief Places sprites for characters in memory
-/// @param chip8 The virtual machine where the sprites are placed in memory
+/// @param vm The virtual machine where the sprites are placed in memory
 static inline void virtual_machine_place_character_sprites_in_memory(virtual_machine_t * vm) {
     memcpy(
         vm->memory + 0x50,
@@ -167,7 +171,7 @@ static inline void virtual_machine_place_character_sprites_in_memory(virtual_mac
 }
 
 /// Executes the next opcode in memory
-/// @param chip8 The chip8 virtual machine where the next opcode is executed
+/// @param vm The chip8 virtual machine where the next opcode is executed
 /// @return 0 if the opcode was executed properly, -1 if not
 static int8_t virtual_machine_execute_next_opcode(virtual_machine_t * vm, uint16_t keyBoardState) {
     switch (vm->currentOpcode & 0xf000) {

@@ -2,6 +2,7 @@
 set(CHIP-8_BASE_HEADER_FILES
 "chip8.h"
 "exit_code.h"
+"logger.h"
 )
 
 add_library(${PROJECT_NAME}_Base INTERFACE ${CHIP-8_BASE_HEADER_FILES})

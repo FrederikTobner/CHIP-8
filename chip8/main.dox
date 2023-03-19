@@ -8,12 +8,10 @@
 * * [SDL 2.0](https://github.com/libsdl-org/SDL/tree/SDL2)
 * 
 * Under windows:
-* * conio.h
 * * psapi.h
 * * windows.h
 *
 * Under unix-based systems:
-* * curses.h
 * * unistd.h
 * \section license_sec License
 * Copyright &copy; 2022 by <a href="mailto:f.tobner@gmail.com">Frederik Tobner</a>. <br>

@@ -14,7 +14,7 @@
  ****************************************************************************/
 
 /**
- * @file address_hash_table.h
+ * @file addresses_hash_table.h
  * @brief Declarations regarding the hashtable that stores multiple memory adresses under their label
  */
 
@@ -29,7 +29,7 @@ typedef struct {
     /// Key of the entry 🔑
     char const * key;
     /// Addresses that are stored in the entry
-    dynamic_address_array_t * array;
+    uint16_t_dynamic_array_t * array;
 } addresses_hash_table_entry_t;
 
 // Type definition of a HashTable structure using linear probing for hash collisions
@@ -58,7 +58,7 @@ addresses_hash_table_t * addresses_table_new();
 /// @param key The key of the entry
 /// @param array Pointer to the array of addresses
 /// @return The newly created entry
-addresses_hash_table_entry_t * addresses_table_entry_new(char const * key, dynamic_address_array_t * array);
+addresses_hash_table_entry_t * addresses_table_entry_new(char const * key, uint16_t_dynamic_array_t * array);
 
 /// @brief Frees the memory occupied by a hashtable (does not free the memory occupied by the entries)
 /// @param table The table that is freed

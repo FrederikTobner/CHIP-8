@@ -21,6 +21,7 @@
 #include "address_hash_table.h"
 
 #include "fnv1a.h"
+#include "memory.h"
 #include "table.h"
 
 /// Used to mark a bucket that has stored an entry that has been removed

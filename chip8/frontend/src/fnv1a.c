@@ -14,7 +14,7 @@
  ****************************************************************************/
 
 /**
- * @file fnv1a.h
+ * @file fnv1a.c
  * @brief Definitions regarding the fowler-noll-vo hashing function
  */
 
