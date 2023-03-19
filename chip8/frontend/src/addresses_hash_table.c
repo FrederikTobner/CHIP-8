@@ -24,6 +24,7 @@
 
 #include "fnv1a.h"
 #include "table.h"
+#include "memory.h"
 
 static int addresses_table_grow_table(addresses_hash_table_t *);
 
@@ -36,7 +37,7 @@ addresses_hash_table_t * addresses_table_new() {
     return table;
 }
 
-addresses_hash_table_entry_t * addresses_table_entry_new(char const * key, dynamic_address_array_t * array) {
+addresses_hash_table_entry_t * addresses_table_entry_new(char const * key, uint16_t_dynamic_array_t * array) {
     addresses_hash_table_entry_t * entry = new (addresses_hash_table_entry_t);
     if (!entry) {
         return NULL;
@@ -80,7 +81,7 @@ void addresses_table_free_entries(addresses_hash_table_t * table) {
             break;
         }
         free((char *)table->entries[i]->key);
-        dynamic_address_array_free(table->entries[i]->array);
+        uint16_t_dynamic_array_free(table->entries[i]->array);
     }
     free(table->entries);
     table->allocated = table->used = 0;
@@ -91,7 +92,7 @@ int addresses_table_add(uint16_t address, char const * key, addresses_hash_table
     // Lookup label
     addresses_hash_table_entry_t * entry;
     if ((entry = addresses_table_look_up_entry(key, table))) {
-        dynamic_address_array_write(entry->array, address);
+        uint16_t_dynamic_array_write(entry->array, address);
     }
     if (!key || !table) {
         return -1;
@@ -108,10 +109,10 @@ int addresses_table_add(uint16_t address, char const * key, addresses_hash_table
         try = (i + index) & (table->allocated - 1);
         if ((!table->entries[try] || table->entries[try] == ADDRESSES_ENTRY_TOMBSTONE)) {
             entry = new(addresses_hash_table_entry_t);
-            entry->array = new(dynamic_address_array_t);
+            entry->array = new(uint16_t_dynamic_array_t);
             entry->key = key;
-            dynamic_address_array_init(entry->array);
-            dynamic_address_array_write(entry->array, address);
+            uint16_t_dynamic_array_init(entry->array, 1, 0);
+            uint16_t_dynamic_array_write(entry->array, address);
             table->entries[try] = entry;
             table->used++;
             return 0;

@@ -14,23 +14,20 @@
  ****************************************************************************/
 
 /**
- * @file table.h
- * @brief Macros used by the hashtable's of the project
+ * @file memory.h
+ * @brief Macros used for memory allocation of the project
  */
 
-#ifndef CHIP8_TABLE_H_
-#define CHIP8_TABLE_H_
+#ifndef CHIP8_MEMORY_H
+#define CHIP8_MEMORY_H
 
-/// The maximum length of the key of a hashtable entry
-#define MAX_KEY_LENGTH                     (1024)
+/// Size check using a type (used for the checked malloc)
+#define SIZE_CHECK_USING_TYPE(n, type)     ((SIZE_MAX / sizeof(type)) >= (n))
 
-/// The growth factor of a hashtable
-#define GROWTH_FACTOR                      (2)
+/// @brief Checked malloc
+/// @details Treats a overflow parameters when malloc was called like a usual allocation error
+#define CHECKED_MALLOC_USING_TYPE(n, type) (SIZE_CHECK_USING_TYPE((n), (type)) ? malloc((n) * sizeof(type)) : 0)
 
-/// The growth trigger value of a hashtables
-#define TABLE_GROWTH_TRIGGER_VALUE         (0.75)
-
-/// The initial size of a hashtables
-#define TABLE_INIT_SIZE                    (8)
+#define new(type)                          (malloc(sizeof(type)))
 
 #endif

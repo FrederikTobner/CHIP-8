@@ -22,6 +22,8 @@
 #ifndef CHIP8_FRONTEND_PRE_COMPILED_HEADER_H_
 #define CHIP8_FRONTEND_PRE_COMPILED_HEADER_H_
 
+#include <assert.h>
+
 // Standard libary dependencies
 #include <ctype.h>
 #include <stdarg.h>

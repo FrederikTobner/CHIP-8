@@ -10,8 +10,10 @@ set(FRONTEND_HEADER_FILES
 "address_hash_table.h"
 "addresses_hash_table.h"
 "assembler.h"
+"array_code_gen.h"
 "dynamic_address_array.h"
 "fnv1a.h"
+"memory.h"
 "table.h"
 )
 
