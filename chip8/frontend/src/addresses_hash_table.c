@@ -22,9 +22,9 @@
 
 #include "frontend_pre_compiled_header.h"
 
+#include "../../base/src/memory.h"
+#include "../../base/src/table.h"
 #include "fnv1a.h"
-#include "table.h"
-#include "memory.h"
 
 static int addresses_table_grow_table(addresses_hash_table_t *);
 
@@ -108,8 +108,8 @@ int addresses_table_add(uint16_t address, char const * key, addresses_hash_table
         // When we reach the end of the hashTable we continue from the beginning
         try = (i + index) & (table->allocated - 1);
         if ((!table->entries[try] || table->entries[try] == ADDRESSES_ENTRY_TOMBSTONE)) {
-            entry = new(addresses_hash_table_entry_t);
-            entry->array = new(uint16_t_dynamic_array_t);
+            entry = new (addresses_hash_table_entry_t);
+            entry->array = new (uint16_t_dynamic_array_t);
             entry->key = key;
             uint16_t_dynamic_array_init(entry->array, 1, 0);
             uint16_t_dynamic_array_write(entry->array, address);

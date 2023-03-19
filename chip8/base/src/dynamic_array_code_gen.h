@@ -14,12 +14,12 @@
  ****************************************************************************/
 
 /**
- * @file array_code_gen.h
+ * @file dynamic_array_code_gen.h
  * @brief Macros used for generating dynamic array's
  */
 
-#ifndef CHIP8_CODE_GENERATION_H
-#define CHIP8_CODE_GENERATION_H
+#ifndef CHIP8_DYNAMIC_ARRAY_CODE_GENERATION_H
+#define CHIP8_DYNAMIC_ARRAY_CODE_GENERATION_H
 
 #include "memory.h"
 
@@ -43,14 +43,14 @@
 #define CAPPED_DPL_USING_SIZE(n, obj_size) \
     (((n) < MAX_ARRAY_LENGTH_USING_SIZE(obj_size) / 2) ? (2 * (n)) : MAX_ARRAY_LENGTH_USING_SIZE(obj_size))
 
-#define GEN_DYNAMIC_ARRAY_TYPE(TYPE) \
-    typedef struct {                 \
-        size_t allocated;            \
-        size_t used;                 \
-        TYPE * data;                 \
+#define GENERATE_DYNAMIC_ARRAY_TYPE(TYPE) \
+    typedef struct {                      \
+        size_t allocated;                 \
+        size_t used;                      \
+        TYPE * data;                      \
     } TYPE##_dynamic_array_t;
 
-#define GEN_DYNAMIC_ARRAY_FUNCTIONS(TYPE)                                                                \
+#define GENERATE_DYNAMIC_ARRAY_FUNCTIONS(TYPE)                                                           \
     bool TYPE##_dynamic_array_init(TYPE##_dynamic_array_t * array, size_t init_size, size_t init_used) { \
         assert(init_size >= init_used);                                                                  \
         init_size = MAX(init_size, MIN_ARRAY_SIZE);                                                      \
@@ -90,7 +90,7 @@
         return true;                                                                                     \
     }
 
-#define GEN_DYNAMIC_ARRAY_PROTOTYPES(TYPE)                                                              \
+#define GENERATE_DYNAMIC_ARRAY_PROTOTYPES(TYPE)                                                         \
     bool TYPE##_dynamic_array_init(TYPE##_dynamic_array_t * array, size_t init_size, size_t init_used); \
     void TYPE##_dynamic_array_free(TYPE##_dynamic_array_t * array);                                     \
     bool TYPE##_dynamic_array_resize(TYPE##_dynamic_array_t * array, size_t new_size);                  \

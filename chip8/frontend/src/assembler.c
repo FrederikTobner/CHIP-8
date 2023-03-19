@@ -52,7 +52,7 @@ int assembler_initialize(assembler_t * assembler, char const * source) {
     assembler->start = source;
     assembler->current = source;
     assembler->line = 1u;
-    if (address_table_init_table(&assembler->addressTable)) {
+    if (uint16_t_table_init_table(&assembler->addressTable)) {
         return -1;
     }
     if (addresses_table_init_table(&assembler->addressesTable)) {
@@ -71,7 +71,7 @@ int assembler_process_file(assembler_t * assembler, uint8_t * memory) {
     }
     assembler_patch_jump_instructions(assembler, memory);
     free(assembler->source);
-    address_table_free_entries(&assembler->addressTable);
+    uint16_t_table_free_entries(&assembler->addressTable);
     addresses_table_free_entries(&assembler->addressesTable);
     return 0;
 }
@@ -201,11 +201,11 @@ static void assembler_scan_label(assembler_t * assembler, uint16_t memoryLocatio
     }
     memcpy(label, labelStart, labelEnd - labelStart + 1);
     label[labelEnd - labelStart + 1] = '\0';
-    address_hash_table_entry_t * entry = address_table_entry_new(memoryLocation, label);
+    uint16_t_table_entry_t * entry = uint16_t_table_entry_new(memoryLocation, label);
     if (!entry) {
         return;
     }
-    address_table_insert_entry(entry, &assembler->addressTable);
+    uint16_t_table_insert_entry(entry, &assembler->addressTable);
     assembler_advance(assembler);
 }
 
@@ -377,10 +377,10 @@ static uint16_t assembler_convert_label_to_address(assembler_t * assembler, uint
     memcpy(label, labelStart, labelEnd - labelStart + 1);
     label[labelEnd - labelStart + 1] = '\0';
     uint16_t address = 0;
-    address_hash_table_entry_t * entry = address_table_look_up_entry(label, &assembler->addressTable);
+    uint16_t_table_entry_t * entry = uint16_t_table_look_up_entry(label, &assembler->addressTable);
     if (entry) {
         // The label is defined
-        address = entry->opcodeAddress;
+        address = entry->data;
     } else {
         // The label is not defined
         addresses_table_add(memoryLocation, label, &assembler->addressesTable);
@@ -440,16 +440,16 @@ static inline void assembler_report_error(assembler_t * assembler, char const * 
 static void assembler_patch_jump_instructions(assembler_t * assembler, uint8_t * memory) {
     for (size_t i = 0; i < assembler->addressesTable.allocated; i++) {
         if (assembler->addressesTable.entries[i] && assembler->addressesTable.entries[i] != ADDRESSES_ENTRY_TOMBSTONE) {
-            address_hash_table_entry_t * addressEntry = NULL;
+            uint16_t_table_entry_t * addressEntry = NULL;
             addressEntry =
-                address_table_look_up_entry(assembler->addressesTable.entries[i]->key, &assembler->addressTable);
+                uint16_t_table_look_up_entry(assembler->addressesTable.entries[i]->key, &assembler->addressTable);
             if (!addressEntry) {
                 printf("Unable to resolve label reference %s\n", assembler->addressesTable.entries[i]->key);
                 free(assembler->source);
                 exit(EXIT_CODE_ASSEMBLER_ERROR);
             }
             for (size_t j = 0; j < assembler->addressesTable.entries[i]->array->used; j++) {
-                memory[assembler->addressesTable.entries[i]->array->data[j]] |= addressEntry->opcodeAddress;
+                memory[assembler->addressesTable.entries[i]->array->data[j]] |= addressEntry->data;
             }
         }
     }

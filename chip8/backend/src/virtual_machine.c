@@ -55,7 +55,7 @@ void virtual_machine_execute(virtual_machine_t * vm) {
     keyBoardState_t keyBoardState = 0;
     double secondsElapsed;
     for (; vm->programCounter < ((0x1000 - PROGRAM_START_LOCATION) / 2); vm->programCounter++, numberofChip8Clocks++) {
-       last_t = current_t;
+        last_t = current_t;
         // Polling SDL events
         while (SDL_PollEvent(&event)) {
             switch (event.type) {
@@ -99,7 +99,7 @@ void virtual_machine_execute(virtual_machine_t * vm) {
         current_t = clock();
         secondsElapsed = (double)(current_t - last_t);
         log_debug("Executed cycle in %lf ms", secondsElapsed);
-        if (1.0 / CHIP8_CLOCK_SPEED > secondsElapsed) {            
+        if (1.0 / CHIP8_CLOCK_SPEED > secondsElapsed) {
             // Lets pretend SDL_Delay does not exist
 #if defined(OS_WINDOWS)
             // Milliseconds -> multiply with 1000
