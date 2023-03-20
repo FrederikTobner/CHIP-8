@@ -20,7 +20,7 @@
 
 #include <stdio.h>
 
-#include "../../../../build/chip8/main/src/chip8_config.h"
+#include "../../../build/chip8/main/src/chip8_config.h"
 
 #include "../../backend/src/display.h"
 #include "../../backend/src/virtual_machine.h"

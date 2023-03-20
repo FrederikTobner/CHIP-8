@@ -50,6 +50,12 @@
         TYPE * data;                      \
     } TYPE##_dynamic_array_t;
 
+#define GENERATE_DYNAMIC_ARRAY_PROTOTYPES(TYPE)                                                         \
+    bool TYPE##_dynamic_array_init(TYPE##_dynamic_array_t * array, size_t init_size, size_t init_used); \
+    void TYPE##_dynamic_array_free(TYPE##_dynamic_array_t * array);                                     \
+    bool TYPE##_dynamic_array_resize(TYPE##_dynamic_array_t * array, size_t new_size);                  \
+    bool TYPE##_dynamic_array_write(TYPE##_dynamic_array_t * array, TYPE val);
+
 #define GENERATE_DYNAMIC_ARRAY_FUNCTIONS(TYPE)                                                           \
     bool TYPE##_dynamic_array_init(TYPE##_dynamic_array_t * array, size_t init_size, size_t init_used) { \
         assert(init_size >= init_used);                                                                  \
@@ -89,11 +95,5 @@
         array->data[array->used++] = val;                                                                \
         return true;                                                                                     \
     }
-
-#define GENERATE_DYNAMIC_ARRAY_PROTOTYPES(TYPE)                                                         \
-    bool TYPE##_dynamic_array_init(TYPE##_dynamic_array_t * array, size_t init_size, size_t init_used); \
-    void TYPE##_dynamic_array_free(TYPE##_dynamic_array_t * array);                                     \
-    bool TYPE##_dynamic_array_resize(TYPE##_dynamic_array_t * array, size_t new_size);                  \
-    bool TYPE##_dynamic_array_write(TYPE##_dynamic_array_t * array, TYPE val);
 
 #endif

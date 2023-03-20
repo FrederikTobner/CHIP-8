@@ -24,12 +24,14 @@
 #include "memory.h"
 #include "table.h"
 
+/// Generates a table entry that stores a value of the specified type as data
 #define GENERATE_TABLE_ENTRY_TYPE(TYPE) \
     typedef struct {                    \
         char const * key;               \
         TYPE data;                      \
     } TYPE##_table_entry_t;
 
+/// Generates a table that stores the specified type
 #define GENERATE_TABLE_TYPE(TYPE)        \
     typedef struct {                     \
         size_t allocated;                \
@@ -37,6 +39,7 @@
         TYPE##_table_entry_t ** entries; \
     } TYPE##_table_t;
 
+/// Generates the function prototypes of a hashtable
 #define GENERATE_TABLE_PROTOTYPES(TYPE)                                                                     \
     TYPE##_table_entry_t * TYPE##_table_entry_new(TYPE opcodeAddress, char const * key);                    \
     int TYPE##_table_init_table(TYPE##_table_t * table);                                                    \
@@ -47,6 +50,7 @@
     TYPE##_table_entry_t * TYPE##_table_remove_entry(TYPE##_table_entry_t * entry, TYPE##_table_t * table); \
     TYPE##_table_entry_t * TYPE##_table_look_up_entry(char const * key, TYPE##_table_t * table);
 
+/// Generates the functions of a hashtable
 #define GENERATE_TABLE_FUNCTIONS(TYPE, HASHFUNCTION)                                                             \
     static int TYPE##_table_grow_table(TYPE##_table_t *);                                                        \
     TYPE##_table_t * TYPE##_table_new() {                                                                        \

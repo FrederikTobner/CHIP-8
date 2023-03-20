@@ -21,6 +21,8 @@
 #ifndef CHIP8_MEMORY_H
 #define CHIP8_MEMORY_H
 
+#include <stdlib.h>
+
 /// Size check using a type (used for the checked malloc)
 #define SIZE_CHECK_USING_TYPE(n, type)     ((SIZE_MAX / sizeof(type)) >= (n))
 

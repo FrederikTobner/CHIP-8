@@ -25,11 +25,10 @@
 
 #include "../../base/src/table_code_gen.h"
 
-// Type Definition of an Entry structure in a hashtable (linear probing)
-GENERATE_TABLE_ENTRY_TYPE(uint16_t);
+GENERATE_TABLE_ENTRY_TYPE(uint16_t)
 
-GENERATE_TABLE_TYPE(uint16_t);
+GENERATE_TABLE_TYPE(uint16_t)
 
-GENERATE_TABLE_PROTOTYPES(uint16_t);
+GENERATE_TABLE_PROTOTYPES(uint16_t)
 
 #endif
