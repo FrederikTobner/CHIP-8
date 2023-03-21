@@ -24,6 +24,12 @@ The emulator has the following dependencies
 
 * [SDL 2.0](https://github.com/libsdl-org/SDL) a cross-platform development library designed to provide low level access to audio, keyboard, mouse, joystick, and graphics hardware.
 
+## IDE Integration
+
+There is a plugins vim and neovim.
+
+[![Vim](https://github-readme-stats-frederiktobner.vercel.app/api/pin/?username=FrederikTobner&repo=chip8.vim&theme=dark)](https://github.com/FrederikTobner/chip8.vim)
+
 ## License
 
 This project is licensed under the [GNU General Public License](LICENSE)
