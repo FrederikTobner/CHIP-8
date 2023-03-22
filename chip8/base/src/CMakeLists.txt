@@ -1,13 +1,13 @@
 
 set(CHIP-8_BASE_HEADER_FILES
-"chip8.h"
-"dynamic_array_code_gen.h"
-"exit_code.h"
-"logger.h"
-"memory.h"
-"table_code_gen.h"
-"table.h"
+"${CMAKE_CURRENT_SOURCE_DIR}/chip8.h"
+"${CMAKE_CURRENT_SOURCE_DIR}/dynamic_array_code_gen.h"
+"${CMAKE_CURRENT_SOURCE_DIR}/exit_code.h"
+"${CMAKE_CURRENT_SOURCE_DIR}/logger.h"
+"${CMAKE_CURRENT_SOURCE_DIR}/memory.h"
+"${CMAKE_CURRENT_SOURCE_DIR}/table_code_gen.h"
+"${CMAKE_CURRENT_SOURCE_DIR}/table.h"
 )
 
-add_library(${PROJECT_NAME}_Base INTERFACE ${CHIP-8_BASE_HEADER_FILES})
-set_target_properties(${PROJECT_NAME}_Base PROPERTIES LINKER_LANGUAGE C)
+add_library(${PROJECT_NAME}_Base INTERFACE)
+target_sources(${PROJECT_NAME}_Base INTERFACE ${CHIP-8_BASE_HEADER_FILES})
