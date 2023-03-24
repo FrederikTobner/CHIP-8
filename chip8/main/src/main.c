@@ -20,7 +20,7 @@
 
 #include <stdio.h>
 
-#include "../../../../build/chip8/main/src/chip8_config.h"
+#include "../../../build/chip8/main/src/chip8_config.h"
 
 #include "../../backend/src/display.h"
 #include "../../backend/src/virtual_machine.h"
@@ -48,12 +48,10 @@ static void show_help();
 /// @return 0 if everything went well
 int main(int argc, char ** args) {
     if (argc == 2) {
-        if ((strlen(args[1]) == 7 && !strncmp(args[1], "--version", 7)) ||
-            (strlen(args[1]) == 2 && !strncmp(args[1], "-v", 2))) {
+        if (!strcmp(args[1], "--version") || !strcmp(args[1], "-v")) {
             printf("%s Version %i.%i.%i\n", PROJECT_NAME, PROJECT_VERSION_MAJOR, PROJECT_VERSION_MINOR,
                    PROJECT_VERSION_PATCH);
-        } else if ((strlen(args[1]) == 6 && !strncmp(args[1], "--help", 6)) ||
-                   (strlen(args[1]) == 2 && !strncmp(args[1], "-h", 2))) {
+        } else if (!strcmp(args[1], "--help") || !strcmp(args[1], "-h")) {
             show_help();
         } else {
             run_from_file(args[1]);
