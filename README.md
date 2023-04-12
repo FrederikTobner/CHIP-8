@@ -26,9 +26,10 @@ The emulator has the following dependencies
 
 ## IDE Integration
 
-There is a plugins vim and neovim.
+There is a plugin for vim and neovim. Another alternative is to use my own text editor YATE that has built in language support.
 
 [![Vim](https://github-readme-stats-frederiktobner.vercel.app/api/pin/?username=FrederikTobner&repo=chip8.vim&theme=dark)](https://github.com/FrederikTobner/chip8.vim)
+[![YATE](https://github-readme-stats-frederiktobner.vercel.app/api/pin/?username=FrederikTobner&repo=YATE&theme=dark)](https://github.com/FrederikTobner/YATE)
 
 ## License
 
