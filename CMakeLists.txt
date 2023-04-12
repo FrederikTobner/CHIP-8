@@ -7,6 +7,8 @@ VERSION 0.1.0
 LANGUAGES C CXX
 )
 
+option(BUILD_TESTS "Build the tests" OFF)
+
 # C99 standard is required to build the emulator
 set(CMAKE_C_STANDARD 99)
 set(CMAKE_C_STANDARD_REQUIRED True)
@@ -15,8 +17,10 @@ set(CMAKE_C_STANDARD_REQUIRED True)
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
-# enabling tests
-enable_testing()
+if(BUILD_TESTS)
+    # enabling tests
+    enable_testing()
+endif()
 
 get_filename_component(SOURCE_PATH_FRONTEND ${PROJECT_SOURCE_DIR}/chip8/frontend/src ABSOLUTE)
 
