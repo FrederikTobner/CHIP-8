@@ -34,7 +34,7 @@ macro(CHIP8_Set_Package_Properties)
      # Add option to add the installed program to the path 
      set(CPACK_NSIS_MODIFY_PATH "ON")
      # Setting the icon if the installer
-     set(CPACK_NSIS_MUI_ICON "${PROJECT_SOURCE_DIR}/icons/file_type_chip8.ico")
+     set(CPACK_NSIS_MUI_ICON "${PROJECT_SOURCE_DIR}/assets/file_type_chip8.ico")
      # Setting the package name of the nsis package
      set(CPACK_NSIS_PACKAGE_NAME ${PROJECT_NAME})
      # About URL provided in the installer
