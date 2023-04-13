@@ -1,7 +1,7 @@
 # CHIP-8
 
 [![Build](https://github.com/FrederikTobner/CHIP-8/actions/workflows/build.yml/badge.svg)](https://github.com/FrederikTobner/CHIP-8/actions/workflows/build.yml)
-[![Tests](https://github.com/FrederikTobner/CHIP-8/actions/workflows/test.yml/badge.svg)](https://github.com/FrederikTobner/CHIP-8/actions/workflows/test.yml)
+[![Tests](https://github.com/FrederikTobner/CHIP-8/actions/workflows/tests.yml/badge.svg)](https://github.com/FrederikTobner/CHIP-8/actions/workflows/tests.yml)
 [![Analyze](https://github.com/FrederikTobner/CHIP-8/actions/workflows/codeql.yml/badge.svg)](https://github.com/FrederikTobner/CHIP-8/actions/workflows/codeql.yml)
 > **NOTE**: 🚧 Under active development. 🚧
 
