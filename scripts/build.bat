@@ -1,4 +1,9 @@
 @ECHO OFF
+IF "%1"=="" (
+set buildTarget=Release
+set buildTarget=all
+goto :build
+)
 set buildType=%1
 IF "%2"=="" (
 set buildTarget=all

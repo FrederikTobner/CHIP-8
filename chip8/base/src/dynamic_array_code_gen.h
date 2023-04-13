@@ -43,20 +43,23 @@
 #define CAPPED_DPL_USING_SIZE(n, obj_size) \
     (((n) < MAX_ARRAY_LENGTH_USING_SIZE(obj_size) / 2) ? (2 * (n)) : MAX_ARRAY_LENGTH_USING_SIZE(obj_size))
 
-#define GENERATE_DYNAMIC_ARRAY_TYPE(TYPE) \
-    typedef struct {                      \
-        size_t allocated;                 \
-        size_t used;                      \
-        TYPE * data;                      \
+#define GENERATE_DYNAMIC_ARRAY_TYPE(TYPE)                               \
+    static_assert(sizeof(#TYPE) > 1, "The type needs to be specified"); \
+    typedef struct {                                                    \
+        size_t allocated;                                               \
+        size_t used;                                                    \
+        TYPE * data;                                                    \
     } TYPE##_dynamic_array_t;
 
 #define GENERATE_DYNAMIC_ARRAY_PROTOTYPES(TYPE)                                                         \
+    static_assert(sizeof(#TYPE) > 1, "The type needs to be specified");                                 \
     bool TYPE##_dynamic_array_init(TYPE##_dynamic_array_t * array, size_t init_size, size_t init_used); \
     void TYPE##_dynamic_array_free(TYPE##_dynamic_array_t * array);                                     \
     bool TYPE##_dynamic_array_resize(TYPE##_dynamic_array_t * array, size_t new_size);                  \
     bool TYPE##_dynamic_array_write(TYPE##_dynamic_array_t * array, TYPE val);
 
 #define GENERATE_DYNAMIC_ARRAY_FUNCTIONS(TYPE)                                                           \
+    static_assert(sizeof(#TYPE) > 1, "The type needs to be specified");                                  \
     bool TYPE##_dynamic_array_init(TYPE##_dynamic_array_t * array, size_t init_size, size_t init_used) { \
         assert(init_size >= init_used);                                                                  \
         init_size = MAX(init_size, MIN_ARRAY_SIZE);                                                      \
