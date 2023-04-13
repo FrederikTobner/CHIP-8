@@ -1,0 +1,28 @@
+name: Test
+
+on:
+  pull_request:
+    branches: [ "master" ]
+
+jobs:
+  test:
+    runs-on: ${{matrix.operatingsystems}}
+    env:
+      BUILD_TYPE: ${{matrix.buildtypes}}
+
+    strategy:
+      matrix:
+        operatingsystems: [windows-latest] 
+        buildtypes: [Release] 
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Configure CMake
+      run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DBUILD_TESTS=ON
+
+    - name: Building Tests
+      run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}} --target CHIP-8_Frontend_Tests
+
+    - name: Running tests
+      run: cd build && ctest -C ${{env.BUILD_TYPE}} 
