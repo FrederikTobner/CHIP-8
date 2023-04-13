@@ -51,7 +51,7 @@
     TYPE##_table_entry_t * TYPE##_table_look_up_entry(char const * key, TYPE##_table_t * table);
 
 /// Generates the functions of a hashtable
-#define GENERATE_TABLE_FUNCTIONS(TYPE, HASH_FUNCTION)                                                             \
+#define GENERATE_TABLE_FUNCTIONS(TYPE, HASH_FUNCTION)                                                            \
     static int TYPE##_table_grow_table(TYPE##_table_t *);                                                        \
     TYPE##_table_t * TYPE##_table_new() {                                                                        \
         TYPE##_table_t * table = new (TYPE##_table_t);                                                           \
@@ -119,7 +119,7 @@
             }                                                                                                    \
         }                                                                                                        \
         uint32_t index, try;                                                                                     \
-        index = HASH_FUNCTION((uint8_t *)node->key, strlen(node->key));                                           \
+        index = HASH_FUNCTION((uint8_t *)node->key, strlen(node->key));                                          \
         for (size_t i = 0; i < table->allocated; i++) {                                                          \
             try = (i + index) & (table->allocated - 1);                                                          \
             if (!table->entries[try] || table->entries[try] == (TYPE##_table_entry_t *)(0xFFFFFFFFFFFFFFFFUL)) { \
@@ -134,7 +134,7 @@
         if (!table) {                                                                                            \
             return NULL;                                                                                         \
         }                                                                                                        \
-        uint32_t index = HASH_FUNCTION((uint8_t *)node->key, strlen(node->key));                                  \
+        uint32_t index = HASH_FUNCTION((uint8_t *)node->key, strlen(node->key));                                 \
         for (uint32_t i = 0; i < table->allocated; i++) {                                                        \
             uint32_t try = (i + index) & (table->allocated - 1);                                                 \
             if (!table->entries[try]) {                                                                          \
@@ -153,7 +153,7 @@
         if (!table) {                                                                                            \
             return NULL;                                                                                         \
         }                                                                                                        \
-        uint32_t index = HASH_FUNCTION((uint8_t *)key, strlen(key));                                              \
+        uint32_t index = HASH_FUNCTION((uint8_t *)key, strlen(key));                                             \
         for (uint32_t i = 0; i < table->allocated; i++) {                                                        \
             uint32_t try = (i + index) & (table->allocated - 1);                                                 \
             if (!table->entries[try]) {                                                                          \

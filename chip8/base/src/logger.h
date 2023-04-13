@@ -40,7 +40,7 @@
 #define log_warn(M, ...)  fprintf(stdout, "[%sWARN%s]\t - " M "\n", C_WARN, C_RESET, ##__VA_ARGS__)
 
 /// Logs the arguments with the specified format at the error log level
-#define log_error(M, ...)   fprintf(stderr, "[%sERROR%s]\t - " M "\n", C_ERROR, C_RESET, ##__VA_ARGS__)
+#define log_error(M, ...) fprintf(stderr, "[%sERROR%s]\t - " M "\n", C_ERROR, C_RESET, ##__VA_ARGS__)
 
 /// Logs the arguments with the specified format at the debug log level with file and line info added
 #define log_debug_at(M, ...) \
