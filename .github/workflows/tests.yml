@@ -12,13 +12,15 @@ jobs:
 
     strategy:
       matrix:
-        operatingsystems: [windows-latest] 
+        operatingsystems: [ubuntu-latest] 
         buildtypes: [Release] 
 
     steps:
-    - uses: actions/checkout@v3
-    with:
-        submodules: recursive    
+    - name: Checkout repository
+      uses: actions/checkout@v3
+      # include submodules
+      with:
+        submodules: recursive
 
     - name: Configure CMake
       run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DBUILD_TESTS=ON
