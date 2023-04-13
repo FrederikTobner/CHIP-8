@@ -25,25 +25,22 @@
 #include "table.h"
 
 /// Generates a table entry that stores a value of the specified type as data
-#define GENERATE_TABLE_ENTRY_TYPE(TYPE)                                 \
-    static_assert(sizeof(#TYPE) > 1, "The type needs to be specified"); \
-    typedef struct {                                                    \
-        char const * key;                                               \
-        TYPE data;                                                      \
+#define GENERATE_TABLE_ENTRY_TYPE(TYPE) \
+    typedef struct {                    \
+        char const * key;               \
+        TYPE data;                      \
     } TYPE##_table_entry_t;
 
 /// Generates a table that stores the specified type
-#define GENERATE_TABLE_TYPE(TYPE)                                       \
-    static_assert(sizeof(#TYPE) > 1, "The type needs to be specified"); \
-    typedef struct {                                                    \
-        size_t allocated;                                               \
-        size_t used;                                                    \
-        TYPE##_table_entry_t ** entries;                                \
+#define GENERATE_TABLE_TYPE(TYPE)        \
+    typedef struct {                     \
+        size_t allocated;                \
+        size_t used;                     \
+        TYPE##_table_entry_t ** entries; \
     } TYPE##_table_t;
 
 /// Generates the function prototypes of a hashtable
 #define GENERATE_TABLE_PROTOTYPES(TYPE)                                                                     \
-    static_assert(sizeof(#TYPE) > 1, "The type needs to be specified");                                     \
     TYPE##_table_entry_t * TYPE##_table_entry_new(TYPE opcodeAddress, char const * key);                    \
     int TYPE##_table_init_table(TYPE##_table_t * table);                                                    \
     TYPE##_table_t * address_table_new();                                                                   \
@@ -55,8 +52,6 @@
 
 /// Generates the functions of a hashtable
 #define GENERATE_TABLE_FUNCTIONS(TYPE, HASH_FUNCTION)                                                            \
-    static_assert(sizeof(#TYPE) > 1, "The type needs to be specified");                                          \
-    static_assert(sizeof(#HASH_FUNCTION) > 1, "The Hash function needs to be specified");                        \
     static int TYPE##_table_grow_table(TYPE##_table_t *);                                                        \
     TYPE##_table_t * TYPE##_table_new() {                                                                        \
         TYPE##_table_t * table = new (TYPE##_table_t);                                                           \
