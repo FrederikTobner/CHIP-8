@@ -1,3 +1,5 @@
+-- Generates the documentation for the project using doxygen
+
 local is_windows = package.config:sub(1,1) == "\\"
 if is_windows then
   os.execute("cd ..\\")

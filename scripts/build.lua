@@ -1,3 +1,5 @@
+-- Builds the CHIP-8 project using CMake and Ninja
+
 -- determine if the script is running on Windows
 local is_windows = package.config:sub(1,1) == '\\'
 
