@@ -141,8 +141,8 @@
                 return false;                                                                                    \
             }                                                                                                    \
             if (!strncmp(table->entries[try]->key, node->key, MAX_KEY_LENGTH)) {                                 \
-                uint16_t_table_entry_t * tempNode = table->entries[try];                                         \
-                table->entries[try] = (uint16_t_table_entry_t *)(0xFFFFFFFFFFFFFFFFUL);                          \
+                TYPE##_table_entry_t * tempNode = table->entries[try];                                           \
+                table->entries[try] = (TYPE##_table_entry_t *)(0xFFFFFFFFFFFFFFFFUL);                            \
                 table->used--;                                                                                   \
                 return tempNode;                                                                                 \
             }                                                                                                    \

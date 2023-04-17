@@ -1,7 +1,10 @@
+-- Packages the project as a zip file for Windows and Linux for x86 and x64
+-- and creates an installer for Windows using NSIS (nullsoft scriptable install system)
+
 -- determine if the script is running on Windows
 local is_windows = package.config:sub(1,1) == '\\'
 
--- function to execute a command
+-- function to execute a command and return the output
 local function execute_command(cmd)
   local handle = io.popen(cmd)
   local result = handle:read("*a")

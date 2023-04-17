@@ -23,16 +23,20 @@ function find_files_with_extensions(directory, extensions)
             local path = directory .. "/" .. file
             local mode = lfs.attributes(path, "mode")
             if mode == "file" then
+                --  Get the file extension
                 local file_extension = path:match("%.([^%.]+)$")
                 for _, ext in ipairs(extensions) do
+                    -- Check if the file extension matches one of the extensions
                     if file_extension == ext then
                         table.insert(files, path)
                         break
                     end
                 end
             elseif mode == "directory" then
+                -- Recursively find all the files in the subdirectory
                 local subfiles = find_files_with_extensions(path, extensions)
                 for _, subfile in ipairs(subfiles) do
+                    -- Add the subfiles to the files table
                     table.insert(files, subfile)
                 end
             end
