@@ -17,7 +17,7 @@ Simple [CHIP-8](https://en.wikipedia.org/wiki/CHIP-8) emulator written in C, wit
 ## Key concepts
 
 1. Programming in binary is quite complex, therefor we provide an assembly language
-2. The assembly language should stay close to the actual opcode's representation in memory
+2. The assembly language should stay close to the opcode's actual representation in memory
 
 ## Dependencies
 
