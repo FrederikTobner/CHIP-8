@@ -44,7 +44,6 @@ typedef struct {
     display_t display;
     /// Stack of the chip8 (16bit unsigned integer values)
     uint16_t stack[16];
-    uint8_t key[16];
     /// Memory of the virtual machine (4096 bytes)
     uint8_t memory[4096];
     /// Registers of the virtual macine (16 8-bit registers)

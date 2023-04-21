@@ -26,6 +26,7 @@
 
 typedef uint16_t keyBoardState_t;
 
+/// @brief The key codes of the CHIP-8 keyboard
 typedef enum {
     CHIP8_KEY_CODE_0 = 0b0000000000000001,
     CHIP8_KEY_CODE_1 = 0b0000000000000010,
@@ -42,17 +43,17 @@ typedef enum {
     CHIP8_KEY_CODE_C = 0b0001000000000000,
     CHIP8_KEY_CODE_D = 0b0010000000000000,
     CHIP8_KEY_CODE_E = 0b0100000000000000,
-    CHIP8_KEY_CODE_F = 0b1000000000000000,
+    CHIP8_KEY_CODE_F = 0b1000000000000000
 } key_code;
 
-/// @brief
-/// @param event
-/// @param state
+/// @brief Handles a key down event
+/// @param event The event to handle
+/// @param state The state of the keyboard
 void keyboard_handle_key_down_event(SDL_Event event, keyBoardState_t * state);
 
-/// @brief
-/// @param event
-/// @param state
+/// @brief Handles a key up event
+/// @param event The event to handle
+/// @param state The state of the keyboard
 void keyboard_handle_key_up_event(SDL_Event event, keyBoardState_t * state);
 
 #endif

@@ -14,12 +14,12 @@
  ****************************************************************************/
 
 /**
- * @file exit_code.c
+ * @file exit_code.h
  * @brief Exit codes used by the emulator
  */
 
-#ifndef CHIP8_BASE_H_
-#define CHIP8_BASE_H_
+#ifndef CHIP8_EXIT_CODE_H_
+#define CHIP8_EXIT_CODE_H_
 
 /// @brief Exit codes of the emulator
 typedef enum {

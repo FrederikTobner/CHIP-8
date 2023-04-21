@@ -1,4 +1,4 @@
 add_subdirectory(src)
-if (BUILD_TESTS)
+if (CP8_BUILD_TESTS)
     add_subdirectory(test)
 endif()
