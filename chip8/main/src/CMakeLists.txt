@@ -38,5 +38,5 @@ if(NOT CMAKE_BUILD_TYPE MATCHES "[Dd][Ee][Bb][Uu][Gg]")
     # Install destinations
     install(TARGETS ${PROJECT_NAME} DESTINATION bin)
     # Adding window icon
-    install(FILES ${PROJECT_SOURCE_DIR}/assets/chip8_window_icon.bmp DESTINATION icons)
+    install(FILES ${PROJECT_SOURCE_DIR}/assets/chip8_window_icon.bmp DESTINATION assets)
 endif()
