@@ -7,7 +7,7 @@ VERSION 0.1.0
 LANGUAGES C CXX
 )
 # CMake Build options
-option(BUILD_TESTS "Build the tests" OFF)
+option(CP8_BUILD_TESTS "Build the tests" OFF)
 
 # These options only affect the build if the built-type is Debug - otherwise they will be ignored
 option(CP8_DEBUG_PRINT_BYTECODE "Determines whether the instructions are printed" OFF)
@@ -21,7 +21,7 @@ set(CMAKE_C_STANDARD_REQUIRED True)
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
-if(BUILD_TESTS)
+if(CP8_BUILD_TESTS)
     # enabling tests
     enable_testing()
 endif()

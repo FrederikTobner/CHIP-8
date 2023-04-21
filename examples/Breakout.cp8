@@ -7,7 +7,7 @@
 # V3 - ball y direction                             #
 # V4 - paddle y position                            #
 # V5 - bars left counter                            #
-# VD - temp storage                                 #   
+# VD - temp storage                                 #
 # VE - temp storage                                 #
 #####################################################
 section .text:
@@ -85,7 +85,7 @@ _waitForFrame:
     # Handle ball collisions - bricks
     # Handle ball collisions - paddle
     # Loop back to Main Game loop if there are some bars still left to destroy
-    # Game over
+    # Game over screen
 
 section .data:
     org 0x900

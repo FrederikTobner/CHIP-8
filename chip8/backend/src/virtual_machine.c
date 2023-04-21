@@ -43,6 +43,12 @@
 /// The clock speed of the CHIP-8 CPU (600 Hz)
 #define CHIP8_CLOCK_SPEED   (600.0)
 
+/// The character sprites that are stored in memory (from 0x)
+#define CHARACTER_SPRITES                                                                                           \
+    ("\xF0\x90\x90\x90\xF0\x20\x60\x20\x20\x70\xF0\x10\xF0\x80\xF0\xF0\x10\xF0\x10\xF0\x90\x90\xF0\x10\x10\xF0\x80" \
+     "\xF0\x10\xF0\xF0\x80\xF0\x90\xF0\xF0\x10\x20\x40\x40\xF0\x90\xF0\x90\xF0\xF0\x90\xF0\x10\xF0\xF0\x90\xF0\x90" \
+     "\x90\xE0\x90\xE0\x90\xE0\xF0\x80\x80\x80\xF0\xE0\x90\x90\x90\xE0\xF0\x80\xF0\x80\xF0\xF0\x80\xF0\x80\x80")
+
 static int8_t virtual_machine_execute_next_opcode(virtual_machine_t *, keyBoardState_t);
 static inline void virtual_machine_place_character_sprites_in_memory(virtual_machine_t *);
 
@@ -98,7 +104,6 @@ void virtual_machine_execute(virtual_machine_t * vm) {
         // Wait for a 1/600 second minus the time elapsed
         current_t = clock();
         secondsElapsed = (double)(current_t - last_t);
-        log_debug("Executed cycle in %lf ms", secondsElapsed);
         if (1.0 / CHIP8_CLOCK_SPEED > secondsElapsed) {
             // Lets pretend SDL_Delay does not exist
 #if defined(OS_WINDOWS)
@@ -162,12 +167,7 @@ void virtual_machine_write_byte_to_memory(virtual_machine_t * vm, uint16_t * mem
 /// @brief Places sprites for characters in memory
 /// @param vm The virtual machine where the sprites are placed in memory
 static inline void virtual_machine_place_character_sprites_in_memory(virtual_machine_t * vm) {
-    memcpy(
-        vm->memory + 0x50,
-        "\xF0\x90\x90\x90\xF0\x20\x60\x20\x20\x70\xF0\x10\xF0\x80\xF0\xF0\x10\xF0\x10\xF0\x90\x90\xF0\x10\x10\xF0\x80"
-        "\xF0\x10\xF0\xF0\x80\xF0\x90\xF0\xF0\x10\x20\x40\x40\xF0\x90\xF0\x90\xF0\xF0\x90\xF0\x10\xF0\xF0\x90\xF0\x90"
-        "\x90\xE0\x90\xE0\x90\xE0\xF0\x80\x80\x80\xF0\xE0\x90\x90\x90\xE0\xF0\x80\xF0\x80\xF0\xF0\x80\xF0\x80\x80",
-        80);
+    memcpy(vm->memory + 0x50, CHARACTER_SPRITES, 80);
 }
 
 /// Executes the next opcode in memory
