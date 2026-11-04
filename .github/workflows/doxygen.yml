@@ -1,0 +1,27 @@
+name: Documentation
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+jobs:
+  build:
+    name: Build and publish documentation
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v7
+    - name: Install Doxygen
+      run:  sudo apt-get install doxygen
+    - name: Generate documentation
+      run: |
+        mkdir -p docs
+        doxygen ./Doxyfile
+    - name: Deploy to GitHub Pages
+      uses: Cecilapp/GitHub-Pages-deploy@v3
+      env:
+        GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+      with:
+        email: ${{secrets.EMAIL}}
+        build_dir: ./docs/html
