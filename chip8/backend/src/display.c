@@ -19,40 +19,26 @@
  */
 
 #include "display.h"
-#include "../../../build/chip8/main/src/chip8_config.h"
 #include "../../base/src/logger.h"
 #include "../../io/src/path_utils.h"
 #include "backend_pre_compiled_header.h"
 
 static int display_set_window_icon(SDL_Window *, char const *);
 
-void display_render(display_t display) {
-    // Setting renderer color
-    SDL_SetRenderDrawColor(display.renderer, 0xFF, 0xFF, 0xFF, 0xFF); // white color
-    uint8_t currentColor = 0xFF;
-    SDL_RenderClear(display.renderer);
-    for (size_t height = 0; height < GRAPHICS_SYSTEM_HEIGHT; height++) {
-        for (size_t width = 0; width < GRAPHICS_SYSTEM_WIDTH; width++) {
-            // Render black filled quad (Currently the display uses 20x20 pixels to simulate a single pixel of the
-            // graphics system)
-            SDL_Rect fillRect = {width * SCALE_FACTOR, height * SCALE_FACTOR, (width + 1) * SCALE_FACTOR,
-                                 (height + 1) * SCALE_FACTOR};
-            // Check if current color is white and pixel is set before changing renderer color
-            if (currentColor && display.graphicsSystem[width][height]) {
-                SDL_SetRenderDrawColor(display.renderer, 0x00, 0x00, 0x00, 0xFF); // black color
-                currentColor = 0x00;
-            }
-            // Check if current color is black and pixel is not set before changing renderer color
-            else if (!currentColor && !display.graphicsSystem[width][height]) {
-                SDL_SetRenderDrawColor(display.renderer, 0xFF, 0xFF, 0xFF, 0xFF); // white color
-                currentColor = 0xFF;
-            }
-            SDL_RenderFillRect(display.renderer, &fillRect);
+void display_render(display_t * display) {
+    // The color of the pixels of the texture (ARGB) - the display is black on white
+    uint32_t pixels[GRAPHICS_SYSTEM_HEIGHT][GRAPHICS_SYSTEM_WIDTH];
+    for (size_t y = 0; y < GRAPHICS_SYSTEM_HEIGHT; y++) {
+        for (size_t x = 0; x < GRAPHICS_SYSTEM_WIDTH; x++) {
+            pixels[y][x] = display->graphicsSystem[x][y] ? 0xFF000000u : 0xFFFFFFFFu;
         }
     }
-    // Update screen
-    SDL_RenderPresent(display.renderer);
-    SDL_UpdateWindowSurface(display.window);
+    SDL_UpdateTexture(display->texture, NULL, pixels, sizeof(pixels[0]));
+    SDL_RenderClear(display->renderer);
+    // The texture is scaled to the size of the window
+    SDL_RenderCopy(display->renderer, display->texture, NULL, NULL);
+    SDL_RenderPresent(display->renderer);
+    display->dirty = false;
 }
 
 int display_init(display_t * display) {
@@ -61,8 +47,8 @@ int display_init(display_t * display) {
         return -1;
     } else {
         log_debug("SDL initialized");
-        // Set texture filtering to linear
-        if (!SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "1")) {
+        // Set texture filtering to nearest neighbour, so the pixels of the emulator stay sharp when they are scaled
+        if (!SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "0")) {
             printf("Warning: Linear texture filtering not enabled!");
         }
         // Create window
@@ -74,12 +60,20 @@ int display_init(display_t * display) {
             return -1;
         } else {
             // Create renderer for window
-            display->renderer = SDL_CreateRenderer(display->window, -1, SDL_RENDERER_ACCELERATED);
+            display->renderer = SDL_CreateRenderer(display->window, -1, 0);
             if (!display->renderer) {
                 printf("Renderer could not be created! SDL Error: %s\n", SDL_GetError());
                 return -1;
             }
-            SDL_SetRenderDrawColor(display->renderer, 0xFF, 0xFF, 0xFF, 0xFF); // white
+            display->texture = SDL_CreateTexture(display->renderer, SDL_PIXELFORMAT_ARGB8888,
+                                                 SDL_TEXTUREACCESS_STREAMING, GRAPHICS_SYSTEM_WIDTH,
+                                                 GRAPHICS_SYSTEM_HEIGHT);
+            if (!display->texture) {
+                printf("Texture could not be created! SDL Error: %s\n", SDL_GetError());
+                return -1;
+            }
+            // The empty screen is shown right away
+            display->dirty = true;
             // Initialize graphics system
             for (size_t width = 0; width < GRAPHICS_SYSTEM_WIDTH; width++) {
                 for (size_t height = 0; height < GRAPHICS_SYSTEM_HEIGHT; height++) {
@@ -93,11 +87,13 @@ int display_init(display_t * display) {
 }
 
 void display_quit(display_t * display) {
-    // Destroy window and renderer
+    // Destroy texture, window and renderer
+    SDL_DestroyTexture(display->texture);
     SDL_DestroyRenderer(display->renderer);
     SDL_DestroyWindow(display->window);
     display->window = NULL;
     display->renderer = NULL;
+    display->texture = NULL;
     SDL_Quit();
 }
 

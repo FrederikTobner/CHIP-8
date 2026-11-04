@@ -12,7 +12,7 @@ set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 FetchContent_MakeAvailable(googletest)
 
 # Set all test files
-set(TEST_SOURCES fnv1a.cpp main.cpp)
+set(TEST_SOURCES assembler.cpp fnv1a.cpp main.cpp)
 
 add_executable(${FRONTEND_TEST_PROJECT_NAME} ${TEST_SOURCES})
 

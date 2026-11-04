@@ -25,6 +25,8 @@ The emulator has the following dependencies
 
 * [SDL 2.0](https://github.com/libsdl-org/SDL) a cross-platform development library designed to provide low level access to audio, keyboard, mouse, joystick, and graphics hardware.
 
+SDL2 is looked up with `find_package(SDL2)` (e.g. `libsdl2-dev` on Debian/Ubuntu, `sdl2` on Homebrew, `sdl2` via vcpkg). If no installed SDL2 is found, it is downloaded and built automatically. Use `-DCP8_FETCH_SDL=ON` to always download it, and `-DCP8_SDL2_FETCH_TAG=<tag>` to choose the version that is downloaded.
+
 ## IDE Integration
 
 There is a plugin for vim and neovim. Another alternative is to use my own text editor YATE that has built in language support.

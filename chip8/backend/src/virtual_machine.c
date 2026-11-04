@@ -40,8 +40,13 @@
 /// Defines a new 4-bit value based on the opcode that is currently executed
 #define DEFINE_Y            uint8_t y = (vm->currentOpcode & 0x00f0u) >> 4;
 
-/// The clock speed of the CHIP-8 CPU (600 Hz)
-#define CHIP8_CLOCK_SPEED   (600.0)
+/// Converts the address of an instruction to the value of the program counter that is used internally (index of the
+/// instruction relative to the start of the program, minus one because the program counter is incremented after the
+/// instruction was executed)
+#define ADDRESS_TO_PROGRAM_COUNTER(address) ((uint16_t)((((address)-PROGRAM_START_LOCATION) / 2) - 1))
+
+/// The amount of instructions that fit into the program memory
+#define PROGRAM_INSTRUCTION_COUNT ((0x1000 - PROGRAM_START_LOCATION) / 2)
 
 /// The character sprites that are stored in memory (from 0x)
 #define CHARACTER_SPRITES                                                                                           \
@@ -49,72 +54,118 @@
      "\xF0\x10\xF0\xF0\x80\xF0\x90\xF0\xF0\x10\x20\x40\x40\xF0\x90\xF0\x90\xF0\xF0\x90\xF0\x10\xF0\xF0\x90\xF0\x90" \
      "\x90\xE0\x90\xE0\x90\xE0\xF0\x80\x80\x80\xF0\xE0\x90\x90\x90\xE0\xF0\x80\xF0\x80\xF0\xF0\x80\xF0\x80\x80")
 
-static int8_t virtual_machine_execute_next_opcode(virtual_machine_t *, keyBoardState_t);
+static vm_status_t virtual_machine_execute_next_opcode(virtual_machine_t *, keyBoardState_t);
+static bool virtual_machine_poll_events(virtual_machine_t *, keyBoardState_t *);
 static inline void virtual_machine_place_character_sprites_in_memory(virtual_machine_t *);
 
 /// @brief Executes the program that is stored in memory
 /// @param vm The chip8 vm where the program that is currently held in memory is executed
 void virtual_machine_execute(virtual_machine_t * vm) {
-    clock_t last_t, current_t = clock();
-    uint64_t numberofChip8Clocks = 0;
-    SDL_Event event;
     keyBoardState_t keyBoardState = 0;
-    double secondsElapsed;
-    for (; vm->programCounter < ((0x1000 - PROGRAM_START_LOCATION) / 2); vm->programCounter++, numberofChip8Clocks++) {
-        last_t = current_t;
-        // Polling SDL events
-        while (SDL_PollEvent(&event)) {
-            switch (event.type) {
-            case SDL_QUIT:
-                return;
-            case SDL_KEYDOWN:
-                keyboard_handle_key_down_event(event, &keyBoardState);
-                break;
-            case SDL_KEYUP:
-                keyboard_handle_key_up_event(event, &keyBoardState);
-                break;
-            default:
-                break;
-            }
-        }
-#ifdef TRACE_EXECUTION
-        debug_trace_execution(*vm);
-#endif
-        vm->currentOpcode = (uint16_t)vm->memory[vm->programCounter * 2 + 1 + PROGRAM_START_LOCATION];
-        vm->currentOpcode += vm->memory[vm->programCounter * 2 + PROGRAM_START_LOCATION] << 8;
-        // Reached end of the program
-        if (!vm->currentOpcode) {
+    uint64_t const frequency = SDL_GetPerformanceFrequency();
+    uint64_t const ticksPerFrame = frequency / VM_FRAMES_PER_SECOND;
+    uint64_t nextFrameTime = SDL_GetPerformanceCounter();
+    while (virtual_machine_poll_events(vm, &keyBoardState)) {
+        if (virtual_machine_run_frame(vm, keyBoardState) != VM_OK) {
             return;
         }
-        // Executes next opcode
-        if (virtual_machine_execute_next_opcode(vm, keyBoardState)) {
-            return;
+        // Only the frames where the program changed the display have to be rendered
+        if (vm->display.dirty) {
+            display_render(&vm->display);
         }
-        // 60 hz
-        if (!(numberofChip8Clocks % 10)) {
-            if (vm->delayTimer) {
-                vm->delayTimer--;
-            }
-            if (vm->soundTimer) {
-                putc('\a', stdout);
-                vm->soundTimer--;
-            }
-            display_render(vm->display);
-        }
-        // Wait for a 1/600 second minus the time elapsed
-        current_t = clock();
-        secondsElapsed = (double)(current_t - last_t);
-        if (1.0 / CHIP8_CLOCK_SPEED > secondsElapsed) {
-            // Lets pretend SDL_Delay does not exist
-#if defined(OS_WINDOWS)
-            // Milliseconds -> multiply with 1000
-            Sleep((1.0 / CHIP8_CLOCK_SPEED - secondsElapsed) * 1000.0);
-#elif defined(OS_UNIX_LIKE)
-            // Mircoseconds -> multiply with 1000000
-            usleep((1.0 / CHIP8_CLOCK_SPEED - secondsElapsed) * 10000000.0);
-#endif
+        // Waiting for the next frame - frames are scheduled based on the start of the previous one, so the delays of
+        // a single frame do not accumulate
+        nextFrameTime += ticksPerFrame;
+        uint64_t const now = SDL_GetPerformanceCounter();
+        if (now < nextFrameTime) {
+            SDL_Delay((uint32_t)(((nextFrameTime - now) * 1000u) / frequency));
+        } else if (now - nextFrameTime > ticksPerFrame) {
+            // We are more than a frame behind (e.g. the window was dragged) - skip ahead instead of running faster
+            nextFrameTime = now;
         }
     }
+}
+
+/// @brief Executes the instructions of a single frame (1/60 second) and ticks the timers afterwards
+/// @param vm The chip8 virtual machine that executes the instructions
+/// @param keyBoardState The keys that are currently pressed
+/// @return VM_OK if the program can continue, VM_HALT if it is finished and VM_ERROR if the opcode is unknown
+vm_status_t virtual_machine_run_frame(virtual_machine_t * vm, keyBoardState_t keyBoardState) {
+    for (uint16_t instruction = 0; instruction < vm->instructionsPerFrame; instruction++) {
+        vm_status_t status = virtual_machine_step(vm, keyBoardState);
+        if (status != VM_OK) {
+            return status;
+        }
+    }
+    if (vm->delayTimer) {
+        vm->delayTimer--;
+    }
+    if (vm->soundTimer) {
+        putc('\a', stdout);
+        vm->soundTimer--;
+    }
+    return VM_OK;
+}
+
+/// @brief Executes the next instruction of the program
+/// @param vm The chip8 virtual machine that executes the instruction
+/// @param keyBoardState The keys that are currently pressed
+/// @return VM_OK if the program can continue, VM_HALT if it is finished and VM_ERROR if the opcode is unknown
+vm_status_t virtual_machine_step(virtual_machine_t * vm, keyBoardState_t keyBoardState) {
+    // Reached end of the memory
+    if (vm->programCounter >= PROGRAM_INSTRUCTION_COUNT) {
+        return VM_HALT;
+    }
+#ifdef TRACE_EXECUTION
+    debug_trace_execution(*vm);
+#endif
+    vm->currentOpcode = (uint16_t)vm->memory[vm->programCounter * 2 + 1 + PROGRAM_START_LOCATION];
+    vm->currentOpcode += vm->memory[vm->programCounter * 2 + PROGRAM_START_LOCATION] << 8;
+    // Reached end of the program
+    if (!vm->currentOpcode) {
+        return VM_HALT;
+    }
+    vm_status_t status = virtual_machine_execute_next_opcode(vm, keyBoardState);
+    if (status == VM_OK) {
+        vm->programCounter++;
+    }
+    return status;
+}
+
+/// @brief Sets the speed of the virtual machine
+/// @param vm The chip8 virtual machine where the speed is set
+/// @param instructionsPerSecond The amount of instructions that are executed per second (rounded to a whole amount of
+/// instructions per frame, at least one instruction per frame)
+void virtual_machine_set_speed(virtual_machine_t * vm, uint32_t instructionsPerSecond) {
+    uint32_t instructionsPerFrame = (instructionsPerSecond + VM_FRAMES_PER_SECOND / 2) / VM_FRAMES_PER_SECOND;
+    if (!instructionsPerFrame) {
+        instructionsPerFrame = 1;
+    }
+    if (instructionsPerFrame > UINT16_MAX) {
+        instructionsPerFrame = UINT16_MAX;
+    }
+    vm->instructionsPerFrame = (uint16_t)instructionsPerFrame;
+}
+
+/// @brief Polls the pending SDL events and updates the state of the keyboard
+/// @param vm The chip8 virtual machine whose display is redrawn when the window needs it
+/// @param keyBoardState The state of the keyboard that is updated
+/// @return false if the window was closed, true otherwise
+static bool virtual_machine_poll_events(virtual_machine_t * vm, keyBoardState_t * keyBoardState) {
+    SDL_Event event;
+    while (SDL_PollEvent(&event)) {
+        if (event.type == SDL_QUIT) {
+            return false;
+        }
+        // The content of the window has to be rendered again, even if the program did not change the display
+        if (event.type == SDL_WINDOWEVENT && (event.window.event == SDL_WINDOWEVENT_EXPOSED ||
+                                              event.window.event == SDL_WINDOWEVENT_RESTORED ||
+                                              event.window.event == SDL_WINDOWEVENT_SIZE_CHANGED)) {
+            vm->display.dirty = true;
+        }
+        keyboard_handle_event(event, keyBoardState);
+    }
+    return true;
 }
 
 /// @brief Initializes the chip8 vm
@@ -124,6 +175,15 @@ void virtual_machine_init(virtual_machine_t * vm) {
     for (uint8_t * memoryPointer = vm->V; memoryPointer < upperBound; memoryPointer++) {
         *memoryPointer = 0u;
     }
+    vm->currentOpcode = 0u;
+    vm->I = 0u;
+    vm->delayTimer = 0u;
+    vm->soundTimer = 0u;
+    memset(vm->display.graphicsSystem, 0, sizeof(vm->display.graphicsSystem));
+    vm->display.dirty = false;
+    vm->waitingForKey = false;
+    vm->keyWaitBaseline = 0u;
+    virtual_machine_set_speed(vm, VM_DEFAULT_INSTRUCTIONS_PER_SECOND);
     // Initialize stackpointer
     vm->stackPointer = vm->stack;
     // Initialize program counter
@@ -172,8 +232,9 @@ static inline void virtual_machine_place_character_sprites_in_memory(virtual_mac
 
 /// Executes the next opcode in memory
 /// @param vm The chip8 virtual machine where the next opcode is executed
-/// @return 0 if the opcode was executed properly, -1 if not
-static int8_t virtual_machine_execute_next_opcode(virtual_machine_t * vm, uint16_t keyBoardState) {
+/// @return VM_OK if the opcode was executed properly, VM_HALT if the program is finished, VM_ERROR if the opcode is
+/// unknown
+static vm_status_t virtual_machine_execute_next_opcode(virtual_machine_t * vm, keyBoardState_t keyBoardState) {
     switch (vm->currentOpcode & 0xf000) {
     case 0x0000:
         {
@@ -181,8 +242,7 @@ static int8_t virtual_machine_execute_next_opcode(virtual_machine_t * vm, uint16
             case 0x001: // 0x0001 - NOP
                 break;
             case 0x002: // 0x0002 - EXT
-                exit(0);
-                break;
+                return VM_HALT;
             case 0x0E0: // 0x00E0 - Clear the screen
                 {
                     for (uint8_t x = 0; x < GRAPHICS_SYSTEM_WIDTH; x++) {
@@ -190,6 +250,7 @@ static int8_t virtual_machine_execute_next_opcode(virtual_machine_t * vm, uint16
                             vm->display.graphicsSystem[x][y] = 0;
                         }
                     }
+                    vm->display.dirty = true;
                     break;
                 }
             case 0x0E1: // 0x00E1 - Toggle the pixels on the screen
@@ -199,6 +260,7 @@ static int8_t virtual_machine_execute_next_opcode(virtual_machine_t * vm, uint16
                             vm->display.graphicsSystem[x][y] = !vm->display.graphicsSystem[x][y];
                         }
                     }
+                    vm->display.dirty = true;
                     break;
                 }
             case 0x0EE: // 0x00EE - return from subroutine
@@ -211,14 +273,14 @@ static int8_t virtual_machine_execute_next_opcode(virtual_machine_t * vm, uint16
         }
     case 0x1000: // 0x1NNN - Jumps to address NNN
         {
-            vm->programCounter = (((vm->currentOpcode & 0x0fff) - PROGRAM_START_LOCATION) / 2) - 1;
+            vm->programCounter = ADDRESS_TO_PROGRAM_COUNTER(vm->currentOpcode & 0x0fff);
             break;
         }
     case 0x2000: // 0x2NNN - Calls subroutine at NNN
         {
             DEFINE_12_BIT_VALUE
             *vm->stackPointer++ = vm->programCounter;
-            vm->programCounter = value;
+            vm->programCounter = ADDRESS_TO_PROGRAM_COUNTER(value);
             break;
         }
     case 0x3000: // 0x3XNN - Skips the next instruction if VX equals NN. Usually the next instruction is a jump to skip
@@ -302,47 +364,44 @@ static int8_t virtual_machine_execute_next_opcode(virtual_machine_t * vm, uint16
             {
                 DEFINE_X
                 DEFINE_Y
-                uint8_t result = vm->V[x] + vm->V[y];
-                if (result > (result - vm->V[x])) {
-                    vm->V[0xf] = 0x1u;
-                }
-                vm->V[x] = result;
+                uint16_t sum = vm->V[x] + vm->V[y];
+                vm->V[x] = sum & 0xff;
+                // The flag is written last, so it also is correct when VX is VF
+                vm->V[0xf] = sum > 0xff;
                 break;
             }
         case 0x5: // 0x8XY5 - VY is subtracted from VX. VF is set to 0 when there's a borrow, and 1 when there is not.
             {
                 DEFINE_X
                 DEFINE_Y
-                uint8_t result = vm->V[x] - vm->V[y];
-                if (result < (result - vm->V[x])) {
-                    vm->V[0xf] = 0x1u;
-                }
-                vm->V[x] = result;
+                uint8_t noBorrow = vm->V[x] >= vm->V[y];
+                vm->V[x] -= vm->V[y];
+                vm->V[0xf] = noBorrow;
                 break;
             }
         case 0x6: // 0x8XY6 - Stores the least significant bit of VX in VF and then shifts VX to the right by 1
             {
                 DEFINE_X
-                vm->V[0xf] = vm->V[x] & 0x0001;
+                uint8_t leastSignificantBit = vm->V[x] & 0x01;
                 vm->V[x] >>= 1;
+                vm->V[0xf] = leastSignificantBit;
                 break;
             }
         case 0x7: // 0x8XY7 - Sets VX to VY minus VX. VF is set to 0 when there's a borrow, and 1 when there is not.
             {
                 DEFINE_X
                 DEFINE_Y
-                uint8_t result = vm->V[y] - vm->V[x];
-                if (result > (result - vm->V[x])) {
-                    vm->V[0xf] = 0x1u;
-                }
-                vm->V[x] = result;
+                uint8_t noBorrow = vm->V[y] >= vm->V[x];
+                vm->V[x] = vm->V[y] - vm->V[x];
+                vm->V[0xf] = noBorrow;
                 break;
             }
         case 0xe: // 0x8XYe - Stores the most significant bit of VX in VF and then shifts VX to the left by 1
             {
                 DEFINE_X
-                vm->V[0xf] = vm->V[x] & 0x0001;
+                uint8_t mostSignificantBit = (vm->V[x] >> 7) & 0x01;
                 vm->V[x] <<= 1;
+                vm->V[0xf] = mostSignificantBit;
                 break;
             }
         default:
@@ -357,7 +416,7 @@ static int8_t virtual_machine_execute_next_opcode(virtual_machine_t * vm, uint16
             }
             DEFINE_X
             DEFINE_Y
-            if (vm->V[x] == vm->V[y]) {
+            if (vm->V[x] != vm->V[y]) {
                 vm->programCounter++;
             }
             break;
@@ -369,7 +428,7 @@ static int8_t virtual_machine_execute_next_opcode(virtual_machine_t * vm, uint16
         }
     case 0xb000: // 0xBNNN - Jumps to the address NNN plus V0
         {
-            vm->programCounter = (vm->currentOpcode & 0x0fff + vm->V[0] / 2);
+            vm->programCounter = ADDRESS_TO_PROGRAM_COUNTER(((vm->currentOpcode & 0x0fff) + vm->V[0]) & 0x0fff);
             break;
         }
     case 0xc000: // 0xCXNN - Sets VX to the result of a bitwise and operation on a random number (Typically: 0 to 255)
@@ -391,21 +450,20 @@ static int8_t virtual_machine_execute_next_opcode(virtual_machine_t * vm, uint16
             DEFINE_X
             DEFINE_Y
             uint8_t spriteHeight = vm->currentOpcode & 0x000f;
-            bool setVF = false;
             // Stays zero if no screen pixels are flipped from set to unset
             vm->V[0xf] = 0;
             for (size_t height = 0; height < spriteHeight; height++) {
+                uint8_t spriteRow = vm->memory[(vm->I + height) & 4095];
+                size_t row = (height + vm->V[y]) & (GRAPHICS_SYSTEM_HEIGHT - 1);
                 for (size_t width = 0; width < 8; width++) {
-                    if ((vm->memory[(vm->I + height) & 4095] >> (8 - width)) & 0x01) {
-                        if (!setVF && vm->display.graphicsSystem[width + vm->V[x] & (GRAPHICS_SYSTEM_WIDTH - 1)]
-                                                                [height + vm->V[y] & (GRAPHICS_SYSTEM_HEIGHT - 1)]) {
+                    // The most significant bit is the leftmost pixel of the sprite
+                    if ((spriteRow >> (7 - width)) & 0x01) {
+                        size_t column = (width + vm->V[x]) & (GRAPHICS_SYSTEM_WIDTH - 1);
+                        if (vm->display.graphicsSystem[column][row]) {
                             vm->V[0xf] = 1;
-                            setVF = true;
                         }
-                        vm->display.graphicsSystem[width + vm->V[x] & (GRAPHICS_SYSTEM_WIDTH - 1)]
-                                                  [height + vm->V[y] & (GRAPHICS_SYSTEM_HEIGHT - 1)] =
-                            !vm->display.graphicsSystem[width + vm->V[x] & (GRAPHICS_SYSTEM_WIDTH - 1)]
-                                                       [height + vm->V[y] & (GRAPHICS_SYSTEM_HEIGHT - 1)];
+                        vm->display.graphicsSystem[column][row] = !vm->display.graphicsSystem[column][row];
+                        vm->display.dirty = true;
                     }
                 }
             }
@@ -418,89 +476,8 @@ static int8_t virtual_machine_execute_next_opcode(virtual_machine_t * vm, uint16
                        // instruction is a jump to skip a code block)
                 {
                     DEFINE_X
-                    switch (vm->V[x]) {
-                    case 0x0:
-                        if (keyBoardState & CHIP8_KEY_CODE_0) {
-                            vm->programCounter++;
-                        }
-                        break;
-                    case 0x1:
-                        if (keyBoardState & CHIP8_KEY_CODE_1) {
-                            vm->programCounter++;
-                        }
-                        break;
-                    case 0x2:
-                        if (keyBoardState & CHIP8_KEY_CODE_2) {
-                            vm->programCounter++;
-                        }
-                        break;
-                    case 0x3:
-                        if (keyBoardState & CHIP8_KEY_CODE_3) {
-                            vm->programCounter++;
-                        }
-                        break;
-                    case 0x4:
-                        if (keyBoardState & CHIP8_KEY_CODE_4) {
-                            vm->programCounter++;
-                        }
-                        break;
-                    case 0x5:
-                        if (keyBoardState & CHIP8_KEY_CODE_5) {
-                            vm->programCounter++;
-                        }
-                        break;
-                    case 0x6:
-                        if (keyBoardState & CHIP8_KEY_CODE_6) {
-                            vm->programCounter++;
-                        }
-                        break;
-                    case 0x7:
-                        if (keyBoardState & CHIP8_KEY_CODE_7) {
-                            vm->programCounter++;
-                        }
-                        break;
-                    case 0x8:
-                        if (keyBoardState & CHIP8_KEY_CODE_8) {
-                            vm->programCounter++;
-                        }
-                        break;
-                    case 0x9:
-                        if (keyBoardState & CHIP8_KEY_CODE_9) {
-                            vm->programCounter++;
-                        }
-                        break;
-                    case 0xA:
-                        if (keyBoardState & CHIP8_KEY_CODE_A) {
-                            vm->programCounter++;
-                        }
-                        break;
-                    case 0xB:
-                        if (keyBoardState & CHIP8_KEY_CODE_B) {
-                            vm->programCounter++;
-                        }
-                        break;
-                    case 0xC:
-                        if (keyBoardState & CHIP8_KEY_CODE_C) {
-                            vm->programCounter++;
-                        }
-                        break;
-                    case 0xD:
-                        if (keyBoardState & CHIP8_KEY_CODE_D) {
-                            vm->programCounter++;
-                        }
-                        break;
-                    case 0xE:
-                        if (keyBoardState & CHIP8_KEY_CODE_E) {
-                            vm->programCounter++;
-                        }
-                        break;
-                    case 0xF:
-                        if (keyBoardState & CHIP8_KEY_CODE_F) {
-                            vm->programCounter++;
-                        }
-                        break;
-                    default:
-                        break;
+                    if (keyBoardState & (1u << (vm->V[x] & 0x0f))) {
+                        vm->programCounter++;
                     }
                     break;
                 }
@@ -508,89 +485,8 @@ static int8_t virtual_machine_execute_next_opcode(virtual_machine_t * vm, uint16
                        // instruction is a jump to skip a code block)
                 {
                     DEFINE_X
-                    switch (vm->V[x]) {
-                    case 0x0:
-                        if (!(keyBoardState & CHIP8_KEY_CODE_0)) {
-                            vm->programCounter++;
-                        }
-                        break;
-                    case 0x1:
-                        if (!(keyBoardState & CHIP8_KEY_CODE_1)) {
-                            vm->programCounter++;
-                        }
-                        break;
-                    case 0x2:
-                        if (!(keyBoardState & CHIP8_KEY_CODE_2)) {
-                            vm->programCounter++;
-                        }
-                        break;
-                    case 0x3:
-                        if (!(keyBoardState & CHIP8_KEY_CODE_3)) {
-                            vm->programCounter++;
-                        }
-                        break;
-                    case 0x4:
-                        if (!(keyBoardState & CHIP8_KEY_CODE_4)) {
-                            vm->programCounter++;
-                        }
-                        break;
-                    case 0x5:
-                        if (!(keyBoardState & CHIP8_KEY_CODE_5)) {
-                            vm->programCounter++;
-                        }
-                        break;
-                    case 0x6:
-                        if (!(keyBoardState & CHIP8_KEY_CODE_6)) {
-                            vm->programCounter++;
-                        }
-                        break;
-                    case 0x7:
-                        if (!(keyBoardState & CHIP8_KEY_CODE_7)) {
-                            vm->programCounter++;
-                        }
-                        break;
-                    case 0x8:
-                        if (!(keyBoardState & CHIP8_KEY_CODE_8)) {
-                            vm->programCounter++;
-                        }
-                        break;
-                    case 0x9:
-                        if (!(keyBoardState & CHIP8_KEY_CODE_9)) {
-                            vm->programCounter++;
-                        }
-                        break;
-                    case 0xA:
-                        if (!(keyBoardState & CHIP8_KEY_CODE_A)) {
-                            vm->programCounter++;
-                        }
-                        break;
-                    case 0xB:
-                        if (!(keyBoardState & CHIP8_KEY_CODE_B)) {
-                            vm->programCounter++;
-                        }
-                        break;
-                    case 0xC:
-                        if (!(keyBoardState & CHIP8_KEY_CODE_C)) {
-                            vm->programCounter++;
-                        }
-                        break;
-                    case 0xD:
-                        if (!(keyBoardState & CHIP8_KEY_CODE_D)) {
-                            vm->programCounter++;
-                        }
-                        break;
-                    case 0xE:
-                        if (!(keyBoardState & CHIP8_KEY_CODE_E)) {
-                            vm->programCounter++;
-                        }
-                        break;
-                    case 0xF:
-                        if (!(keyBoardState & CHIP8_KEY_CODE_F)) {
-                            vm->programCounter++;
-                        }
-                        break;
-                    default:
-                        break;
+                    if (!(keyBoardState & (1u << (vm->V[x] & 0x0f)))) {
+                        vm->programCounter++;
                     }
                     break;
                 }
@@ -620,7 +516,25 @@ static int8_t virtual_machine_execute_next_opcode(virtual_machine_t * vm, uint16
                       // halted until next key event)
                 {
                     DEFINE_X
-                    vm->V[x] = getchar();
+                    if (!vm->waitingForKey) {
+                        // Keys that are already held down when the instruction is reached do not count
+                        vm->waitingForKey = true;
+                        vm->keyWaitBaseline = keyBoardState;
+                    }
+                    // Keys that were released in the meantime can be pressed again
+                    vm->keyWaitBaseline &= keyBoardState;
+                    keyBoardState_t newlyPressedKeys = keyBoardState & ~vm->keyWaitBaseline;
+                    if (newlyPressedKeys) {
+                        uint8_t key = 0;
+                        while (!(newlyPressedKeys & (1u << key))) {
+                            key++;
+                        }
+                        vm->V[x] = key;
+                        vm->waitingForKey = false;
+                    } else {
+                        // Executing the same instruction again after this one (the program counter is incremented)
+                        vm->programCounter--;
+                    }
                     break;
                 }
             case 0x15: // 0xFX15 - Sets the delay timer to VX
@@ -642,18 +556,12 @@ static int8_t virtual_machine_execute_next_opcode(virtual_machine_t * vm, uint16
                     break;
                 }
             case 0x29:
-                // 0xFX29 - Sets I to the location of the sprite for the character in VX. Characters
-                // are represented by a 4x5 font The characters are stored at the address 0x0050 and are 20 bit large (4
-                // by 5 bits)
+                // 0xFX29 - Sets I to the location of the sprite for the character in VX (0x0-0xF). Characters are
+                // represented by a 4x5 font. The characters are stored at the address 0x0050 and every character is 5
+                // bytes large
                 {
                     DEFINE_X
-                    if (vm->V[x] <= '9' && vm->V[x] >= '0') {
-                        vm->I = 0x0050 + 0x5 * (vm->V[x] - '0');
-                    } else if (vm->V[x] <= 'F' && vm->V[x] >= 'A') {
-                        vm->I = 0x0050 + 0x5 * (vm->V[x] - 0x37);
-                    } else {
-                        goto chip8_error;
-                    }
+                    vm->I = 0x0050 + 0x5 * (vm->V[x] & 0x0f);
                     break;
                 }
             case 0x33: /* 0xFX33 - Stores the binary-coded decimal representation of VX,
@@ -699,9 +607,10 @@ static int8_t virtual_machine_execute_next_opcode(virtual_machine_t * vm, uint16
     default:
         goto chip8_error;
     }
-    return 0;
+    return VM_OK;
 
 chip8_error:
-    printf("Unknown opcode: 0x%4X", vm->currentOpcode);
-    return -1;
+    fprintf(stderr, "Unknown opcode: 0x%04X at address 0x%03X\n", vm->currentOpcode,
+            vm->programCounter * 2 + PROGRAM_START_LOCATION);
+    return VM_ERROR;
 }

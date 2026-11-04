@@ -72,7 +72,8 @@ void addresses_table_free_entries(addresses_hash_table_t * table);
 /// @param address The address that is added to the table
 /// @param key The label that is referenced
 /// @param table The table where the address is added
-/// @return 0 if the address was added, -1 if the address couldn't be added
+/// @return 0 if the label was added to the table (the table takes ownership of the key), 1 if the address was added to a
+/// label that was already in the table (the caller keeps ownership of the key), -1 if the address couldn't be added
 int addresses_table_add(uint16_t address, char const * key, addresses_hash_table_t * table);
 
 /// @brief Removes a entry from the hashtable

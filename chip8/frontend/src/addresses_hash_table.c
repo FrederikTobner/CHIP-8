@@ -91,11 +91,13 @@ void addresses_table_free_entries(addresses_hash_table_t * table) {
 int addresses_table_add(uint16_t address, char const * key, addresses_hash_table_t * table) {
     // Lookup label
     addresses_hash_table_entry_t * entry;
-    if ((entry = addresses_table_look_up_entry(key, table))) {
-        uint16_t_dynamic_array_write(entry->array, address);
-    }
     if (!key || !table) {
         return -1;
+    }
+    if ((entry = addresses_table_look_up_entry(key, table))) {
+        // The label is already referenced, the table does not take ownership of the key
+        uint16_t_dynamic_array_write(entry->array, address);
+        return 1;
     }
     if (table->used >= ((double)table->allocated) * TABLE_GROWTH_TRIGGER_VALUE) {
         if (addresses_table_grow_table(table)) {

@@ -26,6 +26,7 @@
 
 static inline char assembler_advance(assembler_t *);
 static uint16_t assembler_convert_address_to_binary(assembler_t *);
+static uint16_t assembler_convert_address_or_label_to_binary(assembler_t *, uint16_t);
 static uint16_t assembler_convert_label_to_address(assembler_t *, uint16_t);
 static uint16_t assembler_convert_mnemonic_to_binary(assembler_t *, char, uint16_t);
 static uint8_t assembler_convert_register_to_binary(assembler_t *);
@@ -35,6 +36,7 @@ static inline bool assembler_is_alpha(char);
 static inline bool assembler_is_at_end(assembler_t);
 static inline bool assembler_is_decimal(char);
 static inline bool assembler_is_hexa(char);
+static inline bool assembler_is_label_character(char);
 static inline char assembler_peek(assembler_t);
 static char assembler_peek_ahead(assembler_t, uint8_t);
 static uint8_t assembler_read_8bit_number(assembler_t *);
@@ -179,33 +181,37 @@ static void assembler_process_text_section(assembler_t * assembler, uint8_t * me
 /// @param memoryLocation The current location of the next opcode that will be written into the memory of the
 /// virtual machine
 static void assembler_scan_label(assembler_t * assembler, uint16_t memoryLocation) {
+    // Skipping the leading underscore
     assembler_advance(assembler);
     char const * labelStart = assembler->current;
-    char const * labelEnd = NULL;
-    while (!assembler_is_at_end(*assembler)) {
-        if (assembler_peek(*assembler) == ':') {
-            break;
-        }
-        if (!assembler_is_alpha(assembler_peek(*assembler))) {
-            assembler_report_error(assembler, "A label can only consist of alphanumeric characters");
-        }
-        labelEnd = assembler->current;
+    if (!assembler_is_alpha(assembler_peek(*assembler))) {
+        assembler_report_error(assembler, "A label must start with a letter");
+    }
+    while (assembler_is_label_character(assembler_peek(*assembler))) {
         assembler_advance(assembler);
     }
-    if (!labelEnd) {
-        return;
+    if (assembler_peek(*assembler) != ':') {
+        assembler_report_error(assembler, "A label can only consist of alphanumeric characters and must end with a ':'");
     }
-    char * label = malloc(labelEnd - labelStart);
+    size_t length = assembler->current - labelStart;
+    char * label = malloc(length + 1);
     if (!label) {
-        return;
+        assembler_report_error(assembler, "Unable to allocate memory for label");
     }
-    memcpy(label, labelStart, labelEnd - labelStart + 1);
-    label[labelEnd - labelStart + 1] = '\0';
+    memcpy(label, labelStart, length);
+    label[length] = '\0';
+    if (uint16_t_table_look_up_entry(label, &assembler->addressTable)) {
+        free(label);
+        assembler_report_error(assembler, "Label is defined more than once");
+    }
+    // The table takes ownership of the label
     uint16_t_table_entry_t * entry = uint16_t_table_entry_new(memoryLocation, label);
     if (!entry) {
-        return;
+        free(label);
+        assembler_report_error(assembler, "Unable to allocate memory for label");
     }
     uint16_t_table_insert_entry(entry, &assembler->addressTable);
+    // Skipping the colon
     assembler_advance(assembler);
 }
 
@@ -263,6 +269,13 @@ static uint16_t assembler_hexa(assembler_t * assembler, size_t digitCount) {
 /// @return true if the char is from the aphabet, false if not
 static inline bool assembler_is_alpha(char c) {
     return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z');
+}
+
+/// @brief Checks if the char c can be used in the name of a label (letters, digits and underscores)
+/// @param c The character that is checked
+/// @return true if the char can be part of a label, false if not
+static inline bool assembler_is_label_character(char c) {
+    return assembler_is_alpha(c) || assembler_is_decimal(c) || c == '_';
 }
 
 /// @brief Determines wheather we reached the end in the sourceCode
@@ -361,29 +374,44 @@ static uint16_t assembler_convert_address_to_binary(assembler_t * assembler) {
 #endif
 }
 
+/// @brief Converts the operand of a jump or call (an address or a label) to binary
+/// @param assembler The assembler where the operand is stored
+/// @param memoryLocation The memory-location of the instruction that is converted
+/// @return The address - 0 if it is a label that is not declared yet (it is patched in after the whole file is read)
+static uint16_t assembler_convert_address_or_label_to_binary(assembler_t * assembler, uint16_t memoryLocation) {
+    assembler_skip_whitespace(assembler);
+    if (assembler_is_alpha(assembler_peek(*assembler))) {
+        return assembler_convert_label_to_address(assembler, memoryLocation);
+    }
+    return assembler_convert_address_to_binary(assembler);
+}
+
 /// @brief Converts a label to it's corresponding address in memory
 /// @param assembler The assembler where the label and it's address are stored
 /// @return The memory address of the label
 static uint16_t assembler_convert_label_to_address(assembler_t * assembler, uint16_t memoryLocation) {
     char const * labelStart = assembler->current;
-    char const * labelEnd = NULL;
-    for (; !assembler_is_at_end(*assembler) && assembler_is_alpha(assembler_peek(*assembler));
-         labelEnd = assembler->current, assembler_advance(assembler)) {
+    while (assembler_is_label_character(assembler_peek(*assembler))) {
+        assembler_advance(assembler);
     }
-    char * label = malloc(labelEnd - labelStart - 2);
+    size_t length = assembler->current - labelStart;
+    char * label = malloc(length + 1);
     if (!label) {
         assembler_report_error(assembler, "Unable to allocate memory for label");
     }
-    memcpy(label, labelStart, labelEnd - labelStart + 1);
-    label[labelEnd - labelStart + 1] = '\0';
+    memcpy(label, labelStart, length);
+    label[length] = '\0';
     uint16_t address = 0;
     uint16_t_table_entry_t * entry = uint16_t_table_look_up_entry(label, &assembler->addressTable);
     if (entry) {
         // The label is defined
         address = entry->data;
+        free(label);
     } else {
-        // The label is not defined
-        addresses_table_add(memoryLocation, label, &assembler->addressesTable);
+        // The label is not defined yet. The table takes ownership of the label unless the label is already referenced
+        if (addresses_table_add(memoryLocation, label, &assembler->addressesTable) != 0) {
+            free(label);
+        }
     }
     return address;
 }
@@ -449,7 +477,9 @@ static void assembler_patch_jump_instructions(assembler_t * assembler, uint8_t *
                 exit(EXIT_CODE_ASSEMBLER_ERROR);
             }
             for (size_t j = 0; j < assembler->addressesTable.entries[i]->array->used; j++) {
-                memory[assembler->addressesTable.entries[i]->array->data[j]] |= addressEntry->data;
+                uint16_t instructionLocation = assembler->addressesTable.entries[i]->array->data[j];
+                memory[instructionLocation] |= (addressEntry->data >> 8) & 0x0F;
+                memory[instructionLocation + 1] |= addressEntry->data & 0xFF;
             }
         }
     }
@@ -498,7 +528,7 @@ static uint16_t assembler_convert_mnemonic_to_binary(assembler_t * assembler, ch
         SWITCH_ADVANCE {
         case 'A':
             SWITCH_ADVANCE {
-                SWITCH_CASE_RETURN('L', 0x2000 | assembler_convert_address_to_binary(assembler)); // CAL
+                SWITCH_CASE_RETURN('L', 0x2000 | assembler_convert_address_or_label_to_binary(assembler, memoryLocation)); // CAL
             default:
                 assembler_report_error(assembler, OPCODE_CONVERSION_ERROR_MESSAGE);
             }
@@ -552,12 +582,7 @@ static uint16_t assembler_convert_mnemonic_to_binary(assembler_t * assembler, ch
             SWITCH_ADVANCE {
             case 'P':
                 {
-                    assembler_skip_whitespace(assembler);
-                    if (assembler_is_alpha(assembler_peek(*assembler))) {
-                        return 0x1000 | assembler_convert_label_to_address(assembler, memoryLocation);
-                    } else {
-                        return 0x1000 | assembler_convert_address_to_binary(assembler);
-                    }
+                    return 0x1000 | assembler_convert_address_or_label_to_binary(assembler, memoryLocation);
                 }
             default:
                 assembler_report_error(assembler, OPCODE_CONVERSION_ERROR_MESSAGE);
@@ -612,6 +637,7 @@ static uint16_t assembler_convert_mnemonic_to_binary(assembler_t * assembler, ch
                         assembler_advance(assembler);
                         return 0xA000 | assembler_convert_address_to_binary(assembler);
                     case 'S':
+                        assembler_advance(assembler);
                         SWITCH_ADVANCE {
                             SWITCH_CASE_RETURN('T', 0xF018 | assembler_convert_register_to_binary(assembler)
                                                                  << 8); // ST VX
@@ -630,9 +656,10 @@ static uint16_t assembler_convert_mnemonic_to_binary(assembler_t * assembler, ch
                                 default:
                                     assembler_report_error(assembler, OPCODE_CONVERSION_ERROR_MESSAGE);
                                 }
-                                SWITCH_CASE_RETURN('V', 0x8000 | registernumber << 8 ||
-                                                            assembler_convert_register_to_binary(assembler)
-                                                                << 4); // VX VY
+                            case 'V': // VX VY
+                                // Un-reading the V, because it is part of the register
+                                assembler->current--;
+                                return 0x8000 | registernumber << 8 | assembler_convert_register_to_binary(assembler) << 4;
                             case '0':
                                 switch (assembler_peek(*assembler)) {
                                 case 'x':

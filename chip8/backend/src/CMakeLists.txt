@@ -36,4 +36,4 @@ else()
     target_precompile_headers(${PROJECT_NAME}_Backend PUBLIC backend_pre_compiled_header.h)
 endif()
 
-target_link_libraries(${PROJECT_NAME}_Backend SDL2-static ${PROJECT_NAME}_Base ${PROJECT_NAME}_IO)
+target_link_libraries(${PROJECT_NAME}_Backend SDL2::SDL2 ${PROJECT_NAME}_Base ${PROJECT_NAME}_IO)

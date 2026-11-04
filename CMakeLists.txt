@@ -8,6 +8,9 @@ LANGUAGES C CXX
 )
 # CMake Build options
 option(CP8_BUILD_TESTS "Build the tests" OFF)
+option(CP8_FETCH_SDL "Always download and build SDL2 instead of using an installed version" OFF)
+set(CP8_SDL2_MIN_VERSION "2.0.0" CACHE STRING "Minimum SDL2 version required when using an installed SDL2")
+set(CP8_SDL2_FETCH_TAG "release-2.32.10" CACHE STRING "SDL2 git tag that is downloaded if no installed SDL2 is used")
 
 # These options only affect the build if the built-type is Debug - otherwise they will be ignored
 option(CP8_DEBUG_PRINT_BYTECODE "Determines whether the instructions are printed" OFF)
@@ -32,12 +35,13 @@ get_filename_component(SOURCE_PATH_FRONTEND ${PROJECT_SOURCE_DIR}/chip8/frontend
 include(CheckIncludeFile)
 # Adding own cmake scripts
 include(./cmake/chip8_check.cmake)
+include(./cmake/chip8_sdl.cmake)
 
 # Checking dependencies
 CHIP8_Check_Dependencies()
 
-# Build SDL
-add_subdirectory(external/SDL)
+# Find SDL2 (or download it if it is not installed)
+CHIP8_Find_SDL2()
 
 # Build CHIP-8 project
 add_subdirectory(chip8)
