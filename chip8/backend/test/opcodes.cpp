@@ -101,21 +101,21 @@ TEST_F(OpcodeTest, SkipIfRegistersAreNotEqual_Skips) {
     vm.V[0] = 1;
     vm.V[1] = 2;
     ASSERT_EQ(VM_OK, Execute(0x9010));
-    EXPECT_EQ(2, vm.programCounter);
+    EXPECT_EQ(2, Instruction());
 }
 
 TEST_F(OpcodeTest, SkipIfRegistersAreNotEqual_DoesNotSkipOnEqualValues) {
     vm.V[0] = 2;
     vm.V[1] = 2;
     ASSERT_EQ(VM_OK, Execute(0x9010));
-    EXPECT_EQ(1, vm.programCounter);
+    EXPECT_EQ(1, Instruction());
 }
 
 TEST_F(OpcodeTest, SkipIfRegistersAreEqual_Skips) {
     vm.V[0] = 2;
     vm.V[1] = 2;
     ASSERT_EQ(VM_OK, Execute(0x5010));
-    EXPECT_EQ(2, vm.programCounter);
+    EXPECT_EQ(2, Instruction());
 }
 
 TEST_F(OpcodeTest, CallAndReturn) {
@@ -125,12 +125,12 @@ TEST_F(OpcodeTest, CallAndReturn) {
     Write(4, 0x6005); // V0 = 5
     Write(5, 0x00EE); // RET
     ASSERT_EQ(VM_OK, virtual_machine_step(&vm, 0));
-    EXPECT_EQ(4, vm.programCounter);
+    EXPECT_EQ(4, Instruction());
     ASSERT_EQ(VM_OK, virtual_machine_step(&vm, 0));
     EXPECT_EQ(5, vm.V[0]);
     ASSERT_EQ(VM_OK, virtual_machine_step(&vm, 0));
     // Execution continues after the call
-    EXPECT_EQ(1, vm.programCounter);
+    EXPECT_EQ(1, Instruction());
     ASSERT_EQ(VM_OK, virtual_machine_step(&vm, 0));
     EXPECT_EQ(7, vm.V[1]);
     EXPECT_EQ(VM_HALT, virtual_machine_step(&vm, 0));
@@ -153,7 +153,7 @@ TEST_F(OpcodeTest, NestedCalls) {
 TEST_F(OpcodeTest, JumpWithOffset) {
     vm.V[0] = 4;
     ASSERT_EQ(VM_OK, Execute(0xB204)); // 0x204 + V0 = 0x208 (instruction 4)
-    EXPECT_EQ(4, vm.programCounter);
+    EXPECT_EQ(4, Instruction());
     Write(4, 0x6A09);
     ASSERT_EQ(VM_OK, virtual_machine_step(&vm, 0));
     EXPECT_EQ(9, vm.V[0xA]);
@@ -338,19 +338,19 @@ TEST_P(KeyOpcodeTest, SkipIfKeyIsPressed) {
     int const key = GetParam();
     vm.V[2] = key;
     ASSERT_EQ(VM_OK, Execute(0xE29E, 1u << key));
-    EXPECT_EQ(2, vm.programCounter);
+    EXPECT_EQ(2, Instruction());
     // Every other key does not skip
     ASSERT_EQ(VM_OK, Execute(0xE29E, (~(1u << key)) & 0xFFFF));
-    EXPECT_EQ(1, vm.programCounter);
+    EXPECT_EQ(1, Instruction());
 }
 
 TEST_P(KeyOpcodeTest, SkipIfKeyIsNotPressed) {
     int const key = GetParam();
     vm.V[2] = key;
     ASSERT_EQ(VM_OK, Execute(0xE2A1, 1u << key));
-    EXPECT_EQ(1, vm.programCounter);
+    EXPECT_EQ(1, Instruction());
     ASSERT_EQ(VM_OK, Execute(0xE2A1, (~(1u << key)) & 0xFFFF));
-    EXPECT_EQ(2, vm.programCounter);
+    EXPECT_EQ(2, Instruction());
 }
 
 INSTANTIATE_TEST_SUITE_P(AllKeys, KeyOpcodeTest, ::testing::Range(0, 16));
@@ -358,7 +358,7 @@ INSTANTIATE_TEST_SUITE_P(AllKeys, KeyOpcodeTest, ::testing::Range(0, 16));
 TEST_F(OpcodeTest, KeyOpcodes_OnlyUseTheLowerNibbleOfTheRegister) {
     vm.V[2] = 0x13; // key 3
     ASSERT_EQ(VM_OK, Execute(0xE29E, 1u << 3));
-    EXPECT_EQ(2, vm.programCounter);
+    EXPECT_EQ(2, Instruction());
 }
 
 TEST_F(OpcodeTest, WaitForKey_BlocksUntilAKeyIsPressed) {
@@ -366,12 +366,12 @@ TEST_F(OpcodeTest, WaitForKey_BlocksUntilAKeyIsPressed) {
     Write(1, 0x6101); // V1 = 1
     for (int i = 0; i < 3; i++) {
         ASSERT_EQ(VM_OK, virtual_machine_step(&vm, 0));
-        EXPECT_EQ(0, vm.programCounter);
+        EXPECT_EQ(0, Instruction());
     }
     EXPECT_EQ(0, vm.V[1]);
     ASSERT_EQ(VM_OK, virtual_machine_step(&vm, 1u << 7));
     EXPECT_EQ(7, vm.V[5]);
-    EXPECT_EQ(1, vm.programCounter);
+    EXPECT_EQ(1, Instruction());
     ASSERT_EQ(VM_OK, virtual_machine_step(&vm, 0));
     EXPECT_EQ(1, vm.V[1]);
 }
@@ -380,14 +380,14 @@ TEST_F(OpcodeTest, WaitForKey_IgnoresKeysThatAreAlreadyHeld) {
     Write(0, 0xF50A);
     // The key was pressed before the machine started to wait
     ASSERT_EQ(VM_OK, virtual_machine_step(&vm, 1u << 4));
-    EXPECT_EQ(0, vm.programCounter);
+    EXPECT_EQ(0, Instruction());
     ASSERT_EQ(VM_OK, virtual_machine_step(&vm, 1u << 4));
-    EXPECT_EQ(0, vm.programCounter);
+    EXPECT_EQ(0, Instruction());
     // Release and press the key again
     ASSERT_EQ(VM_OK, virtual_machine_step(&vm, 0));
-    EXPECT_EQ(0, vm.programCounter);
+    EXPECT_EQ(0, Instruction());
     ASSERT_EQ(VM_OK, virtual_machine_step(&vm, 1u << 4));
-    EXPECT_EQ(1, vm.programCounter);
+    EXPECT_EQ(1, Instruction());
     EXPECT_EQ(4, vm.V[5]);
 }
 
@@ -395,7 +395,7 @@ TEST_F(OpcodeTest, WaitForKey_NewKeyWhileAnotherIsHeld) {
     Write(0, 0xF50A);
     ASSERT_EQ(VM_OK, virtual_machine_step(&vm, 1u << 4));
     ASSERT_EQ(VM_OK, virtual_machine_step(&vm, (1u << 4) | (1u << 9)));
-    EXPECT_EQ(1, vm.programCounter);
+    EXPECT_EQ(1, Instruction());
     EXPECT_EQ(9, vm.V[5]);
 }
 
@@ -407,11 +407,11 @@ TEST_F(OpcodeTest, WaitForKey_CanBeUsedTwice) {
     EXPECT_EQ(1, vm.V[5]);
     // The key is still held down when the next wait starts
     ASSERT_EQ(VM_OK, virtual_machine_step(&vm, 1u << 1));
-    EXPECT_EQ(1, vm.programCounter);
+    EXPECT_EQ(1, Instruction());
     ASSERT_EQ(VM_OK, virtual_machine_step(&vm, 0));
     ASSERT_EQ(VM_OK, virtual_machine_step(&vm, 1u << 2));
     EXPECT_EQ(2, vm.V[6]);
-    EXPECT_EQ(2, vm.programCounter);
+    EXPECT_EQ(2, Instruction());
 }
 
 } // namespace

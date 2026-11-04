@@ -8,7 +8,7 @@ TEST_F(VirtualMachineTest, InitResetsRegistersAndTimers) {
     EXPECT_EQ(0, vm.I);
     EXPECT_EQ(0, vm.delayTimer);
     EXPECT_EQ(0, vm.soundTimer);
-    EXPECT_EQ(0, vm.programCounter);
+    EXPECT_EQ(0, Instruction());
     EXPECT_EQ(0, vm.currentOpcode);
     for (int i = 0; i < 16; i++) {
         EXPECT_EQ(0, vm.V[i]);
@@ -41,19 +41,39 @@ TEST_F(VirtualMachineTest, StepExecutesOneInstruction) {
     EXPECT_EQ(VM_OK, virtual_machine_step(&vm, 0));
     EXPECT_EQ(0x2B, vm.V[0xA]);
     EXPECT_EQ(0, vm.V[0xB]);
-    EXPECT_EQ(1, vm.programCounter);
+    EXPECT_EQ(1, Instruction());
     EXPECT_EQ(VM_OK, virtual_machine_step(&vm, 0));
     EXPECT_EQ(0x03, vm.V[0xB]);
-    EXPECT_EQ(2, vm.programCounter);
+    EXPECT_EQ(2, Instruction());
 }
 
 TEST_F(VirtualMachineTest, StepFollowsJumps) {
     Write(0, 0x1208); // jump to 0x208 (instruction 4)
     Write(4, 0x6101); // V[1] = 1
     EXPECT_EQ(VM_OK, virtual_machine_step(&vm, 0));
-    EXPECT_EQ(4, vm.programCounter);
+    EXPECT_EQ(4, Instruction());
     EXPECT_EQ(VM_OK, virtual_machine_step(&vm, 0));
     EXPECT_EQ(1, vm.V[1]);
+}
+
+TEST_F(VirtualMachineTest, InstructionsCanStartAtOddAddresses) {
+    uint8_t const program[] = {
+        0x12, 0x03,       // 0x200: JMP 0x203
+        0xFF,             // 0x202: data
+        0x61, 0x2A,       // 0x203: V1 = 0x2A
+        0x22, 0x09,       // 0x205: CAL 0x209
+        0x62, 0x07,       // 0x207: V2 = 7
+        0x63, 0x05,       // 0x209: V3 = 5
+        0x00, 0xEE,       // 0x20B: RET
+    };
+    memcpy(vm.memory + kProgramStart, program, sizeof(program));
+    for (int i = 0; i < 6; i++) {
+        ASSERT_EQ(VM_OK, virtual_machine_step(&vm, 0)) << i;
+    }
+    EXPECT_EQ(0x2A, vm.V[1]);
+    EXPECT_EQ(5, vm.V[3]);
+    EXPECT_EQ(7, vm.V[2]);
+    EXPECT_EQ(0x209, vm.programCounter);
 }
 
 TEST_F(VirtualMachineTest, StepSkipsInstructionOnEqualRegisterValue) {
@@ -76,7 +96,7 @@ TEST_F(VirtualMachineTest, EndOfProgramHaltsTheMachine) {
 }
 
 TEST_F(VirtualMachineTest, EndOfMemoryHaltsTheMachine) {
-    vm.programCounter = (0x1000 - kProgramStart) / 2;
+    vm.programCounter = 0x1000;
     EXPECT_EQ(VM_HALT, virtual_machine_step(&vm, 0));
 }
 
@@ -90,10 +110,10 @@ TEST_F(VirtualMachineTest, RunFrameExecutesTheConfiguredAmountOfInstructions) {
         Write(i, 0x0001); // NOP
     }
     EXPECT_EQ(VM_OK, virtual_machine_run_frame(&vm, 0));
-    EXPECT_EQ(10, vm.programCounter);
+    EXPECT_EQ(10, Instruction());
     virtual_machine_set_speed(&vm, 1200);
     EXPECT_EQ(VM_OK, virtual_machine_run_frame(&vm, 0));
-    EXPECT_EQ(30, vm.programCounter);
+    EXPECT_EQ(30, Instruction());
 }
 
 TEST_F(VirtualMachineTest, RunFrameTicksTimersOncePerFrame) {

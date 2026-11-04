@@ -40,14 +40,6 @@
 /// Defines a new 4-bit value based on the opcode that is currently executed
 #define DEFINE_Y            uint8_t y = (vm->currentOpcode & 0x00f0u) >> 4;
 
-/// Converts the address of an instruction to the value of the program counter that is used internally (index of the
-/// instruction relative to the start of the program, minus one because the program counter is incremented after the
-/// instruction was executed)
-#define ADDRESS_TO_PROGRAM_COUNTER(address) ((uint16_t)((((address)-PROGRAM_START_LOCATION) / 2) - 1))
-
-/// The amount of instructions that fit into the program memory
-#define PROGRAM_INSTRUCTION_COUNT ((0x1000 - PROGRAM_START_LOCATION) / 2)
-
 /// The character sprites that are stored in memory (from 0x)
 #define CHARACTER_SPRITES                                                                                           \
     ("\xF0\x90\x90\x90\xF0\x20\x60\x20\x20\x70\xF0\x10\xF0\x80\xF0\xF0\x10\xF0\x10\xF0\x90\x90\xF0\x10\x10\xF0\x80" \
@@ -112,24 +104,22 @@ vm_status_t virtual_machine_run_frame(virtual_machine_t * vm, keyBoardState_t ke
 /// @param keyBoardState The keys that are currently pressed
 /// @return VM_OK if the program can continue, VM_HALT if it is finished and VM_ERROR if the opcode is unknown
 vm_status_t virtual_machine_step(virtual_machine_t * vm, keyBoardState_t keyBoardState) {
-    // Reached end of the memory
-    if (vm->programCounter >= PROGRAM_INSTRUCTION_COUNT) {
+    // Reached end of the memory (an instruction has 2 bytes and does not have to start at an even address)
+    if (vm->programCounter > 0x0ffe) {
         return VM_HALT;
     }
 #ifdef TRACE_EXECUTION
     debug_trace_execution(*vm);
 #endif
-    vm->currentOpcode = (uint16_t)vm->memory[vm->programCounter * 2 + 1 + PROGRAM_START_LOCATION];
-    vm->currentOpcode += vm->memory[vm->programCounter * 2 + PROGRAM_START_LOCATION] << 8;
+    vm->currentOpcode = (uint16_t)vm->memory[vm->programCounter + 1];
+    vm->currentOpcode += vm->memory[vm->programCounter] << 8;
     // Reached end of the program
     if (!vm->currentOpcode) {
         return VM_HALT;
     }
-    vm_status_t status = virtual_machine_execute_next_opcode(vm, keyBoardState);
-    if (status == VM_OK) {
-        vm->programCounter++;
-    }
-    return status;
+    // The program counter points to the next instruction while the current one is executed
+    vm->programCounter += 2;
+    return virtual_machine_execute_next_opcode(vm, keyBoardState);
 }
 
 /// @brief Sets the speed of the virtual machine
@@ -187,7 +177,7 @@ void virtual_machine_init(virtual_machine_t * vm) {
     // Initialize stackpointer
     vm->stackPointer = vm->stack;
     // Initialize program counter
-    vm->programCounter = 0u;
+    vm->programCounter = PROGRAM_START_LOCATION;
     // Compute upper bound for memory loop
     upperBound = (vm->memory + 4096u);
     // Initialize memory
@@ -273,14 +263,14 @@ static vm_status_t virtual_machine_execute_next_opcode(virtual_machine_t * vm, k
         }
     case 0x1000: // 0x1NNN - Jumps to address NNN
         {
-            vm->programCounter = ADDRESS_TO_PROGRAM_COUNTER(vm->currentOpcode & 0x0fff);
+            vm->programCounter = vm->currentOpcode & 0x0fff;
             break;
         }
     case 0x2000: // 0x2NNN - Calls subroutine at NNN
         {
             DEFINE_12_BIT_VALUE
             *vm->stackPointer++ = vm->programCounter;
-            vm->programCounter = ADDRESS_TO_PROGRAM_COUNTER(value);
+            vm->programCounter = value;
             break;
         }
     case 0x3000: // 0x3XNN - Skips the next instruction if VX equals NN. Usually the next instruction is a jump to skip
@@ -289,7 +279,7 @@ static vm_status_t virtual_machine_execute_next_opcode(virtual_machine_t * vm, k
             DEFINE_8_BIT_VALUE
             DEFINE_X
             if (vm->V[x] == value) {
-                vm->programCounter++;
+                vm->programCounter += 2;
             }
             break;
         }
@@ -299,7 +289,7 @@ static vm_status_t virtual_machine_execute_next_opcode(virtual_machine_t * vm, k
             DEFINE_8_BIT_VALUE
             DEFINE_X
             if (vm->V[x] != value) {
-                vm->programCounter++;
+                vm->programCounter += 2;
             }
             break;
         }
@@ -312,7 +302,7 @@ static vm_status_t virtual_machine_execute_next_opcode(virtual_machine_t * vm, k
             DEFINE_X
             DEFINE_Y
             if (vm->V[x] == vm->V[y]) {
-                vm->programCounter++;
+                vm->programCounter += 2;
             }
             break;
         }
@@ -417,7 +407,7 @@ static vm_status_t virtual_machine_execute_next_opcode(virtual_machine_t * vm, k
             DEFINE_X
             DEFINE_Y
             if (vm->V[x] != vm->V[y]) {
-                vm->programCounter++;
+                vm->programCounter += 2;
             }
             break;
         }
@@ -428,7 +418,7 @@ static vm_status_t virtual_machine_execute_next_opcode(virtual_machine_t * vm, k
         }
     case 0xb000: // 0xBNNN - Jumps to the address NNN plus V0
         {
-            vm->programCounter = ADDRESS_TO_PROGRAM_COUNTER(((vm->currentOpcode & 0x0fff) + vm->V[0]) & 0x0fff);
+            vm->programCounter = ((vm->currentOpcode & 0x0fff) + vm->V[0]) & 0x0fff;
             break;
         }
     case 0xc000: // 0xCXNN - Sets VX to the result of a bitwise and operation on a random number (Typically: 0 to 255)
@@ -477,7 +467,7 @@ static vm_status_t virtual_machine_execute_next_opcode(virtual_machine_t * vm, k
                 {
                     DEFINE_X
                     if (keyBoardState & (1u << (vm->V[x] & 0x0f))) {
-                        vm->programCounter++;
+                        vm->programCounter += 2;
                     }
                     break;
                 }
@@ -486,7 +476,7 @@ static vm_status_t virtual_machine_execute_next_opcode(virtual_machine_t * vm, k
                 {
                     DEFINE_X
                     if (!(keyBoardState & (1u << (vm->V[x] & 0x0f)))) {
-                        vm->programCounter++;
+                        vm->programCounter += 2;
                     }
                     break;
                 }
@@ -532,8 +522,8 @@ static vm_status_t virtual_machine_execute_next_opcode(virtual_machine_t * vm, k
                         vm->V[x] = key;
                         vm->waitingForKey = false;
                     } else {
-                        // Executing the same instruction again after this one (the program counter is incremented)
-                        vm->programCounter--;
+                        // Executing the same instruction again
+                        vm->programCounter -= 2;
                     }
                     break;
                 }
@@ -611,6 +601,6 @@ static vm_status_t virtual_machine_execute_next_opcode(virtual_machine_t * vm, k
 
 chip8_error:
     fprintf(stderr, "Unknown opcode: 0x%04X at address 0x%03X\n", vm->currentOpcode,
-            vm->programCounter * 2 + PROGRAM_START_LOCATION);
+            vm->programCounter - 2);
     return VM_ERROR;
 }

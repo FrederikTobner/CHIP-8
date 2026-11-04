@@ -19,6 +19,11 @@ class VirtualMachineTest : public ::testing::Test {
         virtual_machine_init(&vm);
     }
 
+    /// The index of the instruction that is executed next, relative to the start of the program
+    int Instruction() const {
+        return (vm.programCounter - kProgramStart) / 2;
+    }
+
     /// Writes the opcode as the instruction with the specified index of the program
     void Write(uint16_t index, uint16_t opcode) {
         vm.memory[kProgramStart + index * 2] = opcode >> 8;
@@ -27,7 +32,7 @@ class VirtualMachineTest : public ::testing::Test {
 
     /// Writes the opcode as the first instruction of the program and executes it
     vm_status_t Execute(uint16_t opcode, keyBoardState_t keys = 0) {
-        vm.programCounter = 0;
+        vm.programCounter = kProgramStart;
         Write(0, opcode);
         return virtual_machine_step(&vm, keys);
     }

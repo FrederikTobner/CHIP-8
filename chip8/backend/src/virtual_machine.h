@@ -54,7 +54,8 @@ typedef struct {
     uint16_t currentOpcode;
     /// 16-bit register used for storing an adress in memory
     uint16_t I;
-    /// Programcounter of the virtual machine
+    /// Programcounter of the virtual machine (the address of the next instruction, instructions can start at odd
+    /// addresses)
     uint16_t programCounter;
     /// Delay timer of the virtual machine
     uint8_t delayTimer;
