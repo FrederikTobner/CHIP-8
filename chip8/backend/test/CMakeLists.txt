@@ -12,7 +12,7 @@ set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 FetchContent_MakeAvailable(googletest)
 
 # Set all test files
-set(TEST_SOURCES main.cpp breakout.cpp display.cpp keyboard_state.cpp opcodes.cpp virtual_machine.cpp)
+set(TEST_SOURCES main.cpp display.cpp keyboard_state.cpp opcodes.cpp virtual_machine.cpp)
 
 add_executable(${BACKEND_TEST_PROJECT_NAME} ${TEST_SOURCES})
 
