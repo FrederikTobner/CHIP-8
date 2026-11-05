@@ -17,16 +17,16 @@ jobs:
 
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v3
-      # include submodules
-      with:
-        submodules: recursive
+      uses: actions/checkout@v7
+
+    - name: Install SDL2
+      uses: ./.github/actions/install-sdl2
 
     - name: Configure CMake
-      run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DCP8_BUILD_TESTS=ON
+      run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DBUILD_TESTING=ON
 
     - name: Building Tests
-      run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}} --target CHIP-8_Frontend_Tests
+      run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}} --target CHIP-8_Frontend_Tests CHIP-8_Backend_Tests
 
     - name: Running tests
       run: cd build && ctest -C ${{env.BUILD_TYPE}} 

@@ -4,20 +4,19 @@ set(FRONTEND_TEST_PROJECT_NAME ${PROJECT_NAME}_Frontend_Tests)
 include(FetchContent)
 FetchContent_Declare(
   googletest
-  URL https://github.com/google/googletest/archive/03597a01ee50ed33e9dfd640b249b4be3799d395.zip
+  GIT_REPOSITORY https://github.com/google/googletest.git
+  GIT_TAG v1.18.0
 )
 
 # For Windows: Prevent overriding the parent project's compiler/linker settings
 set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 FetchContent_MakeAvailable(googletest)
 
-# Set all test files
-set(TEST_SOURCES fnv1a.cpp main.cpp)
+file (GLOB_RECURSE TEST_SOURCES CONFIGURE_DEPENDS "*.cpp")
 
 add_executable(${FRONTEND_TEST_PROJECT_NAME} ${TEST_SOURCES})
 
-# Includes source path of the math library
-target_include_directories(${FRONTEND_TEST_PROJECT_NAME} PUBLIC ${SOURCE_PATH_MATH})
+target_include_directories(${FRONTEND_TEST_PROJECT_NAME} PUBLIC ${SOURCE_PATH_MATH} ${SOURCE_PATH_FRONTEND} ${SOURCE_PATH_BASE})
 
 # Link google test
 target_link_libraries(${FRONTEND_TEST_PROJECT_NAME} GTest::gtest_main ${PROJECT_NAME}_Frontend)

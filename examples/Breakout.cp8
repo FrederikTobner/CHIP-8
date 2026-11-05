@@ -1,93 +1,198 @@
-#####################################################
-# Breakout game                                     #
-# Registers:                                        #
-# V0 - ball x position                              #
-# V1 - ball y position                              #
-# V2 - ball x direction                             #
-# V3 - ball y direction                             #
-# V4 - paddle y position                            #
-# V5 - bars left counter                            #
-# VD - temp storage                                 #
-# VE - temp storage                                 #
-#####################################################
+#####################################################################
+# Breakout                                                          #
+#                                                                   #
+# Controls: 4 = paddle left, 6 = paddle right (number row/numpad)   #
+#           any key = restart after the game is over                #
+#                                                                   #
+# Screen (64x32):                                                   #
+#   y = 4, 8, 12   3 rows of 8 bricks (7x2 pixels, 8 pixel pitch)   #
+#   y = 30         paddle (8 pixels wide)                           #
+#                                                                   #
+# Registers:                                                        #
+#   V0, V1 - ball x/y that is currently on the screen               #
+#   V2     - ball x direction (0x01 = right, 0xFF = left)           #
+#   V3     - ball y direction (0x02 = down,  0xFE = up)             #
+#   V4     - paddle x that is currently on the screen               #
+#   V5     - bricks left                                            #
+#   V6, V7 - next ball x/y                                          #
+#   V8     - paddle y (constant)                                    #
+#   V9     - next paddle x                                          #
+#   VA     - lives                                                  #
+#   VB     - paddle speed (constant)                                #
+#   VC-VE  - temporary values                                       #
+#   VF     - collision flag of DSP, flags of ADD/SUB. It is always  #
+#            read right after the instruction that sets it          #
+#                                                                   #
+# The ball moves 1 pixel horizontally and 2 pixels vertically once  #
+# every 4 frames. Because the y position is always even and the     #
+# bricks are 2 pixels high, the ball can not skip a brick row.      #
+#                                                                   #
+# Sprites are XORed onto the screen, so moving a sprite means       #
+# drawing it twice (erase + draw). The screen is shown at the end   #
+# of every frame (10 instructions at the default speed), so all     #
+# the drawing of one step is done back to back in one frame (see    #
+# 'sync'). Everything else is calculated before that.               #
+#####################################################################
 section .text:
-    # Setting up bricks
-    MOV V1 0x00                         # Initialize y-coordinate of the sprites
-    MOV I 0x900                         # We store 0x900 (location of paddle sprite) in the register I
-    # for (y = 0; y < 9; y+=3) {
-_drawLine:
-        MOV V0 0x00
-        # for (x = 0; x < 63; x+=7) {      
-_drawBrick:
-            DSP V0 V1 0x01              # Draw brick at location x/y
-            ADD V0 0x07
-        # }
-        SKE V0 0x3f                     # Last brick in row ? (V0 == 63)
-        JMP drawBrick
-        ADD V1 0x03
-    # } 
-    SKE V1 0x09                         # Last row ? (third row)
-    JMP drawLine
-    MOV V1 0x1d
-    MOV V0 0x03
-    MOV V2 0x01 # 0 -> right
-    MOV V3 0x01 # 1 -> up
-    MOV V5 0x18 # 24 bricks left
-_gameloop: 
-    # Main game loop
-    MOV I 0x901
-    DSP V0 V1 0x01                      # Render ball at (x: V0, y V1)
+_start:
+    CLS
+    MOV VA 0x03                         # 3 lives
+    MOV V5 0x18                         # 24 bricks
+    MOV V8 0x1e                         # paddle y
+    MOV VB 0x04                         # paddle speed
+    MOV V4 0x1c                         # paddle x
+    MOV V9 0x1c
+    # Draw the bricks
+    MOV I 0x902
+    MOV V1 0x04
+_brickrow:
+    MOV V0 0x00
+_brick:
+    DSP V0 V1 0x02
+    ADD V0 0x08
+    SKE V0 0x40                         # Last brick in the row?
+    JMP brick
+    ADD V1 0x04
+    SKE V1 0x10                         # Last row?
+    JMP brickrow
     MOV I 0x900
-    MOV VE 0x1f                        
-    DSP V4 VE 0x01                      # Render paddle
-    # Setting up timer
-    MOV VE 0x10
-    MOV DT VE    
-_waitForFrame: 
-    # Check timer
+    DSP V4 V8 0x01                      # Draw the paddle
+_serve:
+    # Put the ball on the paddle and wait a moment before it starts to move
+    MOV V0 0x20
+    MOV V1 0x1c
+    MOV V2 0x01
+    MOV V3 0xfe
+    MOV V6 V0
+    MOV V7 V1
+    MOV I 0x901
+    DSP V0 V1 0x01
+    MOV VE 0x1e
+    CAL pause
+_frame:
+    # Wait for the start of the step. The timer is reset in the same frame it ran out, so every step takes
+    # exactly 4 frames
     MOV VE DT
     SKE VE 0x00
-    JMP waitForFrame
-    MOV I 0x901
-    DSP V0 V1 0x01                      # clear ball
-    MOV I 0x900
-    MOV VE 0x1f
-    DSP V4 VE 0x01                      # clear paddle
-    # Determine ball movement x and y
-    SKE V2 0x00
-    SUB V0 V2
-    SKNE V2 0x00
-    ADD V0 0x01
-    SKE V3 0x00
-    SUB V1 V3
-    SKNE V3 0x00
-    ADD V1 0x01  
-    # Detect collisions  
-    SKNE V0 0x00
-    MOV V2 0x00
-    SKNE V0 0x3f
-    MOV V2 0x01
-    SKNE V1 0x00
-    MOV V3 0x00
-    SKNE V1 0x1f
-    EXT
+    JMP frame
+    MOV VE 0x04
+    MOV DT VE
     # Handle input
-    MOV VD 0x01
-    MOV VE 0x0A
+    MOV V9 V4
+    MOV VE 0x04
     SKNP VE
-    SUB V4 VD
-    MOV VE 0x0F
+    SUB V9 VB
+    SKNE V9 0xfc                        # Left of the screen (0 - 4 = 0xfc)?
+    MOV V9 0x00
+    MOV VE 0x06
     SKNP VE
-    ADD V4 0x01
-    JMP gameloop
-    
-    # TODO:
-    # Handle ball collisions - bricks
-    # Handle ball collisions - paddle
-    # Loop back to Main Game loop if there are some bars still left to destroy
-    # Game over screen
+    ADD V9 VB
+    SKNE V9 0x3c                        # Right of the screen (56 + 4)?
+    MOV V9 0x38
+    # Bounce at the walls
+    SKNE V0 0x00
+    MOV V2 0x01
+    SKNE V0 0x3f
+    MOV V2 0xff
+    SKNE V1 0x00
+    MOV V3 0x02
+    # Calculate the next position of the ball
+    MOV V6 V0
+    ADD V6 V2
+    MOV V7 V1
+    ADD V7 V3
+_sync:
+    # Wait for the last frame of the step (timer == 1). From here on the screen is changed: This needs 6
+    # instructions and the frame has at least 6 left when we get here
+    MOV VE DT
+    SKE VE 0x01
+    JMP sync
+    MOV I 0x900
+    DSP V4 V8 0x01                      # Erase the paddle
+    DSP V9 V8 0x01                      # Draw the paddle at the new position
+    MOV I 0x901
+    DSP V0 V1 0x01                      # Erase the ball
+    DSP V6 V7 0x01                      # Draw the ball at the new position, VF = 1 if it hit something
+    SKE VF 0x01
+    JMP nohit
+    DSP V6 V7 0x01                      # Erase the ball again
+    SKE V7 0x1e
+    JMP brickhit
+    # The ball hit the paddle: It always goes up, the half of the paddle that was hit decides the direction
+    MOV V3 0xfe
+    MOV VD V6
+    SUB VD V9
+    MOV VE 0x04
+    SUB VD VE                           # VF = 1 if the right half of the paddle was hit
+    MOV V2 0x01
+    SKE VF 0x01
+    MOV V2 0xff
+    JMP stay
+_brickhit:
+    # Erase the brick: Bricks are aligned to 8 pixels horizontally and 4 pixels vertically
+    MOV VD V6
+    MOV VE 0xf8
+    MOVA VD VE
+    MOV VC V7
+    MOV VE 0xfc
+    MOVA VC VE
+    MOV I 0x902
+    DSP VD VC 0x02
+    ADD V5 0xff                         # One brick less
+    MOV VE 0xfc
+    MOVX V3 VE                          # Reverse the y direction
+_stay:
+    # The ball stays where it was
+    MOV V6 V0
+    MOV V7 V1
+    MOV I 0x901
+    DSP V0 V1 0x01
+    JMP commit
+_nohit:
+    SKNE V7 0x1e                        # The ball reached the bottom without hitting the paddle?
+    JMP lost
+_commit:
+    MOV V0 V6
+    MOV V1 V7
+    MOV V4 V9
+    SKE V5 0x00
+    JMP frame
+    JMP win
+_lost:
+    DSP V6 V7 0x01                      # Erase the ball
+    MOV V4 V9
+    ADD VA 0xff
+    SKE VA 0x00
+    JMP serve
+_gameover:
+    TGS                                 # Invert the screen until a key is pressed
+    MOV VE 0x3c
+    CAL pause
+    JMP waitkey
+_win:
+    MOV VD 0x06
+_winflash:
+    TGS
+    MOV VE 0x08
+    CAL pause
+    ADD VD 0xff
+    SKE VD 0x00
+    JMP winflash
+_waitkey:
+    STK VE
+    JMP start
+_pause:
+    # Waits as many frames as specified in VE
+    MOV DT VE
+_pausewait:
+    MOV VE DT
+    SKE VE 0x00
+    JMP pausewait
+    RET
 
 section .data:
     org 0x900
-    0xfc                                # Paddle and brick sprite
-    0x80                                # Ball sprite
+    0xff                                # Paddle
+    0x80                                # Ball
+    0xfe                                # Brick (2 rows)
+    0xfe

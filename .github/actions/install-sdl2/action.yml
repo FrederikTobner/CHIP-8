@@ -1,0 +1,33 @@
+name: Install SDL2
+description: >
+  Installs SDL2 so that CMake can find it. If the installation fails the step is skipped
+  and the CMake build falls back to downloading and building SDL2 (FetchContent).
+
+runs:
+  using: composite
+  steps:
+    - name: Install SDL2 (Linux)
+      if: runner.os == 'Linux'
+      shell: bash
+      continue-on-error: true
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y libsdl2-dev
+
+    - name: Install SDL2 (macOS)
+      if: runner.os == 'macOS'
+      shell: bash
+      continue-on-error: true
+      run: brew install sdl2
+
+    - name: Install SDL2 (Windows)
+      if: runner.os == 'Windows'
+      shell: pwsh
+      continue-on-error: true
+      run: |
+        $version = "2.32.10"
+        $archive = Join-Path $env:RUNNER_TEMP "SDL2-devel-$version-VC.zip"
+        Invoke-WebRequest "https://github.com/libsdl-org/SDL/releases/download/release-$version/SDL2-devel-$version-VC.zip" -OutFile $archive
+        Expand-Archive $archive -DestinationPath $env:RUNNER_TEMP
+        $sdlDir = (Join-Path $env:RUNNER_TEMP "SDL2-$version\cmake") -replace '\\', '/'
+        "SDL2_DIR=$sdlDir" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8

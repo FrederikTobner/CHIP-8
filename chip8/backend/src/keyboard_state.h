@@ -21,8 +21,8 @@
 #ifndef CHIP8_KEY_BOARD_STATE_H_
 #define CHIP8_KEY_BOARD_STATE_H_
 
-#include "../../../external/SDL/include/SDL.h"
 #include "backend_pre_compiled_header.h"
+#include <SDL.h>
 
 typedef uint16_t keyBoardState_t;
 
@@ -45,6 +45,12 @@ typedef enum {
     CHIP8_KEY_CODE_E = 0b0100000000000000,
     CHIP8_KEY_CODE_F = 0b1000000000000000
 } key_code;
+
+/// @brief Handles an SDL event that changes the state of the keyboard (key down, key up and loss of the focus of the
+/// window)
+/// @param event The event to handle
+/// @param state The state of the keyboard
+void keyboard_handle_event(SDL_Event event, keyBoardState_t * state);
 
 /// @brief Handles a key down event
 /// @param event The event to handle

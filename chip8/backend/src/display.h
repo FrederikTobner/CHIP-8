@@ -21,7 +21,8 @@
 #ifndef CHIP8_DISPLAY_H_
 #define CHIP8_DISPLAY_H_
 
-#include "../../../external/SDL/include/SDL.h"
+#include <SDL.h>
+#include <stdbool.h>
 
 /// The graphics system of the chip-8 has a height of 32 pixels
 #define GRAPHICS_SYSTEM_HEIGHT (32)
@@ -38,13 +39,17 @@ typedef struct {
     SDL_Window * window;
     /// The renderer that is used to render the display of the emulator in the window
     SDL_Renderer * renderer;
+    /// The texture that holds the pixels of the graphics system, it is scaled to the size of the window when rendered
+    SDL_Texture * texture;
+    /// Determines if the graphics system was changed since the display was rendered the last time
+    bool dirty;
     /// The underlying graphics system of the CHIP-8
     uint8_t graphicsSystem[GRAPHICS_SYSTEM_WIDTH][GRAPHICS_SYSTEM_HEIGHT];
 } display_t;
 
-/// @brief Renders the display
+/// @brief Renders the display and marks it as up to date
 /// @param display The display that is rendered
-void display_render(display_t display);
+void display_render(display_t * display);
 
 /// @brief Initializes the display
 /// @param window The window where the display of the emulator is emulated
