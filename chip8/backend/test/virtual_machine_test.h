@@ -6,8 +6,9 @@
 #include <stdint.h>
 #include <string.h>
 
-#include "../src/virtual_machine.h"
-
+extern "C" {
+#include "virtual_machine.h"
+}
 constexpr uint16_t kProgramStart = 0x200;
 
 /// Fixture that provides a virtual machine without any window - the SDL video subsystem is never initialized

@@ -65,9 +65,9 @@ int display_init(display_t * display) {
                 printf("Renderer could not be created! SDL Error: %s\n", SDL_GetError());
                 return -1;
             }
-            display->texture = SDL_CreateTexture(display->renderer, SDL_PIXELFORMAT_ARGB8888,
-                                                 SDL_TEXTUREACCESS_STREAMING, GRAPHICS_SYSTEM_WIDTH,
-                                                 GRAPHICS_SYSTEM_HEIGHT);
+            display->texture =
+                SDL_CreateTexture(display->renderer, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_STREAMING,
+                                  GRAPHICS_SYSTEM_WIDTH, GRAPHICS_SYSTEM_HEIGHT);
             if (!display->texture) {
                 printf("Texture could not be created! SDL Error: %s\n", SDL_GetError());
                 return -1;

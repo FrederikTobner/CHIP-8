@@ -2,8 +2,9 @@
 
 #include <string.h>
 
-#include "../src/keyboard_state.h"
-
+extern "C" {
+#include "keyboard_state.h"
+}
 namespace {
 
 SDL_Event KeyEvent(Uint32 type, SDL_Scancode scancode, bool repeat = false) {

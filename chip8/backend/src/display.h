@@ -21,11 +21,6 @@
 #ifndef CHIP8_DISPLAY_H_
 #define CHIP8_DISPLAY_H_
 
-// This file is included in the test-suite that is written in c++ using the google-test framework
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 #include <SDL.h>
 #include <stdbool.h>
 
@@ -66,9 +61,5 @@ int display_init(display_t * display);
 /// @param window The window that is closed
 /// @param renderer The renderer used to render the display of the emulator
 void display_quit(display_t * display);
-
-#ifdef __cplusplus
-}
-#endif
 
 #endif

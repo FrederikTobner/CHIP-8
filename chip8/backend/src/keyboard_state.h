@@ -21,13 +21,8 @@
 #ifndef CHIP8_KEY_BOARD_STATE_H_
 #define CHIP8_KEY_BOARD_STATE_H_
 
-// This file is included in the test-suite that is written in c++ using the google-test framework
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-#include <SDL.h>
 #include "backend_pre_compiled_header.h"
+#include <SDL.h>
 
 typedef uint16_t keyBoardState_t;
 
@@ -66,9 +61,5 @@ void keyboard_handle_key_down_event(SDL_Event event, keyBoardState_t * state);
 /// @param event The event to handle
 /// @param state The state of the keyboard
 void keyboard_handle_key_up_event(SDL_Event event, keyBoardState_t * state);
-
-#ifdef __cplusplus
-}
-#endif
 
 #endif

@@ -148,9 +148,9 @@ static bool virtual_machine_poll_events(virtual_machine_t * vm, keyBoardState_t 
             return false;
         }
         // The content of the window has to be rendered again, even if the program did not change the display
-        if (event.type == SDL_WINDOWEVENT && (event.window.event == SDL_WINDOWEVENT_EXPOSED ||
-                                              event.window.event == SDL_WINDOWEVENT_RESTORED ||
-                                              event.window.event == SDL_WINDOWEVENT_SIZE_CHANGED)) {
+        if (event.type == SDL_WINDOWEVENT &&
+            (event.window.event == SDL_WINDOWEVENT_EXPOSED || event.window.event == SDL_WINDOWEVENT_RESTORED ||
+             event.window.event == SDL_WINDOWEVENT_SIZE_CHANGED)) {
             vm->display.dirty = true;
         }
         keyboard_handle_event(event, keyBoardState);
@@ -600,7 +600,6 @@ static vm_status_t virtual_machine_execute_next_opcode(virtual_machine_t * vm, k
     return VM_OK;
 
 chip8_error:
-    fprintf(stderr, "Unknown opcode: 0x%04X at address 0x%03X\n", vm->currentOpcode,
-            vm->programCounter - 2);
+    fprintf(stderr, "Unknown opcode: 0x%04X at address 0x%03X\n", vm->currentOpcode, vm->programCounter - 2);
     return VM_ERROR;
 }

@@ -22,12 +22,8 @@
 #define CHIP8_VIRTUAL_MACHINE_H_
 
 // This file is included in the test-suite that is written in c++ using the google-test framework
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-#include <SDL.h>
 #include "backend_pre_compiled_header.h"
+#include <SDL.h>
 
 #include "display.h"
 #include "keyboard_state.h"
@@ -108,9 +104,5 @@ vm_status_t virtual_machine_run_frame(virtual_machine_t * vm, keyBoardState_t ke
 void virtual_machine_write_opcode_to_memory(virtual_machine_t * vm, uint16_t * memoryLocation, uint16_t opcode);
 
 void virtual_machine_write_byte_to_memory(virtual_machine_t * vm, uint16_t * memoryLocation, uint8_t byte);
-
-#ifdef __cplusplus
-}
-#endif
 
 #endif

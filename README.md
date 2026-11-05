@@ -3,6 +3,7 @@
 [![Build](https://github.com/FrederikTobner/CHIP-8/actions/workflows/build.yml/badge.svg)](https://github.com/FrederikTobner/CHIP-8/actions/workflows/build.yml)
 [![Tests](https://github.com/FrederikTobner/CHIP-8/actions/workflows/tests.yml/badge.svg)](https://github.com/FrederikTobner/CHIP-8/actions/workflows/tests.yml)
 [![Analyze](https://github.com/FrederikTobner/CHIP-8/actions/workflows/codeql.yml/badge.svg)](https://github.com/FrederikTobner/CHIP-8/actions/workflows/codeql.yml)
+
 > **NOTE**: 🚧 Under active development. 🚧
 
 Simple [CHIP-8](https://en.wikipedia.org/wiki/CHIP-8) emulator written in C, with a custom assembly language.
@@ -11,7 +12,9 @@ Simple [CHIP-8](https://en.wikipedia.org/wiki/CHIP-8) emulator written in C, wit
 
 ## Table of Contents
 
+* [Key concepts](#key-concepts)
 * [Dependencies](#dependencies)
+* [IDE Integration](#ide-integration)
 * [License](#license)
 
 ## Key concepts
@@ -25,7 +28,8 @@ The emulator has the following dependencies
 
 * [SDL 2.0](https://github.com/libsdl-org/SDL) a cross-platform development library designed to provide low level access to audio, keyboard, mouse, joystick, and graphics hardware.
 
-SDL2 is looked up with `find_package(SDL2)` (e.g. `libsdl2-dev` on Debian/Ubuntu, `sdl2` on Homebrew, `sdl2` via vcpkg). If no installed SDL2 is found, it is downloaded and built automatically. Use `-DCP8_FETCH_SDL=ON` to always download it, and `-DCP8_SDL2_FETCH_TAG=<tag>` to choose the version that is downloaded.
+SDL2 is looked up with `find_package(SDL2)` (e.g. `libsdl2-dev` on Debian/Ubuntu, `sdl2` on Homebrew, `sdl2` via vcpkg).
+If no installed SDL2 is found, it is downloaded and built automatically.
 
 ## IDE Integration
 

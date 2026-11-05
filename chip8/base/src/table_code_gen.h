@@ -118,10 +118,12 @@
                 return -1;                                                                                       \
             }                                                                                                    \
         }                                                                                                        \
-        uint32_t index, try;                                                                                     \
+        uint32_t index, try                                                                                      \
+            ;                                                                                                    \
         index = HASH_FUNCTION((uint8_t *)node->key, strlen(node->key));                                          \
         for (size_t i = 0; i < table->allocated; i++) {                                                          \
-            try = (i + index) & (table->allocated - 1);                                                          \
+            try                                                                                                  \
+                = (i + index) & (table->allocated - 1);                                                          \
             if (!table->entries[try] || table->entries[try] == (TYPE##_table_entry_t *)(0xFFFFFFFFFFFFFFFFUL)) { \
                 table->entries[try] = node;                                                                      \
                 table->used++;                                                                                   \
@@ -136,7 +138,8 @@
         }                                                                                                        \
         uint32_t index = HASH_FUNCTION((uint8_t *)node->key, strlen(node->key));                                 \
         for (uint32_t i = 0; i < table->allocated; i++) {                                                        \
-            uint32_t try = (i + index) & (table->allocated - 1);                                                 \
+            uint32_t try                                                                                         \
+                = (i + index) & (table->allocated - 1);                                                          \
             if (!table->entries[try]) {                                                                          \
                 return false;                                                                                    \
             }                                                                                                    \
@@ -155,7 +158,8 @@
         }                                                                                                        \
         uint32_t index = HASH_FUNCTION((uint8_t *)key, strlen(key));                                             \
         for (uint32_t i = 0; i < table->allocated; i++) {                                                        \
-            uint32_t try = (i + index) & (table->allocated - 1);                                                 \
+            uint32_t try                                                                                         \
+                = (i + index) & (table->allocated - 1);                                                          \
             if (!table->entries[try]) {                                                                          \
                 return NULL;                                                                                     \
             }                                                                                                    \

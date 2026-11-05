@@ -1,4 +1,3 @@
-
 set(CHIP-8_BASE_HEADER_FILES
 "${CMAKE_CURRENT_SOURCE_DIR}/chip8.h"
 "${CMAKE_CURRENT_SOURCE_DIR}/dynamic_array_code_gen.h"
@@ -11,3 +10,4 @@ set(CHIP-8_BASE_HEADER_FILES
 
 add_library(${PROJECT_NAME}_Base INTERFACE)
 target_sources(${PROJECT_NAME}_Base INTERFACE ${CHIP-8_BASE_HEADER_FILES})
+target_include_directories(${PROJECT_NAME}_Base INTERFACE ${CMAKE_CURRENT_SOURCE_DIR})

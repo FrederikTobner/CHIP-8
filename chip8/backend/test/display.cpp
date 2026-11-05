@@ -2,7 +2,9 @@
 
 #include <string.h>
 
-#include "../src/display.h"
+extern "C" {
+#include "display.h"
+}
 
 namespace {
 

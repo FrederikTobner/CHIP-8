@@ -191,7 +191,8 @@ static void assembler_scan_label(assembler_t * assembler, uint16_t memoryLocatio
         assembler_advance(assembler);
     }
     if (assembler_peek(*assembler) != ':') {
-        assembler_report_error(assembler, "A label can only consist of alphanumeric characters and must end with a ':'");
+        assembler_report_error(assembler,
+                               "A label can only consist of alphanumeric characters and must end with a ':'");
     }
     size_t length = assembler->current - labelStart;
     char * label = malloc(length + 1);
@@ -528,7 +529,8 @@ static uint16_t assembler_convert_mnemonic_to_binary(assembler_t * assembler, ch
         SWITCH_ADVANCE {
         case 'A':
             SWITCH_ADVANCE {
-                SWITCH_CASE_RETURN('L', 0x2000 | assembler_convert_address_or_label_to_binary(assembler, memoryLocation)); // CAL
+                SWITCH_CASE_RETURN(
+                    'L', 0x2000 | assembler_convert_address_or_label_to_binary(assembler, memoryLocation)); // CAL
             default:
                 assembler_report_error(assembler, OPCODE_CONVERSION_ERROR_MESSAGE);
             }
@@ -659,7 +661,8 @@ static uint16_t assembler_convert_mnemonic_to_binary(assembler_t * assembler, ch
                             case 'V': // VX VY
                                 // Un-reading the V, because it is part of the register
                                 assembler->current--;
-                                return 0x8000 | registernumber << 8 | assembler_convert_register_to_binary(assembler) << 4;
+                                return 0x8000 | registernumber << 8 |
+                                       assembler_convert_register_to_binary(assembler) << 4;
                             case '0':
                                 switch (assembler_peek(*assembler)) {
                                 case 'x':
