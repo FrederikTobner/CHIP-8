@@ -440,15 +440,18 @@ static vm_status_t virtual_machine_execute_next_opcode(virtual_machine_t * vm, k
             DEFINE_X
             DEFINE_Y
             uint8_t spriteHeight = vm->currentOpcode & 0x000f;
+            // The coordinates have to be read before VF is reset, because X or Y can be VF
+            uint8_t const spriteX = vm->V[x];
+            uint8_t const spriteY = vm->V[y];
             // Stays zero if no screen pixels are flipped from set to unset
             vm->V[0xf] = 0;
             for (size_t height = 0; height < spriteHeight; height++) {
                 uint8_t spriteRow = vm->memory[(vm->I + height) & 4095];
-                size_t row = (height + vm->V[y]) & (GRAPHICS_SYSTEM_HEIGHT - 1);
+                size_t row = (height + spriteY) & (GRAPHICS_SYSTEM_HEIGHT - 1);
                 for (size_t width = 0; width < 8; width++) {
                     // The most significant bit is the leftmost pixel of the sprite
                     if ((spriteRow >> (7 - width)) & 0x01) {
-                        size_t column = (width + vm->V[x]) & (GRAPHICS_SYSTEM_WIDTH - 1);
+                        size_t column = (width + spriteX) & (GRAPHICS_SYSTEM_WIDTH - 1);
                         if (vm->display.graphicsSystem[column][row]) {
                             vm->V[0xf] = 1;
                         }
