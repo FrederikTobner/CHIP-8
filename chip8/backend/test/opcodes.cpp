@@ -97,6 +97,51 @@ TEST_F(OpcodeTest, DrawSprite_WrapsAroundTheScreen) {
     EXPECT_EQ(2, LitPixels());
 }
 
+TEST_F(OpcodeTest, DrawSprite_YCoordinateInVF) {
+    vm.memory[0x900] = 0x80;
+    vm.I = 0x900;
+    vm.V[0] = 0;
+    vm.V[0xF] = 5;
+    // VF is reset by the draw, but the coordinate has to be read before that
+    ASSERT_EQ(VM_OK, Execute(0xD0F1));
+    EXPECT_TRUE(Pixel(0, 5));
+    EXPECT_EQ(1, LitPixels());
+    EXPECT_EQ(0, vm.V[0xF]);
+}
+
+TEST_F(OpcodeTest, DrawSprite_XCoordinateInVF) {
+    vm.memory[0x900] = 0x80;
+    vm.I = 0x900;
+    vm.V[1] = 2;
+    vm.V[0xF] = 7;
+    ASSERT_EQ(VM_OK, Execute(0xDF11));
+    EXPECT_TRUE(Pixel(7, 2));
+    EXPECT_EQ(1, LitPixels());
+    EXPECT_EQ(0, vm.V[0xF]);
+}
+
+TEST_F(OpcodeTest, DrawSprite_BothCoordinatesInVF) {
+    vm.memory[0x900] = 0x80;
+    vm.I = 0x900;
+    vm.V[0xF] = 3;
+    ASSERT_EQ(VM_OK, Execute(0xDFF1));
+    EXPECT_TRUE(Pixel(3, 3));
+    EXPECT_EQ(1, LitPixels());
+}
+
+TEST_F(OpcodeTest, DrawSprite_CollisionIsReportedWhenACoordinateIsInVF) {
+    vm.memory[0x900] = 0x80;
+    vm.I = 0x900;
+    vm.V[0] = 0;
+    vm.V[0xF] = 5;
+    vm.display.graphicsSystem[0][5] = 1;
+    ASSERT_EQ(VM_OK, Execute(0xD0F1));
+    // The sprite erased the pixel at (0, 5) and VF holds the collision flag afterwards
+    EXPECT_FALSE(Pixel(0, 5));
+    EXPECT_EQ(0, LitPixels());
+    EXPECT_EQ(1, vm.V[0xF]);
+}
+
 TEST_F(OpcodeTest, SkipIfRegistersAreNotEqual_Skips) {
     vm.V[0] = 1;
     vm.V[1] = 2;
