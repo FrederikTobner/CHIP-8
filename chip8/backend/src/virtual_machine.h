@@ -79,11 +79,10 @@ typedef struct {
 } virtual_machine_t;
 
 /// @brief Executes the program that is stored in memory until it is finished or the window is closed
-/// @details The last frame is always rendered. When the program finishes, the window stays open until the user closes
-/// it, so the final picture can be seen.
+/// @details The last frame is always rendered, even if the program finished or failed during it
 /// @param vm The chip8 vm where the program that is currently held in memory is executed
-/// @return VM_OK if the window was closed while the program was running, VM_HALT if the program finished and VM_ERROR
-/// if the execution was aborted by a runtime error (unknown opcode, call stack overflow or underflow)
+/// @return VM_OK if the window was closed, VM_HALT if the program finished and VM_ERROR if
+/// the execution was aborted by a runtime error (unknown opcode, call stack overflow or underflow)
 vm_status_t virtual_machine_execute(virtual_machine_t * vm);
 
 /// @brief Initializes the chip8 vm
