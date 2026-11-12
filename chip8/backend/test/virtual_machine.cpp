@@ -15,6 +15,23 @@ TEST_F(VirtualMachineTest, InitResetsRegistersAndTimers) {
     }
 }
 
+TEST_F(VirtualMachineTest, InitSeedsTheRandomNumberGenerator) {
+    constexpr int kValues = 8;
+    int unseeded[kValues];
+    srand(1);
+    for (int & value : unseeded) {
+        value = rand();
+    }
+    // Init has to replace the seed, otherwise every run of a program would see the same random numbers
+    srand(1);
+    virtual_machine_init(&vm);
+    bool differs = false;
+    for (int value : unseeded) {
+        differs |= (rand() != value);
+    }
+    EXPECT_TRUE(differs);
+}
+
 TEST_F(VirtualMachineTest, DefaultSpeedIsTenInstructionsPerFrame) {
     EXPECT_EQ(10, vm.instructionsPerFrame);
 }
