@@ -61,12 +61,13 @@ vm_status_t virtual_machine_execute(virtual_machine_t * vm) {
     uint64_t nextFrameTime = SDL_GetPerformanceCounter();
     while (virtual_machine_poll_events(vm, &keyBoardState)) {
         vm_status_t const status = virtual_machine_run_frame(vm, keyBoardState);
-        if (status != VM_OK) {
-            return status;
-        }
-        // Only the frames where the program changed the display have to be rendered
+        // Only the frames where the program changed the display have to be rendered - this includes the last frame,
+        // where the program finished or failed
         if (vm->display.dirty) {
             display_render(&vm->display);
+        }
+        if (status != VM_OK) {
+            return status;
         }
         // Waiting for the next frame - frames are scheduled based on the start of the previous one, so the delays of
         // a single frame do not accumulate

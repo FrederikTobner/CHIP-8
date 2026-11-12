@@ -12,18 +12,6 @@ section .text:
     ADD I V2
     SKE V0 0x32
     JMP 0x208
-    # Making sure the last frame ist still rendered
-    NOP
-    NOP
-    NOP
-    NOP
-    NOP
-    NOP
-    NOP
-    NOP
-    NOP
-    NOP
-    NOP
 section .data:
                     # No data 
     
