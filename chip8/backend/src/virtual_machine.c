@@ -48,6 +48,7 @@
 
 static vm_status_t virtual_machine_execute_next_opcode(virtual_machine_t *, keyBoardState_t);
 static bool virtual_machine_poll_events(virtual_machine_t *, keyBoardState_t *);
+static void virtual_machine_wait_for_window_to_close(virtual_machine_t *);
 static inline void virtual_machine_place_character_sprites_in_memory(virtual_machine_t *);
 
 /// @brief Executes the program that is stored in memory
@@ -61,12 +62,18 @@ vm_status_t virtual_machine_execute(virtual_machine_t * vm) {
     uint64_t nextFrameTime = SDL_GetPerformanceCounter();
     while (virtual_machine_poll_events(vm, &keyBoardState)) {
         vm_status_t const status = virtual_machine_run_frame(vm, keyBoardState);
-        if (status != VM_OK) {
-            return status;
-        }
-        // Only the frames where the program changed the display have to be rendered
+        // Only the frames where the program changed the display have to be rendered - this includes the last frame,
+        // where the program finished or failed
         if (vm->display.dirty) {
             display_render(&vm->display);
+        }
+        if (status == VM_HALT) {
+            // Keep the final picture on the screen, otherwise the window would be gone before it could be seen
+            virtual_machine_wait_for_window_to_close(vm);
+            return status;
+        }
+        if (status != VM_OK) {
+            return status;
         }
         // Waiting for the next frame - frames are scheduled based on the start of the previous one, so the delays of
         // a single frame do not accumulate
@@ -141,6 +148,18 @@ void virtual_machine_set_speed(virtual_machine_t * vm, uint32_t instructionsPerS
         instructionsPerFrame = UINT16_MAX;
     }
     vm->instructionsPerFrame = (uint16_t)instructionsPerFrame;
+}
+
+/// @brief Keeps the window open (and responsive) after the program is finished, until the user closes it
+/// @param vm The chip8 vm whose window is kept open
+static void virtual_machine_wait_for_window_to_close(virtual_machine_t * vm) {
+    keyBoardState_t keyBoardState = 0;
+    while (virtual_machine_poll_events(vm, &keyBoardState)) {
+        if (vm->display.dirty) {
+            display_render(&vm->display);
+        }
+        SDL_Delay(1000u / VM_FRAMES_PER_SECOND);
+    }
 }
 
 /// @brief Polls the pending SDL events and updates the state of the keyboard
