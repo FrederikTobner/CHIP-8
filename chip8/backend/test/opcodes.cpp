@@ -195,6 +195,53 @@ TEST_F(OpcodeTest, NestedCalls) {
     EXPECT_EQ(VM_HALT, virtual_machine_step(&vm, 0));
 }
 
+TEST_F(OpcodeTest, Call_SixteenNestedCallsAreAllowed) {
+    Write(0, 0x2200); // CAL 0x200 (calls itself)
+    for (unsigned i = 0; i < VM_STACK_SIZE; i++) {
+        ASSERT_EQ(VM_OK, virtual_machine_step(&vm, 0)) << i;
+    }
+    EXPECT_EQ(vm.stack + VM_STACK_SIZE, vm.stackPointer);
+}
+
+TEST_F(OpcodeTest, Call_OverflowOfTheStackIsAnError) {
+    Write(0, 0x2200); // CAL 0x200 (calls itself)
+    for (unsigned i = 0; i < VM_STACK_SIZE; i++) {
+        ASSERT_EQ(VM_OK, virtual_machine_step(&vm, 0)) << i;
+    }
+    EXPECT_EQ(VM_ERROR, virtual_machine_step(&vm, 0));
+    EXPECT_EQ(vm.stack + VM_STACK_SIZE, vm.stackPointer);
+}
+
+TEST_F(OpcodeTest, Call_OverflowOfTheStackDoesNotOverwriteMemory) {
+    Write(0, 0x2200); // CAL 0x200 (calls itself)
+    uint8_t const fontSprite = vm.memory[0x50];
+    ASSERT_NE(0, fontSprite);
+    for (unsigned i = 0; i < VM_STACK_SIZE + 1; i++) {
+        virtual_machine_step(&vm, 0);
+    }
+    // The stack is located directly in front of the memory in the virtual machine
+    EXPECT_EQ(0, vm.memory[0]);
+    EXPECT_EQ(0, vm.memory[1]);
+    EXPECT_EQ(fontSprite, vm.memory[0x50]);
+}
+
+TEST_F(OpcodeTest, Return_WithAnEmptyStackIsAnError) {
+    EXPECT_EQ(VM_ERROR, Execute(0x00EE));
+    EXPECT_EQ(vm.stack, vm.stackPointer);
+}
+
+TEST_F(OpcodeTest, Return_UnderflowAfterTheLastReturnIsAnError) {
+    Write(0, 0x2204); // CAL 0x204 (instruction 2)
+    Write(1, 0x00EE); // RET without a call
+    Write(2, 0x00EE); // RET
+    ASSERT_EQ(VM_OK, virtual_machine_step(&vm, 0));
+    ASSERT_EQ(VM_OK, virtual_machine_step(&vm, 0));
+    EXPECT_EQ(1, Instruction());
+    EXPECT_EQ(vm.stack, vm.stackPointer);
+    EXPECT_EQ(VM_ERROR, virtual_machine_step(&vm, 0));
+    EXPECT_EQ(vm.stack, vm.stackPointer);
+}
+
 TEST_F(OpcodeTest, JumpWithOffset) {
     vm.V[0] = 4;
     ASSERT_EQ(VM_OK, Execute(0xB204)); // 0x204 + V0 = 0x208 (instruction 4)

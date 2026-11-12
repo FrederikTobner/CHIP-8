@@ -81,7 +81,8 @@ void virtual_machine_execute(virtual_machine_t * vm) {
 /// @brief Executes the instructions of a single frame (1/60 second) and ticks the timers afterwards
 /// @param vm The chip8 virtual machine that executes the instructions
 /// @param keyBoardState The keys that are currently pressed
-/// @return VM_OK if the program can continue, VM_HALT if it is finished and VM_ERROR if the opcode is unknown
+/// @return VM_OK if the program can continue, VM_HALT if it is finished and VM_ERROR if the opcode is unknown or the
+/// call stack overflows or underflows
 vm_status_t virtual_machine_run_frame(virtual_machine_t * vm, keyBoardState_t keyBoardState) {
     for (uint16_t instruction = 0; instruction < vm->instructionsPerFrame; instruction++) {
         vm_status_t status = virtual_machine_step(vm, keyBoardState);
@@ -102,7 +103,8 @@ vm_status_t virtual_machine_run_frame(virtual_machine_t * vm, keyBoardState_t ke
 /// @brief Executes the next instruction of the program
 /// @param vm The chip8 virtual machine that executes the instruction
 /// @param keyBoardState The keys that are currently pressed
-/// @return VM_OK if the program can continue, VM_HALT if it is finished and VM_ERROR if the opcode is unknown
+/// @return VM_OK if the program can continue, VM_HALT if it is finished and VM_ERROR if the opcode is unknown or the
+/// call stack overflows or underflows
 vm_status_t virtual_machine_step(virtual_machine_t * vm, keyBoardState_t keyBoardState) {
     // Reached end of the memory (an instruction has 2 bytes and does not have to start at an even address)
     if (vm->programCounter > 0x0ffe) {
@@ -223,7 +225,7 @@ static inline void virtual_machine_place_character_sprites_in_memory(virtual_mac
 /// Executes the next opcode in memory
 /// @param vm The chip8 virtual machine where the next opcode is executed
 /// @return VM_OK if the opcode was executed properly, VM_HALT if the program is finished, VM_ERROR if the opcode is
-/// unknown
+/// unknown or the call stack overflows or underflows
 static vm_status_t virtual_machine_execute_next_opcode(virtual_machine_t * vm, keyBoardState_t keyBoardState) {
     switch (vm->currentOpcode & 0xf000) {
     case 0x0000:
@@ -254,6 +256,9 @@ static vm_status_t virtual_machine_execute_next_opcode(virtual_machine_t * vm, k
                     break;
                 }
             case 0x0EE: // 0x00EE - return from subroutine
+                if (vm->stackPointer == vm->stack) {
+                    goto chip8_stack_underflow;
+                }
                 vm->programCounter = *--vm->stackPointer;
                 break;
             default:
@@ -269,6 +274,9 @@ static vm_status_t virtual_machine_execute_next_opcode(virtual_machine_t * vm, k
     case 0x2000: // 0x2NNN - Calls subroutine at NNN
         {
             DEFINE_12_BIT_VALUE
+            if (vm->stackPointer == vm->stack + VM_STACK_SIZE) {
+                goto chip8_stack_overflow;
+            }
             *vm->stackPointer++ = vm->programCounter;
             vm->programCounter = value;
             break;
@@ -604,5 +612,14 @@ static vm_status_t virtual_machine_execute_next_opcode(virtual_machine_t * vm, k
 
 chip8_error:
     fprintf(stderr, "Unknown opcode: 0x%04X at address 0x%03X\n", vm->currentOpcode, vm->programCounter - 2);
+    return VM_ERROR;
+
+chip8_stack_overflow:
+    fprintf(stderr, "Stack overflow: more than %u nested calls at address 0x%03X\n", VM_STACK_SIZE,
+            vm->programCounter - 2);
+    return VM_ERROR;
+
+chip8_stack_underflow:
+    fprintf(stderr, "Stack underflow: return without a call at address 0x%03X\n", vm->programCounter - 2);
     return VM_ERROR;
 }
