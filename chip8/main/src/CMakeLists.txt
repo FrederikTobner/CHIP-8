@@ -23,8 +23,9 @@ endif()
 # Creating the final executable
 add_executable(${PROJECT_NAME} ${CHIP-8_SOURCE_FILES})
 
-# for including the chip8_config.h file
-target_include_directories(${PROJECT_NAME} PUBLIC ${PROJECT_BINARY_DIR}/src)
+# For including the generated chip8_config.h file (configure_file writes it to the binary directory of this folder,
+# independent of the name or the location of the build directory)
+target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
 
 # Linking with SDL libary and the front and backend libary of the emulators
 target_link_libraries(${PROJECT_NAME} SDL2::SDL2main ${PROJECT_NAME}_Backend ${PROJECT_NAME}_Frontend ${PROJECT_NAME}_Base ${PROJECT_NAME}_IO)
