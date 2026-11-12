@@ -3,6 +3,7 @@ var virtual__machine_8h =
     [ "virtual_machine_t", "structvirtual__machine__t.html", "structvirtual__machine__t" ],
     [ "VM_DEFAULT_INSTRUCTIONS_PER_SECOND", "virtual__machine_8h.html#a133fbebd7b05e29f6d57e9e41246e0ff", null ],
     [ "VM_FRAMES_PER_SECOND", "virtual__machine_8h.html#a32305eba150f7950730fa1aabbe1381e", null ],
+    [ "VM_STACK_SIZE", "virtual__machine_8h.html#a5adc81cde9c0899bf2affca8feea48a2", null ],
     [ "vm_status_t", "virtual__machine_8h.html#a439ff6dca66e98a87d343422fbbb233a", [
       [ "VM_OK", "virtual__machine_8h.html#a439ff6dca66e98a87d343422fbbb233aaf51f85225c11d6ee07acf539b2ad8e1e", null ],
       [ "VM_HALT", "virtual__machine_8h.html#a439ff6dca66e98a87d343422fbbb233aa435931d71cfde85c95953ca6f56f0fac", null ],

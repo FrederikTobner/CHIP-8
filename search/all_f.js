@@ -7,7 +7,7 @@ var searchData=
   ['size_5fcheck_5fusing_5ftype_4',['SIZE_CHECK_USING_TYPE',['../memory_8h.html#a6ef9035f7d385a5bd2cc71854dffabfb',1,'memory.h']]],
   ['soundtimer_5',['soundTimer',['../structvirtual__machine__t.html#a7626db69808827148dbf69697cf5e862',1,'virtual_machine_t']]],
   ['source_6',['source',['../structassembler__t.html#aee6937c81d468a0915308234d09d212c',1,'assembler_t']]],
-  ['stack_7',['stack',['../structvirtual__machine__t.html#a0004a78051dbbf272e3fdbefa09412c5',1,'virtual_machine_t']]],
+  ['stack_7',['stack',['../structvirtual__machine__t.html#a36ceea2296a7ba1ae76a2681af09a5ad',1,'virtual_machine_t']]],
   ['stackpointer_8',['stackPointer',['../structvirtual__machine__t.html#a80d3489d91c6975e450cd5827014afac',1,'virtual_machine_t']]],
   ['start_9',['start',['../structassembler__t.html#ad63735bb1e8f9126d806c2eec49ac941',1,'assembler_t']]],
   ['switch_5fadvance_10',['SWITCH_ADVANCE',['../assembler_8c.html#a656160938e41cdd21d8e7d44d36e8d80',1,'assembler.c']]],

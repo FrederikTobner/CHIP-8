@@ -22,5 +22,6 @@ var searchData=
   ['vm_5fframes_5fper_5fsecond_19',['VM_FRAMES_PER_SECOND',['../virtual__machine_8h.html#a32305eba150f7950730fa1aabbe1381e',1,'virtual_machine.h']]],
   ['vm_5fhalt_20',['VM_HALT',['../virtual__machine_8h.html#a439ff6dca66e98a87d343422fbbb233aa435931d71cfde85c95953ca6f56f0fac',1,'virtual_machine.h']]],
   ['vm_5fok_21',['VM_OK',['../virtual__machine_8h.html#a439ff6dca66e98a87d343422fbbb233aaf51f85225c11d6ee07acf539b2ad8e1e',1,'virtual_machine.h']]],
-  ['vm_5fstatus_5ft_22',['vm_status_t',['../virtual__machine_8h.html#a439ff6dca66e98a87d343422fbbb233a',1,'virtual_machine.h']]]
+  ['vm_5fstack_5fsize_22',['VM_STACK_SIZE',['../virtual__machine_8h.html#a5adc81cde9c0899bf2affca8feea48a2',1,'virtual_machine.h']]],
+  ['vm_5fstatus_5ft_23',['vm_status_t',['../virtual__machine_8h.html#a439ff6dca66e98a87d343422fbbb233a',1,'virtual_machine.h']]]
 ];

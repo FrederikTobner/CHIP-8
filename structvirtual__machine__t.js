@@ -9,7 +9,7 @@ var structvirtual__machine__t =
     [ "memory", "structvirtual__machine__t.html#a5987db636a9b13af8d42f867f621fadb", null ],
     [ "programCounter", "structvirtual__machine__t.html#ac2c697bf7b6fc26b306c9e24196566e6", null ],
     [ "soundTimer", "structvirtual__machine__t.html#a7626db69808827148dbf69697cf5e862", null ],
-    [ "stack", "structvirtual__machine__t.html#a0004a78051dbbf272e3fdbefa09412c5", null ],
+    [ "stack", "structvirtual__machine__t.html#a36ceea2296a7ba1ae76a2681af09a5ad", null ],
     [ "stackPointer", "structvirtual__machine__t.html#a80d3489d91c6975e450cd5827014afac", null ],
     [ "V", "structvirtual__machine__t.html#a7212d8d49da04eaad9ce0feb0d001b4d", null ],
     [ "waitingForKey", "structvirtual__machine__t.html#a8055162494923d72bc4ddab10d66578e", null ]
