@@ -126,8 +126,8 @@ Enumerations</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-func-members" class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a728e5e27df9bfdc9e698b8cc75ca9380" id="r_a728e5e27df9bfdc9e698b8cc75ca9380"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a728e5e27df9bfdc9e698b8cc75ca9380">virtual_machine_execute</a> (<a class="el" href="structvirtual__machine__t.html">virtual_machine_t</a> *vm)</td></tr>
-<tr class="memdesc:a728e5e27df9bfdc9e698b8cc75ca9380"><td class="mdescLeft">&#160;</td><td class="mdescRight">Executes the program that is stored in memory until it is finished or the window is closed.  <br /></td></tr>
+<tr class="memitem:ac5b91d3b20826fdf57a8306c97f3dd37" id="r_ac5b91d3b20826fdf57a8306c97f3dd37"><td class="memItemLeft" align="right" valign="top"><a class="el" href="#a439ff6dca66e98a87d343422fbbb233a">vm_status_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac5b91d3b20826fdf57a8306c97f3dd37">virtual_machine_execute</a> (<a class="el" href="structvirtual__machine__t.html">virtual_machine_t</a> *vm)</td></tr>
+<tr class="memdesc:ac5b91d3b20826fdf57a8306c97f3dd37"><td class="mdescLeft">&#160;</td><td class="mdescRight">Executes the program that is stored in memory until it is finished or the window is closed.  <br /></td></tr>
 <tr class="memitem:a18a1ce69966115ea894fece2802659c1" id="r_a18a1ce69966115ea894fece2802659c1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a18a1ce69966115ea894fece2802659c1">virtual_machine_init</a> (<a class="el" href="structvirtual__machine__t.html">virtual_machine_t</a> *vm)</td></tr>
 <tr class="memdesc:a18a1ce69966115ea894fece2802659c1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes the chip8 vm.  <br /></td></tr>
 <tr class="memitem:a5dea0be1275ec558ba30e2cb0b3d0a6d" id="r_a5dea0be1275ec558ba30e2cb0b3d0a6d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5dea0be1275ec558ba30e2cb0b3d0a6d">virtual_machine_set_speed</a> (<a class="el" href="structvirtual__machine__t.html">virtual_machine_t</a> *vm, uint32_t instructionsPerSecond)</td></tr>
@@ -218,14 +218,14 @@ Functions</h2></td></tr>
 </div>
 </div>
 <a name="doc-func-members" id="doc-func-members"></a><h2 id="header-doc-func-members" class="groupheader">Function Documentation</h2>
-<a id="a728e5e27df9bfdc9e698b8cc75ca9380" name="a728e5e27df9bfdc9e698b8cc75ca9380"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a728e5e27df9bfdc9e698b8cc75ca9380">&#9670;&#160;</a></span>virtual_machine_execute()</h2>
+<a id="ac5b91d3b20826fdf57a8306c97f3dd37" name="ac5b91d3b20826fdf57a8306c97f3dd37"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac5b91d3b20826fdf57a8306c97f3dd37">&#9670;&#160;</a></span>virtual_machine_execute()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void virtual_machine_execute </td>
+          <td class="memname"><a class="el" href="#a439ff6dca66e98a87d343422fbbb233a">vm_status_t</a> virtual_machine_execute </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="structvirtual__machine__t.html">virtual_machine_t</a> *</td>          <td class="paramname"><span class="paramname"><em>vm</em></span></td><td>)</td>
           <td></td>
@@ -236,10 +236,11 @@ Functions</h2></td></tr>
 <p>Executes the program that is stored in memory until it is finished or the window is closed. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">vm</td><td>The chip8 vm where the program that is currently held in memory is executed</td></tr>
+    <tr><td class="paramname">vm</td><td>The chip8 vm where the program that is currently held in memory is executed </td></tr>
   </table>
   </dd>
 </dl>
+<dl class="section return"><dt>Returns</dt><dd>VM_OK if the window was closed, VM_HALT if the program finished and VM_ERROR if the execution was aborted by a runtime error (unknown opcode, call stack overflow or underflow)</dd></dl>
 <p>Executes the program that is stored in memory until it is finished or the window is closed.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -247,6 +248,7 @@ Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
+<dl class="section return"><dt>Returns</dt><dd>VM_OK if the window was closed, VM_HALT if the program finished and VM_ERROR if the execution was aborted by a runtime error (unknown opcode, call stack overflow or underflow) </dd></dl>
 
 </div>
 </div>

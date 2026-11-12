@@ -5,7 +5,7 @@ var virtual__machine_8c =
     [ "DEFINE_8_BIT_VALUE", "virtual__machine_8c.html#a15279597a97703b1c5b79aa68c170ecf", null ],
     [ "DEFINE_X", "virtual__machine_8c.html#a2c204a322aae122cdbcdd140c04b544f", null ],
     [ "DEFINE_Y", "virtual__machine_8c.html#a324c2908c1139cd12dda3b00c3c70c6f", null ],
-    [ "virtual_machine_execute", "virtual__machine_8c.html#a728e5e27df9bfdc9e698b8cc75ca9380", null ],
+    [ "virtual_machine_execute", "virtual__machine_8c.html#ac5b91d3b20826fdf57a8306c97f3dd37", null ],
     [ "virtual_machine_execute_next_opcode", "virtual__machine_8c.html#af0e73c3e96ea0716586288fbfc3c069d", null ],
     [ "virtual_machine_init", "virtual__machine_8c.html#a18a1ce69966115ea894fece2802659c1", null ],
     [ "virtual_machine_place_character_sprites_in_memory", "virtual__machine_8c.html#ab7d21f634b63d475988d35ba6cca80e3", null ],

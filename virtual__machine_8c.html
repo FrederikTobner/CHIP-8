@@ -121,8 +121,8 @@ Functions</h2></td></tr>
 <tr class="memdesc:a00fb8986c6f0d98e0dc919e3a9d3e9d8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Polls the pending SDL events and updates the state of the keyboard.  <br /></td></tr>
 <tr class="memitem:ab7d21f634b63d475988d35ba6cca80e3" id="r_ab7d21f634b63d475988d35ba6cca80e3"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab7d21f634b63d475988d35ba6cca80e3">virtual_machine_place_character_sprites_in_memory</a> (<a class="el" href="structvirtual__machine__t.html">virtual_machine_t</a> *vm)</td></tr>
 <tr class="memdesc:ab7d21f634b63d475988d35ba6cca80e3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Places sprites for characters in memory.  <br /></td></tr>
-<tr class="memitem:a728e5e27df9bfdc9e698b8cc75ca9380" id="r_a728e5e27df9bfdc9e698b8cc75ca9380"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a728e5e27df9bfdc9e698b8cc75ca9380">virtual_machine_execute</a> (<a class="el" href="structvirtual__machine__t.html">virtual_machine_t</a> *vm)</td></tr>
-<tr class="memdesc:a728e5e27df9bfdc9e698b8cc75ca9380"><td class="mdescLeft">&#160;</td><td class="mdescRight">Executes the program that is stored in memory.  <br /></td></tr>
+<tr class="memitem:ac5b91d3b20826fdf57a8306c97f3dd37" id="r_ac5b91d3b20826fdf57a8306c97f3dd37"><td class="memItemLeft" align="right" valign="top"><a class="el" href="virtual__machine_8h.html#a439ff6dca66e98a87d343422fbbb233a">vm_status_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac5b91d3b20826fdf57a8306c97f3dd37">virtual_machine_execute</a> (<a class="el" href="structvirtual__machine__t.html">virtual_machine_t</a> *vm)</td></tr>
+<tr class="memdesc:ac5b91d3b20826fdf57a8306c97f3dd37"><td class="mdescLeft">&#160;</td><td class="mdescRight">Executes the program that is stored in memory.  <br /></td></tr>
 <tr class="memitem:a1179a63af2d8c2931a632496c8f32d9d" id="r_a1179a63af2d8c2931a632496c8f32d9d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="virtual__machine_8h.html#a439ff6dca66e98a87d343422fbbb233a">vm_status_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1179a63af2d8c2931a632496c8f32d9d">virtual_machine_run_frame</a> (<a class="el" href="structvirtual__machine__t.html">virtual_machine_t</a> *vm, <a class="el" href="keyboard__state_8h.html#a3bb59def79fe59ea0c69136507bf3fb4">keyBoardState_t</a> keyBoardState)</td></tr>
 <tr class="memdesc:a1179a63af2d8c2931a632496c8f32d9d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Executes the instructions of a single frame (1/60 second) and ticks the timers afterwards.  <br /></td></tr>
 <tr class="memitem:ac326fa266a78de10e13e9d1e6666d9a1" id="r_ac326fa266a78de10e13e9d1e6666d9a1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="virtual__machine_8h.html#a439ff6dca66e98a87d343422fbbb233a">vm_status_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac326fa266a78de10e13e9d1e6666d9a1">virtual_machine_step</a> (<a class="el" href="structvirtual__machine__t.html">virtual_machine_t</a> *vm, <a class="el" href="keyboard__state_8h.html#a3bb59def79fe59ea0c69136507bf3fb4">keyBoardState_t</a> keyBoardState)</td></tr>
@@ -223,14 +223,14 @@ Functions</h2></td></tr>
 </div>
 </div>
 <a name="doc-func-members" id="doc-func-members"></a><h2 id="header-doc-func-members" class="groupheader">Function Documentation</h2>
-<a id="a728e5e27df9bfdc9e698b8cc75ca9380" name="a728e5e27df9bfdc9e698b8cc75ca9380"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a728e5e27df9bfdc9e698b8cc75ca9380">&#9670;&#160;</a></span>virtual_machine_execute()</h2>
+<a id="ac5b91d3b20826fdf57a8306c97f3dd37" name="ac5b91d3b20826fdf57a8306c97f3dd37"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac5b91d3b20826fdf57a8306c97f3dd37">&#9670;&#160;</a></span>virtual_machine_execute()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void virtual_machine_execute </td>
+          <td class="memname"><a class="el" href="virtual__machine_8h.html#a439ff6dca66e98a87d343422fbbb233a">vm_status_t</a> virtual_machine_execute </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="structvirtual__machine__t.html">virtual_machine_t</a> *</td>          <td class="paramname"><span class="paramname"><em>vm</em></span></td><td>)</td>
           <td></td>
@@ -246,6 +246,7 @@ Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
+<dl class="section return"><dt>Returns</dt><dd>VM_OK if the window was closed, VM_HALT if the program finished and VM_ERROR if the execution was aborted by a runtime error (unknown opcode, call stack overflow or underflow) </dd></dl>
 
 </div>
 </div>

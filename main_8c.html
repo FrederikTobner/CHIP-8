@@ -111,8 +111,8 @@ Macros</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-func-members" class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a2bffe6ba0753ac8741b66d81f8feb69a" id="r_a2bffe6ba0753ac8741b66d81f8feb69a"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2bffe6ba0753ac8741b66d81f8feb69a">run_from_file</a> (char const *filePath, uint32_t instructionsPerSecond)</td></tr>
-<tr class="memdesc:a2bffe6ba0753ac8741b66d81f8feb69a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Executes a chip8 program stored in a file.  <br /></td></tr>
+<tr class="memitem:a6917e7dd261bd1e04a090df46f00644f" id="r_a6917e7dd261bd1e04a090df46f00644f"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6917e7dd261bd1e04a090df46f00644f">run_from_file</a> (char const *filePath, uint32_t instructionsPerSecond)</td></tr>
+<tr class="memdesc:a6917e7dd261bd1e04a090df46f00644f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Executes a chip8 program stored in a file.  <br /></td></tr>
 <tr class="memitem:a99180d585a800dd378a8cb860d7b0c6f" id="r_a99180d585a800dd378a8cb860d7b0c6f"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a99180d585a800dd378a8cb860d7b0c6f">parse_speed</a> (char const *argument, uint32_t *instructionsPerSecond)</td></tr>
 <tr class="memdesc:a99180d585a800dd378a8cb860d7b0c6f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parses the speed of the virtual machine that was specified in the command line.  <br /></td></tr>
 <tr class="memitem:a81962ff36a3740bd2a6a458b74e57e26" id="r_a81962ff36a3740bd2a6a458b74e57e26"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a81962ff36a3740bd2a6a458b74e57e26">show_help</a> ()</td></tr>
@@ -181,7 +181,7 @@ Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>0 if everything went well </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>0 if everything went well, otherwise the exit code that describes the error </dd></dl>
 
 </div>
 </div>
@@ -224,8 +224,8 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a2bffe6ba0753ac8741b66d81f8feb69a" name="a2bffe6ba0753ac8741b66d81f8feb69a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2bffe6ba0753ac8741b66d81f8feb69a">&#9670;&#160;</a></span>run_from_file()</h2>
+<a id="a6917e7dd261bd1e04a090df46f00644f" name="a6917e7dd261bd1e04a090df46f00644f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6917e7dd261bd1e04a090df46f00644f">&#9670;&#160;</a></span>run_from_file()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -234,7 +234,7 @@ Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void run_from_file </td>
+          <td class="memname">int run_from_file </td>
           <td>(</td>
           <td class="paramtype">char const *</td>          <td class="paramname"><span class="paramname"><em>filePath</em></span>, </td>
         </tr>
@@ -259,6 +259,7 @@ Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
+<dl class="section return"><dt>Returns</dt><dd>EXIT_CODE_OK if the program finished or the window was closed, EXIT_CODE_RUNTIME_ERROR if the execution was aborted by a runtime error </dd></dl>
 
 </div>
 </div>

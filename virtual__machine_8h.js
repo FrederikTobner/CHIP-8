@@ -9,7 +9,7 @@ var virtual__machine_8h =
       [ "VM_HALT", "virtual__machine_8h.html#a439ff6dca66e98a87d343422fbbb233aa435931d71cfde85c95953ca6f56f0fac", null ],
       [ "VM_ERROR", "virtual__machine_8h.html#a439ff6dca66e98a87d343422fbbb233aa52e1546f6c2f1f484c3d1aa732539151", null ]
     ] ],
-    [ "virtual_machine_execute", "virtual__machine_8h.html#a728e5e27df9bfdc9e698b8cc75ca9380", null ],
+    [ "virtual_machine_execute", "virtual__machine_8h.html#ac5b91d3b20826fdf57a8306c97f3dd37", null ],
     [ "virtual_machine_init", "virtual__machine_8h.html#a18a1ce69966115ea894fece2802659c1", null ],
     [ "virtual_machine_run_frame", "virtual__machine_8h.html#a1179a63af2d8c2931a632496c8f32d9d", null ],
     [ "virtual_machine_set_speed", "virtual__machine_8h.html#a5dea0be1275ec558ba30e2cb0b3d0a6d", null ],
