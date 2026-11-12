@@ -34,13 +34,16 @@
 /// The frequency of the timers and of the display (in Hz)
 #define VM_FRAMES_PER_SECOND               (60u)
 
+/// The maximum amount of nested subroutine calls
+#define VM_STACK_SIZE                      (16u)
+
 /// @brief The result of executing instructions on the virtual machine
 typedef enum {
     /// Everything went well, the program can continue
     VM_OK = 0,
     /// The program is finished (EXT opcode, end of the program or end of the memory was reached)
     VM_HALT = 1,
-    /// An unknown opcode was encountered
+    /// An unknown opcode was encountered or the call stack overflowed or underflowed
     VM_ERROR = -1
 } vm_status_t;
 
@@ -68,7 +71,7 @@ typedef struct {
     /// Display of the emulator
     display_t display;
     /// Stack of the chip8 (16bit unsigned integer values)
-    uint16_t stack[16];
+    uint16_t stack[VM_STACK_SIZE];
     /// Memory of the virtual machine (4096 bytes)
     uint8_t memory[4096];
     /// Registers of the virtual macine (16 8-bit registers)
@@ -92,13 +95,15 @@ void virtual_machine_set_speed(virtual_machine_t * vm, uint32_t instructionsPerS
 /// @brief Executes the next instruction of the program
 /// @param vm The chip8 virtual machine that executes the instruction
 /// @param keyBoardState The keys that are currently pressed
-/// @return VM_OK if the program can continue, VM_HALT if it is finished and VM_ERROR if the opcode is unknown
+/// @return VM_OK if the program can continue, VM_HALT if it is finished and VM_ERROR if the opcode is unknown or the
+/// call stack overflows or underflows
 vm_status_t virtual_machine_step(virtual_machine_t * vm, keyBoardState_t keyBoardState);
 
 /// @brief Executes the instructions of a single frame (1/60 second) and ticks the timers afterwards
 /// @param vm The chip8 virtual machine that executes the instructions
 /// @param keyBoardState The keys that are currently pressed
-/// @return VM_OK if the program can continue, VM_HALT if it is finished and VM_ERROR if the opcode is unknown
+/// @return VM_OK if the program can continue, VM_HALT if it is finished and VM_ERROR if the opcode is unknown or the
+/// call stack overflows or underflows
 vm_status_t virtual_machine_run_frame(virtual_machine_t * vm, keyBoardState_t keyBoardState);
 
 void virtual_machine_write_opcode_to_memory(virtual_machine_t * vm, uint16_t * memoryLocation, uint16_t opcode);

@@ -35,7 +35,7 @@ void debug_trace_execution(virtual_machine_t vm) {
     printf("Address register: 0x%04X\n", vm.I);
 
     printf("Stack: [");
-    uint16_t * upperBound = vm.stack + 16;
+    uint16_t * upperBound = vm.stack + VM_STACK_SIZE;
     for (uint16_t * stackPointer = vm.stack; stackPointer < upperBound; stackPointer++) {
         printf("0x%04X, ", *stackPointer);
     }
