@@ -80,7 +80,9 @@ typedef struct {
 
 /// @brief Executes the program that is stored in memory until it is finished or the window is closed
 /// @param vm The chip8 vm where the program that is currently held in memory is executed
-void virtual_machine_execute(virtual_machine_t * vm);
+/// @return VM_OK if the window was closed, VM_HALT if the program finished and VM_ERROR if the execution was aborted by
+/// a runtime error (unknown opcode, call stack overflow or underflow)
+vm_status_t virtual_machine_execute(virtual_machine_t * vm);
 
 /// @brief Initializes the chip8 vm
 /// @param vm The chip8 virtual machine that is initialzed

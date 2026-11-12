@@ -52,14 +52,17 @@ static inline void virtual_machine_place_character_sprites_in_memory(virtual_mac
 
 /// @brief Executes the program that is stored in memory
 /// @param vm The chip8 vm where the program that is currently held in memory is executed
-void virtual_machine_execute(virtual_machine_t * vm) {
+/// @return VM_OK if the window was closed, VM_HALT if the program finished and VM_ERROR if the execution was aborted by
+/// a runtime error (unknown opcode, call stack overflow or underflow)
+vm_status_t virtual_machine_execute(virtual_machine_t * vm) {
     keyBoardState_t keyBoardState = 0;
     uint64_t const frequency = SDL_GetPerformanceFrequency();
     uint64_t const ticksPerFrame = frequency / VM_FRAMES_PER_SECOND;
     uint64_t nextFrameTime = SDL_GetPerformanceCounter();
     while (virtual_machine_poll_events(vm, &keyBoardState)) {
-        if (virtual_machine_run_frame(vm, keyBoardState) != VM_OK) {
-            return;
+        vm_status_t const status = virtual_machine_run_frame(vm, keyBoardState);
+        if (status != VM_OK) {
+            return status;
         }
         // Only the frames where the program changed the display have to be rendered
         if (vm->display.dirty) {
@@ -76,6 +79,7 @@ void virtual_machine_execute(virtual_machine_t * vm) {
             nextFrameTime = now;
         }
     }
+    return VM_OK;
 }
 
 /// @brief Executes the instructions of a single frame (1/60 second) and ticks the timers afterwards

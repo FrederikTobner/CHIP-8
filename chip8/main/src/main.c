@@ -38,7 +38,7 @@
   \\_____|_|  |_|_____|_|          \\___/ \n\
 ")
 
-static void run_from_file(char const *, uint32_t);
+static int run_from_file(char const *, uint32_t);
 static bool parse_speed(char const *, uint32_t *);
 static void show_help();
 
@@ -46,8 +46,9 @@ static void show_help();
 /// @param argc The amount of arguments that were used when the program was started
 /// @param argv Pointer to the arguments array that contains all the arguments that were defined by the user when the
 /// program was started
-/// @return 0 if everything went well
+/// @return 0 if everything went well, otherwise the exit code that describes the error
 int main(int argc, char ** args) {
+    int exitCode = EXIT_CODE_OK;
     if (argc == 2) {
         if (!strcmp(args[1], "--version") || !strcmp(args[1], "-v")) {
             printf("%s Version %i.%i.%i\n", PROJECT_NAME, PROJECT_VERSION_MAJOR, PROJECT_VERSION_MINOR,
@@ -55,7 +56,7 @@ int main(int argc, char ** args) {
         } else if (!strcmp(args[1], "--help") || !strcmp(args[1], "-h")) {
             show_help();
         } else {
-            run_from_file(args[1], VM_DEFAULT_INSTRUCTIONS_PER_SECOND);
+            exitCode = run_from_file(args[1], VM_DEFAULT_INSTRUCTIONS_PER_SECOND);
         }
     } else if (argc == 4 && (!strcmp(args[1], "--speed") || !strcmp(args[1], "-s"))) {
         uint32_t instructionsPerSecond;
@@ -63,12 +64,12 @@ int main(int argc, char ** args) {
             fprintf(stderr, "Invalid speed '%s' - expected a positive number of instructions per second\n", args[2]);
             exit(EXIT_CODE_COMMAND_LINE_USAGE_ERROR);
         }
-        run_from_file(args[3], instructionsPerSecond);
+        exitCode = run_from_file(args[3], instructionsPerSecond);
     } else {
         fprintf(stderr, CHIP8_USAGE_MESSAGE);
         exit(EXIT_CODE_COMMAND_LINE_USAGE_ERROR);
     }
-    return EXIT_CODE_OK;
+    return exitCode;
 }
 
 /// @brief Parses the speed of the virtual machine that was specified in the command line
@@ -88,7 +89,9 @@ static bool parse_speed(char const * argument, uint32_t * instructionsPerSecond)
 /// @brief Executes a chip8 program stored in a file
 /// @param filePath The path of the program
 /// @param instructionsPerSecond The speed of the virtual machine
-static void run_from_file(char const * filePath, uint32_t instructionsPerSecond) {
+/// @return EXIT_CODE_OK if the program finished or the window was closed, EXIT_CODE_RUNTIME_ERROR if the execution was
+/// aborted by a runtime error
+static int run_from_file(char const * filePath, uint32_t instructionsPerSecond) {
     printf("%s\t\t\t\t Version %i.%i.%i\n", PROJECT_INIT_LETTERING, PROJECT_VERSION_MAJOR, PROJECT_VERSION_MINOR,
            PROJECT_VERSION_PATCH);
     char * source;
@@ -114,8 +117,9 @@ static void run_from_file(char const * filePath, uint32_t instructionsPerSecond)
     if (display_init(&vm.display)) {
         exit(EXIT_CODE_SYSTEM_ERROR);
     }
-    virtual_machine_execute(&vm);
+    vm_status_t const status = virtual_machine_execute(&vm);
     display_quit(&vm.display);
+    return status == VM_ERROR ? EXIT_CODE_RUNTIME_ERROR : EXIT_CODE_OK;
 }
 
 /// @brief Displays the help of the emulator
