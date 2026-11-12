@@ -188,6 +188,9 @@ void virtual_machine_init(virtual_machine_t * vm) {
     }
     // Setting up Hex character sprites in memory
     virtual_machine_place_character_sprites_in_memory(vm);
+    // The random number generator of the opcode 0xCXNN has to be seeded, otherwise every run of a program sees the
+    // same sequence. The performance counter is mixed in, because the clock only changes once per second
+    srand((unsigned int)((uint64_t)time(NULL) ^ SDL_GetPerformanceCounter()));
 }
 
 /// @brief Writtes the specified opcode at the specified location into memory

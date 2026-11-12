@@ -59,6 +59,37 @@ TEST_F(OpcodeTest, DrawSprite_SecondDrawErasesAndSetsCollisionFlag) {
     EXPECT_EQ(0, LitPixels());
 }
 
+TEST_F(OpcodeTest, Random_ResultIsMaskedByNN) {
+    for (int i = 0; i < 256; i++) {
+        ASSERT_EQ(VM_OK, Execute(0xC30F));
+        EXPECT_EQ(0, vm.V[3] & 0xF0);
+    }
+}
+
+TEST_F(OpcodeTest, Random_ZeroMaskAlwaysGivesZero) {
+    vm.V[2] = 0xFF;
+    for (int i = 0; i < 64; i++) {
+        ASSERT_EQ(VM_OK, Execute(0xC200));
+        EXPECT_EQ(0, vm.V[2]);
+    }
+}
+
+TEST_F(OpcodeTest, Random_ProducesDifferentValuesInTheWholeByteRange) {
+    uint8_t seenBits = 0;
+    uint8_t first = 0;
+    bool differs = false;
+    for (int i = 0; i < 1000; i++) {
+        ASSERT_EQ(VM_OK, Execute(0xC0FF));
+        if (i == 0) {
+            first = vm.V[0];
+        }
+        differs |= (vm.V[0] != first);
+        seenBits |= vm.V[0];
+    }
+    EXPECT_TRUE(differs);
+    EXPECT_EQ(0xFF, seenBits);
+}
+
 TEST_F(OpcodeTest, DrawSprite_CollisionFlagIsResetByTheNextDraw) {
     vm.memory[0x900] = 0x80;
     vm.I = 0x900;
