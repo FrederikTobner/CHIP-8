@@ -184,7 +184,8 @@ void virtual_machine_init(virtual_machine_t * vm) {
     vm->waitingForKey = false;
     vm->keyWaitBaseline = 0u;
     virtual_machine_set_speed(vm, VM_DEFAULT_INSTRUCTIONS_PER_SECOND);
-    // Initialize stackpointer
+    // Initialize stack and stackpointer
+    memset(vm->stack, 0, sizeof(vm->stack));
     vm->stackPointer = vm->stack;
     // Initialize program counter
     vm->programCounter = PROGRAM_START_LOCATION;
