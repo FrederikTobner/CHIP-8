@@ -23,7 +23,5 @@ target_compile_definitions(${BACKEND_TEST_PROJECT_NAME} PRIVATE CP8_EXAMPLES_DIR
 # Link google test
 target_link_libraries(${BACKEND_TEST_PROJECT_NAME} GTest::gtest_main ${PROJECT_NAME}_Backend)
 
-target_include_directories(${BACKEND_TEST_PROJECT_NAME} PRIVATE "../src/")
-
 include(GoogleTest)
 gtest_discover_tests(${BACKEND_TEST_PROJECT_NAME})

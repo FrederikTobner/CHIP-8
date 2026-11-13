@@ -14,21 +14,20 @@
  ****************************************************************************/
 
 /**
- * @file address_hash_table.h
- * @brief Declarations regarding the hashtable that stored memory adresses under their label
+ * @file file_utils.h
+ * @brief Declarations regarding the file utilities used by the emulator
  */
 
-#ifndef CHIP8_ADDRESS_HASH_TABLE_H_
-#define CHIP8_ADDRESS_HASH_TABLE_H_
+#ifndef CHIP8_FILE_UTILS_H_
+#define CHIP8_FILE_UTILS_H_
 
-#include "frontend_pre_compiled_header.h"
+#include <stdint.h>
 
-#include "../../base/src/table_code_gen.h"
+/// @brief Reads a file from a specified location and returns the content of the file as a character pointer
+/// @param path The path of the file that is read
+/// @return The content of the file as a character pointer
+char * file_utils_read_file(char const *);
 
-GENERATE_TABLE_ENTRY_TYPE(uint16_t)
-
-GENERATE_TABLE_TYPE(uint16_t)
-
-GENERATE_TABLE_PROTOTYPES(uint16_t)
+void file_utils_read_file_to_memory(char const * path, uint8_t * memory);
 
 #endif

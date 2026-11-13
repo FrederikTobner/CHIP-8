@@ -18,10 +18,10 @@
  * @brief Definitions regarding the display of the emulator
  */
 
-#include "display.h"
-#include "../../base/src/logger.h"
-#include "../../io/src/path_utils.h"
+#include "backend/display.h"
 #include "backend_pre_compiled_header.h"
+#include "base/logger.h"
+#include "io/path_utils.h"
 
 static int display_set_window_icon(SDL_Window *, char const *);
 

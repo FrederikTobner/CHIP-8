@@ -18,10 +18,10 @@
  * @brief Definitions regarding the file utilities used by the emulator
  */
 
-#include "file_utils.h"
+#include "io/file_utils.h"
 
-#include "../../base/src/chip8.h"
-#include "../../base/src/exit_code.h"
+#include "base/chip8.h"
+#include "base/exit_code.h"
 
 static void io_error(char const *, ...);
 

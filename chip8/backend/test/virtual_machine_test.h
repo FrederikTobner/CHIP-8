@@ -7,7 +7,7 @@
 #include <string.h>
 
 extern "C" {
-#include "virtual_machine.h"
+#include "backend/virtual_machine.h"
 }
 constexpr uint16_t kProgramStart = 0x200;
 

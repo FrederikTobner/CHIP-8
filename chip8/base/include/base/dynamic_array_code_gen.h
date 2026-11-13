@@ -21,7 +21,12 @@
 #ifndef CHIP8_DYNAMIC_ARRAY_CODE_GENERATION_H
 #define CHIP8_DYNAMIC_ARRAY_CODE_GENERATION_H
 
-#include "memory.h"
+#include <assert.h>
+#include <stdbool.h>
+#include <stddef.h>
+#include <stdint.h>
+
+#include "base/memory.h"
 
 #define MIN(a, b)                         (((a) < (b)) ? (a) : (b))
 

@@ -14,20 +14,19 @@
  ****************************************************************************/
 
 /**
- * @file file_utils.h
- * @brief Declarations regarding the file utilities used by the emulator
+ * @file dynamic_address_array.h
+ * @brief Declarations regarding the dynamic address array
  */
 
-#ifndef CHIP8_FILE_UTILS_H_
-#define CHIP8_FILE_UTILS_H_
+#ifndef CHIP8_DYNAMIC_ADDRESS_ARRAY_H_
+#define CHIP8_DYNAMIC_ADDRESS_ARRAY_H_
 
-#include "io_pre_compiled_header.h"
+#include <stdint.h>
 
-/// @brief Reads a file from a specified location and returns the content of the file as a character pointer
-/// @param path The path of the file that is read
-/// @return The content of the file as a character pointer
-char * file_utils_read_file(char const *);
+#include "base/dynamic_array_code_gen.h"
 
-void file_utils_read_file_to_memory(char const * path, uint8_t * memory);
+GENERATE_DYNAMIC_ARRAY_TYPE(uint16_t)
+
+GENERATE_DYNAMIC_ARRAY_PROTOTYPES(uint16_t)
 
 #endif

@@ -29,8 +29,6 @@ if(BUILD_TESTING)
     enable_testing()
 endif()
 
-get_filename_component(SOURCE_PATH_FRONTEND ${PROJECT_SOURCE_DIR}/chip8/frontend/src ABSOLUTE)
-
 # Adding own cmake scripts
 include(chip8_check)
 include(chip8_sdl)

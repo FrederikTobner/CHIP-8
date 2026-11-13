@@ -18,7 +18,7 @@
  * @brief Definitions regarding the path utilities used by the emulator
  */
 
-#include "path_utils.h"
+#include "io/path_utils.h"
 
 // OS-specific definitions
 #if defined(OS_WINDOWS)

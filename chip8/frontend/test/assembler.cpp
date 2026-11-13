@@ -8,8 +8,8 @@
 #include <vector>
 
 extern "C" {
-#include "exit_code.h"
-#include "assembler.h"
+#include "base/exit_code.h"
+#include "frontend/assembler.h"
 }
 
 namespace {

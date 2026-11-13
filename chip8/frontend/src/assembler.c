@@ -18,9 +18,9 @@
  * @brief Definitions regarding the assembler of the emulator
  */
 
-#include "assembler.h"
-#include "../../base/src/chip8.h"
-#include "../../base/src/exit_code.h"
+#include "frontend/assembler.h"
+#include "base/chip8.h"
+#include "base/exit_code.h"
 
 #define OPCODE_CONVERSION_ERROR_MESSAGE ("Unable to convert mnemonic at source into binary")
 

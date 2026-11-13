@@ -21,9 +21,10 @@
 #ifndef CHIP8_ASSEMLER_H_
 #define CHIP8_ASSEMLER_H_
 
-#include "address_hash_table.h"
-#include "addresses_hash_table.h"
-#include "frontend_pre_compiled_header.h"
+#include <stdint.h>
+
+#include "frontend/address_hash_table.h"
+#include "frontend/addresses_hash_table.h"
 
 /// @brief Type definition of a assembler
 typedef struct {

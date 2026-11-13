@@ -1,5 +1,3 @@
-set(GLOBAL PROPERTY SOURCE_PATH_FRONTEND ${CMAKE_CURRENT_SOURCE_DIR})
-
 set(FRONTEND_SOURCE_FILES
 "address_hash_table.c"
 "addresses_hash_table.c"
@@ -10,11 +8,14 @@ set(FRONTEND_SOURCE_FILES
 
 add_library(${PROJECT_NAME}_Frontend STATIC ${FRONTEND_SOURCE_FILES}) 
 
+# The public headers are included as "frontend/<header>.h"
+target_include_directories(${PROJECT_NAME}_Frontend PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/../include)
+
 target_link_libraries(${PROJECT_NAME}_Frontend ${PROJECT_NAME}_Base)
 
 if(MSVC)
     # VisualStudio only accepts header files that also have a source file    
-    target_precompile_headers(${PROJECT_NAME}_Frontend PUBLIC frontend_pre_compiled_header.h frontend_pre_compiled_header.c) 
+    target_precompile_headers(${PROJECT_NAME}_Frontend PRIVATE frontend_pre_compiled_header.h frontend_pre_compiled_header.c) 
 else()
-    target_precompile_headers(${PROJECT_NAME}_Frontend PUBLIC frontend_pre_compiled_header.h)
+    target_precompile_headers(${PROJECT_NAME}_Frontend PRIVATE frontend_pre_compiled_header.h)
 endif()
