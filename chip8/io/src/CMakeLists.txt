@@ -1,10 +1,8 @@
 set(CHIP-8_IO_SOURCE_FILES
 "file_utils.c"
-"path_utils.c"   
 )    
 set(CHIP-8_IO_HEADER_FILES
 "../include/io/file_utils.h"
-"../include/io/path_utils.h"
 )
 
 add_library(${PROJECT_NAME}_IO STATIC ${CHIP-8_IO_SOURCE_FILES} ${CHIP-8_IO_HEADER_FILES})

@@ -30,12 +30,7 @@ target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
 # Linking with SDL libary and the front and backend libary of the emulators
 target_link_libraries(${PROJECT_NAME} SDL2::SDL2main ${PROJECT_NAME}_Backend ${PROJECT_NAME}_Frontend ${PROJECT_NAME}_Base ${PROJECT_NAME}_IO)
 
-# Copies window icon into the build folder
-FILE(COPY ${PROJECT_SOURCE_DIR}/assets/chip8_window_icon.bmp DESTINATION "${CMAKE_BINARY_DIR}/chip8/main/assets")
-
 if(NOT CMAKE_BUILD_TYPE MATCHES "[Dd][Ee][Bb][Uu][Gg]")
     # Install destinations
     install(TARGETS ${PROJECT_NAME} DESTINATION bin)
-    # Adding window icon
-    install(FILES ${PROJECT_SOURCE_DIR}/assets/chip8_window_icon.bmp DESTINATION assets)
 endif()
