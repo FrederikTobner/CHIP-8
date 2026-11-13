@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.15.0"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>CHIP-8: chip8/base/src/dynamic_array_code_gen.h Source File</title>
+<title>CHIP-8: chip8/base/include/base/dynamic_array_code_gen.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -111,92 +111,97 @@ $(function(){initNavTree('dynamic__array__code__gen_8h_source.html','',''); });
 <div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="preprocessor">#ifndef CHIP8_DYNAMIC_ARRAY_CODE_GENERATION_H</span></div>
 <div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="preprocessor">#define CHIP8_DYNAMIC_ARRAY_CODE_GENERATION_H</span></div>
 <div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span> </div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span><span class="preprocessor">#include &quot;<a class="code" href="memory_8h.html">memory.h</a>&quot;</span></div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span> </div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno"><a class="line" href="dynamic__array__code__gen_8h.html#a3acffbd305ee72dcd4593c0d8af64a4f">   26</a></span><span class="preprocessor">#define MIN(a, b)                         (((a) &lt; (b)) ? (a) : (b))</span></div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span> </div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno"><a class="line" href="dynamic__array__code__gen_8h.html#afa99ec4acc4ecb2dc3c2d05da15d0e3f">   28</a></span><span class="preprocessor">#define MAX(a, b)                         (((a) &gt; (b)) ? (a) : (b))</span></div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span> </div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno"><a class="line" href="dynamic__array__code__gen_8h.html#a66f79a4eb7c1fc77990f79e514ab153f">   30</a></span><span class="preprocessor">#define MIN_ARRAY_SIZE                    (1)</span></div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span> </div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno"><a class="line" href="dynamic__array__code__gen_8h.html#a066d898d2f600058a2ff5b3f0bb30876">   32</a></span><span class="preprocessor">#define MAX_ARRAY_LENGTH_USING_TYPE(type) (SIZE_MAX / sizeof(type))</span></div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span> </div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno"><a class="line" href="dynamic__array__code__gen_8h.html#ad2c0dbda8bd2e1e8d3cb71ced3cf8765">   34</a></span><span class="preprocessor">#define AT_MAX_LENGTH_USING_TYPE(n, type) ((n) == MAX_ARRAY_LENGTH_USING_TYPE(type))</span></div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span> </div>
-<div class="foldopen" id="foldopen00036" data-start="" data-end="">
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno"><a class="line" href="dynamic__array__code__gen_8h.html#ad751b27e7ca6aa06d5d6483581fa8061">   36</a></span><span class="preprocessor">#define CAPPED_DPL_SIZE_USING_TYPE(n, type) \</span></div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span><span class="preprocessor">    (((n) &lt; MAX_ARRAY_LENGTH_USING_TYPE(type) / 2) ? (2 * (n)) : MAX_ARRAY_LENGTH_USING_TYPE(type))</span></div>
-</div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span><span class="preprocessor">#include &lt;assert.h&gt;</span></div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span><span class="preprocessor">#include &lt;stdbool.h&gt;</span></div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span><span class="preprocessor">#include &lt;stddef.h&gt;</span></div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span><span class="preprocessor">#include &lt;stdint.h&gt;</span></div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span> </div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span><span class="preprocessor">#include &quot;<a class="code" href="memory_8h.html">base/memory.h</a>&quot;</span></div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span> </div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno"><a class="line" href="dynamic__array__code__gen_8h.html#a3acffbd305ee72dcd4593c0d8af64a4f">   31</a></span><span class="preprocessor">#define MIN(a, b)                         (((a) &lt; (b)) ? (a) : (b))</span></div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span> </div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno"><a class="line" href="dynamic__array__code__gen_8h.html#afa99ec4acc4ecb2dc3c2d05da15d0e3f">   33</a></span><span class="preprocessor">#define MAX(a, b)                         (((a) &gt; (b)) ? (a) : (b))</span></div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span> </div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno"><a class="line" href="dynamic__array__code__gen_8h.html#a66f79a4eb7c1fc77990f79e514ab153f">   35</a></span><span class="preprocessor">#define MIN_ARRAY_SIZE                    (1)</span></div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span> </div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno"><a class="line" href="dynamic__array__code__gen_8h.html#a066d898d2f600058a2ff5b3f0bb30876">   37</a></span><span class="preprocessor">#define MAX_ARRAY_LENGTH_USING_TYPE(type) (SIZE_MAX / sizeof(type))</span></div>
 <div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span> </div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno"><a class="line" href="dynamic__array__code__gen_8h.html#a3edd1a2a04a771c963ec09d5c5b2077c">   39</a></span><span class="preprocessor">#define MAX_ARRAY_LENGTH_USING_SIZE(obj_size) (SIZE_MAX / obj_size)</span></div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno"><a class="line" href="dynamic__array__code__gen_8h.html#ad2c0dbda8bd2e1e8d3cb71ced3cf8765">   39</a></span><span class="preprocessor">#define AT_MAX_LENGTH_USING_TYPE(n, type) ((n) == MAX_ARRAY_LENGTH_USING_TYPE(type))</span></div>
 <div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span> </div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno"><a class="line" href="dynamic__array__code__gen_8h.html#a3ce1907e8e619ddc1617e5dec330bf89">   41</a></span><span class="preprocessor">#define AT_MAX_LENGTH_USING_SIZE(n, obj_size) ((n) == MAX_ARRAY_LENGTH_USING_SIZE(obj_size))</span></div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span> </div>
-<div class="foldopen" id="foldopen00043" data-start="" data-end="">
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno"><a class="line" href="dynamic__array__code__gen_8h.html#a0df987b2da381f7b9906627fb5bdbd5e">   43</a></span><span class="preprocessor">#define CAPPED_DPL_USING_SIZE(n, obj_size) \</span></div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span><span class="preprocessor">    (((n) &lt; MAX_ARRAY_LENGTH_USING_SIZE(obj_size) / 2) ? (2 * (n)) : MAX_ARRAY_LENGTH_USING_SIZE(obj_size))</span></div>
+<div class="foldopen" id="foldopen00041" data-start="" data-end="">
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno"><a class="line" href="dynamic__array__code__gen_8h.html#ad751b27e7ca6aa06d5d6483581fa8061">   41</a></span><span class="preprocessor">#define CAPPED_DPL_SIZE_USING_TYPE(n, type) \</span></div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span><span class="preprocessor">    (((n) &lt; MAX_ARRAY_LENGTH_USING_TYPE(type) / 2) ? (2 * (n)) : MAX_ARRAY_LENGTH_USING_TYPE(type))</span></div>
 </div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span> </div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno"><a class="line" href="dynamic__array__code__gen_8h.html#a3edd1a2a04a771c963ec09d5c5b2077c">   44</a></span><span class="preprocessor">#define MAX_ARRAY_LENGTH_USING_SIZE(obj_size) (SIZE_MAX / obj_size)</span></div>
 <div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span> </div>
-<div class="foldopen" id="foldopen00046" data-start="" data-end="">
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno"><a class="line" href="dynamic__array__code__gen_8h.html#a8dfc4b0d279e8649618b580f97c5efc6">   46</a></span><span class="preprocessor">#define GENERATE_DYNAMIC_ARRAY_TYPE(TYPE) \</span></div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span><span class="preprocessor">    typedef struct {                      \</span></div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span><span class="preprocessor">        size_t allocated;                 \</span></div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span><span class="preprocessor">        size_t used;                      \</span></div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span><span class="preprocessor">        TYPE * data;                      \</span></div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span><span class="preprocessor">    } TYPE##_dynamic_array_t;</span></div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno"><a class="line" href="dynamic__array__code__gen_8h.html#a3ce1907e8e619ddc1617e5dec330bf89">   46</a></span><span class="preprocessor">#define AT_MAX_LENGTH_USING_SIZE(n, obj_size) ((n) == MAX_ARRAY_LENGTH_USING_SIZE(obj_size))</span></div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span> </div>
+<div class="foldopen" id="foldopen00048" data-start="" data-end="">
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno"><a class="line" href="dynamic__array__code__gen_8h.html#a0df987b2da381f7b9906627fb5bdbd5e">   48</a></span><span class="preprocessor">#define CAPPED_DPL_USING_SIZE(n, obj_size) \</span></div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span><span class="preprocessor">    (((n) &lt; MAX_ARRAY_LENGTH_USING_SIZE(obj_size) / 2) ? (2 * (n)) : MAX_ARRAY_LENGTH_USING_SIZE(obj_size))</span></div>
 </div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span> </div>
-<div class="foldopen" id="foldopen00053" data-start="" data-end="">
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno"><a class="line" href="dynamic__array__code__gen_8h.html#afdb9a7a0a3cf71b374ef034d94ca1b15">   53</a></span><span class="preprocessor">#define GENERATE_DYNAMIC_ARRAY_PROTOTYPES(TYPE)                                                         \</span></div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span><span class="preprocessor">    bool TYPE##_dynamic_array_init(TYPE##_dynamic_array_t * array, size_t init_size, size_t init_used); \</span></div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span><span class="preprocessor">    void TYPE##_dynamic_array_free(TYPE##_dynamic_array_t * array);                                     \</span></div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span><span class="preprocessor">    bool TYPE##_dynamic_array_resize(TYPE##_dynamic_array_t * array, size_t new_size);                  \</span></div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span><span class="preprocessor">    bool TYPE##_dynamic_array_write(TYPE##_dynamic_array_t * array, TYPE val);</span></div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span> </div>
+<div class="foldopen" id="foldopen00051" data-start="" data-end="">
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno"><a class="line" href="dynamic__array__code__gen_8h.html#a8dfc4b0d279e8649618b580f97c5efc6">   51</a></span><span class="preprocessor">#define GENERATE_DYNAMIC_ARRAY_TYPE(TYPE) \</span></div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span><span class="preprocessor">    typedef struct {                      \</span></div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span><span class="preprocessor">        size_t allocated;                 \</span></div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span><span class="preprocessor">        size_t used;                      \</span></div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span><span class="preprocessor">        TYPE * data;                      \</span></div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span><span class="preprocessor">    } TYPE##_dynamic_array_t;</span></div>
 </div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span> </div>
-<div class="foldopen" id="foldopen00059" data-start="" data-end="">
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno"><a class="line" href="dynamic__array__code__gen_8h.html#acf028493fd19ca4910c991aedf4bda2f">   59</a></span><span class="preprocessor">#define GENERATE_DYNAMIC_ARRAY_FUNCTIONS(TYPE)                                                           \</span></div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span><span class="preprocessor">    bool TYPE##_dynamic_array_init(TYPE##_dynamic_array_t * array, size_t init_size, size_t init_used) { \</span></div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span><span class="preprocessor">        assert(init_size &gt;= init_used);                                                                  \</span></div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span><span class="preprocessor">        init_size = MAX(init_size, MIN_ARRAY_SIZE);                                                      \</span></div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span><span class="preprocessor">        array-&gt;data = CHECKED_MALLOC_USING_TYPE(init_size, *array-&gt;data);                                \</span></div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span><span class="preprocessor">        array-&gt;allocated = (array-&gt;data) ? init_size : 0;                                                \</span></div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span><span class="preprocessor">        array-&gt;used = (array-&gt;data) ? init_used : 0;                                                     \</span></div>
-<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span><span class="preprocessor">        return !!array-&gt;data;                                                                            \</span></div>
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span><span class="preprocessor">    }                                                                                                    \</span></div>
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span><span class="preprocessor">                                                                                                         \</span></div>
-<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span><span class="preprocessor">    void TYPE##_dynamic_array_free(TYPE##_dynamic_array_t * array) {                                     \</span></div>
-<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span><span class="preprocessor">        free(array-&gt;data);                                                                               \</span></div>
-<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span><span class="preprocessor">        array-&gt;data = NULL;                                                                              \</span></div>
-<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span><span class="preprocessor">        array-&gt;allocated = array-&gt;used = 0;                                                              \</span></div>
-<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span><span class="preprocessor">    }                                                                                                    \</span></div>
-<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span><span class="preprocessor">                                                                                                         \</span></div>
-<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span><span class="preprocessor">    bool TYPE##_dynamic_array_resize(TYPE##_dynamic_array_t * array, size_t new_size) {                  \</span></div>
-<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span><span class="preprocessor">        size_t alloc_size = MAX(new_size, MIN_ARRAY_SIZE);                                               \</span></div>
-<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span><span class="preprocessor">        TYPE * new_data = CHECKED_REALLOC_USING_SIZE(array-&gt;data, alloc_size, *array-&gt;data);             \</span></div>
-<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span><span class="preprocessor">        if (!new_data)                                                                                   \</span></div>
-<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span><span class="preprocessor">            return false;                                                                                \</span></div>
-<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span><span class="preprocessor">        array-&gt;data = new_data;                                                                          \</span></div>
-<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span><span class="preprocessor">        array-&gt;allocated = alloc_size;                                                                   \</span></div>
-<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span><span class="preprocessor">        array-&gt;used = MIN(array-&gt;used, new_size);                                                        \</span></div>
-<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span><span class="preprocessor">        return true;                                                                                     \</span></div>
-<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span><span class="preprocessor">    }                                                                                                    \</span></div>
-<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span><span class="preprocessor">                                                                                                         \</span></div>
-<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span><span class="preprocessor">    bool TYPE##_dynamic_array_write(TYPE##_dynamic_array_t * array, TYPE val) {                          \</span></div>
-<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span><span class="preprocessor">        if (array-&gt;used == array-&gt;allocated) {                                                           \</span></div>
-<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span><span class="preprocessor">            if (AT_MAX_LENGTH_USING_TYPE(array-&gt;allocated, *array-&gt;data))                                \</span></div>
-<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span><span class="preprocessor">                return false;                                                                            \</span></div>
-<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span><span class="preprocessor">            size_t new_size = CAPPED_DPL_USING_SIZE(array-&gt;allocated, *array-&gt;data);                     \</span></div>
-<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span><span class="preprocessor">            int resize_success = TYPE##_dynamic_array_resize(array, new_size);                           \</span></div>
-<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span><span class="preprocessor">            if (!resize_success)                                                                         \</span></div>
-<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span><span class="preprocessor">                return false;                                                                            \</span></div>
-<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span><span class="preprocessor">        }                                                                                                \</span></div>
-<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span><span class="preprocessor">        array-&gt;data[array-&gt;used++] = val;                                                                \</span></div>
-<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span><span class="preprocessor">        return true;                                                                                     \</span></div>
-<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span><span class="preprocessor">    }</span></div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span> </div>
+<div class="foldopen" id="foldopen00058" data-start="" data-end="">
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno"><a class="line" href="dynamic__array__code__gen_8h.html#afdb9a7a0a3cf71b374ef034d94ca1b15">   58</a></span><span class="preprocessor">#define GENERATE_DYNAMIC_ARRAY_PROTOTYPES(TYPE)                                                         \</span></div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span><span class="preprocessor">    bool TYPE##_dynamic_array_init(TYPE##_dynamic_array_t * array, size_t init_size, size_t init_used); \</span></div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span><span class="preprocessor">    void TYPE##_dynamic_array_free(TYPE##_dynamic_array_t * array);                                     \</span></div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span><span class="preprocessor">    bool TYPE##_dynamic_array_resize(TYPE##_dynamic_array_t * array, size_t new_size);                  \</span></div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span><span class="preprocessor">    bool TYPE##_dynamic_array_write(TYPE##_dynamic_array_t * array, TYPE val);</span></div>
 </div>
-<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span> </div>
-<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span> </div>
+<div class="foldopen" id="foldopen00064" data-start="" data-end="">
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno"><a class="line" href="dynamic__array__code__gen_8h.html#acf028493fd19ca4910c991aedf4bda2f">   64</a></span><span class="preprocessor">#define GENERATE_DYNAMIC_ARRAY_FUNCTIONS(TYPE)                                                           \</span></div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span><span class="preprocessor">    bool TYPE##_dynamic_array_init(TYPE##_dynamic_array_t * array, size_t init_size, size_t init_used) { \</span></div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span><span class="preprocessor">        assert(init_size &gt;= init_used);                                                                  \</span></div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span><span class="preprocessor">        init_size = MAX(init_size, MIN_ARRAY_SIZE);                                                      \</span></div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span><span class="preprocessor">        array-&gt;data = CHECKED_MALLOC_USING_TYPE(init_size, *array-&gt;data);                                \</span></div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span><span class="preprocessor">        array-&gt;allocated = (array-&gt;data) ? init_size : 0;                                                \</span></div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span><span class="preprocessor">        array-&gt;used = (array-&gt;data) ? init_used : 0;                                                     \</span></div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span><span class="preprocessor">        return !!array-&gt;data;                                                                            \</span></div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span><span class="preprocessor">    }                                                                                                    \</span></div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span><span class="preprocessor">                                                                                                         \</span></div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span><span class="preprocessor">    void TYPE##_dynamic_array_free(TYPE##_dynamic_array_t * array) {                                     \</span></div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span><span class="preprocessor">        free(array-&gt;data);                                                                               \</span></div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span><span class="preprocessor">        array-&gt;data = NULL;                                                                              \</span></div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span><span class="preprocessor">        array-&gt;allocated = array-&gt;used = 0;                                                              \</span></div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span><span class="preprocessor">    }                                                                                                    \</span></div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span><span class="preprocessor">                                                                                                         \</span></div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span><span class="preprocessor">    bool TYPE##_dynamic_array_resize(TYPE##_dynamic_array_t * array, size_t new_size) {                  \</span></div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span><span class="preprocessor">        size_t alloc_size = MAX(new_size, MIN_ARRAY_SIZE);                                               \</span></div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span><span class="preprocessor">        TYPE * new_data = CHECKED_REALLOC_USING_SIZE(array-&gt;data, alloc_size, *array-&gt;data);             \</span></div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span><span class="preprocessor">        if (!new_data)                                                                                   \</span></div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span><span class="preprocessor">            return false;                                                                                \</span></div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span><span class="preprocessor">        array-&gt;data = new_data;                                                                          \</span></div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span><span class="preprocessor">        array-&gt;allocated = alloc_size;                                                                   \</span></div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span><span class="preprocessor">        array-&gt;used = MIN(array-&gt;used, new_size);                                                        \</span></div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span><span class="preprocessor">        return true;                                                                                     \</span></div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span><span class="preprocessor">    }                                                                                                    \</span></div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span><span class="preprocessor">                                                                                                         \</span></div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span><span class="preprocessor">    bool TYPE##_dynamic_array_write(TYPE##_dynamic_array_t * array, TYPE val) {                          \</span></div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span><span class="preprocessor">        if (array-&gt;used == array-&gt;allocated) {                                                           \</span></div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span><span class="preprocessor">            if (AT_MAX_LENGTH_USING_TYPE(array-&gt;allocated, *array-&gt;data))                                \</span></div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span><span class="preprocessor">                return false;                                                                            \</span></div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span><span class="preprocessor">            size_t new_size = CAPPED_DPL_USING_SIZE(array-&gt;allocated, *array-&gt;data);                     \</span></div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span><span class="preprocessor">            int resize_success = TYPE##_dynamic_array_resize(array, new_size);                           \</span></div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span><span class="preprocessor">            if (!resize_success)                                                                         \</span></div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span><span class="preprocessor">                return false;                                                                            \</span></div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span><span class="preprocessor">        }                                                                                                \</span></div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span><span class="preprocessor">        array-&gt;data[array-&gt;used++] = val;                                                                \</span></div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span><span class="preprocessor">        return true;                                                                                     \</span></div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span><span class="preprocessor">    }</span></div>
+</div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span> </div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span><span class="preprocessor">#endif</span></div>
 <div class="ttc" id="amemory_8h_html"><div class="ttname"><a href="memory_8h.html">memory.h</a></div><div class="ttdoc">Macros used for memory allocation of the project.</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
@@ -204,7 +209,7 @@ $(function(){initNavTree('dynamic__array__code__gen_8h_source.html','',''); });
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a href="dir_d447c1f28e7500b1cedb201eaf65d36e.html">chip8</a></li><li class="navelem"><a href="dir_be6d8ddecb076a1f7d7234cb461a60fe.html">base</a></li><li class="navelem"><a href="dir_6801c736f17faad8b919090f080b5e45.html">src</a></li><li class="navelem"><a href="dynamic__array__code__gen_8h.html">dynamic_array_code_gen.h</a></li>
+    <li class="navelem"><a href="dir_d447c1f28e7500b1cedb201eaf65d36e.html">chip8</a></li><li class="navelem"><a href="dir_be6d8ddecb076a1f7d7234cb461a60fe.html">base</a></li><li class="navelem"><a href="dir_67c00ffd3866a00722a13c4fdd1efe8f.html">include</a></li><li class="navelem"><a href="dir_a5e727cc2955a1f3ccc0297c97a7bb47.html">base</a></li><li class="navelem"><a href="dynamic__array__code__gen_8h.html">dynamic_array_code_gen.h</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.15.0 </li>
   </ul>
 </div>

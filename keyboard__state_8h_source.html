@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.15.0"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>CHIP-8: chip8/backend/src/keyboard_state.h Source File</title>
+<title>CHIP-8: chip8/backend/include/backend/keyboard_state.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -111,8 +111,8 @@ $(function(){initNavTree('keyboard__state_8h_source.html','',''); });
 <div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="preprocessor">#ifndef CHIP8_KEY_BOARD_STATE_H_</span></div>
 <div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="preprocessor">#define CHIP8_KEY_BOARD_STATE_H_</span></div>
 <div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span> </div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span><span class="preprocessor">#include &quot;<a class="code" href="backend__pre__compiled__header_8h.html">backend_pre_compiled_header.h</a>&quot;</span></div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span><span class="preprocessor">#include &lt;SDL.h&gt;</span></div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span><span class="preprocessor">#include &lt;SDL.h&gt;</span></div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span><span class="preprocessor">#include &lt;stdint.h&gt;</span></div>
 <div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span> </div>
 <div class="line"><a id="l00027" name="l00027"></a><span class="lineno"><a class="line" href="keyboard__state_8h.html#a3bb59def79fe59ea0c69136507bf3fb4">   27</a></span><span class="keyword">typedef</span> uint16_t <a class="code hl_typedef" href="keyboard__state_8h.html#a3bb59def79fe59ea0c69136507bf3fb4">keyBoardState_t</a>;</div>
 <div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span></div>
@@ -144,7 +144,6 @@ $(function(){initNavTree('keyboard__state_8h_source.html','',''); });
 <div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span><span class="keywordtype">void</span> <a class="code hl_function" href="keyboard__state_8h.html#afb1612c88d71999f48904ecf9598f4c6">keyboard_handle_key_up_event</a>(SDL_Event event, <a class="code hl_typedef" href="keyboard__state_8h.html#a3bb59def79fe59ea0c69136507bf3fb4">keyBoardState_t</a> * state);</div>
 <div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span> </div>
 <div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span><span class="preprocessor">#endif</span></div>
-<div class="ttc" id="abackend__pre__compiled__header_8h_html"><div class="ttname"><a href="backend__pre__compiled__header_8h.html">backend_pre_compiled_header.h</a></div><div class="ttdoc">Precompiled header file of the backend.</div></div>
 <div class="ttc" id="akeyboard__state_8h_html_a1225567887ebafb8dea600b859f39a47"><div class="ttname"><a href="keyboard__state_8h.html#a1225567887ebafb8dea600b859f39a47">keyboard_handle_event</a></div><div class="ttdeci">void keyboard_handle_event(SDL_Event event, keyBoardState_t *state)</div><div class="ttdoc">Handles an SDL event that changes the state of the keyboard (key down, key up and loss of the focus o...</div><div class="ttdef"><b>Definition</b> keyboard_state.c:25</div></div>
 <div class="ttc" id="akeyboard__state_8h_html_a2448bb1a2a4ecaece867a981e5b4f3ea"><div class="ttname"><a href="keyboard__state_8h.html#a2448bb1a2a4ecaece867a981e5b4f3ea">key_code</a></div><div class="ttdeci">key_code</div><div class="ttdoc">The key codes of the CHIP-8 keyboard.</div><div class="ttdef"><b>Definition</b> keyboard_state.h:30</div></div>
 <div class="ttc" id="akeyboard__state_8h_html_a2448bb1a2a4ecaece867a981e5b4f3eaa0261ef082a22ce37a2a358b03a6b5c60"><div class="ttname"><a href="keyboard__state_8h.html#a2448bb1a2a4ecaece867a981e5b4f3eaa0261ef082a22ce37a2a358b03a6b5c60">CHIP8_KEY_CODE_3</a></div><div class="ttdeci">@ CHIP8_KEY_CODE_3</div><div class="ttdef"><b>Definition</b> keyboard_state.h:34</div></div>
@@ -172,7 +171,7 @@ $(function(){initNavTree('keyboard__state_8h_source.html','',''); });
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a href="dir_d447c1f28e7500b1cedb201eaf65d36e.html">chip8</a></li><li class="navelem"><a href="dir_9bf4801285c64f1a6d39f3535cbf97ce.html">backend</a></li><li class="navelem"><a href="dir_bc8922c8362a52eae0f094c2df43afd1.html">src</a></li><li class="navelem"><a href="keyboard__state_8h.html">keyboard_state.h</a></li>
+    <li class="navelem"><a href="dir_d447c1f28e7500b1cedb201eaf65d36e.html">chip8</a></li><li class="navelem"><a href="dir_9bf4801285c64f1a6d39f3535cbf97ce.html">backend</a></li><li class="navelem"><a href="dir_a3a4d0dbcae282a122d900a5e33b1306.html">include</a></li><li class="navelem"><a href="dir_e3ad56e68542213727dffdf0b8924c8c.html">backend</a></li><li class="navelem"><a href="keyboard__state_8h.html">keyboard_state.h</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.15.0 </li>
   </ul>
 </div>
