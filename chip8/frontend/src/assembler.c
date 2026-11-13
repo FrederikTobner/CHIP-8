@@ -473,7 +473,7 @@ static void assembler_patch_jump_instructions(assembler_t * assembler, uint8_t *
             addressEntry =
                 uint16_t_table_look_up_entry(assembler->addressesTable.entries[i]->key, &assembler->addressTable);
             if (!addressEntry) {
-                printf("Unable to resolve label reference %s\n", assembler->addressesTable.entries[i]->key);
+                fprintf(stderr, "Unable to resolve label reference %s\n", assembler->addressesTable.entries[i]->key);
                 free(assembler->source);
                 exit(EXIT_CODE_ASSEMBLER_ERROR);
             }

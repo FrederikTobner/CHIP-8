@@ -21,9 +21,9 @@
 #include "backend/display.h"
 #include "backend_pre_compiled_header.h"
 #include "base/logger.h"
-#include "io/path_utils.h"
+#include "window_icon.h"
 
-static int display_set_window_icon(SDL_Window *, char const *);
+static void display_set_window_icon(SDL_Window *);
 
 void display_render(display_t * display) {
     // The color of the pixels of the texture (ARGB) - the display is black on white
@@ -43,33 +43,33 @@ void display_render(display_t * display) {
 
 int display_init(display_t * display) {
     if (SDL_Init(SDL_INIT_VIDEO)) {
-        printf("SDL could not initialize! SDL Error: %s\n", SDL_GetError());
+        fprintf(stderr, "SDL could not initialize! SDL Error: %s\n", SDL_GetError());
         return -1;
     } else {
         log_debug("SDL initialized");
         // Set texture filtering to nearest neighbour, so the pixels of the emulator stay sharp when they are scaled
         if (!SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "0")) {
-            printf("Warning: Linear texture filtering not enabled!");
+            fprintf(stderr, "Warning: Linear texture filtering not enabled!\n");
         }
         // Create window
         display->window = SDL_CreateWindow("CHIP-8", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
                                            GRAPHICS_SYSTEM_WIDTH * SCALE_FACTOR, GRAPHICS_SYSTEM_HEIGHT * SCALE_FACTOR,
                                            SDL_WINDOW_SHOWN);
         if (!display->window) {
-            printf("Window could not be created! SDL Error: %s\n", SDL_GetError());
+            fprintf(stderr, "Window could not be created! SDL Error: %s\n", SDL_GetError());
             return -1;
         } else {
             // Create renderer for window
             display->renderer = SDL_CreateRenderer(display->window, -1, 0);
             if (!display->renderer) {
-                printf("Renderer could not be created! SDL Error: %s\n", SDL_GetError());
+                fprintf(stderr, "Renderer could not be created! SDL Error: %s\n", SDL_GetError());
                 return -1;
             }
             display->texture =
                 SDL_CreateTexture(display->renderer, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_STREAMING,
                                   GRAPHICS_SYSTEM_WIDTH, GRAPHICS_SYSTEM_HEIGHT);
             if (!display->texture) {
-                printf("Texture could not be created! SDL Error: %s\n", SDL_GetError());
+                fprintf(stderr, "Texture could not be created! SDL Error: %s\n", SDL_GetError());
                 return -1;
             }
             // The empty screen is shown right away
@@ -80,7 +80,9 @@ int display_init(display_t * display) {
                     display->graphicsSystem[width][height] = 0u;
                 }
             }
-            return display_set_window_icon(display->window, "chip8_window_icon.bmp");
+            // The icon is only cosmetic - a window without it is still fine
+            display_set_window_icon(display->window);
+            return 0;
         }
     }
     return 0;
@@ -97,27 +99,18 @@ void display_quit(display_t * display) {
     SDL_Quit();
 }
 
-/// @brief Sets the icon of a window
+/// @brief Sets the icon of a window to the icon that is embedded in the library
+/// @details Failing to set the icon is not fatal - a warning is printed and the window keeps its default icon
 /// @param window The window where the icon is set
-/// @param iconPath Path to the icon
-/// @return 0 if the icon was successfully appled to the window, -1 if an error occured
-static int display_set_window_icon(SDL_Window * window, char const * iconName) {
-    char iconPathBuffer[240];
-    if (path_utils_get_executable_path(iconPathBuffer, 240)) {
-        printf("Failed to determine path of the emulator executable\n");
-        return -1;
+static void display_set_window_icon(SDL_Window * window) {
+    // The icon is a bitmap that is stored in the memory of the program (see window_icon.h)
+    SDL_RWops * source = SDL_RWFromConstMem(WINDOW_ICON_DATA, (int)sizeof(WINDOW_ICON_DATA));
+    // The source is closed by SDL_LoadBMP_RW (even if loading the bitmap fails)
+    SDL_Surface * icon = source ? SDL_LoadBMP_RW(source, 1) : NULL;
+    if (!icon) {
+        fprintf(stderr, "Warning: Failed to load the window icon: %s\n", SDL_GetError());
+        return;
     }
-    path_utils_remove_file_layer(iconPathBuffer, 2);
-    path_utils_concatenate_folder(iconPathBuffer, "assets", 240);
-    strcat(iconPathBuffer, iconName);
-    // Creating a SDL scurface from the bitmap
-    SDL_Surface * window_icon_scurface = SDL_LoadBMP(iconPathBuffer);
-    if (!window_icon_scurface) {
-        printf("Failed to load window icon %s\n", SDL_GetError());
-        return -1;
-    }
-    // Setting the icon of the window
-    SDL_SetWindowIcon(window, window_icon_scurface);
-    SDL_FreeSurface(window_icon_scurface);
-    return 0;
+    SDL_SetWindowIcon(window, icon);
+    SDL_FreeSurface(icon);
 }
