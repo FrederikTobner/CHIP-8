@@ -18,12 +18,12 @@
  * @brief Definitions regarding the hashtable that stored memory adresses under their label
  */
 
-#include "addresses_hash_table.h"
+#include "frontend/addresses_hash_table.h"
 
 #include "frontend_pre_compiled_header.h"
 
-#include "../../base/src/memory.h"
-#include "../../base/src/table.h"
+#include "base/memory.h"
+#include "base/table.h"
 #include "fnv1a.h"
 
 static int addresses_table_grow_table(addresses_hash_table_t *);

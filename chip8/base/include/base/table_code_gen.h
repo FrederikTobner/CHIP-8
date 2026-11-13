@@ -21,8 +21,12 @@
 #ifndef CHIP8_CODE_GENERATION_TABLE_H_
 #define CHIP8_CODE_GENERATION_TABLE_H_
 
-#include "memory.h"
-#include "table.h"
+#include <stddef.h>
+#include <stdint.h>
+#include <string.h>
+
+#include "base/memory.h"
+#include "base/table.h"
 
 /// Generates a table entry that stores a value of the specified type as data
 #define GENERATE_TABLE_ENTRY_TYPE(TYPE) \

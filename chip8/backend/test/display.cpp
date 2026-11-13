@@ -3,7 +3,7 @@
 #include <string.h>
 
 extern "C" {
-#include "display.h"
+#include "backend/display.h"
 }
 
 namespace {

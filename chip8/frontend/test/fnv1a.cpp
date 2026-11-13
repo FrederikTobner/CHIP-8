@@ -3,7 +3,7 @@
 #include <stdint.h>
 
 extern "C" {
-#include "../src/fnv1a.h"
+#include "fnv1a.h"
 }
 
 TEST(FNV1A, test) {

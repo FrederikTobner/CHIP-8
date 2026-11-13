@@ -21,8 +21,8 @@
 #ifndef CHIP8_KEY_BOARD_STATE_H_
 #define CHIP8_KEY_BOARD_STATE_H_
 
-#include "backend_pre_compiled_header.h"
 #include <SDL.h>
+#include <stdint.h>
 
 typedef uint16_t keyBoardState_t;
 

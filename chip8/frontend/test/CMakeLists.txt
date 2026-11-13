@@ -16,7 +16,8 @@ file (GLOB_RECURSE TEST_SOURCES CONFIGURE_DEPENDS "*.cpp")
 
 add_executable(${FRONTEND_TEST_PROJECT_NAME} ${TEST_SOURCES})
 
-target_include_directories(${FRONTEND_TEST_PROJECT_NAME} PUBLIC ${SOURCE_PATH_MATH} ${SOURCE_PATH_FRONTEND} ${SOURCE_PATH_BASE})
+# The test of the hash function also needs the header that is not part of the public interface of the library
+target_include_directories(${FRONTEND_TEST_PROJECT_NAME} PRIVATE ${PROJECT_SOURCE_DIR}/chip8/frontend/src)
 
 # Link google test
 target_link_libraries(${FRONTEND_TEST_PROJECT_NAME} GTest::gtest_main ${PROJECT_NAME}_Frontend)

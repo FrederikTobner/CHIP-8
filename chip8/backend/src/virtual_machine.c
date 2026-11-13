@@ -18,15 +18,15 @@
  * @brief Definitions regarding the virtual machine of the emulator
  */
 
-#include "virtual_machine.h"
+#include "backend/virtual_machine.h"
 
 #if defined(PRINT_BYTE_CODE) || defined(TRACE_EXECUTION)
 #include "debug.h"
 #endif
-#include "../../base/src/chip8.h"
-#include "../../base/src/logger.h"
-#include "display.h"
-#include "keyboard_state.h"
+#include "backend/display.h"
+#include "backend/keyboard_state.h"
+#include "base/chip8.h"
+#include "base/logger.h"
 
 /// Defines a new 8-bit value based on the opcode that is currently executed
 #define DEFINE_8_BIT_VALUE  uint8_t value = vm->currentOpcode & 0x00ff;

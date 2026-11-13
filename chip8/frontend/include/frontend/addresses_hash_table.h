@@ -21,8 +21,11 @@
 #ifndef CHIP8_ADDRESSES_HASH_TABLE_H_
 #define CHIP8_ADDRESSES_HASH_TABLE_H_
 
-#include "dynamic_address_array.h"
-#include "frontend_pre_compiled_header.h"
+#include <stddef.h>
+#include <stdint.h>
+#include <stdlib.h>
+
+#include "frontend/dynamic_address_array.h"
 
 // Type Definition of an Entry structure in a hashtable (linear probing)
 typedef struct {

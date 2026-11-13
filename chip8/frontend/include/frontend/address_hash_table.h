@@ -14,19 +14,21 @@
  ****************************************************************************/
 
 /**
- * @file dynamic_address_array.h
- * @brief Declarations regarding the dynamic address array
+ * @file address_hash_table.h
+ * @brief Declarations regarding the hashtable that stored memory adresses under their label
  */
 
-#ifndef CHIP8_DYNAMIC_ADDRESS_ARRAY_H_
-#define CHIP8_DYNAMIC_ADDRESS_ARRAY_H_
+#ifndef CHIP8_ADDRESS_HASH_TABLE_H_
+#define CHIP8_ADDRESS_HASH_TABLE_H_
 
-#include "frontend_pre_compiled_header.h"
+#include <stdint.h>
 
-#include "../../base/src/dynamic_array_code_gen.h"
+#include "base/table_code_gen.h"
 
-GENERATE_DYNAMIC_ARRAY_TYPE(uint16_t)
+GENERATE_TABLE_ENTRY_TYPE(uint16_t)
 
-GENERATE_DYNAMIC_ARRAY_PROTOTYPES(uint16_t)
+GENERATE_TABLE_TYPE(uint16_t)
+
+GENERATE_TABLE_PROTOTYPES(uint16_t)
 
 #endif

@@ -18,7 +18,7 @@
  * @brief Definitions regarding the hashtable that stored memory adresses under their label
  */
 
-#include "address_hash_table.h"
+#include "frontend/address_hash_table.h"
 
 #include "fnv1a.h"
 

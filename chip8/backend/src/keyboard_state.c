@@ -18,7 +18,7 @@
  * @brief Definitions regarding the keyboard of the emulator
  */
 
-#include "keyboard_state.h"
+#include "backend/keyboard_state.h"
 
 static keyBoardState_t keyboard_scancode_to_key_code(SDL_Scancode);
 

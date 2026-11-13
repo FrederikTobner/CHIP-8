@@ -18,6 +18,6 @@
  * @brief Definiitons regarding the dynamic address array
  */
 
-#include "dynamic_address_array.h"
+#include "frontend/dynamic_address_array.h"
 
 GENERATE_DYNAMIC_ARRAY_FUNCTIONS(uint16_t)

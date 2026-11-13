@@ -22,11 +22,12 @@
 #define CHIP8_VIRTUAL_MACHINE_H_
 
 // This file is included in the test-suite that is written in c++ using the google-test framework
-#include "backend_pre_compiled_header.h"
 #include <SDL.h>
+#include <stdbool.h>
+#include <stdint.h>
 
-#include "display.h"
-#include "keyboard_state.h"
+#include "backend/display.h"
+#include "backend/keyboard_state.h"
 
 /// The default speed of the CHIP-8 CPU in instructions per second
 #define VM_DEFAULT_INSTRUCTIONS_PER_SECOND (600u)

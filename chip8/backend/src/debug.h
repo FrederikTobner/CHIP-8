@@ -23,7 +23,7 @@
 
 #include "backend_pre_compiled_header.h"
 
-#include "virtual_machine.h"
+#include "backend/virtual_machine.h"
 
 /// @brief Prints the opcode stored at the specified memorylocation
 /// @param memoryLocation The memory location of the opcode
