@@ -98,12 +98,12 @@ $(function(){initNavTree('display_8c.html','',''); });
 <div class="textblock"><code>#include &quot;<a class="el" href="display_8h_source.html">backend/display.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="backend__pre__compiled__header_8h_source.html">backend_pre_compiled_header.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="logger_8h_source.html">base/logger.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="path__utils_8h_source.html">io/path_utils.h</a>&quot;</code><br />
+<code>#include &quot;window_icon.h&quot;</code><br />
 </div><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-func-members" class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:aa7e249b5c3e63873e88ed63b0cb7fc5e" id="r_aa7e249b5c3e63873e88ed63b0cb7fc5e"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa7e249b5c3e63873e88ed63b0cb7fc5e">display_set_window_icon</a> (SDL_Window *window, char const *iconName)</td></tr>
-<tr class="memdesc:aa7e249b5c3e63873e88ed63b0cb7fc5e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the icon of a window.  <br /></td></tr>
+<tr class="memitem:a5d74a5f807201225bac02d10fe5a04a0" id="r_a5d74a5f807201225bac02d10fe5a04a0"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5d74a5f807201225bac02d10fe5a04a0">display_set_window_icon</a> (SDL_Window *window)</td></tr>
+<tr class="memdesc:a5d74a5f807201225bac02d10fe5a04a0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the icon of a window to the icon that is embedded in the library.  <br /></td></tr>
 <tr class="memitem:af162b1f76060426309799f2d54f6a32f" id="r_af162b1f76060426309799f2d54f6a32f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af162b1f76060426309799f2d54f6a32f">display_render</a> (<a class="el" href="structdisplay__t.html">display_t</a> *display)</td></tr>
 <tr class="memdesc:af162b1f76060426309799f2d54f6a32f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Renders the display and marks it as up to date.  <br /></td></tr>
 <tr class="memitem:a4513360db2c4f4999c6644a50d8bb213" id="r_a4513360db2c4f4999c6644a50d8bb213"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4513360db2c4f4999c6644a50d8bb213">display_init</a> (<a class="el" href="structdisplay__t.html">display_t</a> *display)</td></tr>
@@ -192,8 +192,8 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="aa7e249b5c3e63873e88ed63b0cb7fc5e" name="aa7e249b5c3e63873e88ed63b0cb7fc5e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa7e249b5c3e63873e88ed63b0cb7fc5e">&#9670;&#160;</a></span>display_set_window_icon()</h2>
+<a id="a5d74a5f807201225bac02d10fe5a04a0" name="a5d74a5f807201225bac02d10fe5a04a0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5d74a5f807201225bac02d10fe5a04a0">&#9670;&#160;</a></span>display_set_window_icon()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -202,14 +202,10 @@ Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">int display_set_window_icon </td>
+          <td class="memname">void display_set_window_icon </td>
           <td>(</td>
-          <td class="paramtype">SDL_Window *</td>          <td class="paramname"><span class="paramname"><em>window</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
+          <td class="paramtype">SDL_Window *</td>          <td class="paramname"><span class="paramname"><em>window</em></span></td><td>)</td>
           <td></td>
-          <td class="paramtype">char const *</td>          <td class="paramname"><span class="paramname"><em>iconName</em></span>&#160;)</td>
         </tr>
       </table>
   </td>
@@ -219,15 +215,13 @@ Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Sets the icon of a window. </p>
-<dl class="params"><dt>Parameters</dt><dd>
+<p>Sets the icon of a window to the icon that is embedded in the library. </p>
+<p>Failing to set the icon is not fatal - a warning is printed and the window keeps its default icon </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">window</td><td>The window where the icon is set </td></tr>
-    <tr><td class="paramname">iconPath</td><td>Path to the icon </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>0 if the icon was successfully appled to the window, -1 if an error occured </dd></dl>
 
 </div>
 </div>

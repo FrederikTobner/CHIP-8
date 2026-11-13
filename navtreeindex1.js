@@ -1,14 +1,5 @@
 var NAVTREEINDEX1 =
 {
-"structassembler__t.html":[1,0,2],
-"structassembler__t.html#a311196674133e618759342d6be698474":[1,0,2,3],
-"structassembler__t.html#a5bed065f1f0fbd1e07b996a2de6bd1a7":[1,0,2,2],
-"structassembler__t.html#ad11474218165c2db53a6742fff5519cd":[1,0,2,1],
-"structassembler__t.html#ad63735bb1e8f9126d806c2eec49ac941":[1,0,2,5],
-"structassembler__t.html#adf85dcb1626f14a069a55ec133943a09":[1,0,2,0],
-"structassembler__t.html#aee6937c81d468a0915308234d09d212c":[1,0,2,4],
-"structdisplay__t.html":[1,0,3],
-"structdisplay__t.html#a2fe9b27f14729aee5fdea9b4e059b2c9":[1,0,3,1],
 "structdisplay__t.html#a859b8efbf9abe8e82757ee5c75a0c97c":[1,0,3,3],
 "structdisplay__t.html#a966da7a60c4ea3ba301e26ccc5efe452":[1,0,3,2],
 "structdisplay__t.html#aaa8e409e04dcf575ef63fd5fb3db06f9":[1,0,3,4],
