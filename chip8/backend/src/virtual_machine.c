@@ -20,12 +20,15 @@
 
 #include "backend/virtual_machine.h"
 
-#if defined(PRINT_BYTE_CODE) || defined(TRACE_EXECUTION)
+#ifdef TRACE_EXECUTION
 #include "debug.h"
 #endif
 #include "backend/display.h"
 #include "backend/keyboard_state.h"
 #include "base/chip8.h"
+#ifdef PRINT_BYTE_CODE
+#include "base/debug_bytecode.h"
+#endif
 #include "base/logger.h"
 
 /// Defines a new 8-bit value based on the opcode that is currently executed
