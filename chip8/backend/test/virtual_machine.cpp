@@ -15,6 +15,14 @@ TEST_F(VirtualMachineTest, InitResetsRegistersAndTimers) {
     }
 }
 
+TEST_F(VirtualMachineTest, InitResetsTheStack) {
+    // The fixture fills the machine with a pattern before it is initialized
+    EXPECT_EQ(vm.stack, vm.stackPointer);
+    for (uint16_t value : vm.stack) {
+        EXPECT_EQ(0, value);
+    }
+}
+
 TEST_F(VirtualMachineTest, InitSeedsTheRandomNumberGenerator) {
     constexpr int kValues = 8;
     int unseeded[kValues];

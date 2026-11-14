@@ -4,16 +4,8 @@ configure_file(chip8_config.h.in chip8_config.h)
 set(CHIP-8_SOURCE_FILES
 "main.c"    
 )
-# Adding debug compile definitions
-if(CMAKE_BUILD_TYPE MATCHES "[Dd][Ee][Bb][Uu][Gg]")
-    if(CP8_DEBUG_PRINT_BYTECODE)
-        add_compile_definitions(PRINT_BYTE_CODE)
-    endif()
-    if(CP8_DEBUG_TRACE_EXECUTION)
-        add_compile_definitions(TRACE_EXECUTION)
-    endif()
-    add_compile_definitions(BUILD_DEBUG)
-else()
+# Packaging is only set up for builds that are not debug builds
+if(NOT CMAKE_BUILD_TYPE MATCHES "[Dd][Ee][Bb][Uu][Gg]")
     include(chip8_set_package_properties)
     CHIP8_Set_Package_Properties()
     # Includes the CPack module     
