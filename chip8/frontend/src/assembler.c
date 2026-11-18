@@ -20,6 +20,9 @@
 
 #include "frontend/assembler.h"
 #include "base/chip8.h"
+#ifdef PRINT_BYTE_CODE
+#include "base/debug_bytecode.h"
+#endif
 #include "base/exit_code.h"
 
 #define OPCODE_CONVERSION_ERROR_MESSAGE ("Unable to convert mnemonic at source into binary")

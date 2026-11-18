@@ -20,10 +20,6 @@
 
 #include "debug.h"
 
-void debug_print_bytecode(uint16_t memoryLocation, uint16_t opcode) {
-    printf("0x%04X: [0x%04X]\n", memoryLocation, opcode);
-}
-
 void debug_trace_execution(virtual_machine_t vm) {
     printf("Data registers: [");
     for (uint8_t i = 0; i < 16; i++) {

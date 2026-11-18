@@ -20,12 +20,15 @@
 
 #include "backend/virtual_machine.h"
 
-#if defined(PRINT_BYTE_CODE) || defined(TRACE_EXECUTION)
+#ifdef TRACE_EXECUTION
 #include "debug.h"
 #endif
 #include "backend/display.h"
 #include "backend/keyboard_state.h"
 #include "base/chip8.h"
+#ifdef PRINT_BYTE_CODE
+#include "base/debug_bytecode.h"
+#endif
 #include "base/logger.h"
 
 /// Defines a new 8-bit value based on the opcode that is currently executed
@@ -181,7 +184,8 @@ void virtual_machine_init(virtual_machine_t * vm) {
     vm->waitingForKey = false;
     vm->keyWaitBaseline = 0u;
     virtual_machine_set_speed(vm, VM_DEFAULT_INSTRUCTIONS_PER_SECOND);
-    // Initialize stackpointer
+    // Initialize stack and stackpointer
+    memset(vm->stack, 0, sizeof(vm->stack));
     vm->stackPointer = vm->stack;
     // Initialize program counter
     vm->programCounter = PROGRAM_START_LOCATION;
