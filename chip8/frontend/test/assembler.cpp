@@ -80,6 +80,26 @@ TEST_F(AssemblerTest, CommentsAndEmptyLinesAreIgnored) {
     EXPECT_EQ(0x8100, Opcode(memory, 1));
 }
 
+TEST_F(AssemblerTest, AddAcceptsAllKindsOfWhitespaceBetweenTheOperands) {
+    // ADD has to look at the second operand to tell "ADD VX VY" from "ADD VX 0xNN"
+    Assemble(Program("    ADD V1\tV2\n"
+                     "    ADD V1\t0x05\n"
+                     "    ADD V1 \t  V2\n"
+                     "    ADD\tV1\t \t0x05\n"
+                     "    ADD V1\r\n    V2\n"
+                     "    ADD V1 # the second operand follows\n    0x05\n"
+                     "    ADD V1 V2\n"
+                     "    ADD V1 0x05\n"
+                     "    ADD V1\n"
+                     "\n"
+                     "    0x05"),
+             memory);
+    uint16_t const expected[] = {0x8124, 0x7105, 0x8124, 0x7105, 0x8124, 0x7105, 0x8124, 0x7105, 0x7105};
+    for (size_t i = 0; i < sizeof(expected) / sizeof(expected[0]); i++) {
+        EXPECT_EQ(expected[i], Opcode(memory, i)) << i;
+    }
+}
+
 TEST_F(AssemblerTest, DataSectionIsStoredAtTheOrigin) {
     Assemble("section .text:\n    NOP\nsection .data:\n    org 0x900\n    0xfc\n    0x80\n", memory);
     EXPECT_EQ(0xfc, memory[0x900]);
