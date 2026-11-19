@@ -68,9 +68,10 @@ INSTANTIATE_TEST_SUITE_P(
         MnemonicCase{"MOVS V0 V1", 0x8017}, MnemonicCase{"SKE V0 V1", 0x5010}, MnemonicCase{"SKE V0 0x3F", 0x303F},
         MnemonicCase{"SKNE V0 V1", 0x9010}, MnemonicCase{"SKNE V0 0x3F", 0x403F}, MnemonicCase{"SKP V3", 0xE39E},
         MnemonicCase{"SKNP V3", 0xE3A1}, MnemonicCase{"DSP V0 V1 0x05", 0xD015}, MnemonicCase{"RND V2 0x07", 0xC207},
-        MnemonicCase{"STK V4", 0xF40A}, MnemonicCase{"STBC V5", 0xF533}, MnemonicCase{"TGS", 0x00E1},
-        MnemonicCase{"CLS", 0x00E0}, MnemonicCase{"RET", 0x00EE}, MnemonicCase{"EXT", 0x0002},
-        MnemonicCase{"JMP 0x234", 0x1234}, MnemonicCase{"CAL 0x300", 0x2300}),
+        MnemonicCase{"STK V4", 0xF40A}, MnemonicCase{"STBC V5", 0xF533}, MnemonicCase{"STMR V3", 0xF355},
+        MnemonicCase{"STMR VF", 0xFF55}, MnemonicCase{"FMR V3", 0xF365}, MnemonicCase{"FMR V0", 0xF065},
+        MnemonicCase{"TGS", 0x00E1}, MnemonicCase{"CLS", 0x00E0}, MnemonicCase{"RET", 0x00EE},
+        MnemonicCase{"EXT", 0x0002}, MnemonicCase{"JMP 0x234", 0x1234}, MnemonicCase{"CAL 0x300", 0x2300}),
     [](::testing::TestParamInfo<MnemonicCase> const & info) { return "Case" + std::to_string(info.index); });
 
 TEST_F(AssemblerTest, CommentsAndEmptyLinesAreIgnored) {
@@ -169,6 +170,11 @@ TEST_F(AssemblerDeathTest, LabelMustStartWithALetter) {
 
 TEST_F(AssemblerDeathTest, LabelMustEndWithAColon) {
     EXPECT_EXIT(Assemble(Program("_a\n    NOP"), memory), ::testing::ExitedWithCode(EXIT_CODE_ASSEMBLER_ERROR), "");
+}
+
+TEST_F(AssemblerDeathTest, StoreMemoryRegistersTakesOnlyOneRegister) {
+    // FX55 stores V0 to VX, a second register would end up in the bits of the opcode that are fixed
+    EXPECT_EXIT(Assemble(Program("    STMR V3 V1"), memory), ::testing::ExitedWithCode(EXIT_CODE_ASSEMBLER_ERROR), "");
 }
 
 TEST_F(AssemblerDeathTest, UnknownMnemonicIsAnError) {

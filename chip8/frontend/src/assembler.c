@@ -787,7 +787,7 @@ static uint16_t assembler_convert_mnemonic_to_binary(assembler_t * assembler, ch
                 }
             case 'M':
                 SWITCH_ADVANCE {
-                    SWITCH_CASE_RETURN('R', 0xF055 | assembler_convert_registers_to_binary(assembler) << 4); // STMR
+                    SWITCH_CASE_RETURN('R', 0xF055 | assembler_convert_register_to_binary(assembler) << 8);  // STMR
                     SWITCH_CASE_RETURN('S', 0x800E | assembler_convert_registers_to_binary(assembler) << 4); // STMS
                 default:
                     assembler_report_error(assembler, OPCODE_CONVERSION_ERROR_MESSAGE);
