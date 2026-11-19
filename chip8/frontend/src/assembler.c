@@ -310,32 +310,19 @@ static inline char assembler_peek(assembler_t assembler) {
     return *assembler.current;
 }
 
-/// @brief Peeks ahead by the specified amount of characters skipping whitespace characters
-/// @param assembler The assembler where the character is peeked
+/// @brief Peeks ahead by the specified amount of characters and then skips the whitespace and the comments that follow
+/// @param assembler The assembler where the character is peeked (a copy, so the position of the caller does not change)
 /// @param amount The amount of characters that are skipped
-/// @return The next character after the amount of characters that where skipt
+/// @return The next character after the skipped characters and the whitespace behind them
 static char assembler_peek_ahead(assembler_t assembler, uint8_t amount) {
-    char currentChar = *assembler.current;
-    for (size_t i = 0; amount || currentChar == ' ';) {
-        switch (currentChar) {
-        case '\0':
-            return '\0';
-        case ' ':
-        case '\r':
-        case '\t':
-        case '\v':
-        case '\n':
-        case '#':
-            i++;
-            break;
-        default:
-            i++;
-            amount--;
-            break;
-        }
-        currentChar = *(assembler.current + i);
+    while (amount && !assembler_is_at_end(assembler)) {
+        assembler_advance(&assembler);
+        amount--;
     }
-    return currentChar;
+    // Whitespace is everything that assembler_skip_whitespace skips, so the operands can be separated by tabs, line
+    // breaks and comments just like everywhere else
+    assembler_skip_whitespace(&assembler);
+    return assembler_peek(assembler);
 }
 
 /// @brief Converts the mnemnic representation of a byte to binary
