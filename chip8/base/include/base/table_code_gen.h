@@ -101,13 +101,15 @@
         if (!table->entries) {                                                                                   \
             return;                                                                                              \
         }                                                                                                        \
+        /* All slots have to be visited, empty slots and tombstones are scattered over the table */              \
         for (size_t i = 0; i < table->allocated; i++) {                                                          \
             if (!table->entries[i] || table->entries[i] == (TYPE##_table_entry_t *)(0xFFFFFFFFFFFFFFFFUL)) {     \
-                break;                                                                                           \
+                continue;                                                                                        \
             }                                                                                                    \
             if (table->entries[i]->key) {                                                                        \
                 free((char *)table->entries[i]->key);                                                            \
             }                                                                                                    \
+            free(table->entries[i]);                                                                             \
         }                                                                                                        \
         free(table->entries);                                                                                    \
         table->allocated = table->used = 0;                                                                      \
