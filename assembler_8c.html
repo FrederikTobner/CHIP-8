@@ -137,7 +137,7 @@ Functions</h2></td></tr>
 <tr class="memitem:a30ffc111e94c2feea7c67449d2c9f180" id="r_a30ffc111e94c2feea7c67449d2c9f180"><td class="memItemLeft" align="right" valign="top">static char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a30ffc111e94c2feea7c67449d2c9f180">assembler_peek</a> (<a class="el" href="structassembler__t.html">assembler_t</a> assembler)</td></tr>
 <tr class="memdesc:a30ffc111e94c2feea7c67449d2c9f180"><td class="mdescLeft">&#160;</td><td class="mdescRight">Used to get the next character in the sourcefile without advancing.  <br /></td></tr>
 <tr class="memitem:a6fe58206f184a17dbdd4eb15fee020b6" id="r_a6fe58206f184a17dbdd4eb15fee020b6"><td class="memItemLeft" align="right" valign="top">static char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6fe58206f184a17dbdd4eb15fee020b6">assembler_peek_ahead</a> (<a class="el" href="structassembler__t.html">assembler_t</a> assembler, uint8_t amount)</td></tr>
-<tr class="memdesc:a6fe58206f184a17dbdd4eb15fee020b6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Peeks ahead by the specified amount of characters skipping whitespace characters.  <br /></td></tr>
+<tr class="memdesc:a6fe58206f184a17dbdd4eb15fee020b6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Peeks ahead by the specified amount of characters and then skips the whitespace and the comments that follow.  <br /></td></tr>
 <tr class="memitem:a89bbc3a8b582cee58d9efbf0b98c6174" id="r_a89bbc3a8b582cee58d9efbf0b98c6174"><td class="memItemLeft" align="right" valign="top">static uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a89bbc3a8b582cee58d9efbf0b98c6174">assembler_read_8bit_number</a> (<a class="el" href="structassembler__t.html">assembler_t</a> *assembler)</td></tr>
 <tr class="memdesc:a89bbc3a8b582cee58d9efbf0b98c6174"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts the mnemnic representation of a byte to binary.  <br /></td></tr>
 <tr class="memitem:aa8e9b429d8e001f5250e009a2bb6e92f" id="r_aa8e9b429d8e001f5250e009a2bb6e92f"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa8e9b429d8e001f5250e009a2bb6e92f">assembler_report_error</a> (<a class="el" href="structassembler__t.html">assembler_t</a> *assembler, char const *format,...)</td></tr>
@@ -821,15 +821,15 @@ Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Peeks ahead by the specified amount of characters skipping whitespace characters. </p>
+<p>Peeks ahead by the specified amount of characters and then skips the whitespace and the comments that follow. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">assembler</td><td>The assembler where the character is peeked </td></tr>
+    <tr><td class="paramname">assembler</td><td>The assembler where the character is peeked (a copy, so the position of the caller does not change) </td></tr>
     <tr><td class="paramname">amount</td><td>The amount of characters that are skipped </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>The next character after the amount of characters that where skipt </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>The next character after the skipped characters and the whitespace behind them </dd></dl>
 
 </div>
 </div>
