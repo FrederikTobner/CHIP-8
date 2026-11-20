@@ -43,6 +43,7 @@ static inline bool assembler_is_label_character(char);
 static inline char assembler_peek(assembler_t);
 static char assembler_peek_ahead(assembler_t, uint8_t);
 static uint8_t assembler_read_8bit_number(assembler_t *);
+static uint16_t assembler_convert_display_to_binary(assembler_t *);
 static void assembler_report_error(assembler_t *, char const *, ...);
 static void assembler_skip_whitespace(assembler_t *);
 static void assembler_patch_jump_instructions(assembler_t *, uint8_t *);
@@ -345,6 +346,21 @@ static uint8_t assembler_read_8bit_number(assembler_t * assembler) {
 #endif
 }
 
+/// @brief Converts the operands of the display instruction (DSP VX VY height) to binary
+/// @param assembler The assembler that proceeses the assembly file
+/// @return The binary representation of the operands (the opcode without the instruction itself)
+static uint16_t assembler_convert_display_to_binary(assembler_t * assembler) {
+    // The order of the evaluation of the operands of an expression is unspecified in C, but the registers have to be
+    // read before the height
+    uint16_t const registers = assembler_convert_registers_to_binary(assembler);
+    uint8_t const height = assembler_read_8bit_number(assembler);
+    // The height has only 4 bits in the opcode, so a bigger value would be cut off silently
+    if (height > 0xF) {
+        assembler_report_error(assembler, "The height of a sprite has to be between 0x00 and 0x0F");
+    }
+    return 0xD000 | registers << 4 | height;
+}
+
 /// @brief Converts the mnemnic representation of a address to binary
 /// @param assembler The assembler that proceeses the assembly file
 /// @return The binary representation of the address
@@ -537,8 +553,7 @@ static uint16_t assembler_convert_mnemonic_to_binary(assembler_t * assembler, ch
         SWITCH_ADVANCE {
         case 'S':
             SWITCH_ADVANCE {
-                SWITCH_CASE_RETURN('P', (0xD000 | assembler_convert_registers_to_binary(assembler) << 4) |
-                                            (assembler_read_8bit_number(assembler) & 0xf)); // DSP
+                SWITCH_CASE_RETURN('P', assembler_convert_display_to_binary(assembler)); // DSP
             default:
                 assembler_report_error(assembler, OPCODE_CONVERSION_ERROR_MESSAGE);
             }
