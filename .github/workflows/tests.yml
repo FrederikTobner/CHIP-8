@@ -6,14 +6,15 @@ on:
 
 jobs:
   test:
-    runs-on: ${{matrix.operatingsystems}}
-    env:
-      BUILD_TYPE: ${{matrix.buildtypes}}
+    name: Tests (${{matrix.preset}})
+    runs-on: ubuntu-latest
 
     strategy:
+      fail-fast: false
       matrix:
-        operatingsystems: [ubuntu-latest] 
-        buildtypes: [Release] 
+        # The presets are defined in CMakePresets.json - the sanitizer presets also find memory leaks, memory errors and
+        # undefined behavior in the tests (the tests are run with ctest, so every test is checked on its own)
+        preset: [release, asan-debug]
 
     steps:
     - name: Checkout repository
@@ -23,10 +24,10 @@ jobs:
       uses: ./.github/actions/install-sdl2
 
     - name: Configure CMake
-      run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DBUILD_TESTING=ON
+      run: cmake --preset ${{matrix.preset}}
 
-    - name: Building Tests
-      run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}} --target CHIP-8_Frontend_Tests CHIP-8_Backend_Tests
+    - name: Build
+      run: cmake --build --preset ${{matrix.preset}}
 
-    - name: Running tests
-      run: cd build && ctest -C ${{env.BUILD_TYPE}} 
+    - name: Run tests
+      run: ctest --preset ${{matrix.preset}}
