@@ -14,6 +14,7 @@ Simple [CHIP-8](https://en.wikipedia.org/wiki/CHIP-8) emulator written in C, wit
 
 * [Key concepts](#key-concepts)
 * [Dependencies](#dependencies)
+* [Building and testing](#building-and-testing)
 * [IDE Integration](#ide-integration)
 * [License](#license)
 
@@ -30,6 +31,28 @@ The emulator has the following dependencies
 
 SDL2 is looked up with `find_package(SDL2)` (e.g. `libsdl2-dev` on Debian/Ubuntu, `sdl2` on Homebrew, `sdl2` via vcpkg).
 If no installed SDL2 is found, it is downloaded and built automatically.
+
+## Building and testing
+
+The project provides [CMake presets](CMakePresets.json) that build the emulator together with the tests (CMake 3.21 or newer):
+
+| Preset         | Description                                                              |
+| -------------- | ------------------------------------------------------------------------ |
+| `debug`        | Debug build                                                              |
+| `release`      | Release build                                                            |
+| `asan-debug`   | Debug build with the address sanitizer and the undefined behavior sanitizer |
+| `asan-release` | Release build with the address sanitizer and the undefined behavior sanitizer |
+
+```sh
+cmake --preset asan-debug
+cmake --build --preset asan-debug
+ctest --preset asan-debug
+```
+
+The sanitizer presets set the CMake option `CP8_ENABLE_SANITIZERS` (GCC and Clang only). On Linux the address sanitizer
+includes the leak sanitizer, so a test fails if it leaks memory, and undefined behavior fails a test as well. Every
+test is a separate `ctest` entry, so the report shows which test causes the problem. The build folders are created in
+`build/<preset>`. These presets are also used by the [Tests workflow](.github/workflows/tests.yml).
 
 ## IDE Integration
 

@@ -77,11 +77,14 @@ void addresses_table_free_entries(addresses_hash_table_t * table) {
         return;
     }
     for (size_t i = 0; i < table->allocated; i++) {
+        // Empty slots and tombstones are scattered all over the table, so the loop has to go through all of the slots
         if (!table->entries[i] || table->entries[i] == ADDRESSES_ENTRY_TOMBSTONE) {
-            break;
+            continue;
         }
         free((char *)table->entries[i]->key);
         uint16_t_dynamic_array_free(table->entries[i]->array);
+        free(table->entries[i]->array);
+        free(table->entries[i]);
     }
     free(table->entries);
     table->allocated = table->used = 0;

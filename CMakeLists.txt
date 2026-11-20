@@ -5,6 +5,7 @@ project(CHIP-8 VERSION 0.1.0 LANGUAGES C CXX)
 # CMake Build options
 option(BUILD_TESTING "Build the tests" OFF)
 option(CP8_FETCH_SDL "Always download and build SDL2 instead of using an installed version" OFF)
+option(CP8_ENABLE_SANITIZERS "Builds the emulator and the tests with the address sanitizer (which also detects memory leaks on Linux) and the undefined behavior sanitizer (GCC and Clang only)" OFF)
 set(CP8_SDL2_MIN_VERSION "2.0.0" CACHE STRING "Minimum SDL2 version required when using an installed SDL2")
 set(CP8_SDL2_FETCH_TAG "release-2.32.10" CACHE STRING "SDL2 git tag that is downloaded if no installed SDL2 is used")
 
@@ -38,6 +39,17 @@ CHIP8_Check_Dependencies()
 
 # Find SDL2 (or download it if it is not installed)
 CHIP8_Find_SDL2()
+
+# The sanitizers are enabled after SDL2 was found (or downloaded), so only the code of this project is instrumented
+if(CP8_ENABLE_SANITIZERS)
+    if(CMAKE_C_COMPILER_ID MATCHES "GNU|Clang" AND CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
+        # Undefined behavior ends the program (and fails the test), otherwise it would only be printed
+        add_compile_options(-fsanitize=address,undefined -fno-sanitize-recover=undefined -fno-omit-frame-pointer)
+        add_link_options(-fsanitize=address,undefined)
+    else()
+        message(FATAL_ERROR "CP8_ENABLE_SANITIZERS is only supported with GCC and Clang")
+    endif()
+endif()
 
 # Build CHIP-8 project
 add_subdirectory(chip8)
