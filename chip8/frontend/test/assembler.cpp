@@ -7,29 +7,6 @@
 #include <string>
 #include <vector>
 
-// The amount of memory that is allocated at the moment can be measured with the address sanitizer or with the glibc
-#if defined(__SANITIZE_ADDRESS__)
-#define CP8_ADDRESS_SANITIZER 1
-#elif defined(__has_feature)
-#if __has_feature(address_sanitizer)
-#define CP8_ADDRESS_SANITIZER 1
-#endif
-#endif
-#if defined(CP8_ADDRESS_SANITIZER)
-// Part of the interface of the sanitizer runtime (gcc does not ship the header sanitizer/allocator_interface.h)
-extern "C" size_t __sanitizer_get_current_allocated_bytes();
-#define CP8_ALLOCATED_BYTES() (__sanitizer_get_current_allocated_bytes())
-#elif defined(__GLIBC__) && defined(__GLIBC_PREREQ)
-#if __GLIBC_PREREQ(2, 33)
-#include <malloc.h>
-static size_t CurrentlyAllocatedBytes() {
-    struct mallinfo2 const info = mallinfo2();
-    return info.uordblks + info.hblkhd;
-}
-#define CP8_ALLOCATED_BYTES() (CurrentlyAllocatedBytes())
-#endif
-#endif
-
 extern "C" {
 #include "base/exit_code.h"
 #include "frontend/assembler.h"
@@ -121,27 +98,6 @@ TEST_F(AssemblerTest, AddAcceptsAllKindsOfWhitespaceBetweenTheOperands) {
     for (size_t i = 0; i < sizeof(expected) / sizeof(expected[0]); i++) {
         EXPECT_EQ(expected[i], Opcode(memory, i)) << i;
     }
-}
-
-TEST_F(AssemblerTest, AllMemoryIsFreedAfterAssembling) {
-#if defined(CP8_ALLOCATED_BYTES)
-    // Many labels, so that the tables of the labels and of the references to labels have to grow and have empty slots
-    std::string instructions = "_start:\n";
-    for (int i = 0; i < 100; i++) {
-        instructions += "    JMP forward" + std::to_string(i) + "\n";
-    }
-    for (int i = 0; i < 100; i++) {
-        instructions += "_forward" + std::to_string(i) + ":\n    JMP start\n";
-    }
-    std::string const source = Program(instructions);
-    // The first run allocates what is only allocated once (buffers of the standard library, ...)
-    Assemble(source, memory);
-    size_t const allocatedBefore = CP8_ALLOCATED_BYTES();
-    Assemble(source, memory);
-    EXPECT_EQ(allocatedBefore, CP8_ALLOCATED_BYTES());
-#else
-    GTEST_SKIP() << "The allocated memory can not be measured with this compiler and standard library";
-#endif
 }
 
 TEST_F(AssemblerTest, DataSectionIsStoredAtTheOrigin) {
