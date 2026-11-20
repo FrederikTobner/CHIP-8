@@ -7,6 +7,7 @@ var assembler_8c =
     [ "assembler_advance", "assembler_8c.html#acc76437694fec8e423c5603216235fc4", null ],
     [ "assembler_convert_address_or_label_to_binary", "assembler_8c.html#acf85b1ba75f45add7fc686b2167fa7d4", null ],
     [ "assembler_convert_address_to_binary", "assembler_8c.html#ab06bcc2ee5b4c46199d0337b581fd2d1", null ],
+    [ "assembler_convert_display_to_binary", "assembler_8c.html#ae956a1b4014d88e499625850e96fa68d", null ],
     [ "assembler_convert_label_to_address", "assembler_8c.html#a2b85c02a9f77baa43a32cc0e5ac1eba5", null ],
     [ "assembler_convert_mnemonic_to_binary", "assembler_8c.html#a15a6e96e148631230c59d1be07bcb86e", null ],
     [ "assembler_convert_register_to_binary", "assembler_8c.html#a7ec599c0532c50a23839f30c99b02611", null ],

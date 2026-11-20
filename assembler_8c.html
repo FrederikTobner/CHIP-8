@@ -140,6 +140,8 @@ Functions</h2></td></tr>
 <tr class="memdesc:a6fe58206f184a17dbdd4eb15fee020b6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Peeks ahead by the specified amount of characters and then skips the whitespace and the comments that follow.  <br /></td></tr>
 <tr class="memitem:a89bbc3a8b582cee58d9efbf0b98c6174" id="r_a89bbc3a8b582cee58d9efbf0b98c6174"><td class="memItemLeft" align="right" valign="top">static uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a89bbc3a8b582cee58d9efbf0b98c6174">assembler_read_8bit_number</a> (<a class="el" href="structassembler__t.html">assembler_t</a> *assembler)</td></tr>
 <tr class="memdesc:a89bbc3a8b582cee58d9efbf0b98c6174"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts the mnemnic representation of a byte to binary.  <br /></td></tr>
+<tr class="memitem:ae956a1b4014d88e499625850e96fa68d" id="r_ae956a1b4014d88e499625850e96fa68d"><td class="memItemLeft" align="right" valign="top">static uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae956a1b4014d88e499625850e96fa68d">assembler_convert_display_to_binary</a> (<a class="el" href="structassembler__t.html">assembler_t</a> *assembler)</td></tr>
+<tr class="memdesc:ae956a1b4014d88e499625850e96fa68d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts the operands of the display instruction (DSP VX VY height) to binary.  <br /></td></tr>
 <tr class="memitem:aa8e9b429d8e001f5250e009a2bb6e92f" id="r_aa8e9b429d8e001f5250e009a2bb6e92f"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa8e9b429d8e001f5250e009a2bb6e92f">assembler_report_error</a> (<a class="el" href="structassembler__t.html">assembler_t</a> *assembler, char const *format,...)</td></tr>
 <tr class="memdesc:aa8e9b429d8e001f5250e009a2bb6e92f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reports an error when the assembly waas processed.  <br /></td></tr>
 <tr class="memitem:a17dc0c350b40d18062784b4b63826fa1" id="r_a17dc0c350b40d18062784b4b63826fa1"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a17dc0c350b40d18062784b4b63826fa1">assembler_skip_whitespace</a> (<a class="el" href="structassembler__t.html">assembler_t</a> *)</td></tr>
@@ -332,6 +334,40 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The binary representation of the address </dd></dl>
+
+</div>
+</div>
+<a id="ae956a1b4014d88e499625850e96fa68d" name="ae956a1b4014d88e499625850e96fa68d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae956a1b4014d88e499625850e96fa68d">&#9670;&#160;</a></span>assembler_convert_display_to_binary()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint16_t assembler_convert_display_to_binary </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structassembler__t.html">assembler_t</a> *</td>          <td class="paramname"><span class="paramname"><em>assembler</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel static">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Converts the operands of the display instruction (DSP VX VY height) to binary. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">assembler</td><td>The assembler that proceeses the assembly file </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The binary representation of the operands (the opcode without the instruction itself) </dd></dl>
 
 </div>
 </div>
