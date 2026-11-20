@@ -67,11 +67,13 @@ INSTANTIATE_TEST_SUITE_P(
         MnemonicCase{"MOVO V0 V1", 0x8011}, MnemonicCase{"MOVA V0 V1", 0x8012}, MnemonicCase{"MOVX V0 V1", 0x8013},
         MnemonicCase{"MOVS V0 V1", 0x8017}, MnemonicCase{"SKE V0 V1", 0x5010}, MnemonicCase{"SKE V0 0x3F", 0x303F},
         MnemonicCase{"SKNE V0 V1", 0x9010}, MnemonicCase{"SKNE V0 0x3F", 0x403F}, MnemonicCase{"SKP V3", 0xE39E},
-        MnemonicCase{"SKNP V3", 0xE3A1}, MnemonicCase{"DSP V0 V1 0x05", 0xD015}, MnemonicCase{"RND V2 0x07", 0xC207},
-        MnemonicCase{"STK V4", 0xF40A}, MnemonicCase{"STBC V5", 0xF533}, MnemonicCase{"STMR V3", 0xF355},
-        MnemonicCase{"STMR VF", 0xFF55}, MnemonicCase{"FMR V3", 0xF365}, MnemonicCase{"FMR V0", 0xF065},
-        MnemonicCase{"TGS", 0x00E1}, MnemonicCase{"CLS", 0x00E0}, MnemonicCase{"RET", 0x00EE},
-        MnemonicCase{"EXT", 0x0002}, MnemonicCase{"JMP 0x234", 0x1234}, MnemonicCase{"CAL 0x300", 0x2300}),
+        MnemonicCase{"SKNP V3", 0xE3A1}, MnemonicCase{"DSP V0 V1 0x05", 0xD015}, MnemonicCase{"DSP V0 V1 0x00", 0xD010},
+        MnemonicCase{"DSP V2 V3 0x0F", 0xD23F}, MnemonicCase{"DSP VF VE 0x0A", 0xDFEA},
+        MnemonicCase{"RND V2 0x07", 0xC207}, MnemonicCase{"STK V4", 0xF40A}, MnemonicCase{"STBC V5", 0xF533},
+        MnemonicCase{"STMR V3", 0xF355}, MnemonicCase{"STMR VF", 0xFF55}, MnemonicCase{"FMR V3", 0xF365},
+        MnemonicCase{"FMR V0", 0xF065}, MnemonicCase{"TGS", 0x00E1}, MnemonicCase{"CLS", 0x00E0},
+        MnemonicCase{"RET", 0x00EE}, MnemonicCase{"EXT", 0x0002}, MnemonicCase{"JMP 0x234", 0x1234},
+        MnemonicCase{"CAL 0x300", 0x2300}),
     [](::testing::TestParamInfo<MnemonicCase> const & info) { return "Case" + std::to_string(info.index); });
 
 TEST_F(AssemblerTest, CommentsAndEmptyLinesAreIgnored) {
@@ -195,6 +197,15 @@ TEST_F(AssemblerDeathTest, LabelMustEndWithAColon) {
 TEST_F(AssemblerDeathTest, StoreMemoryRegistersTakesOnlyOneRegister) {
     // FX55 stores V0 to VX, a second register would end up in the bits of the opcode that are fixed
     EXPECT_EXIT(Assemble(Program("    STMR V3 V1"), memory), ::testing::ExitedWithCode(EXIT_CODE_ASSEMBLER_ERROR), "");
+}
+
+TEST_F(AssemblerDeathTest, SpriteHeightOfTheDisplayInstructionHasToFitIntoFourBits) {
+    // The height used to be cut off silently ("DSP V0 V1 0x1F" was assembled like "DSP V0 V1 0x0F")
+    for (char const * height : {"0x10", "0x1F", "0x80", "0xFF"}) {
+        EXPECT_EXIT(Assemble(Program(std::string("    DSP V0 V1 ") + height), memory),
+                    ::testing::ExitedWithCode(EXIT_CODE_ASSEMBLER_ERROR), "height of a sprite")
+            << height;
+    }
 }
 
 TEST_F(AssemblerDeathTest, UnknownMnemonicIsAnError) {
